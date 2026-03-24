@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Client Portal | CyberBench</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+<body>
+
+  <header class="nav">
+    <div class="container nav_row">
+      <a class="brand" href="/">
+        <span class="logo" aria-hidden="true"></span>
+        <span>CyberBench</span>
+      </a>
+
+      <nav class="nav_links">
+        <a href="/services">Services</a>
+        <a href="/about">About</a>
+        <a href="/blog">Blog</a>
+        <a href="/client-portal">Client Portal</a>
+        <a href="/consultant-portal">Consultant Portal</a>
+        <a class="btn btn-primary" href="/submit-ticket">Deploy Security Now</a>
+      </nav>
+    </div>
+  </header>
+
+
+  <main class="container">
+    <!-- Hero -->
+    <section class="hero" style="padding-top:46px;">
+      <div class="kicker"><span class="dot"></span> Services</div>
+      <h1 class="h1" style="max-width:22ch;">Enterprise security, delivered like a product.</h1>
+      <p class="sub" style="max-width:92ch;">
+        Submit a ticket, get routed to the right specialist, and track progress through clear outcomes and KPIs —
+        without enterprise consulting overhead.
+      </p>
+
+      <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:16px;">
+        <a class="btn btn-primary" href="/submit-ticket">Deploy Security Now</a>
+        <a class="btn btn-ghost" href="/client-portal">Client Portal</a>
+      </div>
+    </section>
+  </div>
+</section>
+ <!-- Service cards -->
+
+
+  <!-- Section header -->
+
+  <div class="feature_grid">
+
+    <!-- Zero Trust -->
+    <div class="card">
+      <span class="badge">Identity & Access</span>
+      <h3>Zero Trust Access</h3>
+      <p>
+        Secure identity access through SSO, MFA hardening, device posture validation, and
+        policy-driven controls ensuring only verified users and compliant devices gain access.
+      </p>
+      <div class="pills">
+        <span class="pill">Access policies</span>
+        <span class="pill">Device trust</span>
+        <span class="pill">Least privilege</span>
+      </div>
+    </div>
+
+    <!-- SIEM -->
+    <div class="card">
+      <span class="badge">Detection & Response</span>
+      <h3>SIEM Monitoring</h3>
+      <p>
+        24/7 threat visibility with tuned alerts, security dashboards, and triage workflows
+        designed to reduce noise and accelerate response times.
+      </p>
+      <div class="pills">
+        <span class="pill">Alert tuning</span>
+        <span class="pill">Dashboards</span>
+        <span class="pill">Threat triage</span>
+      </div>
+    </div>
+
+    <!-- Vulnerability -->
+    <div class="card">
+      <span class="badge">Vulnerability</span>
+      <h3>Vulnerability Management</h3>
+      <p>
+        Continuous scanning, risk-based prioritization, and structured remediation plans
+        with executive-ready reporting and patch tracking.
+      </p>
+      <div class="pills">
+        <span class="pill">Risk scoring</span>
+        <span class="pill">Remediation plans</span>
+        <span class="pill">Patch tracking</span>
+      </div>
+    </div>
+
+    <!-- Backup -->
+    <div class="card">
+      <span class="badge">Recovery</span>
+      <h3>Backups & Recovery</h3>
+      <p>
+        Ransomware-resilient backup strategies with restore validation,
+        disaster recovery planning, and operational continuity testing.
+      </p>
+      <div class="pills">
+        <span class="pill">Restore testing</span>
+        <span class="pill">RPO / RTO</span>
+        <span class="pill">BCP / DR</span>
+      </div>
+    </div>
+
+    <!-- Incident Response -->
+    <div class="card">
+      <span class="badge">Response</span>
+      <h3>Incident Response</h3>
+      <p>
+        Rapid containment and investigation of cyber incidents with forensic analysis,
+        response coordination, and documented recovery actions.
+      </p>
+      <div class="pills">
+        <span class="pill">Threat containment</span>
+        <span class="pill">Forensics</span>
+        <span class="pill">Incident analysis</span>
+      </div>
+    </div>
+
+    <!-- Security Architecture -->
+    <div class="card">
+      <span class="badge">Architecture</span>
+      <h3>Security Architecture</h3>
+      <p>
+        Design and modernization of secure infrastructure including network segmentation,
+        zero trust architecture, and cloud security frameworks.
+      </p>
+      <div class="pills">
+        <span class="pill">Zero trust</span>
+        <span class="pill">Network segmentation</span>
+        <span class="pill">Cloud security</span>
+      </div>
+    </div>
+
+    <!-- Compliance -->
+    <div class="card">
+      <span class="badge">Compliance</span>
+      <h3>Security & Compliance</h3>
+      <p>
+        Framework-aligned assessments and remediation planning to strengthen
+        security posture and support regulatory and audit readiness.
+      </p>
+      <div class="pills">
+        <span class="pill">NIST</span>
+        <span class="pill">SOC 2</span>
+        <span class="pill">Risk assessments</span>
+      </div>
+    </div>
+
+    <!-- Awareness -->
+    <div class="card">
+      <span class="badge">Human Security</span>
+      <h3>Security Awareness</h3>
+      <p>
+        Reduce human risk through employee security training,
+        phishing simulations, and organizational security culture programs.
+      </p>
+      <div class="pills">
+        <span class="pill">Phishing tests</span>
+        <span class="pill">Training programs</span>
+        <span class="pill">Security culture</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+<script>
+  document.addEventListener("DOMContentLoaded", function () {
+    const navLinks = document.querySelectorAll(".nav_links a[href^='/']");
+    const currentPath = window.location.pathname.replace(/\/$/, "") || "/";
+
+    navLinks.forEach(link => {
+      const linkPath = (link.getAttribute("href") || "").replace(/\/$/, "") || "/";
+      
+      if (linkPath === currentPath) {
+        link.classList.add("nav-active");
+      } else {
+        link.classList.remove("nav-active");
+      }
+    });
+  });
+</script>  </main>
+  <!-- ========== FOOTER ========== -->
+  <footer class="footer">
+    <div class="container">
+      <a href="/" class="footer-logo" aria-label="CyberBench homepage">
+        <span class="logo" aria-hidden="true"></span>
+        <span>CyberBench</span>
+      </a>
+
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="/services">Services</a>
+        <a href="/about">About</a>
+        <a href="/blog">Blog</a>
+        <a href="/client-portal">Client Portal</a>
+        <a href="/consultant-portal">Consultant Portal</a>
+      </nav>
+
+      <div class="footer-bottom">
+        © <span id="year"></span> CyberBench. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+<!-- ===== CyberBench AI Chat Widget ===== -->
+<button class="cb-chat-fab" id="cbChatFab" aria-label="Open CyberBench AI chat">AI</button>
+
+<div class="cb-chat" id="cbChat" aria-hidden="true">
+  <div class="cb-chat-header">
+    <div class="cb-chat-title">
+      <div class="cb-chat-dot"></div>
+      <div>
+        <div class="cb-chat-name">CyberBench AI</div>
+        <div class="cb-chat-sub">Fast triage • How-to • Guidance</div>
+      </div>
+    </div>
+    <button class="cb-chat-close" id="cbChatClose" aria-label="Close chat">✕</button>
+  </div>
+
+  <div class="cb-chat-body" id="cbChatBody"></div>
+
+  <form class="cb-chat-form" id="cbChatForm">
+    <input
+      class="cb-chat-input"
+      id="cbChatInput"
+      placeholder="Ask about tickets, KPIs, services, or next steps…"
+      autocomplete="off"
+      required
+    />
+    <button class="cb-chat-send" type="submit">Send</button>
+  </form>
+
+  <div class="cb-chat-footnote">Demo widget. Don’t paste secrets.</div>
+</div>
+
+<script>
+  (function () {
+    const fab = document.getElementById("cbChatFab");
+    const box = document.getElementById("cbChat");
+    const close = document.getElementById("cbChatClose");
+    const body = document.getElementById("cbChatBody");
+    const form = document.getElementById("cbChatForm");
+    const input = document.getElementById("cbChatInput");
+
+    const escapeHtml = (s) =>
+      String(s).replace(/[&<>"']/g, (m) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[m]));
+
+    function addMsg(role, text) {
+      const row = document.createElement("div");
+      row.className = "cb-chat-row " + (role === "user" ? "is-user" : "is-ai");
+      row.innerHTML = `<div class="cb-chat-bubble">${escapeHtml(text)}</div>`;
+      body.appendChild(row);
+      body.scrollTop = body.scrollHeight;
+    }
+
+    function setOpen(isOpen) {
+      box.style.display = isOpen ? "flex" : "none";
+      box.setAttribute("aria-hidden", isOpen ? "false" : "true");
+      if (isOpen) input.focus();
+    }
+
+    fab.addEventListener("click", () => {
+      setOpen(true);
+      if (!body.dataset.greeted) {
+        addMsg("ai", "Hi — I’m CyberBench AI. Tell me what you need help with (ticket submission, KPIs, services, or triage).");
+        body.dataset.greeted = "1";
+      }
+    });
+
+    close.addEventListener("click", () => setOpen(false));
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const text = input.value.trim();
+      if (!text) return;
+
+      addMsg("user", text);
+      input.value = "";
+
+      // Loading indicator
+      const loadingId = "loading_" + Date.now();
+      addMsg("ai", "Typing…");
+      const loadingNode = body.lastElementChild;
+
+      try {
+        const r = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: text })
+        });
+
+        const data = await r.json();
+        const reply = data.reply || "No response.";
+        loadingNode.querySelector(".cb-chat-bubble").textContent = reply;
+      } catch (err) {
+        loadingNode.querySelector(".cb-chat-bubble").textContent =
+          "Chat service is offline. Start your server and try again.";
+      }
+    });
+
+    // Start closed
+    setOpen(false);
+  })();
+</script>
+</body>
+</html>

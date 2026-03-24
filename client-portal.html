@@ -1,0 +1,335 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Client Portal | CyberBench</title>
+  <link rel="stylesheet" href="/styles.css" />
+</head>
+
+<body class="cbp-body">
+  <!-- Top Nav -->
+  <header class="nav">
+    <div class="container nav_row">
+      <a class="brand" href="/">
+        <span class="logo" aria-hidden="true"></span>
+        <span>CyberBench</span>
+      </a>
+
+      <nav class="nav_links">
+        <a href="/services">Services</a>
+        <a href="/about">About</a>
+        <a href="/blog">Blog</a>
+        <a href="/client-portal">Client Portal</a>
+        <a href="/consultant-portal">Consultant Portal</a>
+        <a class="btn btn-primary" href="/Deploy Security Now">Deploy Security Now</a>
+      </nav>
+    </div>
+  </header>
+
+  <!-- Page -->
+  <main class="cbp-main">
+    <div class="cbp-container">
+
+      <!-- Header strip -->
+      <section class="cbp-hero">
+        <div class="cbp-hero-top">
+          <div class="cbp-kicker"><span class="cbp-dot"></span> Client Portal</div>
+          <div class="cbp-badges">
+            <span class="cbp-pill">Secure updates</span>
+            <span class="cbp-pill">Ticket visibility</span>
+            <span class="cbp-pill">Deliverables</span>
+          </div>
+        </div>
+
+
+
+      <!-- Main grid -->
+      <section class="cbp-grid">
+
+        <!-- Left: Sign in -->
+        <div class="cbp-card">
+          <div class="cbp-card-head">
+            <div class="cbp-card-kicker">SIGN IN</div>
+            <h2 class="cbp-h2">Access your workspace</h2>
+            <p class="cbp-muted">
+              Login is disabled for now. When enabled, you’ll see your tickets, files, and status updates.
+            </p>
+          </div>
+
+          <form class="cbp-form" onsubmit="event.preventDefault(); alert('Login coming soon.');">
+            <div class="cbp-field">
+              <label class="cbp-label" for="email">Email</label>
+              <input class="cbp-input" id="email" type="email" placeholder="name@company.com" autocomplete="email" required />
+            </div>
+
+            <div class="cbp-field">
+              <label class="cbp-label" for="password">Password</label>
+              <input class="cbp-input" id="password" type="password" placeholder="••••••••" autocomplete="current-password" required />
+            </div>
+
+            <div class="cbp-form-actions">
+              <button class="btn btn-primary" type="submit">Login (Coming Soon)</button>
+              <a class="btn btn-ghost" href="/admin">View Tickets (Demo)</a>
+            </div>
+
+            <div class="cbp-note">
+              Next: ticket timelines, secure uploads, messaging, and monthly exec summaries.
+            </div>
+          </form>
+        </div>
+
+        <!-- Right: KPI dashboard -->
+        <div class="cbp-card">
+          <div class="cbp-card-head">
+            <div class="cbp-card-kicker">WORKSPACE PREVIEW</div>
+            <h2 class="cbp-h2">Client KPIs</h2>
+            <p class="cbp-muted">
+              These are live from your ticket system (MVP). Once auth is enabled, KPIs will be scoped per client.
+            </p>
+          </div>
+
+          <div class="cbp-kpi-grid">
+            <div class="cbp-kpi">
+              <div class="cbp-kpi-label">Total tickets</div>
+              <div class="cbp-kpi-value" id="kpi-total">—</div>
+              <div class="cbp-kpi-sub">All-time</div>
+            </div>
+
+            <div class="cbp-kpi">
+              <div class="cbp-kpi-label">Open</div>
+              <div class="cbp-kpi-value" id="kpi-open">—</div>
+              <div class="cbp-kpi-sub">Needs action</div>
+            </div>
+
+            <div class="cbp-kpi cbp-kpi-critical">
+              <div class="cbp-kpi-label">Critical</div>
+              <div class="cbp-kpi-value" id="kpi-critical">—</div>
+              <div class="cbp-kpi-sub">High priority</div>
+            </div>
+
+            <div class="cbp-kpi">
+              <div class="cbp-kpi-label">Avg / day</div>
+              <div class="cbp-kpi-value" id="kpi-avg">—</div>
+              <div class="cbp-kpi-sub">Last 7 days</div>
+            </div>
+          </div>
+
+          <div class="cbp-divider"></div>
+
+          <div class="cbp-list">
+            <div class="cbp-row">
+              <div class="cbp-row-left">Ticket status</div>
+              <div class="cbp-row-right">Coming soon</div>
+            </div>
+            <div class="cbp-row">
+              <div class="cbp-row-left">Secure uploads</div>
+              <div class="cbp-row-right">Coming soon</div>
+            </div>
+            <div class="cbp-row">
+              <div class="cbp-row-left">Secure messaging</div>
+              <div class="cbp-row-right">Coming soon</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Full-width: roadmap -->
+        <div class="cbp-card cbp-full">
+          <div class="cbp-card-head">
+            <div class="cbp-card-kicker">COMING NEXT</div>
+            <h2 class="cbp-h2">Enterprise portal features</h2>
+            <p class="cbp-muted">
+              Built to support audits, incident response, and continuous security operations.
+            </p>
+          </div>
+
+          <div class="cbp-feature-grid">
+            <div class="cbp-feature">
+              <div class="cbp-feature-pill">Ticket tracking</div>
+              <div class="cbp-feature-title">Timeline + ownership</div>
+              <div class="cbp-feature-sub">Assignments, notes, next steps, and status changes.</div>
+            </div>
+
+            <div class="cbp-feature">
+              <div class="cbp-feature-pill">Secure uploads</div>
+              <div class="cbp-feature-title">Evidence + deliverables</div>
+              <div class="cbp-feature-sub">Safely share files for audits, incidents, and remediation.</div>
+            </div>
+
+            <div class="cbp-feature">
+              <div class="cbp-feature-pill">Messaging</div>
+              <div class="cbp-feature-title">Client ↔ consultant comms</div>
+              <div class="cbp-feature-sub">Auditable updates with clear accountability.</div>
+            </div>
+
+            <div class="cbp-feature">
+              <div class="cbp-feature-pill">Reporting</div>
+              <div class="cbp-feature-title">Executive summaries</div>
+              <div class="cbp-feature-sub">KPIs and outcomes packaged for leadership reviews.</div>
+            </div>
+          </div>
+        </div>
+
+      </section>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <a href="/" class="footer-logo" aria-label="CyberBench homepage">
+        <span class="logo" aria-hidden="true"></span>
+        <span>CyberBench</span>
+      </a>
+
+<nav class="footer-nav" aria-label="Footer navigation">
+  <a href="/services">Services</a>
+  <a href="/about">About</a>
+  <a href="/blog">Blog</a>
+  <a href="/careers">Careers</a>
+  <a href="/client-portal">Client Portal</a>
+  <a href="/consultant-portal">Consultant Portal</a>
+</nav>
+
+      <div class="footer-bottom">
+        © <span id="year"></span> CyberBench. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    // Footer year
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Nav active highlight (prevents wrong glow)
+    (function () {
+      const nav = document.querySelector(".nav_links");
+      if (!nav) return;
+      const links = nav.querySelectorAll("a[href^='/']");
+      const path = window.location.pathname.replace(/\/$/, "") || "/";
+      links.forEach(a => {
+        const href = (a.getAttribute("href") || "").replace(/\/$/, "") || "/";
+        if (href === path) a.classList.add("nav-active");
+        else a.classList.remove("nav-active");
+      });
+    })();
+
+    // KPI fetch (matches your API: avgPerDay7)
+    fetch("/api/kpi")
+      .then(r => r.json())
+      .then(k => {
+        const total = Number(k.total ?? 0);
+        const open = Number(k.open ?? 0);
+        const critical = Number(k.critical ?? 0);
+        const avg = Number(k.avgPerDay7 ?? 0);
+
+        document.getElementById("kpi-total").textContent = total.toLocaleString();
+        document.getElementById("kpi-open").textContent = open.toLocaleString();
+        document.getElementById("kpi-critical").textContent = critical.toLocaleString();
+        document.getElementById("kpi-avg").textContent = avg.toLocaleString();
+      })
+      .catch(() => {});
+  </script>
+<!-- ===== CyberBench AI Chat Widget ===== -->
+<button class="cb-chat-fab" id="cbChatFab" aria-label="Open CyberBench AI chat">AI</button>
+
+<div class="cb-chat" id="cbChat" aria-hidden="true">
+  <div class="cb-chat-header">
+    <div class="cb-chat-title">
+      <div class="cb-chat-dot"></div>
+      <div>
+        <div class="cb-chat-name">CyberBench AI</div>
+        <div class="cb-chat-sub">Fast triage • How-to • Guidance</div>
+      </div>
+    </div>
+    <button class="cb-chat-close" id="cbChatClose" aria-label="Close chat">✕</button>
+  </div>
+
+  <div class="cb-chat-body" id="cbChatBody"></div>
+
+  <form class="cb-chat-form" id="cbChatForm">
+    <input
+      class="cb-chat-input"
+      id="cbChatInput"
+      placeholder="Ask about tickets, KPIs, services, or next steps…"
+      autocomplete="off"
+      required
+    />
+    <button class="cb-chat-send" type="submit">Send</button>
+  </form>
+
+  <div class="cb-chat-footnote">Demo widget. Don’t paste secrets.</div>
+</div>
+
+<script>
+  (function () {
+    const fab = document.getElementById("cbChatFab");
+    const box = document.getElementById("cbChat");
+    const close = document.getElementById("cbChatClose");
+    const body = document.getElementById("cbChatBody");
+    const form = document.getElementById("cbChatForm");
+    const input = document.getElementById("cbChatInput");
+
+    const escapeHtml = (s) =>
+      String(s).replace(/[&<>"']/g, (m) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[m]));
+
+    function addMsg(role, text) {
+      const row = document.createElement("div");
+      row.className = "cb-chat-row " + (role === "user" ? "is-user" : "is-ai");
+      row.innerHTML = `<div class="cb-chat-bubble">${escapeHtml(text)}</div>`;
+      body.appendChild(row);
+      body.scrollTop = body.scrollHeight;
+    }
+
+    function setOpen(isOpen) {
+      box.style.display = isOpen ? "flex" : "none";
+      box.setAttribute("aria-hidden", isOpen ? "false" : "true");
+      if (isOpen) input.focus();
+    }
+
+    fab.addEventListener("click", () => {
+      setOpen(true);
+      if (!body.dataset.greeted) {
+        addMsg("ai", "Hi — I’m CyberBench AI. Tell me what you need help with (ticket submission, KPIs, services, or triage).");
+        body.dataset.greeted = "1";
+      }
+    });
+
+    close.addEventListener("click", () => setOpen(false));
+
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const text = input.value.trim();
+      if (!text) return;
+
+      addMsg("user", text);
+      input.value = "";
+
+      // Loading indicator
+      const loadingId = "loading_" + Date.now();
+      addMsg("ai", "Typing…");
+      const loadingNode = body.lastElementChild;
+
+      try {
+        const r = await fetch("/api/chat", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify({ message: text })
+        });
+
+        const data = await r.json();
+        const reply = data.reply || "No response.";
+        loadingNode.querySelector(".cb-chat-bubble").textContent = reply;
+      } catch (err) {
+        loadingNode.querySelector(".cb-chat-bubble").textContent =
+          "Chat service is offline. Start your server and try again.";
+      }
+    });
+
+    // Start closed
+    setOpen(false);
+  })();
+</script>
+</body>
+</html>

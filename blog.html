@@ -1,0 +1,490 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Blog | CyberBench</title>
+  <link rel="stylesheet" href="/styles.css" />
+  <style>
+    .blog-page{
+      padding-top: 42px;
+      padding-bottom: 48px;
+    }
+
+    .blog-hero{
+      display:grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 20px;
+      align-items: stretch;
+    }
+
+    .blog-hero-copy .h1{
+      max-width: 13ch;
+      margin: 8px 0 12px;
+    }
+
+    .blog-hero-copy .sub{
+      max-width: 82ch;
+      margin: 0;
+    }
+
+    .blog-hero-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top: 18px;
+    }
+
+    .blog-featured{
+      height: 100%;
+    }
+
+    .blog-featured h3{
+      margin: 14px 0 10px;
+      font-size: 28px;
+      line-height: 1.2;
+    }
+
+    .blog-featured p{
+      margin: 0;
+      color: rgba(255,255,255,0.72);
+      line-height: 1.7;
+    }
+
+    .blog-featured-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top: 18px;
+    }
+
+    .blog-divider{
+      height:1px;
+      margin: 28px 0;
+      background: linear-gradient(90deg, transparent, rgba(120,160,255,0.45), transparent);
+    }
+
+    .blog-toolbar{
+      display:grid;
+      grid-template-columns: 1fr auto;
+      gap: 16px;
+      align-items:end;
+      margin-bottom: 18px;
+    }
+
+    .blog-toolbar .sub{
+      margin: 0;
+      max-width: 88ch;
+    }
+
+    .blog-tags{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    .blog-grid{
+      display:grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .blog-card{
+      min-height:100%;
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+    }
+
+    .blog-card-top h3{
+      margin: 14px 0 10px;
+      line-height: 1.3;
+    }
+
+    .blog-card-top p{
+      margin: 0;
+      color: rgba(255,255,255,0.72);
+      line-height: 1.65;
+    }
+
+    .blog-card-meta{
+      display:flex;
+      gap:8px;
+      flex-wrap:wrap;
+      margin-top: 16px;
+      color: rgba(255,255,255,0.58);
+      font-size: 12px;
+    }
+
+    .blog-card-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      margin-top: 16px;
+    }
+
+    .blog-cta{
+      margin-top: 22px;
+    }
+
+    .blog-cta-box{
+      display:grid;
+      grid-template-columns: 1.1fr 0.9fr;
+      gap:20px;
+      align-items:center;
+    }
+
+    .blog-cta-box .h2{
+      margin: 6px 0 10px;
+    }
+
+    .blog-cta-box .sub{
+      margin: 0;
+      max-width:none;
+    }
+
+    .blog-cta-actions{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    @media (max-width: 1100px){
+      .blog-grid{
+        grid-template-columns: repeat(2, 1fr);
+      }
+    }
+
+    @media (max-width: 960px){
+      .blog-hero,
+      .blog-toolbar,
+      .blog-cta-box{
+        grid-template-columns: 1fr;
+      }
+
+      .blog-tags,
+      .blog-cta-actions{
+        justify-content:flex-start;
+      }
+    }
+
+    @media (max-width: 700px){
+      .blog-grid{
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <header class="nav">
+    <div class="container nav_row">
+      <a class="brand" href="/">
+        <span class="logo" aria-hidden="true"></span>
+        <span>CyberBench</span>
+      </a>
+
+      <nav class="nav_links">
+        <a href="/services">Services</a>
+        <a href="/about">About</a>
+        <a href="/blog">Blog</a>
+        <a href="/client-portal">Client Portal</a>
+        <a href="/consultant-portal">Consultant Portal</a>
+        <a class="btn btn-primary" href="/submit-ticket">Deploy Security Now</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container blog-page">
+
+    <!-- HERO -->
+    <section class="blog-hero">
+      <div class="blog-hero-copy">
+        <div class="kicker"><span class="dot"></span> CyberBench Blog</div>
+        <h1 class="h1">Security insights, built for speed.</h1>
+        <p class="sub">
+          Practical, ticket-first guidance on Zero Trust, SIEM, vulnerability management, backups,
+          incident response, and AI-powered security operations.
+        </p>
+
+        <div class="blog-hero-actions">
+          <a class="btn btn-primary" href="/submit-ticket">Ask a Security Question</a>
+          <a class="btn btn-ghost" href="/services">View Services</a>
+        </div>
+      </div>
+
+      <div class="panel panel_pad blog-featured">
+        <div class="kicker"><span class="dot"></span> Featured Post</div>
+        <span class="badge" style="margin-top:10px;">SIEM</span>
+        <h3>The fastest way to reduce SIEM alert noise in week one</h3>
+        <p>
+          Most teams do not need more logs. They need fewer unknowns. Here’s how to structure tuning,
+          dashboards, and triage so your SIEM becomes useful fast.
+        </p>
+
+        <div class="blog-card-meta">
+          <span>6 min read</span>
+          <span>•</span>
+          <span>Playbook</span>
+        </div>
+
+        <div class="blog-featured-actions">
+          <a class="btn btn-primary" href="/blog-post-1">Read post</a>
+          <a class="btn btn-ghost" href="/submit-ticket">Ask a question</a>
+        </div>
+      </div>
+    </section>
+
+    <div class="blog-divider"></div>
+
+    <!-- TOOLBAR -->
+    <section>
+      <div class="blog-toolbar">
+        <div>
+          <div class="kicker"><span class="dot"></span> Latest Posts</div>
+          <p class="sub">
+            Playbooks, explainers, and tactical guidance built for security teams that need execution, not consulting cycles.
+          </p>
+        </div>
+
+        <div class="blog-tags">
+          <span class="pill">Zero Trust</span>
+          <span class="pill">SIEM</span>
+          <span class="pill">Vuln Mgmt</span>
+          <span class="pill">Incident</span>
+          <span class="pill">Backups</span>
+          <span class="pill">AI</span>
+        </div>
+      </div>
+
+      <!-- POSTS GRID -->
+      <div class="blog-grid">
+
+        <div class="card blog-card">
+          <div class="blog-card-top">
+            <span class="badge">SIEM</span>
+            <h3>The fastest way to reduce SIEM alert noise in week one</h3>
+            <p>A practical week-one approach to tuning, dashboards, and triage so analysts can focus on real threats.</p>
+          </div>
+          <div>
+            <div class="blog-card-meta">
+              <span>6 min read</span>
+              <span>•</span>
+              <span>Playbook</span>
+            </div>
+            <div class="blog-card-actions">
+              <a class="btn btn-ghost" href="/blog-post-1">Read post</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="card blog-card">
+          <div class="blog-card-top">
+            <span class="badge">VULNERABILITY</span>
+            <h3>“Scan → fix” is broken. Here’s the workflow that works.</h3>
+            <p>Move from raw findings to ownership, remediation planning, and measurable risk reduction.</p>
+          </div>
+          <div>
+            <div class="blog-card-meta">
+              <span>7 min read</span>
+              <span>•</span>
+              <span>Framework</span>
+            </div>
+            <div class="blog-card-actions">
+              <a class="btn btn-ghost" href="/blog-post-2">Read post</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="card blog-card">
+          <div class="blog-card-top">
+            <span class="badge">RECOVERY</span>
+            <h3>Backups that actually restore: a 30-day validation plan</h3>
+            <p>Backup ownership is not recovery readiness. Here’s how to test whether your restores will work when it matters.</p>
+          </div>
+          <div>
+            <div class="blog-card-meta">
+              <span>5 min read</span>
+              <span>•</span>
+              <span>Checklist</span>
+            </div>
+            <div class="blog-card-actions">
+              <a class="btn btn-ghost" href="/blog-post-3">Read post</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="card blog-card">
+          <div class="blog-card-top">
+            <span class="badge">ZERO TRUST</span>
+            <h3>Zero Trust for SMBs: where to start in the first 30 days</h3>
+            <p>A practical path into Zero Trust that starts with identity, device trust, and access policy.</p>
+          </div>
+          <div>
+            <div class="blog-card-meta">
+              <span>6 min read</span>
+              <span>•</span>
+              <span>Guide</span>
+            </div>
+            <div class="blog-card-actions">
+              <a class="btn btn-ghost" href="/blog-post-4">Read post</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="card blog-card">
+          <div class="blog-card-top">
+            <span class="badge">INCIDENT</span>
+            <h3>What to do in the first 30 minutes of a cyber incident</h3>
+            <p>How to stabilize the situation, establish a lead, and keep the operating picture clear under pressure.</p>
+          </div>
+          <div>
+            <div class="blog-card-meta">
+              <span>6 min read</span>
+              <span>•</span>
+              <span>Playbook</span>
+            </div>
+            <div class="blog-card-actions">
+              <a class="btn btn-ghost" href="/blog-post-5">Read post</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="card blog-card">
+          <div class="blog-card-top">
+            <span class="badge">COMPLIANCE</span>
+            <h3>Compliance readiness is not a binder. It is an operating discipline.</h3>
+            <p>Strong programs align policy, procedure, and evidence as part of normal operations.</p>
+          </div>
+          <div>
+            <div class="blog-card-meta">
+              <span>5 min read</span>
+              <span>•</span>
+              <span>Perspective</span>
+            </div>
+            <div class="blog-card-actions">
+              <a class="btn btn-ghost" href="/blog-post-6">Read post</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="card blog-card">
+          <div class="blog-card-top">
+            <span class="badge">ARCHITECTURE</span>
+            <h3>Security architecture should reduce decisions, not create more of them</h3>
+            <p>Good architecture reduces ambiguity and creates safer decisions at scale.</p>
+          </div>
+          <div>
+            <div class="blog-card-meta">
+              <span>6 min read</span>
+              <span>•</span>
+              <span>Strategy</span>
+            </div>
+            <div class="blog-card-actions">
+              <a class="btn btn-ghost" href="/blog-post-7">Read post</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="card blog-card">
+          <div class="blog-card-top">
+            <span class="badge">AI</span>
+            <h3>How AI is changing SOC operations without replacing analysts</h3>
+            <p>AI works best when it reduces analyst friction and accelerates triage, not when it replaces judgment.</p>
+          </div>
+          <div>
+            <div class="blog-card-meta">
+              <span>6 min read</span>
+              <span>•</span>
+              <span>Trend</span>
+            </div>
+            <div class="blog-card-actions">
+              <a class="btn btn-ghost" href="/blog-post-8">Read post</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="card blog-card">
+          <div class="blog-card-top">
+            <span class="badge">BACKUPS</span>
+            <h3>Immutable backups are great. Restore discipline is what makes them real.</h3>
+            <p>Immutability matters, but validation is what proves recovery will actually work.</p>
+          </div>
+          <div>
+            <div class="blog-card-meta">
+              <span>5 min read</span>
+              <span>•</span>
+              <span>Checklist</span>
+            </div>
+            <div class="blog-card-actions">
+              <a class="btn btn-ghost" href="/blog-post-9">Read post</a>
+            </div>
+          </div>
+        </div>
+
+        <div class="card blog-card">
+          <div class="blog-card-top">
+            <span class="badge">PROGRAM</span>
+            <h3>Why security programs stall — and how to accelerate execution</h3>
+            <p>Security programs mature when execution becomes operational, not aspirational.</p>
+          </div>
+          <div>
+            <div class="blog-card-meta">
+              <span>6 min read</span>
+              <span>•</span>
+              <span>Operations</span>
+            </div>
+            <div class="blog-card-actions">
+              <a class="btn btn-ghost" href="/blog-post-10">Read post</a>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+
+
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <a href="/" class="footer-logo" aria-label="CyberBench homepage">
+        <span class="logo" aria-hidden="true"></span>
+        <span>CyberBench</span>
+      </a>
+
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="/services">Services</a>
+        <a href="/about">About</a>
+        <a href="/blog">Blog</a>
+        <a href="/careers">Careers</a>
+        <a href="/client-portal">Client Portal</a>
+        <a href="/consultant-portal">Consultant Portal</a>
+      </nav>
+
+      <div class="footer-bottom">
+        © <span id="year"></span> CyberBench. All rights reserved.
+      </div>
+    </div>
+  </footer>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    (function () {
+      const navLinks = document.querySelectorAll(".nav_links a[href^='/']");
+      const currentPath = window.location.pathname.replace(/\/$/, "") || "/";
+
+      navLinks.forEach(link => {
+        const linkPath = (link.getAttribute("href") || "").replace(/\/$/, "") || "/";
+        if (linkPath === currentPath) link.classList.add("nav-active");
+        else link.classList.remove("nav-active");
+      });
+    })();
+  </script>
+
+</body>
+</html>
