@@ -1,3 +1,11 @@
 {
-  "cleanUrls": true
+  "cleanUrls": true,
+  "rewrites": [
+    { "source": "/services", "destination": "/services.html" },
+    { "source": "/about", "destination": "/about.html" },
+    { "source": "/blog", "destination": "/blog.html" },
+    { "source": "/client-portal", "destination": "/client-portal.html" },
+    { "source": "/consultant-portal", "destination": "/consultant-portal.html" },
+    { "source": "/submit-ticket", "destination": "/submit-ticket.html" }
+  ]
 }
