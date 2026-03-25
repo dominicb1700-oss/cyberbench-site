@@ -8,7 +8,8 @@
 </head>
 
 <body class="cbcs-body">
-  <!-- Top Nav -->
+
+<!-- NAV -->
 <header class="nav">
   <div class="container nav_row">
     <a class="brand" href="/index.html">
@@ -27,299 +28,151 @@
   </div>
 </header>
 
-  <!-- Page -->
-  <main class="cbcs-main">
-    <div class="cbcs-container">
+<!-- MAIN -->
+<main class="cbcs-main">
+  <div class="cbcs-container">
 
+    <section class="cbcs-grid">
 
-
-      <!-- Main grid -->
-      <section class="cbcs-grid">
-
-        <!-- Left: Sign in -->
-        <div class="cbcs-card">
-          <div class="cbcs-card-head">
-            <div class="cbcs-card-kicker">SIGN IN</div>
-            <h2 class="cbcs-h2">Access your console</h2>
-            <p class="cbcs-muted">
-              Login is disabled for now. Once enabled, you’ll see assigned tickets, notes, and workflows.
-            </p>
-          </div>
-
-          <form class="cbcs-form" onsubmit="event.preventDefault(); alert('Login coming soon.');">
-            <div class="cbcs-field">
-              <label class="cbcs-label" for="email">Email</label>
-              <input class="cbcs-input" id="email" type="email" placeholder="name@cyberbench.io" autocomplete="email" required />
-            </div>
-
-            <div class="cbcs-field">
-              <label class="cbcs-label" for="password">Password</label>
-              <input class="cbcs-input" id="password" type="password" placeholder="••••••••" autocomplete="current-password" required />
-            </div>
-
-            <div class="cbcs-form-actions">
-              <button class="btn btn-primary" type="submit">Login (Coming Soon)</button>
-              <a class="btn btn-ghost" href="/admin">Open Queue (Demo)</a>
-            </div>
-
-            <div class="cbcs-actions">
-              <a class="btn btn-ghost" href="/kpi">View KPI Dashboard</a>
-            </div>
-       
-            <div class="cbcs-note">
-              Next: role-based access, assignment routing, SLA timers, and secure client comms.
-            </div>
-          </form>
+      <!-- LOGIN -->
+      <div class="cbcs-card">
+        <div class="cbcs-card-head">
+          <div class="cbcs-card-kicker">SIGN IN</div>
+          <h2 class="cbcs-h2">Access your console</h2>
+          <p class="cbcs-muted">
+            Login is disabled for now. Once enabled, you’ll see assigned tickets, notes, and workflows.
+          </p>
         </div>
 
-        <!-- Right: Live workload -->
-        <div class="cbcs-card">
-          <div class="cbcs-card-head">
-            <div class="cbcs-card-kicker">OPERATIONS PREVIEW</div>
-            <h2 class="cbcs-h2">Live workload</h2>
-            <p class="cbcs-muted">
-              These are live from your ticket system (MVP). Once auth is enabled, metrics will be per-consultant.
-            </p>
+        <form class="cbcs-form" onsubmit="event.preventDefault(); alert('Login coming soon.');">
+          <div class="cbcs-field">
+            <label class="cbcs-label">Email</label>
+            <input class="cbcs-input" type="email" placeholder="name@cyberbench.io" required />
           </div>
 
-          <div class="cbcs-kpi-grid">
-            <div class="cbcs-kpi">
-              <div class="cbcs-kpi-label">Assigned</div>
-              <div class="cbcs-kpi-value">0</div>
-              <div class="cbcs-kpi-sub">In your queue</div>
-            </div>
-
-            <div class="cbcs-kpi">
-              <div class="cbcs-kpi-label">Open</div>
-              <div class="cbcs-kpi-value" id="kpi-open">—</div>
-              <div class="cbcs-kpi-sub">Needs action</div>
-            </div>
-
-            <div class="cbcs-kpi">
-              <div class="cbcs-kpi-label">SLA due</div>
-              <div class="cbcs-kpi-value">—</div>
-              <div class="cbcs-kpi-sub">Next target</div>
-            </div>
-
-            <div class="cbcs-kpi">
-              <div class="cbcs-kpi-label">Avg / day</div>
-              <div class="cbcs-kpi-value" id="kpi-avg">—</div>
-              <div class="cbcs-kpi-sub">Last 7 days</div>
-            </div>
+          <div class="cbcs-field">
+            <label class="cbcs-label">Password</label>
+            <input class="cbcs-input" type="password" placeholder="••••••••" required />
           </div>
 
-          <div class="cbcs-divider"></div>
-
-          <div class="cbcs-list">
-            <div class="cbcs-row">
-              <div class="cbcs-row-left">Time tracking</div>
-              <div class="cbcs-row-right">Coming soon</div>
-            </div>
-            <div class="cbcs-row">
-              <div class="cbcs-row-left">Notes + handoffs</div>
-              <div class="cbcs-row-right">Coming soon</div>
-            </div>
-            <div class="cbcs-row">
-              <div class="cbcs-row-left">Secure client comms</div>
-              <div class="cbcs-row-right">Coming soon</div>
-            </div>
-          </div>
-        </div>
-
-        <!-- Full-width: delivery workflow -->
-        <div class="cbcs-card cbcs-full">
-          <div class="cbcs-card-head">
-            <div class="cbcs-card-kicker">DELIVERY WORKFLOW</div>
-            <h2 class="cbcs-h2">How consultants deliver outcomes</h2>
-            <p class="cbcs-muted">
-              A repeatable flow for speed, clarity, and executive-ready documentation.
-            </p>
+          <div class="cbcs-form-actions">
+            <button class="btn btn-primary" type="submit">Login (Coming Soon)</button>
+            <a class="btn btn-ghost" href="/admin.html">Open Queue (Demo)</a>
           </div>
 
-          <div class="cbcs-feature-grid">
-            <div class="cbcs-feature">
-              <div class="cbcs-feature-pill">1) Intake</div>
-              <div class="cbcs-feature-title">Confirm scope + urgency</div>
-              <div class="cbcs-feature-sub">Validate impact, gather context, and define next steps.</div>
-            </div>
-
-            <div class="cbcs-feature">
-              <div class="cbcs-feature-pill">2) Triage</div>
-              <div class="cbcs-feature-title">Stabilize + contain</div>
-              <div class="cbcs-feature-sub">Reduce risk quickly and prevent escalation.</div>
-            </div>
-
-            <div class="cbcs-feature">
-              <div class="cbcs-feature-pill">3) Execute</div>
-              <div class="cbcs-feature-title">Fix + document</div>
-              <div class="cbcs-feature-sub">Deliver remediation with notes, evidence, and outcomes.</div>
-            </div>
-
-            <div class="cbcs-feature">
-              <div class="cbcs-feature-pill">4) Close</div>
-              <div class="cbcs-feature-title">Report + follow-ups</div>
-              <div class="cbcs-feature-sub">Executive summary + prevention recommendations.</div>
-            </div>
+          <div class="cbcs-actions">
+            <a class="btn btn-ghost" href="/kpi.html">View KPI Dashboard</a>
           </div>
-        </div>
 
-      </section>
-
-    </div>
-  </main>
-
-  <!-- Footer -->
-  <footer class="footer">
-    <div class="container">
-      <a href="/" class="footer-logo" aria-label="CyberBench homepage">
-        <span class="logo" aria-hidden="true"></span>
-        <span>CyberBench</span>
-      </a>
-
-<a href="/index.html" class="footer-logo" aria-label="CyberBench homepage">
-  <a href="/services.html">Services</a>
-  <a href="/about.html">About</a>
-  <a href="/blog.html">Blog</a>
-  <a href="/careers.html">Careers</a>
-  <a href="/client-portal.html">Client Portal</a>
-  <a href="/consultant-portal.html">Consultant Portal</a>
-</nav>
-
-      <div class="footer-bottom">
-        © <span id="year"></span> CyberBench. All rights reserved.
+          <div class="cbcs-note">
+            Next: role-based access, assignment routing, SLA timers, and secure client comms.
+          </div>
+        </form>
       </div>
-    </div>
-  </footer>
 
-  <script>
-    // Footer year
-    document.getElementById("year").textContent = new Date().getFullYear();
+      <!-- KPI -->
+      <div class="cbcs-card">
+        <div class="cbcs-card-head">
+          <div class="cbcs-card-kicker">OPERATIONS PREVIEW</div>
+          <h2 class="cbcs-h2">Live workload</h2>
+          <p class="cbcs-muted">
+            These are live from your ticket system (MVP).
+          </p>
+        </div>
 
-    // Nav active highlight
-    (function () {
-      const nav = document.querySelector(".nav_links");
-      if (!nav) return;
-      const links = nav.querySelectorAll("a[href^='/']");
-      const path = window.location.pathname.replace(/\/$/, "") || "/";
-      links.forEach(a => {
-        const href = (a.getAttribute("href") || "").replace(/\/$/, "") || "/";
-        if (href === path) a.classList.add("nav-active");
-        else a.classList.remove("nav-active");
-      });
-    })();
+        <div class="cbcs-kpi-grid">
+          <div class="cbcs-kpi">
+            <div>Assigned</div>
+            <div>0</div>
+          </div>
 
-    // Pull KPIs from /api/kpi
-    fetch("/api/kpi")
-      .then(r => r.json())
-      .then(k => {
-        const open = Number(k.open ?? 0);
-        const avg = Number(k.avgPerDay7 ?? 0);
+          <div class="cbcs-kpi">
+            <div>Open</div>
+            <div id="kpi-open">—</div>
+          </div>
 
-        document.getElementById("kpi-open").textContent = open.toLocaleString();
-        document.getElementById("kpi-avg").textContent = avg.toLocaleString();
-      })
-      .catch(() => {});
-  </script>
-<!-- ===== CyberBench AI Chat Widget ===== -->
-<button class="cb-chat-fab" id="cbChatFab" aria-label="Open CyberBench AI chat">AI</button>
+          <div class="cbcs-kpi">
+            <div>SLA due</div>
+            <div>—</div>
+          </div>
 
-<div class="cb-chat" id="cbChat" aria-hidden="true">
-  <div class="cb-chat-header">
-    <div class="cb-chat-title">
-      <div class="cb-chat-dot"></div>
-      <div>
-        <div class="cb-chat-name">CyberBench AI</div>
-        <div class="cb-chat-sub">Fast triage • How-to • Guidance</div>
+          <div class="cbcs-kpi">
+            <div>Avg/day</div>
+            <div id="kpi-avg">—</div>
+          </div>
+        </div>
       </div>
-    </div>
-    <button class="cb-chat-close" id="cbChatClose" aria-label="Close chat">✕</button>
+
+      <!-- WORKFLOW -->
+      <div class="cbcs-card cbcs-full">
+        <div class="cbcs-card-head">
+          <div class="cbcs-card-kicker">DELIVERY WORKFLOW</div>
+          <h2 class="cbcs-h2">How consultants deliver outcomes</h2>
+        </div>
+
+        <div class="cbcs-feature-grid">
+          <div class="cbcs-feature">
+            <div class="cbcs-feature-pill">1) Intake</div>
+            <div class="cbcs-feature-title">Confirm scope</div>
+          </div>
+
+          <div class="cbcs-feature">
+            <div class="cbcs-feature-pill">2) Triage</div>
+            <div class="cbcs-feature-title">Stabilize risk</div>
+          </div>
+
+          <div class="cbcs-feature">
+            <div class="cbcs-feature-pill">3) Execute</div>
+            <div class="cbcs-feature-title">Fix + document</div>
+          </div>
+
+          <div class="cbcs-feature">
+            <div class="cbcs-feature-pill">4) Close</div>
+            <div class="cbcs-feature-title">Report outcomes</div>
+          </div>
+        </div>
+      </div>
+
+    </section>
+
   </div>
+</main>
 
-  <div class="cb-chat-body" id="cbChatBody"></div>
+<!-- FOOTER -->
+<footer class="footer">
+  <div class="container">
+    <a href="/index.html" class="footer-logo">
+      <span class="logo"></span>
+      <span>CyberBench</span>
+    </a>
 
-  <form class="cb-chat-form" id="cbChatForm">
-    <input
-      class="cb-chat-input"
-      id="cbChatInput"
-      placeholder="Ask about tickets, KPIs, services, or next steps…"
-      autocomplete="off"
-      required
-    />
-    <button class="cb-chat-send" type="submit">Send</button>
-  </form>
+    <nav class="footer-nav">
+      <a href="/services.html">Services</a>
+      <a href="/about.html">About</a>
+      <a href="/blog.html">Blog</a>
+      <a href="/careers.html">Careers</a>
+      <a href="/client-portal.html">Client Portal</a>
+      <a href="/consultant-portal.html">Consultant Portal</a>
+    </nav>
 
-  <div class="cb-chat-footnote">Demo widget. Don’t paste secrets.</div>
-</div>
+    <div class="footer-bottom">
+      © <span id="year"></span> CyberBench
+    </div>
+  </div>
+</footer>
 
+<!-- SCRIPTS -->
 <script>
-  (function () {
-    const fab = document.getElementById("cbChatFab");
-    const box = document.getElementById("cbChat");
-    const close = document.getElementById("cbChatClose");
-    const body = document.getElementById("cbChatBody");
-    const form = document.getElementById("cbChatForm");
-    const input = document.getElementById("cbChatInput");
+  document.getElementById("year").textContent = new Date().getFullYear();
 
-    const escapeHtml = (s) =>
-      String(s).replace(/[&<>"']/g, (m) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[m]));
-
-    function addMsg(role, text) {
-      const row = document.createElement("div");
-      row.className = "cb-chat-row " + (role === "user" ? "is-user" : "is-ai");
-      row.innerHTML = `<div class="cb-chat-bubble">${escapeHtml(text)}</div>`;
-      body.appendChild(row);
-      body.scrollTop = body.scrollHeight;
-    }
-
-    function setOpen(isOpen) {
-      box.style.display = isOpen ? "flex" : "none";
-      box.setAttribute("aria-hidden", isOpen ? "false" : "true");
-      if (isOpen) input.focus();
-    }
-
-    fab.addEventListener("click", () => {
-      setOpen(true);
-      if (!body.dataset.greeted) {
-        addMsg("ai", "Hi — I’m CyberBench AI. Tell me what you need help with (ticket submission, KPIs, services, or triage).");
-        body.dataset.greeted = "1";
-      }
-    });
-
-    close.addEventListener("click", () => setOpen(false));
-
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const text = input.value.trim();
-      if (!text) return;
-
-      addMsg("user", text);
-      input.value = "";
-
-      // Loading indicator
-      const loadingId = "loading_" + Date.now();
-      addMsg("ai", "Typing…");
-      const loadingNode = body.lastElementChild;
-
-      try {
-        const r = await fetch("/api/chat", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: text })
-        });
-
-        const data = await r.json();
-        const reply = data.reply || "No response.";
-        loadingNode.querySelector(".cb-chat-bubble").textContent = reply;
-      } catch (err) {
-        loadingNode.querySelector(".cb-chat-bubble").textContent =
-          "Chat service is offline. Start your server and try again.";
-      }
-    });
-
-    // Start closed
-    setOpen(false);
-  })();
+  fetch("/api/kpi")
+    .then(r => r.json())
+    .then(k => {
+      document.getElementById("kpi-open").textContent = k.open || 0;
+      document.getElementById("kpi-avg").textContent = k.avgPerDay7 || 0;
+    })
+    .catch(() => {});
 </script>
+
 </body>
 </html>
-
