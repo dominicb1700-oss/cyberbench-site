@@ -3,54 +3,31 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Client Portal | CyberBench</title>
+  <title>CyberBench</title>
   <link rel="stylesheet" href="/styles.css" />
 </head>
-
 <body>
 
-  <!-- ========== HEADER ========== -->
   <header class="nav">
     <div class="container nav_row">
-      <!-- Brand -->
-      <a class="brand" href="/" aria-label="CyberBench homepage">
-        <span class="logo" aria-hidden="true"></span>
+      <a class="brand" href="/index.html" aria-label="CyberBench homepage">
+        <span class="logo" aria-hidden="true">X</span>
         <span class="brand-text">CyberBench</span>
       </a>
 
-      <!-- Main Navigation -->
-<header class="nav">
-  <div class="container nav_row">
-    <a class="brand" href="/index.html">
-      <span class="logo" aria-hidden="true">X</span>
-      <span>CyberBench</span>
-    </a>
+      <nav class="nav_links" id="nav_links" aria-label="Main Navigation">
+        <a href="/services.html">Services</a>
+        <a href="/about.html">About</a>
+        <a href="/blog.html">Blog</a>
+        <a href="/client-portal.html">Client Portal</a>
+        <a href="/consultant-portal.html">Consultant Portal</a>
+        <a class="btn btn-primary" href="/submit-ticket.html">Deploy Security Now</a>
+      </nav>
+    </div>
+  </header>
 
-    <nav class="nav_links" id="nav_links" aria-label="Main Navigation">
-      <a href="/services.html">Services</a>
-      <a href="/about.html">About</a>
-      <a href="/blog.html">Blog</a>
-      <a href="/client-portal.html">Client Portal</a>
-      <a href="/consultant-portal.html">Consultant Portal</a>
-      <a class="btn btn-primary" href="/submit-ticket.html">Deploy Security Now</a>
-    </nav>
-  </div>
-</header>
-
-  <script>
-    const toggleBtn = document.querySelector(".nav_toggle");
-    const navLinks = document.getElementById("nav_links");
-    toggleBtn.addEventListener("click", () => {
-      const expanded = toggleBtn.getAttribute("aria-expanded") === "true";
-      toggleBtn.setAttribute("aria-expanded", !expanded);
-      navLinks.classList.toggle("nav_open");
-    });
-  </script>
-
-  <!-- ========== MAIN ========== -->
   <main class="container">
 
-    <!-- Hero Section -->
     <section class="hero">
       <div class="hero_grid">
 
@@ -63,18 +40,16 @@
           <h1 class="h1">Enterprise security.<br>Operationally delivered.</h1>
 
           <p class="sub">
-  Cyber doesn’t have time to wait for traditional consulting. When threats move fast, response must move faster.
-
-  CyberBench delivers enterprise-grade cybersecurity through a ticket-first model powered by our internal cyber team
-  and a bench of vetted specialists. Submit a request, get matched fast, and receive documented outcomes.
-
-  You get continuity, accountability, and executive-ready reporting—without the bloat, delays, and layered markups
-  of legacy consulting firms.
+            Cyber doesn’t have time to wait for traditional consulting. When threats move fast, response must move faster.
+            CyberBench delivers enterprise-grade cybersecurity through a ticket-first model powered by our internal cyber team
+            and a bench of vetted specialists. Submit a request, get matched fast, and receive documented outcomes.
+            You get continuity, accountability, and executive-ready reporting—without the bloat, delays, and layered markups
+            of legacy consulting firms.
           </p>
 
           <div class="hero_cta-group">
-            <a class="btn btn-primary" href="/submit-ticket">Deploy Security Now</a>
-            <a class="btn btn-ghost" href="/services">View Capabilities</a>
+            <a class="btn btn-primary" href="/submit-ticket.html">Deploy Security Now</a>
+            <a class="btn btn-ghost" href="/services.html">View Capabilities</a>
           </div>
 
           <ul class="hero_badges">
@@ -86,7 +61,6 @@
           </ul>
         </div>
 
-        <!-- Platform Summary -->
         <aside class="panel-card">
           <header class="panel-header">
             <span class="panel-dot"></span>
@@ -108,213 +82,216 @@
             </div>
             <div class="panel-row">
               <span class="row-left">Incident Response SLA</span>
-              <span class="pill pill-slate">&lt;4 hr</span>
+              <span class="pill pill-slate">&lt;4 hr</span>
             </div>
           </div>
 
           <div class="panel-actions">
-            <a class="btn btn-ghost" href="/client-portal">View Platform</a>
+            <a class="btn btn-ghost" href="/client-portal.html">View Platform</a>
           </div>
         </aside>
 
         <div class="panel-visual" aria-hidden="true">
           <div class="grid-glow"></div>
         </div>
-    </section>
 
-      <div class="feature_grid">
-        <article class="card">
-          <span class="badge">Security Framework</span>
-          <h3>Structured security operations</h3>
-          <p>Mapped to Identify, Protect, Detect, Respond, Recover — built for real environments.</p>
-        </article>
-
-        <article class="card">
-          <span class="badge">Execution Model</span>
-          <h3>Ticket-first execution</h3>
-          <p>Clear intake → fast routing → tracked work → documented closure.</p>
-        </article>
-
-        <article class="card">
-          <span class="badge">Verified Expertise</span>
-          <h3>Vetted consultants, matched to your environment</h3>
-          <p>Specialists assigned by skill fit—not whoever is available.</p>
-        </article>
-
-        <article class="card">
-          <span class="badge">Zero Trust</span>
-          <h3>Identity‑first access</h3>
-          <p>Device trust, least privilege, segmentation guidance, and secure remote access.</p>
-        </article>
-
-        <article class="card">
-          <span class="badge">Operational Discipline</span>
-          <h3>KPI‑driven accountability</h3>
-          <p>Response cadence, SLA targets, executive summaries, and measurable outcomes.</p>
-        </article>
-
-        <article class="card">
-          <span class="badge">Pricing Advantage</span>
-          <h3>Enterprise capability, fraction of cost</h3>
-          <p>Get enterprise‑grade execution without enterprise consulting overhead.</p>
-        </article>
-
-        <article class="card">
-          <span class="badge">RAPID RESPONSE</span>
-          <h3>Critical incidents? Experts deployed in minutes</h3>
-          <p>24/7 on-call specialists ready for ransomware, breaches, and zero-days. Skip the procurement process when seconds count.</p>
-        </article>
-
-        <article class="card">
-          <span class="badge">Continuity</span>
-          <h3>Consistent security delivery</h3>
-          <p>Structured oversight and aligned execution across every engagement —
-             maintaining operational consistency as your environment evolves.</p>
-        </article>
       </div>
     </section>
+
+    <section class="feature_grid">
+      <article class="card">
+        <span class="badge">Security Framework</span>
+        <h3>Structured security operations</h3>
+        <p>Mapped to Identify, Protect, Detect, Respond, Recover — built for real environments.</p>
+      </article>
+
+      <article class="card">
+        <span class="badge">Execution Model</span>
+        <h3>Ticket-first execution</h3>
+        <p>Clear intake → fast routing → tracked work → documented closure.</p>
+      </article>
+
+      <article class="card">
+        <span class="badge">Verified Expertise</span>
+        <h3>Vetted consultants, matched to your environment</h3>
+        <p>Specialists assigned by skill fit—not whoever is available.</p>
+      </article>
+
+      <article class="card">
+        <span class="badge">Zero Trust</span>
+        <h3>Identity-first access</h3>
+        <p>Device trust, least privilege, segmentation guidance, and secure remote access.</p>
+      </article>
+
+      <article class="card">
+        <span class="badge">Operational Discipline</span>
+        <h3>KPI-driven accountability</h3>
+        <p>Response cadence, SLA targets, executive summaries, and measurable outcomes.</p>
+      </article>
+
+      <article class="card">
+        <span class="badge">Pricing Advantage</span>
+        <h3>Enterprise capability, fraction of cost</h3>
+        <p>Get enterprise-grade execution without enterprise consulting overhead.</p>
+      </article>
+
+      <article class="card">
+        <span class="badge">RAPID RESPONSE</span>
+        <h3>Critical incidents? Experts deployed in minutes</h3>
+        <p>24/7 on-call specialists ready for ransomware, breaches, and zero-days. Skip the procurement process when seconds count.</p>
+      </article>
+
+      <article class="card">
+        <span class="badge">Continuity</span>
+        <h3>Consistent security delivery</h3>
+        <p>Structured oversight and aligned execution across every engagement — maintaining operational consistency as your environment evolves.</p>
+      </article>
+    </section>
+
   </main>
 
-  <!-- ========== FOOTER ========== -->
   <footer class="footer">
     <div class="container">
-      <a href="/" class="footer-logo" aria-label="CyberBench homepage">
+      <a href="/index.html" class="footer-logo" aria-label="CyberBench homepage">
         <span class="logo" aria-hidden="true"></span>
         <span>CyberBench</span>
       </a>
 
-<a href="/index.html" class="footer-logo" aria-label="CyberBench homepage">
-  <a href="/services.html">Services</a>
-  <a href="/about.html">About</a>
-  <a href="/blog.html">Blog</a>
-  <a href="/careers.html">Careers</a>
-  <a href="/client-portal.html">Client Portal</a>
-  <a href="/consultant-portal.html">Consultant Portal</a>
-</nav>
+      <nav class="footer-nav" aria-label="Footer navigation">
+        <a href="/services.html">Services</a>
+        <a href="/about.html">About</a>
+        <a href="/blog.html">Blog</a>
+        <a href="/careers.html">Careers</a>
+        <a href="/client-portal.html">Client Portal</a>
+        <a href="/consultant-portal.html">Consultant Portal</a>
+      </nav>
 
       <div class="footer-bottom">
-        © <span id="year"></span> CyberBench. All rights reserved.
+        © <span id="year"></span> CyberBench. All rights reserved.
       </div>
     </div>
   </footer>
 
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();
+
+    (function () {
+      const nav = document.querySelector(".nav_links");
+      if (!nav) return;
+
+      const links = nav.querySelectorAll("a[href^='/']");
+      const path = window.location.pathname.replace(/\/$/, "") || "/";
+
+      links.forEach(a => {
+        const href = (a.getAttribute("href") || "").replace(/\/$/, "") || "/";
+        if (href === path) a.classList.add("nav-active");
+        else a.classList.remove("nav-active");
+      });
+    })();
   </script>
-<script>
-  (function () {
-    const nav = document.querySelector(".nav_links");
-    if (!nav) return;
 
-    const links = nav.querySelectorAll("a[href^='/']");
-    const path = window.location.pathname.replace(/\/$/, "") || "/";
+  <button class="cb-chat-fab" id="cbChatFab" aria-label="Open CyberBench AI chat">AI</button>
 
-    links.forEach(a => {
-      const href = (a.getAttribute("href") || "").replace(/\/$/, "") || "/";
-      if (href === path) a.classList.add("nav-active");
-      else a.classList.remove("nav-active");
-    });
-  })();
-</script>
-<!-- ===== CyberBench AI Chat Widget ===== -->
-<button class="cb-chat-fab" id="cbChatFab" aria-label="Open CyberBench AI chat">AI</button>
-
-<div class="cb-chat" id="cbChat" aria-hidden="true">
-  <div class="cb-chat-header">
-    <div class="cb-chat-title">
-      <div class="cb-chat-dot"></div>
-      <div>
-        <div class="cb-chat-name">CyberBench AI</div>
-        <div class="cb-chat-sub">Fast triage • How-to • Guidance</div>
+  <div class="cb-chat" id="cbChat" aria-hidden="true">
+    <div class="cb-chat-header">
+      <div class="cb-chat-title">
+        <div class="cb-chat-dot"></div>
+        <div>
+          <div class="cb-chat-name">CyberBench AI</div>
+          <div class="cb-chat-sub">Fast triage • How-to • Guidance</div>
+        </div>
       </div>
+      <button class="cb-chat-close" id="cbChatClose" aria-label="Close chat">✕</button>
     </div>
-    <button class="cb-chat-close" id="cbChatClose" aria-label="Close chat">✕</button>
+
+    <div class="cb-chat-body" id="cbChatBody"></div>
+
+    <form class="cb-chat-form" id="cbChatForm">
+      <input
+        class="cb-chat-input"
+        id="cbChatInput"
+        placeholder="Ask about tickets, KPIs, services, or next steps…"
+        autocomplete="off"
+        required
+      />
+      <button class="cb-chat-send" type="submit">Send</button>
+    </form>
+
+    <div class="cb-chat-footnote">Demo widget. Don’t paste secrets.</div>
   </div>
 
-  <div class="cb-chat-body" id="cbChatBody"></div>
+  <script>
+    (function () {
+      const fab = document.getElementById("cbChatFab");
+      const box = document.getElementById("cbChat");
+      const close = document.getElementById("cbChatClose");
+      const body = document.getElementById("cbChatBody");
+      const form = document.getElementById("cbChatForm");
+      const input = document.getElementById("cbChatInput");
 
-  <form class="cb-chat-form" id="cbChatForm">
-    <input
-      class="cb-chat-input"
-      id="cbChatInput"
-      placeholder="Ask about tickets, KPIs, services, or next steps…"
-      autocomplete="off"
-      required
-    />
-    <button class="cb-chat-send" type="submit">Send</button>
-  </form>
+      const escapeHtml = (s) =>
+        String(s).replace(/[&<>"']/g, (m) => ({
+          "&": "&amp;",
+          "<": "&lt;",
+          ">": "&gt;",
+          '"': "&quot;",
+          "'": "&#39;"
+        }[m]));
 
-  <div class="cb-chat-footnote">Demo widget. Don’t paste secrets.</div>
-</div>
-
-<script>
-  (function () {
-    const fab = document.getElementById("cbChatFab");
-    const box = document.getElementById("cbChat");
-    const close = document.getElementById("cbChatClose");
-    const body = document.getElementById("cbChatBody");
-    const form = document.getElementById("cbChatForm");
-    const input = document.getElementById("cbChatInput");
-
-    const escapeHtml = (s) =>
-      String(s).replace(/[&<>"']/g, (m) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[m]));
-
-    function addMsg(role, text) {
-      const row = document.createElement("div");
-      row.className = "cb-chat-row " + (role === "user" ? "is-user" : "is-ai");
-      row.innerHTML = `<div class="cb-chat-bubble">${escapeHtml(text)}</div>`;
-      body.appendChild(row);
-      body.scrollTop = body.scrollHeight;
-    }
-
-    function setOpen(isOpen) {
-      box.style.display = isOpen ? "flex" : "none";
-      box.setAttribute("aria-hidden", isOpen ? "false" : "true");
-      if (isOpen) input.focus();
-    }
-
-    fab.addEventListener("click", () => {
-      setOpen(true);
-      if (!body.dataset.greeted) {
-        addMsg("ai", "Hi — I’m CyberBench AI. Tell me what you need help with (ticket submission, KPIs, services, or triage).");
-        body.dataset.greeted = "1";
+      function addMsg(role, text) {
+        const row = document.createElement("div");
+        row.className = "cb-chat-row " + (role === "user" ? "is-user" : "is-ai");
+        row.innerHTML = `<div class="cb-chat-bubble">${escapeHtml(text)}</div>`;
+        body.appendChild(row);
+        body.scrollTop = body.scrollHeight;
       }
-    });
 
-    close.addEventListener("click", () => setOpen(false));
-
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const text = input.value.trim();
-      if (!text) return;
-
-      addMsg("user", text);
-      input.value = "";
-
-      // Loading indicator
-      const loadingId = "loading_" + Date.now();
-      addMsg("ai", "Typing…");
-      const loadingNode = body.lastElementChild;
-
-      try {
-        const r = await fetch("/api/chat", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: text })
-        });
-
-        const data = await r.json();
-        const reply = data.reply || "No response.";
-        loadingNode.querySelector(".cb-chat-bubble").textContent = reply;
-      } catch (err) {
-        loadingNode.querySelector(".cb-chat-bubble").textContent =
-          "Chat service is offline. Start your server and try again.";
+      function setOpen(isOpen) {
+        box.style.display = isOpen ? "flex" : "none";
+        box.setAttribute("aria-hidden", isOpen ? "false" : "true");
+        if (isOpen) input.focus();
       }
-    });
 
-    // Start closed
-    setOpen(false);
-  })();
-</script>
+      fab.addEventListener("click", () => {
+        setOpen(true);
+        if (!body.dataset.greeted) {
+          addMsg("ai", "Hi — I’m CyberBench AI. Tell me what you need help with (ticket submission, KPIs, services, or triage).");
+          body.dataset.greeted = "1";
+        }
+      });
+
+      close.addEventListener("click", () => setOpen(false));
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const text = input.value.trim();
+        if (!text) return;
+
+        addMsg("user", text);
+        input.value = "";
+
+        addMsg("ai", "Typing…");
+        const loadingNode = body.lastElementChild;
+
+        try {
+          const r = await fetch("/api/chat", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ message: text })
+          });
+
+          const data = await r.json();
+          const reply = data.reply || "No response.";
+          loadingNode.querySelector(".cb-chat-bubble").textContent = reply;
+        } catch (err) {
+          loadingNode.querySelector(".cb-chat-bubble").textContent =
+            "Chat service is offline. Start your server and try again.";
+        }
+      });
+
+      setOpen(false);
+    })();
+  </script>
+
 </body>
 </html>
