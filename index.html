@@ -19,22 +19,23 @@
       </a>
 
       <!-- Main Navigation -->
-      <nav class="nav_menu" aria-label="Main Navigation">
-        <button class="nav_toggle" aria-expanded="false" aria-controls="nav_links">
-          <span class="sr-only">Toggle navigation</span>
-          <span class="hamburger" aria-hidden="true"></span>
-        </button>
+<header class="nav">
+  <div class="container nav_row">
+    <a class="brand" href="/index.html">
+      <span class="logo" aria-hidden="true">X</span>
+      <span>CyberBench</span>
+    </a>
 
-        <div class="nav_links" id="nav_links">
-          <a href="/services.html">Services</a>
-          <a href="/about.html">About</a>
-          <a href="/blog.html">Blog</a>
-          <a href="/client-portal.html">Client Portal</a>
-          <a href="/consultant-portal.html">Consultant Portal</a>
-          <a class="btn btn-primary" href="/submit-ticket.html">Deploy Security Now</a>
-      </nav>
-    </div>
-  </header>
+    <nav class="nav_links" id="nav_links" aria-label="Main Navigation">
+      <a href="/services.html">Services</a>
+      <a href="/about.html">About</a>
+      <a href="/blog.html">Blog</a>
+      <a href="/client-portal.html">Client Portal</a>
+      <a href="/consultant-portal.html">Consultant Portal</a>
+      <a class="btn btn-primary" href="/submit-ticket.html">Deploy Security Now</a>
+    </nav>
+  </div>
+</header>
 
   <script>
     const toggleBtn = document.querySelector(".nav_toggle");
@@ -182,7 +183,7 @@
         <span>CyberBench</span>
       </a>
 
-<nav class="footer-nav" aria-label="Footer navigation">
+<a href="/index.html" class="footer-logo" aria-label="CyberBench homepage">
   <a href="/services.html">Services</a>
   <a href="/about.html">About</a>
   <a href="/blog.html">Blog</a>
