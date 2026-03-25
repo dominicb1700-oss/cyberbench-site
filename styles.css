@@ -3191,7 +3191,7 @@ textarea:focus {
         <span>CyberBench</span>
       </a>
 
-      <nav class="nav_links">
+      <div class="nav_links" id="nav_links">
         <a href="/services.html">Services</a>
         <a href="/about.html">About</a>
         <a href="/blog.html">Blog</a>
