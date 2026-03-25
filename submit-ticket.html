@@ -7,7 +7,6 @@
   <link rel="stylesheet" href="/styles.css" />
 </head>
 <body>
-
 <header class="nav">
   <div class="container nav_row">
     <a class="brand" href="/">
@@ -15,7 +14,7 @@
       <span>CyberBench</span>
     </a>
 
-    <nav class="nav_links" id="nav_links" aria-label="Main Navigation">
+    <nav class="nav_links">
       <a href="/services">Services</a>
       <a href="/about">About</a>
       <a href="/blog">Blog</a>
@@ -26,115 +25,83 @@
     </nav>
   </div>
 </header>
+<!-- ===== ENTERPRISE SUBMIT TICKET (REPLACE ENTIRE SECTION) ===== -->
+<section class="st-wrap" id="ticket-form">
+  <div class="st-hero">
+    <div class="st-kicker"><span class="st-dot"></span> CYBERBENCH INTAKE</div>
+    <h1 class="st-title">Submit a Cyber Ticket</h1>
+    <p class="st-sub">
+      Provide a clear summary and urgency.
+We’ll route this to the right specialist and track outcomes end-to-end.
+Not sure how to describe the issue? Use the AI assistant to structure your request.
+    </p>
 
-<main>
-  <section class="st-wrap" id="ticket-form">
-    <div class="st-hero">
-      <div class="st-kicker"><span class="st-dot"></span> CYBERBENCH INTAKE</div>
-      <h1 class="st-title">Submit a Cyber Ticket</h1>
-      <p class="st-sub">
-        Provide a clear summary and urgency. We’ll route this to the right specialist and track outcomes end-to-end.
-        Not sure how to describe the issue? Use the AI assistant to structure your request.
-      </p>
-
-      <div class="st-metrics">
-        <div class="st-metric">
-          <div class="st-metric-value">&lt; 15m</div>
-          <div class="st-metric-label">Typical response</div>
-        </div>
-        <div class="st-metric">
-          <div class="st-metric-value">24/7</div>
-          <div class="st-metric-label">Coverage</div>
-        </div>
-        <div class="st-metric">
-          <div class="st-metric-value">Executive</div>
-          <div class="st-metric-label">Reporting</div>
-        </div>
+    <div class="st-metrics">
+      <div class="st-metric">
+        <div class="st-metric-value">&lt; 15m</div>
+        <div class="st-metric-label">Typical response</div>
+      </div>
+      <div class="st-metric">
+        <div class="st-metric-value">24/7</div>
+        <div class="st-metric-label">Coverage</div>
+      </div>
+      <div class="st-metric">
+        <div class="st-metric-value">Executive</div>
+        <div class="st-metric-label">Reporting</div>
       </div>
     </div>
-
-    <div class="st-card">
-      <form class="st-form" action="/submit-ticket" method="POST">
-        <div class="st-grid">
-          <div class="st-field">
-            <label class="st-label" for="company">Company</label>
-            <input class="st-input" id="company" name="company" type="text" placeholder="Your company name" required />
-          </div>
-
-          <div class="st-field">
-            <label class="st-label" for="urgency">Urgency</label>
-            <select class="st-input" id="urgency" name="urgency" required>
-              <option value="Low">Low</option>
-              <option value="Medium" selected>Medium</option>
-              <option value="High">High</option>
-              <option value="Critical">Critical</option>
-            </select>
-          </div>
-
-          <div class="st-field">
-            <label class="st-label" for="name">Your name</label>
-            <input class="st-input" id="name" name="name" type="text" placeholder="Full name" required />
-          </div>
-
-          <div class="st-field">
-            <label class="st-label" for="email">Email</label>
-            <input class="st-input" id="email" name="email" type="email" placeholder="name@company.com" required />
-          </div>
-
-          <div class="st-field st-span2">
-            <label class="st-label" for="phone">Phone (optional)</label>
-            <input class="st-input" id="phone" name="phone" type="tel" placeholder="(555) 555-5555" />
-          </div>
-
-          <div class="st-field st-span2">
-            <label class="st-label" for="details">Describe the issue</label>
-            <textarea
-              class="st-input st-textarea"
-              id="details"
-              name="details"
-              placeholder="What happened? What systems are impacted? Any deadlines? What access do you have?"
-              required
-            ></textarea>
-            <div class="st-help">
-              Tip: Include affected systems, when it started, and what changed recently.
-            </div>
-          </div>
-        </div>
-
-        <div class="st-actions">
-          <a class="st-link" href="/services">View services</a>
-          <button class="btn btn-primary st-btn" type="submit">Deploy Security Now</button>
-        </div>
-
-        <div class="st-footer">
-          By submitting this form, you’re requesting CyberBench follow-up and ticket triage.
-        </div>
-      </form>
-    </div>
-  </section>
-</main>
-
-<footer class="footer">
-  <div class="container">
-    <a href="/" class="footer-logo" aria-label="CyberBench homepage">
-      <span class="logo" aria-hidden="true"></span>
-      <span>CyberBench</span>
-    </a>
-
-    <nav class="footer-nav" aria-label="Footer navigation">
-      <a href="/services">Services</a>
-      <a href="/about">About</a>
-      <a href="/blog">Blog</a>
-      <a href="/client-portal">Client Portal</a>
-      <a href="/consultant-portal">Consultant Portal</a>
-    </nav>
-
-    <div class="footer-bottom">
-      © <span id="year"></span> CyberBench. All rights reserved.
-    </div>
   </div>
-</footer>
 
+  <div class="st-card">
+    <form class="st-form" action="/submit-ticket" method="POST">
+      <div class="st-grid">
+        <div class="st-field">
+          <label class="st-label" for="company">Company</label>
+          <input class="st-input" id="company" name="company" type="text" placeholder="Your company name" required />
+        </div>
+
+        <div class="st-field">
+          <label class="st-label" for="urgency">Urgency</label>
+          <select class="st-input" id="urgency" name="urgency" required>
+            <option value="Low">Low</option>
+            <option value="Medium" selected>Medium</option>
+            <option value="High">High</option>
+            <option value="Critical">Critical</option>
+          </select>
+        </div>
+
+        <div class="st-field">
+          <label class="st-label" for="name">Your name</label>
+          <input class="st-input" id="name" name="name" type="text" placeholder="Full name" required />
+        </div>
+
+        <div class="st-field">
+          <label class="st-label" for="email">Email</label>
+          <input class="st-input" id="email" name="email" type="email" placeholder="name@company.com" required />
+        </div>
+
+        <div class="st-field st-span2">
+          <label class="st-label" for="phone">Phone (optional)</label>
+          <input class="st-input" id="phone" name="phone" type="tel" placeholder="(555) 555-5555" />
+        </div>
+
+        <div class="st-field st-span2">
+          <label class="st-label" for="details">Describe the issue</label>
+          <textarea class="st-input st-textarea" id="details" name="details"
+            placeholder="What happened? What systems are impacted? Any deadlines? What access do you have?"></textarea>
+          <div class="st-help">
+            Tip: Include affected systems, when it started, and what changed recently.
+          </div>
+        </div>
+      </div>
+
+      <div class="st-actions">
+        <a class="st-link" href="/services">View services</a>
+        <button class="btn btn-primary st-btn" type="submit">Deploy Security Now</button>
+      </div>
+
+
+<!-- ===== CyberBench AI Chat Widget ===== -->
 <button class="cb-chat-fab" id="cbChatFab" aria-label="Open CyberBench AI chat">AI</button>
 
 <div class="cb-chat" id="cbChat" aria-hidden="true">
@@ -166,22 +133,6 @@
 </div>
 
 <script>
-  document.getElementById("year").textContent = new Date().getFullYear();
-
-  (function () {
-    const nav = document.querySelector(".nav_links");
-    if (!nav) return;
-
-    const links = nav.querySelectorAll("a[href^='/']");
-    const path = window.location.pathname.replace(/\/$/, "") || "/";
-
-    links.forEach((a) => {
-      const href = (a.getAttribute("href") || "").replace(/\/$/, "") || "/";
-      if (href === path) a.classList.add("nav-active");
-      else a.classList.remove("nav-active");
-    });
-  })();
-
   (function () {
     const fab = document.getElementById("cbChatFab");
     const box = document.getElementById("cbChat");
@@ -191,13 +142,7 @@
     const input = document.getElementById("cbChatInput");
 
     const escapeHtml = (s) =>
-      String(s).replace(/[&<>"']/g, (m) => ({
-        "&": "&amp;",
-        "<": "&lt;",
-        ">": "&gt;",
-        '"': "&quot;",
-        "'": "&#39;"
-      }[m]));
+      String(s).replace(/[&<>"']/g, (m) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[m]));
 
     function addMsg(role, text) {
       const row = document.createElement("div");
@@ -231,6 +176,8 @@
       addMsg("user", text);
       input.value = "";
 
+      // Loading indicator
+      const loadingId = "loading_" + Date.now();
       addMsg("ai", "Typing…");
       const loadingNode = body.lastElementChild;
 
@@ -250,9 +197,9 @@
       }
     });
 
+    // Start closed
     setOpen(false);
   })();
 </script>
 
-</body>
-</html>
+
