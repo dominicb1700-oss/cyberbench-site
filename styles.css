@@ -1997,3 +1997,73 @@ textarea:focus {
   outline: none;
   border-color: var(--accent-primary);
 }
+:root {
+  /* Darker base (was #0A1930 / #0B1F3A) */
+  --bg-primary: #071427;
+  --bg-secondary: #08182E;
+  --bg-gradient: linear-gradient(135deg, #08182E 0%, #071427 100%);
+
+  /* Keep your blue but slightly richer */
+  --accent-primary: #3B82F6;
+  --accent-secondary: #1E40AF;
+
+  /* Text (slightly softer contrast for dark bg) */
+  --text-primary: #E5E7EB;
+  --text-secondary: #9CA3AF;
+
+  /* Cards (a bit deeper glass effect) */
+  --card-bg: rgba(255, 255, 255, 0.035);
+  --card-border: rgba(255, 255, 255, 0.06);
+
+  /* Buttons */
+  --button-bg: linear-gradient(135deg, #3B82F6, #1E40AF);
+  --button-hover: linear-gradient(135deg, #2563EB, #1D4ED8);
+
+  /* Badges */
+  --badge-bg: rgba(59, 130, 246, 0.12);
+  --badge-text: #60A5FA;
+}
+
+/* BODY */
+body {
+  background: var(--bg-gradient);
+  color: var(--text-primary);
+}
+
+/* CARDS */
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  backdrop-filter: blur(10px);
+}
+
+/* PLATFORM BOX */
+.platform-box {
+  background: rgba(255,255,255,0.015);
+  border: 1px solid var(--card-border);
+}
+
+/* BUTTONS */
+.btn-primary {
+  background: var(--button-bg);
+}
+
+.btn-primary:hover {
+  background: var(--button-hover);
+}
+
+/* STATUS TAGS (unchanged, already clean) */
+.status.operational {
+  background: rgba(16, 185, 129, 0.12);
+  color: #34D399;
+}
+
+.status.compliant {
+  background: rgba(59, 130, 246, 0.12);
+  color: #60A5FA;
+}
+
+.status.monitoring {
+  background: rgba(234, 179, 8, 0.12);
+  color: #FACC15;
+}
