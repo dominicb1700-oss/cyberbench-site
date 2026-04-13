@@ -1847,3 +1847,153 @@ label.label,
   .feature_grid{grid-template-columns:1fr;}
   .h1{font-size:2.1rem;}
 }
+/* ===== GLOBAL COLOR SCHEME ===== */
+:root {
+  --bg-primary: #0A1930;
+  --bg-secondary: #0B1F3A;
+  --bg-gradient: linear-gradient(135deg, #0B1F3A 0%, #0A1930 100%);
+
+  --accent-primary: #3B82F6;
+  --accent-secondary: #2563EB;
+
+  --text-primary: #E5E7EB;
+  --text-secondary: #9CA3AF;
+
+  --card-bg: rgba(255, 255, 255, 0.04);
+  --card-border: rgba(255, 255, 255, 0.08);
+
+  --button-bg: linear-gradient(135deg, #3B82F6, #2563EB);
+  --button-hover: linear-gradient(135deg, #2563EB, #1D4ED8);
+
+  --badge-bg: rgba(59, 130, 246, 0.15);
+  --badge-text: #60A5FA;
+}
+
+/* ===== BODY ===== */
+body {
+  margin: 0;
+  padding: 0;
+  background: var(--bg-gradient);
+  color: var(--text-primary);
+  font-family: 'Inter', sans-serif;
+}
+
+/* ===== SECTION BACKGROUNDS ===== */
+section,
+.container,
+.wrapper {
+  background: transparent;
+}
+
+/* ===== HEADINGS ===== */
+h1, h2, h3, h4 {
+  color: var(--text-primary);
+}
+
+/* ===== PARAGRAPHS ===== */
+p {
+  color: var(--text-secondary);
+}
+
+/* ===== BUTTONS ===== */
+button,
+.btn-primary {
+  background: var(--button-bg);
+  color: white;
+  border: none;
+  border-radius: 999px;
+  padding: 12px 24px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+button:hover,
+.btn-primary:hover {
+  background: var(--button-hover);
+  transform: translateY(-1px);
+}
+
+/* ===== SECONDARY BUTTON ===== */
+.btn-secondary {
+  background: transparent;
+  border: 1px solid var(--card-border);
+  color: var(--text-primary);
+}
+
+.btn-secondary:hover {
+  border-color: var(--accent-primary);
+}
+
+/* ===== CARDS ===== */
+.card {
+  background: var(--card-bg);
+  border: 1px solid var(--card-border);
+  border-radius: 16px;
+  padding: 20px;
+  backdrop-filter: blur(10px);
+}
+
+/* ===== PLATFORM PANEL ===== */
+.platform-box {
+  background: rgba(255,255,255,0.02);
+  border: 1px solid var(--card-border);
+  border-radius: 20px;
+  padding: 20px;
+}
+
+/* ===== BADGES ===== */
+.badge {
+  background: var(--badge-bg);
+  color: var(--badge-text);
+  padding: 4px 10px;
+  border-radius: 999px;
+  font-size: 12px;
+}
+
+/* ===== STATUS TAGS ===== */
+.status {
+  padding: 6px 12px;
+  border-radius: 999px;
+  font-size: 12px;
+}
+
+.status.operational {
+  background: rgba(16, 185, 129, 0.15);
+  color: #34D399;
+}
+
+.status.compliant {
+  background: rgba(59, 130, 246, 0.15);
+  color: #60A5FA;
+}
+
+.status.monitoring {
+  background: rgba(234, 179, 8, 0.15);
+  color: #FACC15;
+}
+
+/* ===== LINKS ===== */
+a {
+  color: var(--accent-primary);
+  text-decoration: none;
+}
+
+a:hover {
+  color: var(--accent-secondary);
+}
+
+/* ===== INPUTS ===== */
+input,
+textarea {
+  background: rgba(255,255,255,0.03);
+  border: 1px solid var(--card-border);
+  color: var(--text-primary);
+  padding: 10px;
+  border-radius: 8px;
+}
+
+input:focus,
+textarea:focus {
+  outline: none;
+  border-color: var(--accent-primary);
+}
