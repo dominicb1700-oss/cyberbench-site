@@ -131,7 +131,7 @@ button,input,select,textarea{font:inherit;}
 
 .btn-primary{
   color:#fff;
-  background:radial-gradient(135deg,var(--accent),#2563eb);
+  background:linear-gradient(135deg,var(--accent),#2563eb);
   border-color:rgba(59,130,246,.40);
   box-shadow:0 12px 30px rgba(59,130,246,.22);
 }
@@ -150,7 +150,7 @@ button,input,select,textarea{font:inherit;}
 }
 
 .btn-nav{
-  background:radial-gradient(135deg,var(--accent),#2563eb);
+  background:linear-gradient(135deg,var(--accent),#2563eb);
   color:#fff;
   border-radius:10px;
   padding:.65rem 1.1rem;
@@ -246,7 +246,7 @@ button,input,select,textarea{font:inherit;}
   right:0;
   bottom:-6px;
   height:2px;
-  background:radial-gradient(90deg, transparent, var(--accent), transparent);
+  background:linear-gradient(90deg, transparent, var(--accent), transparent);
   opacity:.9;
 }
 
@@ -494,7 +494,7 @@ button,input,select,textarea{font:inherit;}
   width:60px;
   height:2px;
   margin:0 auto 2rem;
-  background:radial-gradient(90deg, transparent, rgba(59,130,246,.5), transparent);
+  background:linear-gradient(90deg, transparent, rgba(59,130,246,.5), transparent);
   opacity:.6;
 }
 
@@ -573,7 +573,7 @@ button,input,select,textarea{font:inherit;}
 
 .soft_divider{
   height:1px;
-  background:radial-gradient(90deg, transparent, rgba(255,255,255,.10), transparent);
+  background:linear-gradient(90deg, transparent, rgba(255,255,255,.10), transparent);
   margin:26px 0;
 }
 
@@ -1576,7 +1576,7 @@ label.label,
    FOOTER
    ========================= */
 .footer{
-  background:radial-gradient(180deg, #0e141f 0%, #05080e 100%);
+  background:linear-gradient(180deg, #0e141f 0%, #05080e 100%);
   border-top:1px solid rgba(255,255,255,.05);
   padding:2.5rem 0;
   color:#cbd2dc;
