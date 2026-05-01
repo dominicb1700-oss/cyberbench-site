@@ -2067,3 +2067,27 @@ body {
   background: rgba(234, 179, 8, 0.12);
   color: #FACC15;
 }
+.footer-contact {
+  margin-top: 18px;
+  text-align: center;
+}
+
+.footer-contact span {
+  display: block;
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.footer-contact a {
+  color: var(--accent-primary);
+  text-decoration: none;
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.footer-contact a:hover {
+  color: #60A5FA;
+}
