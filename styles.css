@@ -2091,9 +2091,3 @@ body {
 .footer-contact a:hover {
   color: #60A5FA;
 }
-.cta-section {
-  display: flex;
-  gap: 16px;
-  flex-wrap: wrap;
-  align-items: center;
-}
