@@ -2091,3 +2091,45 @@ body {
 .footer-contact a:hover {
   color: #60A5FA;
 }
+/* ===== GLOBAL SITE BACKGROUND ===== */
+
+html,
+body {
+  background:
+    radial-gradient(circle at top left, rgba(40,80,255,.18), transparent 35%),
+    radial-gradient(circle at bottom right, rgba(0,140,255,.08), transparent 30%),
+    #050816;
+
+  background-attachment: fixed;
+  color: #f3f6ff;
+}
+
+/* ===== PORTAL PAGE FIX ===== */
+
+.portal-page,
+.portal-wrapper,
+main.container {
+  background: transparent !important;
+}
+
+/* ===== REMOVE LIGHTER BOX BACKGROUNDS ===== */
+
+.portal-layout,
+.portal-grid {
+  background: transparent !important;
+}
+
+/* ===== OPTIONAL: CLEANER PANELS ===== */
+
+.panel,
+.card,
+.portal-card {
+  background: linear-gradient(
+    180deg,
+    rgba(16,22,36,.92) 0%,
+    rgba(10,14,24,.96) 100%
+  );
+
+  border: 1px solid rgba(255,255,255,.06);
+  backdrop-filter: blur(10px);
+}
