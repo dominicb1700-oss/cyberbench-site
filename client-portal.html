@@ -4,83 +4,371 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Client Portal | CyberBench</title>
+
   <link rel="stylesheet" href="/styles.css" />
+
+  <style>
+
+    html,
+    body{
+      margin:0;
+      min-height:100%;
+      font-family:Inter, sans-serif;
+
+      background:
+        radial-gradient(circle at top left, rgba(45,85,255,.18), transparent 32%),
+        radial-gradient(circle at bottom right, rgba(0,140,255,.10), transparent 30%),
+        #050816;
+
+      background-attachment:fixed;
+      color:#f3f6ff;
+    }
+
+    /* ===== MAIN ===== */
+
+    .cbp-main{
+      padding:80px 0 100px;
+    }
+
+    .cbp-container{
+      width:min(1400px, 92%);
+      margin:0 auto;
+    }
+
+    /* ===== GRID ===== */
+
+    .cbp-grid{
+      display:grid;
+      grid-template-columns:repeat(auto-fit,minmax(420px,1fr));
+      gap:28px;
+      align-items:start;
+    }
+
+    /* ===== CARDS ===== */
+
+    .cbp-card{
+      background:
+        linear-gradient(
+          180deg,
+          rgba(16,22,36,.94) 0%,
+          rgba(8,12,22,.98) 100%
+        );
+
+      border:1px solid rgba(255,255,255,.07);
+      border-radius:28px;
+      padding:36px;
+
+      backdrop-filter:blur(12px);
+
+      box-shadow:
+        0 10px 40px rgba(0,0,0,.35),
+        inset 0 1px 0 rgba(255,255,255,.03);
+    }
+
+    .cbp-card-head{
+      margin-bottom:30px;
+    }
+
+    .cbp-card-kicker{
+      font-size:13px;
+      font-weight:700;
+      letter-spacing:.18em;
+      color:#4d7cff;
+      margin-bottom:16px;
+    }
+
+    .cbp-h2{
+      font-size:42px;
+      line-height:1.05;
+      font-weight:800;
+      letter-spacing:-1px;
+      margin:0 0 14px;
+    }
+
+    .cbp-muted{
+      color:rgba(255,255,255,.72);
+      line-height:1.7;
+      font-size:17px;
+      max-width:60ch;
+    }
+
+    /* ===== FORM ===== */
+
+    .cbp-form{
+      display:flex;
+      flex-direction:column;
+      gap:22px;
+    }
+
+    .cbp-field{
+      display:flex;
+      flex-direction:column;
+      gap:10px;
+    }
+
+    .cbp-label{
+      font-size:13px;
+      font-weight:700;
+      letter-spacing:.12em;
+      color:#dbe3ff;
+    }
+
+    .cbp-input{
+      height:64px;
+      border-radius:18px;
+      border:1px solid rgba(255,255,255,.08);
+
+      background:rgba(4,7,18,.9);
+      color:#fff;
+
+      padding:0 18px;
+      font-size:16px;
+      outline:none;
+    }
+
+    .cbp-input:focus{
+      border-color:#4d7cff;
+      box-shadow:0 0 0 4px rgba(77,124,255,.14);
+    }
+
+    .cbp-form-actions{
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+      margin-top:6px;
+    }
+
+    .cbp-note{
+      margin-top:10px;
+
+      background:rgba(255,255,255,.02);
+      border:1px solid rgba(255,255,255,.05);
+
+      border-radius:18px;
+      padding:18px;
+
+      color:rgba(255,255,255,.72);
+      line-height:1.6;
+    }
+
+    /* ===== KPI ===== */
+
+    .cbp-kpi-grid{
+      display:grid;
+      grid-template-columns:repeat(2,1fr);
+      gap:18px;
+    }
+
+    .cbp-kpi{
+      background:rgba(6,10,22,.82);
+
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:20px;
+
+      padding:24px;
+      min-height:120px;
+
+      display:flex;
+      flex-direction:column;
+      justify-content:space-between;
+    }
+
+    .cbp-kpi div:first-child{
+      color:rgba(255,255,255,.72);
+      font-size:15px;
+    }
+
+    .cbp-kpi div:last-child{
+      font-size:40px;
+      font-weight:800;
+      letter-spacing:-1px;
+    }
+
+    /* ===== BUTTONS ===== */
+
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+
+      height:54px;
+      padding:0 24px;
+
+      border-radius:18px;
+      text-decoration:none;
+      font-weight:700;
+      border:none;
+      cursor:pointer;
+    }
+
+    .btn-primary{
+      background:linear-gradient(135deg,#4d7cff,#5a6dff);
+      color:white;
+
+      box-shadow:
+        0 0 30px rgba(77,124,255,.35);
+    }
+
+    .btn-ghost{
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.03);
+      color:#fff;
+    }
+
+    /* ===== FOOTER ===== */
+
+    .footer{
+      border-top:1px solid rgba(255,255,255,.06);
+      padding:40px 0;
+      margin-top:40px;
+    }
+
+    .footer-bottom{
+      margin-top:24px;
+      color:rgba(255,255,255,.5);
+      font-size:14px;
+    }
+
+    /* ===== MOBILE ===== */
+
+    @media(max-width:900px){
+
+      .cbp-grid{
+        grid-template-columns:1fr;
+      }
+
+      .cbp-h2{
+        font-size:34px;
+      }
+
+      .cbp-kpi-grid{
+        grid-template-columns:1fr;
+      }
+
+    }
+
+  </style>
 </head>
 
-<body class="cbp-body">
+<body>
 
-<!-- NAV -->
 <header class="nav">
   <div class="container nav_row">
+
     <a class="brand" href="/index.html">
       <span class="logo" aria-hidden="true">X</span>
       <span>CyberBench</span>
     </a>
 
-    <nav class="nav_links" id="nav_links" aria-label="Main Navigation">
+    <nav class="nav_links">
       <a href="/services.html">Services</a>
       <a href="/about.html">About</a>
       <a href="/blog.html">Blog</a>
       <a href="/client-portal.html">Client Portal</a>
       <a href="/consultant-portal.html">Consultant Portal</a>
-      <a class="btn btn-primary" href="/submit-ticket.html">Deploy Security Now</a>
+      <a class="btn btn-primary" href="/submit-ticket.html">
+        Deploy Security Now
+      </a>
     </nav>
+
   </div>
 </header>
 
-<!-- MAIN -->
 <main class="cbp-main">
+
   <div class="cbp-container">
 
-
-    <!-- GRID -->
     <section class="cbp-grid">
 
       <!-- LOGIN -->
+
       <div class="cbp-card">
+
         <div class="cbp-card-head">
-          <div class="cbp-card-kicker">SIGN IN</div>
-          <h2 class="cbp-h2">Access your workspace</h2>
+          <div class="cbp-card-kicker">CLIENT PORTAL</div>
+
+          <h2 class="cbp-h2">
+            Access your workspace
+          </h2>
+
           <p class="cbp-muted">
-            Login is disabled for now. When enabled, you’ll see your tickets, files, and status updates.
+            Secure access to tickets, reporting, documentation,
+            KPI tracking, and ongoing cybersecurity operations.
           </p>
         </div>
 
-        <form class="cbp-form" onsubmit="event.preventDefault(); alert('Login coming soon.');">
+        <form
+          class="cbp-form"
+          onsubmit="event.preventDefault(); alert('Login coming soon.');"
+        >
+
           <div class="cbp-field">
-            <label class="cbp-label" for="email">Email</label>
-            <input class="cbp-input" id="email" type="email" placeholder="name@company.com" required />
+            <label class="cbp-label">EMAIL</label>
+
+            <input
+              class="cbp-input"
+              type="email"
+              placeholder="name@company.com"
+              required
+            />
           </div>
 
           <div class="cbp-field">
-            <label class="cbp-label" for="password">Password</label>
-            <input class="cbp-input" id="password" type="password" placeholder="••••••••" required />
+            <label class="cbp-label">PASSWORD</label>
+
+            <input
+              class="cbp-input"
+              type="password"
+              placeholder="••••••••"
+              required
+            />
           </div>
 
           <div class="cbp-form-actions">
-            <button class="btn btn-primary" type="submit">Login (Coming Soon)</button>
-            <a class="btn btn-ghost" href="/admin.html">View Tickets (Demo)</a>
+            <button class="btn btn-primary" type="submit">
+              Login (Coming Soon)
+            </button>
+
+            <a class="btn btn-ghost" href="/admin.html">
+              View Demo
+            </a>
           </div>
 
           <div class="cbp-note">
-            Next: ticket timelines, secure uploads, messaging, and monthly exec summaries.
+            Upcoming features include secure uploads,
+            ticket timelines, messaging, reporting,
+            and executive security summaries.
           </div>
+
         </form>
+
       </div>
 
       <!-- KPI -->
+
       <div class="cbp-card">
+
         <div class="cbp-card-head">
-          <div class="cbp-card-kicker">WORKSPACE PREVIEW</div>
-          <h2 class="cbp-h2">Client KPIs</h2>
+
+          <div class="cbp-card-kicker">
+            WORKSPACE PREVIEW
+          </div>
+
+          <h2 class="cbp-h2">
+            Client KPIs
+          </h2>
+
           <p class="cbp-muted">
-            These are live from your ticket system (MVP).
+            Real-time visibility into active tickets,
+            response metrics, and security operations.
           </p>
+
         </div>
 
         <div class="cbp-kpi-grid">
+
           <div class="cbp-kpi">
-            <div>Total</div>
+            <div>Total Tickets</div>
             <div id="kpi-total">—</div>
           </div>
 
@@ -98,53 +386,59 @@
             <div>Avg/day</div>
             <div id="kpi-avg">—</div>
           </div>
+
         </div>
+
       </div>
 
     </section>
 
   </div>
+
 </main>
 
-<!-- FOOTER -->
 <footer class="footer">
+
   <div class="container">
+
     <a href="/index.html" class="footer-logo">
       <span class="logo"></span>
       <span>CyberBench</span>
     </a>
 
-  <nav class="footer-nav">
-    <a href="/services.html">Services</a>
-    <a href="/about.html">About</a>
-    <a href="/blog.html">Blog</a>
-    <a href="/client-portal.html">Client Portal</a>
-    <a href="/consultant-portal.html">Consultant Portal</a>
-  </nav>
+    <div class="footer-bottom">
+      © <span id="year"></span> CyberBench.
+      All rights reserved.
+    </div>
 
-  <div class="footer-contact">
-    <span>Support</span>
-    <a href="mailto:support@cyberbench.io">support@cyberbench.io</a>
   </div>
 
-  <div class="footer-bottom">
-    © <span id="year"></span> CyberBench. All rights reserved.
-  </div>
 </footer>
 
-<!-- SCRIPTS -->
 <script>
-  document.getElementById("year").textContent = new Date().getFullYear();
+
+  document.getElementById("year").textContent =
+    new Date().getFullYear();
 
   fetch("/api/kpi")
     .then(r => r.json())
     .then(k => {
-      document.getElementById("kpi-total").textContent = k.total || 0;
-      document.getElementById("kpi-open").textContent = k.open || 0;
-      document.getElementById("kpi-critical").textContent = k.critical || 0;
-      document.getElementById("kpi-avg").textContent = k.avgPerDay7 || 0;
+
+      document.getElementById("kpi-total").textContent =
+        k.total || 0;
+
+      document.getElementById("kpi-open").textContent =
+        k.open || 0;
+
+      document.getElementById("kpi-critical").textContent =
+        k.critical || 0;
+
+      document.getElementById("kpi-avg").textContent =
+        k.avgPerDay7 || 0;
+
     })
     .catch(() => {});
+
 </script>
 
 </body>
