@@ -1,350 +1,236 @@
-<!doctype html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<main class="article-layout">
 
-  <title>SIEM Alert Noise | CyberBench</title>
+  <!-- LEFT SIDE -->
+  <article class="article-main">
 
-  <link rel="icon" type="image/png" href="/favicon.png">
-  <link rel="stylesheet" href="/styles.css" />
+    <div class="article-tag">
+      SIEM
+    </div>
 
-  <style>
-    body{
-      background:
-        radial-gradient(circle at top left, rgba(45,85,255,.16), transparent 30%),
-        radial-gradient(circle at bottom right, rgba(0,140,255,.10), transparent 28%),
-        #050816;
-      color:#f3f6ff;
-    }
-
-    .article-shell{
-      width:min(980px,92%);
-      margin:0 auto;
-      padding:72px 0 90px;
-    }
-
-    .article-card{
-      background:rgba(10,15,30,.72);
-      border:1px solid rgba(255,255,255,.08);
-      border-radius:30px;
-      padding:56px;
-      box-shadow:0 24px 80px rgba(0,0,0,.35);
-    }
-
-    .article-back{
-      display:inline-flex;
-      margin-bottom:28px;
-      color:#7da2ff;
-      text-decoration:none;
-      font-weight:700;
-      font-size:14px;
-    }
-
-    .blog-tag{
-      display:inline-flex;
-      align-items:center;
-      height:34px;
-      padding:0 14px;
-      border-radius:999px;
-      background:rgba(77,124,255,.12);
-      border:1px solid rgba(77,124,255,.28);
-      color:#7da2ff;
-      font-size:12px;
-      font-weight:800;
-      letter-spacing:.08em;
-      margin-bottom:22px;
-    }
-
-    .blog-title{
-      font-size:clamp(40px,6vw,64px);
-      line-height:1.02;
-      font-weight:900;
-      letter-spacing:-2.4px;
-      max-width:760px;
-      margin:0 0 20px;
-    }
-
-    .blog-meta{
-      color:rgba(255,255,255,.58);
-      font-size:14px;
-      margin-bottom:34px;
-    }
-
-    .blog-intro{
-      font-size:22px;
-      line-height:1.7;
-      color:rgba(255,255,255,.88);
-      max-width:780px;
-      margin-bottom:36px;
-    }
-
-    .article-card p{
-      color:rgba(255,255,255,.74);
-      line-height:1.85;
-      font-size:18px;
-      margin:0 0 24px;
-      max-width:780px;
-    }
-
-    .article-card h2{
-      font-size:34px;
-      line-height:1.2;
-      margin:60px 0 18px;
-      letter-spacing:-1px;
-    }
-
-    .article-card ul{
-      display:grid;
-      gap:12px;
-      margin:18px 0 34px;
-      padding-left:22px;
-      max-width:760px;
-    }
-
-    .article-card li{
-      color:rgba(255,255,255,.76);
-      line-height:1.7;
-      font-size:18px;
-    }
-
-    .article-callout{
-      background:linear-gradient(180deg, rgba(77,124,255,.10), rgba(255,255,255,.03));
-      border:1px solid rgba(77,124,255,.24);
-      border-left:4px solid #4d7cff;
-      padding:26px 28px;
-      border-radius:22px;
-      margin:38px 0;
-      color:rgba(255,255,255,.86);
-      line-height:1.8;
-      font-size:18px;
-      max-width:780px;
-    }
-
-    .article-cta{
-      margin-top:60px;
-      padding:34px;
-      border-radius:26px;
-      background:rgba(77,124,255,.10);
-      border:1px solid rgba(77,124,255,.22);
-    }
-
-    .article-cta h3{
-      margin:0 0 12px;
-      font-size:28px;
-    }
-
-    .article-cta p{
-      margin-bottom:22px;
-    }
-
-    .footer{
-      border-top:1px solid rgba(255,255,255,.06);
-      padding:40px 0;
-      text-align:center;
-    }
-
-    .footer-nav{
-      display:flex;
-      justify-content:center;
-      gap:24px;
-      flex-wrap:wrap;
-      margin-bottom:20px;
-    }
-
-    .footer-nav a{
-      color:#fff;
-      text-decoration:none;
-    }
-
-    .footer-bottom{
-      color:rgba(255,255,255,.55);
-    }
-
-    @media(max-width:700px){
-      .article-card{
-        padding:34px 24px;
-        border-radius:24px;
-      }
-
-      .blog-intro,
-      .article-card p,
-      .article-card li{
-        font-size:16px;
-      }
-
-      .article-card h2{
-        font-size:28px;
-      }
-    }
-  </style>
-</head>
-
-<body>
-
-<header class="nav">
-  <div class="container nav_row">
-    <a class="brand" href="/index.html">
-      <span class="logo" aria-hidden="true">X</span>
-      <span>CyberBench</span>
-    </a>
-
-    <nav class="nav_links" aria-label="Main Navigation">
-      <a href="/services.html">Services</a>
-      <a href="/about.html">About</a>
-      <a href="/blog.html" class="nav-active">Blog</a>
-      <a href="/client-portal.html">Client Portal</a>
-      <a href="/consultant-portal.html">Consultant Portal</a>
-      <a class="btn btn-primary" href="/submit-ticket.html">Deploy Security Now</a>
-    </nav>
-  </div>
-</header>
-
-<main class="article-shell">
-  <a class="article-back" href="/blog.html">← Back to Blog</a>
-
-  <article class="article-card">
-    <div class="blog-tag">SIEM</div>
-
-    <h1 class="blog-title">
-      The fastest way to reduce SIEM alert noise in week one
+    <h1 class="article-title">
+      The fastest way to reduce
+      SIEM alert noise in week one
     </h1>
 
-    <div class="blog-meta">
-      6 min read · Playbook
+    <div class="article-meta">
+
+      <span>
+        CyberBench Team
+      </span>
+
+      <span>
+        May 18, 2026
+      </span>
+
+      <span>
+        6 min read
+      </span>
+
     </div>
 
-    <p class="blog-intro">
-      Security teams do not usually fail because they lack alerts. They fail because they have too many.
-      A SIEM should help analysts focus on real threats, not bury them under low-value noise.
-    </p>
+    <img
+      class="article-hero"
+      src="/images/siem-dashboard.jpg"
+      alt="SIEM Dashboard"
+    >
 
-    <p>
-      Most organizations deploy a SIEM expecting centralized visibility, faster incident response, and stronger detection capability.
-      Instead, many teams are immediately overwhelmed with thousands of low-value alerts, duplicate detections, and false positives.
-    </p>
+    <div class="article-content">
 
-    <p>
-      The result is alert fatigue. Analysts become overwhelmed, critical threats get buried, and security operations become reactive instead of strategic.
-    </p>
-
-    <h2>Why SIEM noise happens</h2>
-
-    <p>
-      Most SIEM environments begin with default rulesets, broad log ingestion, and very little environment-specific tuning.
-      That creates alert volume before the team has the context needed to prioritize it.
-    </p>
-
-    <ul>
-      <li>Normal administrator activity triggers unnecessary alerts.</li>
-      <li>Vulnerability scanners create detection storms.</li>
-      <li>Authentication retries flood dashboards.</li>
-      <li>Cloud telemetry generates duplicate incidents.</li>
-      <li>Analysts spend more time filtering noise than investigating threats.</li>
-    </ul>
-
-    <div class="article-callout">
-      A SIEM should improve visibility. It should not bury analysts under thousands of meaningless alerts.
-    </div>
-
-    <h2>Step 1: Identify the noisiest alerts</h2>
-
-    <p>
-      The fastest way to improve a SIEM is by identifying the alert types generating the highest volume.
-      In most environments, a small number of detections create the majority of analyst workload.
-    </p>
-
-    <ul>
-      <li>Failed logins</li>
-      <li>PowerShell executions</li>
-      <li>DNS anomalies</li>
-      <li>Internal scans</li>
-      <li>Cloud authentication events</li>
-    </ul>
-
-    <h2>Step 2: Prioritize critical assets</h2>
-
-    <p>
-      Not every system should generate the same alert severity. A failed login on a test workstation is not equal to a failed login on a domain controller.
-    </p>
-
-    <ul>
-      <li>Domain controllers</li>
-      <li>Backup infrastructure</li>
-      <li>Cloud administration systems</li>
-      <li>Production workloads</li>
-      <li>Identity providers</li>
-    </ul>
-
-    <p>
-      Asset priority helps analysts focus on systems that create actual business risk.
-    </p>
-
-    <h2>Step 3: Suppress known benign activity</h2>
-
-    <p>
-      Security teams waste enormous time investigating activity they already understand.
-      Known, approved, recurring activity should not constantly create high-priority incidents.
-    </p>
-
-    <ul>
-      <li>Patch management platforms</li>
-      <li>Internal scanners</li>
-      <li>Approved admin scripts</li>
-      <li>Monitoring systems</li>
-      <li>Backup jobs</li>
-    </ul>
-
-    <h2>Step 4: Build better triage workflows</h2>
-
-    <p>
-      Many SOC teams lack standardized triage procedures. Without playbooks, every analyst investigates alerts differently.
-    </p>
-
-    <ul>
-      <li>What to investigate first</li>
-      <li>What tools to check</li>
-      <li>How to escalate incidents</li>
-      <li>How to document findings</li>
-    </ul>
-
-    <p>
-      Strong playbooks reduce response time, improve consistency, and make new analysts productive faster.
-    </p>
-
-    <h2>Final thoughts</h2>
-
-    <p>
-      SIEM tuning is not about removing visibility. It is about improving signal quality.
-    </p>
-
-    <p>
-      The fastest way to reduce SIEM noise is by prioritizing meaningful alerts, suppressing known activity, improving workflows, and helping analysts focus on threats that matter most.
-    </p>
-
-    <div class="article-cta">
-      <h3>Need help tuning your SIEM?</h3>
       <p>
-        CyberBench helps teams reduce alert noise, improve dashboards, build triage playbooks, and create workflows that keep analysts focused on real threats.
+        Security teams do not usually fail because they lack alerts.
+        They fail because they have too many.
       </p>
-      <a class="btn btn-primary" href="/submit-ticket.html">Deploy Security Now</a>
+
+      <p>
+        Most organizations deploy a SIEM expecting centralized visibility,
+        faster incident response, and stronger detection capability.
+        Instead, many teams are immediately overwhelmed with thousands of
+        low-value alerts, duplicate detections, and false positives.
+      </p>
+
+      <p>
+        The result is alert fatigue. Analysts become overwhelmed,
+        critical threats get buried,
+        and security operations become reactive instead of strategic.
+      </p>
+
+      <h2>
+        Why SIEM noise happens
+      </h2>
+
+      <p>
+        Most SIEM environments begin with default rulesets,
+        broad log ingestion,
+        and very little environment-specific tuning.
+      </p>
+
+      <ul>
+
+        <li>
+          Normal administrator activity triggers unnecessary alerts.
+        </li>
+
+        <li>
+          Vulnerability scanners create detection storms.
+        </li>
+
+        <li>
+          Authentication retries flood dashboards.
+        </li>
+
+        <li>
+          Cloud telemetry generates duplicate incidents.
+        </li>
+
+        <li>
+          Analysts spend more time filtering noise than investigating threats.
+        </li>
+
+      </ul>
+
+      <div class="article-callout">
+
+        A SIEM should improve visibility.
+        It should not bury analysts under thousands
+        of meaningless alerts.
+
+      </div>
+
+      <h2>
+        Step 1: Identify the noisiest alerts
+      </h2>
+
+      <p>
+        The fastest way to improve a SIEM is by identifying
+        the alert types generating the highest volume.
+      </p>
+
+      <p>
+        In most environments,
+        a small number of detections create the majority
+        of analyst workload.
+      </p>
+
+      <ul>
+
+        <li>Failed logins</li>
+
+        <li>PowerShell executions</li>
+
+        <li>DNS anomalies</li>
+
+        <li>Internal scans</li>
+
+        <li>Cloud authentication events</li>
+
+      </ul>
+
     </div>
+
   </article>
+
+  <!-- RIGHT SIDEBAR -->
+  <aside class="article-sidebar">
+
+    <div class="sidebar-card">
+
+      <div class="sidebar-title">
+
+        ⚡ Top Stories This Week
+
+      </div>
+
+      <div class="sidebar-list">
+
+        <!-- STORY -->
+        <a class="sidebar-post" href="/scan-to-fix.html">
+
+          <img
+            src="/images/vulnerability.jpg"
+            alt="Vulnerability"
+          >
+
+          <div>
+
+            <span>
+              VULNERABILITY
+            </span>
+
+            <strong>
+              “Scan → fix” is broken.
+              Here’s the workflow that works.
+            </strong>
+
+            <small>
+              May 14, 2026
+            </small>
+
+          </div>
+
+        </a>
+
+        <!-- STORY -->
+        <a class="sidebar-post" href="/backup-validation.html">
+
+          <img
+            src="/images/recovery.jpg"
+            alt="Recovery"
+          >
+
+          <div>
+
+            <span>
+              RECOVERY
+            </span>
+
+            <strong>
+              Backups that actually restore:
+              a 30-day validation plan
+            </strong>
+
+            <small>
+              May 12, 2026
+            </small>
+
+          </div>
+
+        </a>
+
+        <!-- STORY -->
+        <a class="sidebar-post" href="/zero-trust-smb.html">
+
+          <img
+            src="/images/zero-trust.jpg"
+            alt="Zero Trust"
+          >
+
+          <div>
+
+            <span>
+              ZERO TRUST
+            </span>
+
+            <strong>
+              Zero Trust for SMBs:
+              where to start in the first 30 days
+            </strong>
+
+            <small>
+              May 9, 2026
+            </small>
+
+          </div>
+
+        </a>
+
+      </div>
+
+      <a class="sidebar-button" href="/blog.html">
+        View all articles →
+      </a>
+
+    </div>
+
+  </aside>
+
 </main>
-
-<footer class="footer">
-  <nav class="footer-nav">
-    <a href="/services.html">Services</a>
-    <a href="/about.html">About</a>
-    <a href="/blog.html">Blog</a>
-    <a href="/client-portal.html">Client Portal</a>
-    <a href="/consultant-portal.html">Consultant Portal</a>
-  </nav>
-
-  <div class="footer-bottom">
-    © 2026 CyberBench. All rights reserved.
-  </div>
-</footer>
-
-</body>
-</html>
