@@ -1,0 +1,518 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Zero Trust for SMBs | CyberBench</title>
+
+  <link rel="icon" type="image/png" href="/favicon.png">
+
+  <link rel="stylesheet" href="/styles.css" />
+
+  <style>
+
+    body{
+      background:
+        radial-gradient(circle at top left, rgba(45,85,255,.16), transparent 30%),
+        #050816;
+
+      color:#f3f6ff;
+    }
+
+    .blog-wrap{
+      width:min(900px,92%);
+      margin:0 auto;
+      padding:80px 0;
+    }
+
+    .blog-tag{
+      display:inline-flex;
+      align-items:center;
+
+      height:34px;
+      padding:0 14px;
+
+      border-radius:999px;
+
+      background:rgba(77,124,255,.12);
+
+      border:1px solid rgba(77,124,255,.28);
+
+      color:#7da2ff;
+
+      font-size:12px;
+      font-weight:700;
+      letter-spacing:.08em;
+
+      margin-bottom:24px;
+    }
+
+    .blog-title{
+      font-size:56px;
+      line-height:1.05;
+      font-weight:800;
+      letter-spacing:-2px;
+
+      max-width:14ch;
+
+      margin:0 0 24px;
+    }
+
+    .blog-meta{
+      color:rgba(255,255,255,.55);
+
+      font-size:15px;
+
+      margin-bottom:40px;
+    }
+
+    .blog-intro{
+      font-size:22px;
+      line-height:1.7;
+
+      color:rgba(255,255,255,.88);
+
+      margin-bottom:40px;
+    }
+
+    .blog-wrap p{
+      color:rgba(255,255,255,.74);
+
+      line-height:1.9;
+
+      font-size:18px;
+
+      margin-bottom:28px;
+    }
+
+    .blog-wrap h2{
+      font-size:34px;
+      line-height:1.2;
+
+      margin-top:70px;
+      margin-bottom:20px;
+
+      letter-spacing:-1px;
+    }
+
+    .blog-wrap ul{
+      padding-left:22px;
+      margin-bottom:34px;
+    }
+
+    .blog-wrap li{
+      margin-bottom:14px;
+
+      color:rgba(255,255,255,.74);
+
+      line-height:1.8;
+      font-size:18px;
+    }
+
+    .article-callout{
+      background:rgba(255,255,255,.03);
+
+      border:1px solid rgba(255,255,255,.06);
+
+      border-left:4px solid #4d7cff;
+
+      padding:28px;
+
+      border-radius:20px;
+
+      margin:40px 0;
+
+      line-height:1.8;
+    }
+
+    .footer{
+      border-top:1px solid rgba(255,255,255,.06);
+
+      margin-top:80px;
+      padding:40px 0;
+
+      text-align:center;
+    }
+
+    .footer-nav{
+      display:flex;
+      justify-content:center;
+      gap:24px;
+      flex-wrap:wrap;
+
+      margin-bottom:20px;
+    }
+
+    .footer-nav a{
+      color:#fff;
+      text-decoration:none;
+    }
+
+    .footer-bottom{
+      color:rgba(255,255,255,.55);
+    }
+
+    @media(max-width:900px){
+
+      .blog-title{
+        font-size:42px;
+      }
+
+      .blog-intro{
+        font-size:19px;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+<header class="nav">
+
+  <div class="container nav_row">
+
+    <a class="brand" href="/index.html">
+      <span class="logo">X</span>
+      <span>CyberBench</span>
+    </a>
+
+    <nav class="nav_links">
+
+      <a href="/services.html">Services</a>
+
+      <a href="/about.html">About</a>
+
+      <a href="/blog.html" class="nav-active">Blog</a>
+
+      <a href="/client-portal.html">Client Portal</a>
+
+      <a href="/consultant-portal.html">Consultant Portal</a>
+
+      <a class="btn btn-primary" href="/submit-ticket.html">
+        Deploy Security Now
+      </a>
+
+    </nav>
+
+  </div>
+
+</header>
+
+<main class="blog-wrap">
+
+  <div class="blog-tag">
+    ZERO TRUST
+  </div>
+
+  <h1 class="blog-title">
+    Zero Trust for SMBs:
+    where to start in the first 30 days
+  </h1>
+
+  <div class="blog-meta">
+    6 min read · Guide
+  </div>
+
+  <p class="blog-intro">
+    Zero Trust is often treated like an enterprise-only strategy designed for massive security teams and billion-dollar organizations.
+    In reality, small and mid-sized businesses are some of the organizations that benefit from it the most.
+  </p>
+
+  <p>
+    SMBs face the same threats as large enterprises:
+    ransomware, phishing campaigns, credential theft, cloud compromise, insider threats, and supply chain attacks.
+    The difference is that smaller organizations usually have fewer resources,
+    less visibility, and smaller security teams to respond.
+  </p>
+
+  <p>
+    The good news is that Zero Trust does not require replacing your entire environment.
+    It starts with reducing unnecessary trust inside the network.
+  </p>
+
+  <div class="article-callout">
+
+    Zero Trust is not a product.
+    It is a strategy focused on continuous verification, visibility, and least privilege access.
+
+  </div>
+
+  <h2>
+    Why Traditional Security Models Fail
+  </h2>
+
+  <p>
+    Traditional environments assumed users inside the network could be trusted automatically.
+  </p>
+
+  <p>
+    Modern attacks completely break that assumption.
+  </p>
+
+  <p>
+    Attackers now:
+  </p>
+
+  <ul>
+
+    <li>Steal valid credentials</li>
+
+    <li>Move laterally between systems</li>
+
+    <li>Exploit VPN access</li>
+
+    <li>Use unmanaged devices</li>
+
+    <li>Target cloud identities</li>
+
+  </ul>
+
+  <p>
+    Once attackers gain access,
+    flat networks and excessive privileges allow them to expand rapidly.
+  </p>
+
+  <h2>
+    Day 1–7: Focus on Identity
+  </h2>
+
+  <p>
+    Identity is the foundation of Zero Trust.
+  </p>
+
+  <p>
+    Most breaches eventually involve compromised credentials,
+    making identity protection one of the fastest ways to reduce exposure.
+  </p>
+
+  <h3>
+    Enable MFA Everywhere
+  </h3>
+
+  <p>
+    Multi-factor authentication dramatically reduces account compromise risk.
+  </p>
+
+  <p>
+    Prioritize:
+  </p>
+
+  <ul>
+
+    <li>Email platforms</li>
+
+    <li>Cloud admin accounts</li>
+
+    <li>VPN access</li>
+
+    <li>Remote management tools</li>
+
+    <li>Financial systems</li>
+
+  </ul>
+
+  <h3>
+    Remove Stale Accounts
+  </h3>
+
+  <p>
+    Old employee accounts and forgotten admin credentials create unnecessary attack surface.
+  </p>
+
+  <p>
+    Review:
+  </p>
+
+  <ul>
+
+    <li>Inactive users</li>
+
+    <li>Shared accounts</li>
+
+    <li>Temporary contractors</li>
+
+    <li>Unused administrator accounts</li>
+
+  </ul>
+
+  <h2>
+    Day 8–14: Improve Device Trust
+  </h2>
+
+  <p>
+    Zero Trust also requires validating devices before granting access.
+  </p>
+
+  <p>
+    Unpatched and unmanaged systems remain one of the largest attack surfaces for SMBs.
+  </p>
+
+  <p>
+    Organizations should:
+  </p>
+
+  <ul>
+
+    <li>Deploy endpoint protection</li>
+
+    <li>Enable encryption</li>
+
+    <li>Patch high-risk systems</li>
+
+    <li>Inventory unmanaged devices</li>
+
+    <li>Centralize endpoint visibility</li>
+
+  </ul>
+
+  <h2>
+    Day 15–21: Control Access
+  </h2>
+
+  <p>
+    One of the biggest goals of Zero Trust is reducing unnecessary access paths.
+  </p>
+
+  <p>
+    Users should only access the systems required for their roles.
+  </p>
+
+  <p>
+    Prioritize:
+  </p>
+
+  <ul>
+
+    <li>Network segmentation</li>
+
+    <li>Least privilege access</li>
+
+    <li>Restricted admin privileges</li>
+
+    <li>Cloud permission reviews</li>
+
+    <li>VPN access reduction</li>
+
+  </ul>
+
+  <h2>
+    Day 22–30: Improve Visibility
+  </h2>
+
+  <p>
+    Visibility is critical to Zero Trust maturity.
+  </p>
+
+  <p>
+    Organizations should centralize:
+  </p>
+
+  <ul>
+
+    <li>Authentication logs</li>
+
+    <li>Firewall telemetry</li>
+
+    <li>Endpoint activity</li>
+
+    <li>Cloud events</li>
+
+    <li>Administrative actions</li>
+
+  </ul>
+
+  <p>
+    Monitoring should focus on:
+  </p>
+
+  <ul>
+
+    <li>Failed logins</li>
+
+    <li>Privilege escalation</li>
+
+    <li>Suspicious PowerShell activity</li>
+
+    <li>Abnormal geographic access</li>
+
+    <li>New administrator creation</li>
+
+  </ul>
+
+  <h2>
+    Common SMB Mistakes
+  </h2>
+
+  <p>
+    Many SMBs delay Zero Trust because they assume:
+  </p>
+
+  <ul>
+
+    <li>It is too expensive</li>
+
+    <li>It requires enterprise infrastructure</li>
+
+    <li>It requires replacing everything</li>
+
+  </ul>
+
+  <p>
+    In reality,
+    small improvements in identity security, segmentation, visibility,
+    and access control can dramatically reduce exposure.
+  </p>
+
+  <h2>
+    Final Thoughts
+  </h2>
+
+  <p>
+    Zero Trust is not about eliminating trust completely.
+    It is about reducing unnecessary trust and continuously validating risk.
+  </p>
+
+  <p>
+    SMBs do not need to build enterprise-scale architectures overnight.
+    They simply need to begin reducing attack surface,
+    improving visibility,
+    and enforcing stronger access controls.
+  </p>
+
+  <p>
+    The organizations that start early build resilience faster,
+    reduce ransomware exposure,
+    and create safer operating environments over time.
+  </p>
+
+</main>
+
+<footer class="footer">
+
+  <nav class="footer-nav">
+
+    <a href="/services.html">Services</a>
+
+    <a href="/about.html">About</a>
+
+    <a href="/blog.html">Blog</a>
+
+    <a href="/client-portal.html">Client Portal</a>
+
+    <a href="/consultant-portal.html">Consultant Portal</a>
+
+  </nav>
+
+  <div class="footer-bottom">
+    © 2026 CyberBench. All rights reserved.
+  </div>
+
+</footer>
+
+</body>
+</html>
