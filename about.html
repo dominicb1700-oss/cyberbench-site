@@ -12,12 +12,14 @@
 
   <style>
 
-    .nav{
-      position:sticky;
-      top:0;
-      z-index:999;
+    /* ===== NAVBAR FIX ===== */
 
-      background:rgba(5,8,22,.92);
+    .nav{
+      position:sticky !important;
+      top:0 !important;
+      z-index:9999 !important;
+
+      background:rgba(5,8,22,.96) !important;
 
       backdrop-filter:blur(14px);
 
@@ -44,6 +46,8 @@
       font-size:14px;
 
       transition:.2s ease;
+
+      white-space:nowrap;
     }
 
     .nav_links a:hover{
@@ -51,11 +55,18 @@
     }
 
     .nav_links a.nav-active{
-      color:#6f8cff;
+      color:#6f8cff !important;
 
       border-bottom:1px solid #4d7cff;
 
       padding-bottom:10px;
+    }
+
+    .nav_links a.btn,
+    .nav_links a.btn.nav-active{
+      border-bottom:none !important;
+      padding-bottom:0 !important;
+      color:#fff !important;
     }
 
     .nav_links .btn{
@@ -293,21 +304,23 @@
   document.getElementById("year").textContent =
     new Date().getFullYear();
 
-  (function () {
+  document.addEventListener("DOMContentLoaded", function () {
+
+    const currentPage =
+      window.location.pathname.split("/").pop() || "index.html";
 
     const navLinks =
-      document.querySelectorAll(".nav_links a[href^='/']");
-
-    const currentPath =
-      window.location.pathname.replace(/\/$/, "") || "/";
+      document.querySelectorAll(".nav_links a");
 
     navLinks.forEach(link => {
 
-      const linkPath =
-        (link.getAttribute("href") || "")
-        .replace(/\/$/, "") || "/";
+      const linkPage =
+        link.getAttribute("href").split("/").pop();
 
-      if (linkPath === currentPath) {
+      if (
+        linkPage === currentPage &&
+        !link.classList.contains("btn")
+      ) {
 
         link.classList.add("nav-active");
 
@@ -319,7 +332,7 @@
 
     });
 
-  })();
+  });
 
 </script>
 
