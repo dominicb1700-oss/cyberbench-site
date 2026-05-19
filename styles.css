@@ -2415,3 +2415,50 @@ main.container {
 .nav_links .btn{
   margin-left: 6px;
 }
+/* ===== Sticky Active Navbar Fix ===== */
+
+.nav{
+  position: sticky !important;
+  top: 0 !important;
+  z-index: 9999 !important;
+  background: rgba(5, 8, 22, 0.96) !important;
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.nav_row{
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav_links{
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.nav_links a{
+  color: rgba(255,255,255,.78);
+  text-decoration: none;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.nav_links a:hover{
+  color: #7c97ff;
+}
+
+.nav_links a.nav-active{
+  color: #6f8cff !important;
+  border-bottom: 1px solid #4d7cff;
+  padding-bottom: 10px;
+}
+
+.nav_links a.btn,
+.nav_links a.btn.nav-active{
+  border-bottom: none !important;
+  padding-bottom: 0 !important;
+  color: #fff !important;
+}
