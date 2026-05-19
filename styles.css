@@ -2373,3 +2373,45 @@ main.container {
   box-shadow:
     0 10px 30px rgba(77,124,255,.35);
 }
+.nav{
+  position: sticky;
+  top: 0;
+  z-index: 999;
+  background: rgba(5, 8, 22, 0.92);
+  backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+
+.nav_row{
+  min-height: 64px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.nav_links{
+  display: flex;
+  align-items: center;
+  gap: 24px;
+}
+
+.nav_links a{
+  color: rgba(255,255,255,.78);
+  text-decoration: none;
+  font-size: 14px;
+  white-space: nowrap;
+}
+
+.nav_links a:hover,
+.nav_links a.nav-active{
+  color: #6f8cff;
+}
+
+.nav_links a.nav-active{
+  border-bottom: 1px solid #4d7cff;
+  padding-bottom: 10px;
+}
+
+.nav_links .btn{
+  margin-left: 6px;
+}
