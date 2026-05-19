@@ -6,6 +6,22 @@
   <title>Client Portal | CyberBench</title>
   <link rel="stylesheet" href="/styles.css" />
 </head>
+<script>
+  (function () {
+    const navLinks = document.querySelectorAll(".nav_links a[href^='/']");
+    const currentPath = window.location.pathname.replace(/\/$/, "") || "/";
+
+    navLinks.forEach(link => {
+      const linkPath = (link.getAttribute("href") || "").replace(/\/$/, "") || "/";
+
+      if (linkPath === currentPath) {
+        link.classList.add("nav-active");
+      } else {
+        link.classList.remove("nav-active");
+      }
+    });
+  })();
+</script>
 <body>
 
 <header class="nav">
