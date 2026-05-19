@@ -1,0 +1,535 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+
+  <title>Cyber Incident Response | CyberBench</title>
+
+  <link rel="icon" type="image/png" href="/favicon.png">
+
+  <link rel="stylesheet" href="/styles.css" />
+
+  <style>
+
+    body{
+      background:
+        radial-gradient(circle at top left, rgba(45,85,255,.16), transparent 30%),
+        #050816;
+
+      color:#f3f6ff;
+    }
+
+    .blog-wrap{
+      width:min(900px,92%);
+      margin:0 auto;
+      padding:80px 0;
+    }
+
+    .blog-tag{
+      display:inline-flex;
+      align-items:center;
+
+      height:34px;
+      padding:0 14px;
+
+      border-radius:999px;
+
+      background:rgba(77,124,255,.12);
+
+      border:1px solid rgba(77,124,255,.28);
+
+      color:#7da2ff;
+
+      font-size:12px;
+      font-weight:700;
+      letter-spacing:.08em;
+
+      margin-bottom:24px;
+    }
+
+    .blog-title{
+      font-size:56px;
+      line-height:1.05;
+      font-weight:800;
+      letter-spacing:-2px;
+
+      max-width:13ch;
+
+      margin:0 0 24px;
+    }
+
+    .blog-meta{
+      color:rgba(255,255,255,.55);
+
+      font-size:15px;
+
+      margin-bottom:40px;
+    }
+
+    .blog-intro{
+      font-size:22px;
+      line-height:1.7;
+
+      color:rgba(255,255,255,.88);
+
+      margin-bottom:40px;
+    }
+
+    .blog-wrap p{
+      color:rgba(255,255,255,.74);
+
+      line-height:1.9;
+
+      font-size:18px;
+
+      margin-bottom:28px;
+    }
+
+    .blog-wrap h2{
+      font-size:34px;
+      line-height:1.2;
+
+      margin-top:70px;
+      margin-bottom:20px;
+
+      letter-spacing:-1px;
+    }
+
+    .blog-wrap h3{
+      font-size:26px;
+
+      margin-top:42px;
+      margin-bottom:16px;
+
+      letter-spacing:-.5px;
+    }
+
+    .blog-wrap ul{
+      padding-left:22px;
+      margin-bottom:34px;
+    }
+
+    .blog-wrap li{
+      margin-bottom:14px;
+
+      color:rgba(255,255,255,.74);
+
+      line-height:1.8;
+      font-size:18px;
+    }
+
+    .article-callout{
+      background:rgba(255,255,255,.03);
+
+      border:1px solid rgba(255,255,255,.06);
+
+      border-left:4px solid #4d7cff;
+
+      padding:28px;
+
+      border-radius:20px;
+
+      margin:40px 0;
+
+      line-height:1.8;
+    }
+
+    .footer{
+      border-top:1px solid rgba(255,255,255,.06);
+
+      margin-top:80px;
+      padding:40px 0;
+
+      text-align:center;
+    }
+
+    .footer-nav{
+      display:flex;
+      justify-content:center;
+      gap:24px;
+      flex-wrap:wrap;
+
+      margin-bottom:20px;
+    }
+
+    .footer-nav a{
+      color:#fff;
+      text-decoration:none;
+    }
+
+    .footer-bottom{
+      color:rgba(255,255,255,.55);
+    }
+
+    @media(max-width:900px){
+
+      .blog-title{
+        font-size:42px;
+      }
+
+      .blog-intro{
+        font-size:19px;
+      }
+
+    }
+
+  </style>
+
+</head>
+
+<body>
+
+<header class="nav">
+
+  <div class="container nav_row">
+
+    <a class="brand" href="/index.html">
+      <span class="logo">X</span>
+      <span>CyberBench</span>
+    </a>
+
+    <nav class="nav_links">
+
+      <a href="/services.html">Services</a>
+
+      <a href="/about.html">About</a>
+
+      <a href="/blog.html" class="nav-active">Blog</a>
+
+      <a href="/client-portal.html">Client Portal</a>
+
+      <a href="/consultant-portal.html">Consultant Portal</a>
+
+      <a class="btn btn-primary" href="/submit-ticket.html">
+        Deploy Security Now
+      </a>
+
+    </nav>
+
+  </div>
+
+</header>
+
+<main class="blog-wrap">
+
+  <div class="blog-tag">
+    INCIDENT
+  </div>
+
+  <h1 class="blog-title">
+    What to do in the first 30 minutes of a cyber incident
+  </h1>
+
+  <div class="blog-meta">
+    6 min read · Playbook
+  </div>
+
+  <p class="blog-intro">
+    The first 30 minutes of a cyber incident often determine the outcome.
+    Organizations that respond quickly and methodically reduce operational impact,
+    preserve visibility, and improve containment effectiveness.
+  </p>
+
+  <p>
+    Unfortunately, many organizations enter incidents without clear ownership,
+    communication workflows, or operational procedures.
+    This creates confusion during the exact moment clarity matters most.
+  </p>
+
+  <p>
+    Strong incident response is not just technical.
+    It is operational discipline under pressure.
+  </p>
+
+  <div class="article-callout">
+
+    During a cyber incident, confusion spreads faster than malware.
+    The first priority is stabilizing operations and creating structure.
+
+  </div>
+
+  <h2>
+    Minute 1–5: Confirm the Incident
+  </h2>
+
+  <p>
+    The first step is determining whether the event is real,
+    what systems may be affected,
+    and whether the organization is facing operational risk.
+  </p>
+
+  <p>
+    Security teams should immediately:
+  </p>
+
+  <ul>
+
+    <li>Validate alerts</li>
+
+    <li>Identify impacted systems</li>
+
+    <li>Determine severity</li>
+
+    <li>Review active user sessions</li>
+
+    <li>Check for suspicious lateral movement</li>
+
+  </ul>
+
+  <p>
+    Avoid rushing directly into containment without understanding the scope.
+    Premature actions can destroy visibility and complicate investigations.
+  </p>
+
+  <h2>
+    Minute 5–10: Establish Leadership
+  </h2>
+
+  <p>
+    Every incident requires clear ownership.
+  </p>
+
+  <p>
+    Organizations should assign:
+  </p>
+
+  <ul>
+
+    <li>Incident lead</li>
+
+    <li>Technical lead</li>
+
+    <li>Executive communication lead</li>
+
+    <li>Documentation owner</li>
+
+  </ul>
+
+  <p>
+    Communication channels should be established immediately.
+  </p>
+
+  <p>
+    Teams should avoid relying on potentially compromised platforms when possible.
+  </p>
+
+  <h2>
+    Minute 10–15: Stabilize the Environment
+  </h2>
+
+  <p>
+    Once the incident is confirmed,
+    teams should begin reducing immediate risk.
+  </p>
+
+  <p>
+    Common stabilization actions include:
+  </p>
+
+  <ul>
+
+    <li>Isolating affected endpoints</li>
+
+    <li>Disabling compromised accounts</li>
+
+    <li>Restricting administrative access</li>
+
+    <li>Blocking malicious IPs</li>
+
+    <li>Segmenting affected systems</li>
+
+  </ul>
+
+  <p>
+    The goal is containment without destroying forensic visibility.
+  </p>
+
+  <h2>
+    Minute 15–20: Preserve Evidence
+  </h2>
+
+  <p>
+    Many organizations accidentally destroy critical evidence during response operations.
+  </p>
+
+  <p>
+    Preserve:
+  </p>
+
+  <ul>
+
+    <li>System logs</li>
+
+    <li>Firewall telemetry</li>
+
+    <li>Endpoint alerts</li>
+
+    <li>Authentication events</li>
+
+    <li>Memory captures when appropriate</li>
+
+  </ul>
+
+  <p>
+    Documentation should begin immediately.
+  </p>
+
+  <p>
+    Track:
+  </p>
+
+  <ul>
+
+    <li>Timeline of events</li>
+
+    <li>Actions taken</li>
+
+    <li>Systems impacted</li>
+
+    <li>Decision points</li>
+
+    <li>Containment actions</li>
+
+  </ul>
+
+  <h2>
+    Minute 20–25: Assess Business Impact
+  </h2>
+
+  <p>
+    Technical severity does not always equal operational severity.
+  </p>
+
+  <p>
+    Organizations should evaluate:
+  </p>
+
+  <ul>
+
+    <li>Critical systems affected</li>
+
+    <li>Customer impact</li>
+
+    <li>Operational downtime</li>
+
+    <li>Data exposure risk</li>
+
+    <li>Regulatory obligations</li>
+
+  </ul>
+
+  <p>
+    Executive stakeholders should receive concise,
+    operationally focused updates.
+  </p>
+
+  <h2>
+    Minute 25–30: Establish the Operating Picture
+  </h2>
+
+  <p>
+    By the 30-minute mark,
+    the organization should understand:
+  </p>
+
+  <ul>
+
+    <li>What happened</li>
+
+    <li>What systems are affected</li>
+
+    <li>What actions were taken</li>
+
+    <li>What the immediate priorities are</li>
+
+    <li>What additional resources may be required</li>
+
+  </ul>
+
+  <p>
+    The objective is not solving the incident within 30 minutes.
+  </p>
+
+  <p>
+    The objective is creating operational control.
+  </p>
+
+  <h2>
+    Common Incident Response Mistakes
+  </h2>
+
+  <p>
+    Organizations frequently:
+  </p>
+
+  <ul>
+
+    <li>Panic and overreact</li>
+
+    <li>Destroy evidence</li>
+
+    <li>Shut systems down too early</li>
+
+    <li>Fail to document decisions</li>
+
+    <li>Delay executive communication</li>
+
+    <li>Operate without clear ownership</li>
+
+  </ul>
+
+  <p>
+    Mature incident response depends on structure,
+    communication,
+    and repeatable workflows.
+  </p>
+
+  <h2>
+    Final Thoughts
+  </h2>
+
+  <p>
+    The first 30 minutes of a cyber incident are about stabilization,
+    coordination,
+    and visibility.
+  </p>
+
+  <p>
+    Organizations that prepare before incidents occur respond faster,
+    contain threats more effectively,
+    and reduce operational damage significantly.
+  </p>
+
+  <p>
+    Incident response is not only about technology.
+    It is about maintaining operational clarity during chaos.
+  </p>
+
+</main>
+
+<footer class="footer">
+
+  <nav class="footer-nav">
+
+    <a href="/services.html">Services</a>
+
+    <a href="/about.html">About</a>
+
+    <a href="/blog.html">Blog</a>
+
+    <a href="/client-portal.html">Client Portal</a>
+
+    <a href="/consultant-portal.html">Consultant Portal</a>
+
+  </nav>
+
+  <div class="footer-bottom">
+    © 2026 CyberBench. All rights reserved.
+  </div>
+
+</footer>
+
+</body>
+</html>
