@@ -2681,3 +2681,24 @@ box-sizing:border-box;
   box-shadow:0 0 10px rgba(77,124,255,.8) !important;
   border-radius:999px !important;
 }
+.nav_links a::after{
+
+display:none !important;
+
+}
+
+.nav_links a.nav-active::after{
+
+display:none !important;
+
+}
+
+.nav_links a.nav-active{
+
+color:white !important;
+
+border:none !important;
+
+box-shadow:none !important;
+
+}
