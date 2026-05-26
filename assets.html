@@ -1,0 +1,466 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CyberBench Assets</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Inter, Arial, sans-serif; }
+    body { background: #050d18; color: #fff; }
+    .app { display: flex; min-height: 100vh; background: radial-gradient(circle at top right, rgba(0,123,255,.12), transparent 35%), #050d18; }
+
+    .sidebar { width: 250px; background: #07111f; border-right: 1px solid #132235; padding: 22px 14px; position: fixed; inset: 0 auto 0 0; }
+    .brand { display: flex; align-items: center; gap: 8px; font-size: 26px; font-weight: 800; margin-bottom: 30px; white-space: nowrap; }
+    .brand span { color: #1e9bff; }
+
+    .nav a { display: flex; align-items: center; gap: 12px; color: #c0ccdc; text-decoration: none; padding: 13px 14px; border-radius: 9px; margin-bottom: 8px; font-size: 15px; }
+    .nav a.active { background: linear-gradient(135deg, #0f8cff, #246bff); color: #fff; }
+    .badge { margin-left: auto; background: #ff4055; padding: 3px 8px; border-radius: 20px; font-size: 12px; }
+
+    .sidebar-card { position: absolute; bottom: 22px; left: 14px; right: 14px; background: #0b1828; border: 1px solid #172b42; border-radius: 12px; padding: 15px; }
+    .sidebar-card p { color: #9fafc4; font-size: 13px; margin: 5px 0 14px; }
+    .sidebar-card button { width: 100%; background: #111f31; border: 1px solid #1f334d; color: #fff; padding: 11px; border-radius: 8px; }
+
+    .main { margin-left: 250px; width: calc(100% - 250px); padding: 22px 28px; }
+    .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+    .search-top { width: 500px; background: #0b1625; border: 1px solid #1b2d42; color: white; padding: 13px 18px; border-radius: 10px; outline: none; }
+    .userbar { display: flex; align-items: center; gap: 18px; }
+    .btn { background: #0b1625; border: 1px solid #1b2d42; color: #fff; border-radius: 8px; padding: 13px 18px; font-weight: 700; cursor: pointer; }
+    .primary { background: linear-gradient(135deg,#0f8cff,#1f74ff); border: 0; }
+
+    .page-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; }
+    .page-title h1 { font-size: 32px; margin-bottom: 8px; }
+    .page-title p { color: #aeb9c8; font-size: 16px; }
+    .page-actions { display: flex; gap: 14px; }
+
+    .layout-grid { display: grid; grid-template-columns: 1fr 380px; gap: 22px; }
+    .cards { display: grid; grid-template-columns: repeat(5, 1fr); gap: 18px; margin-bottom: 22px; }
+
+    .card, .panel {
+      background: linear-gradient(180deg,#0d1a2b,#091525);
+      border: 1px solid #192b40;
+      border-radius: 12px;
+      box-shadow: 0 15px 40px rgba(0,0,0,.25);
+    }
+
+    .card { padding: 20px; min-height: 125px; position: relative; }
+    .card h3 { color: #d2dceb; font-size: 15px; margin-bottom: 12px; padding-left: 48px; }
+    .value { font-size: 36px; font-weight: 800; color: #199cff; padding-left: 48px; }
+    .sub { margin-top: 8px; color: #37d27f; font-size: 13px; padding-left: 48px; }
+    .green .value { color: #37d27f; }
+    .red .value { color: #ff4055; }
+    .orange .value { color: #ff8f1f; }
+    .purple .value { color: #9b5cff; }
+
+    .icon-box {
+      position: absolute;
+      left: 20px;
+      top: 28px;
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: rgba(25,156,255,.14);
+      display: grid;
+      place-items: center;
+      font-size: 22px;
+    }
+
+    .assets-panel { overflow: hidden; }
+    .filters { display: flex; gap: 12px; padding: 14px; border-bottom: 1px solid #17283c; }
+    .filters input, .filters select, .filters button {
+      background: #081422;
+      border: 1px solid #1b3048;
+      color: #d8e2ef;
+      padding: 12px 14px;
+      border-radius: 8px;
+    }
+    .filters input { flex: 1; }
+
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { padding: 15px 12px; border-bottom: 1px solid #17283c; text-align: left; color: #d3deec; vertical-align: middle; }
+    th { color: #8fa1b8; font-size: 13px; }
+    .small { color: #8fa1b8; font-size: 12px; margin-top: 5px; display: block; }
+    .asset-name { font-weight: 800; color: #fff; }
+
+    .pill { padding: 5px 10px; border-radius: 12px; font-size: 12px; white-space: nowrap; display: inline-block; }
+    .critical { background: rgba(255,64,85,.15); color: #ff596b; border: 1px solid rgba(255,64,85,.35); }
+    .high { background: rgba(255,143,31,.15); color: #ff9f33; border: 1px solid rgba(255,143,31,.35); }
+    .medium { background: rgba(255,191,47,.15); color: #ffbf2f; border: 1px solid rgba(255,191,47,.35); }
+    .low { background: rgba(55,210,127,.15); color: #37d27f; border: 1px solid rgba(55,210,127,.35); }
+    .online { color: #37d27f; font-weight: 700; }
+    .offline { color: #ff4055; font-weight: 700; }
+
+    .pagination { display: flex; justify-content: space-between; align-items: center; padding: 16px; color: #aeb9c8; }
+    .pages button { background: #0b1726; color: #d8e2ef; border: 1px solid #1b3048; padding: 8px 12px; border-radius: 8px; margin: 0 4px; }
+    .pages .active-page { background: #0f8cff; color: #fff; }
+
+    .right-col { display: flex; flex-direction: column; gap: 18px; }
+    .panel { padding: 20px; }
+    .panel h3 { font-size: 17px; margin-bottom: 16px; }
+    canvas { width: 100% !important; max-height: 220px; }
+
+    .os-row { display: grid; grid-template-columns: 130px 1fr 42px; align-items: center; gap: 12px; margin-bottom: 15px; color: #d3deec; font-size: 13px; }
+    .bar-bg { height: 10px; background: #17283c; border-radius: 10px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 10px; }
+    .blue { background: #1e9bff; }
+    .orange-fill { background: #ff8f1f; }
+    .purple-fill { background: #9b5cff; }
+    .green-fill { background: #37d27f; }
+    .red-fill { background: #ff4055; }
+
+    .activity { list-style: none; }
+    .activity li { display: flex; justify-content: space-between; gap: 12px; padding: 13px 0; color: #cfd9e6; font-size: 13px; }
+    .activity strong { display: block; margin-bottom: 4px; color: #fff; }
+    .time { color: #8fa1b8; white-space: nowrap; }
+
+    @media(max-width: 1300px) {
+      .cards, .layout-grid { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+      .main { margin-left: 0; width: 100%; }
+    }
+  </style>
+</head>
+
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">🛡️ Cyber<span>Bench</span></div>
+
+    <nav class="nav">
+      <a href="/dashboard">🏠 Dashboard</a>
+      <a href="/tickets">🎫 Tickets</a>
+      <a href="/alerts">⚠️ Alerts <span class="badge">23</span></a>
+      <a href="/kpi">📊 KPI & Reports</a>
+      <a class="active" href="/assets">💻 Assets</a>
+      <a href="/remediation">🛠️ Remediation</a>
+      <a href="/playbooks">📘 Playbooks</a>
+      <a href="/customers">👥 Customers</a>
+      <a href="/integrations">🔗 Integrations</a>
+      <a href="/administration">⚙️ Administration</a>
+    </nav>
+
+    <div class="sidebar-card">
+      <h4>Awesome SOC</h4>
+      <p>Enterprise Plan</p>
+      <button>View Settings</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <input class="search-top" placeholder="Search assets, IP, hostnames, users..." />
+      <div class="userbar">
+        <span>🔔</span>
+        <span>❔</span>
+        <strong>Admin User</strong>
+      </div>
+    </div>
+
+    <div class="page-head">
+      <div class="page-title">
+        <h1>Assets</h1>
+        <p>Discover, monitor, and manage all assets in your environment</p>
+      </div>
+      <div class="page-actions">
+        <button class="btn">Import Assets</button>
+        <button class="btn primary">＋ Add Asset</button>
+      </div>
+    </div>
+
+    <div class="layout-grid">
+      <section>
+        <div class="cards">
+          <div class="card">
+            <div class="icon-box">🖥️</div>
+            <h3>Total Assets</h3>
+            <div class="value">512</div>
+            <div class="sub">↑ 14% vs last 7 days</div>
+          </div>
+
+          <div class="card green">
+            <div class="icon-box">●</div>
+            <h3>Online Assets</h3>
+            <div class="value">392</div>
+            <div class="sub">↑ 9% vs last 7 days</div>
+          </div>
+
+          <div class="card red">
+            <div class="icon-box">🛡️</div>
+            <h3>High Risk Assets</h3>
+            <div class="value">37</div>
+            <div class="sub" style="color:#ff6b6b;">↑ 6% vs last 7 days</div>
+          </div>
+
+          <div class="card orange">
+            <div class="icon-box">⚠️</div>
+            <h3>Critical Vulnerabilities</h3>
+            <div class="value">128</div>
+            <div class="sub">↓ 8% vs last 7 days</div>
+          </div>
+
+          <div class="card purple">
+            <div class="icon-box">🧩</div>
+            <h3>Unmanaged Assets</h3>
+            <div class="value">24</div>
+            <div class="sub">↓ 4% vs last 7 days</div>
+          </div>
+        </div>
+
+        <div class="panel assets-panel">
+          <div class="filters">
+            <input placeholder="Search assets..." />
+            <select><option>Status</option></select>
+            <select><option>Asset Type</option></select>
+            <select><option>OS</option></select>
+            <select><option>Risk Level</option></select>
+            <button>More Filters</button>
+            <button>Export</button>
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Asset Name</th>
+                <th>IP Address</th>
+                <th>Asset Type</th>
+                <th>OS</th>
+                <th>Risk Level</th>
+                <th>Status</th>
+                <th>Last Seen</th>
+                <th>Owner</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td><span class="asset-name">🪟 WS-CA-1432</span><span class="small">Workstation</span></td>
+                <td>10.0.1.15</td>
+                <td>Workstation</td>
+                <td>Windows 11</td>
+                <td><span class="pill critical">Critical</span></td>
+                <td class="online">● Online</td>
+                <td>2m ago</td>
+                <td>Alex Johnson</td>
+                <td>•••</td>
+              </tr>
+
+              <tr>
+                <td><span class="asset-name">🗄️ DC-01</span><span class="small">Domain Controller</span></td>
+                <td>10.0.0.10</td>
+                <td>Server</td>
+                <td>Windows Server 2019</td>
+                <td><span class="pill high">High</span></td>
+                <td class="online">● Online</td>
+                <td>1m ago</td>
+                <td>Sarah Kim</td>
+                <td>•••</td>
+              </tr>
+
+              <tr>
+                <td><span class="asset-name">🗄️ FILE-SRV-02</span><span class="small">File Server</span></td>
+                <td>10.0.0.25</td>
+                <td>Server</td>
+                <td>Windows Server 2019</td>
+                <td><span class="pill high">High</span></td>
+                <td class="online">● Online</td>
+                <td>3m ago</td>
+                <td>David Chen</td>
+                <td>•••</td>
+              </tr>
+
+              <tr>
+                <td><span class="asset-name">🧱 FW-01</span><span class="small">Firewall</span></td>
+                <td>10.0.0.1</td>
+                <td>Network</td>
+                <td>FortiOS 7.2</td>
+                <td><span class="pill medium">Medium</span></td>
+                <td class="online">● Online</td>
+                <td>5m ago</td>
+                <td>Maria Garcia</td>
+                <td>•••</td>
+              </tr>
+
+              <tr>
+                <td><span class="asset-name">💻 LAPTOP-LA-09</span><span class="small">Laptop</span></td>
+                <td>10.0.2.45</td>
+                <td>Workstation</td>
+                <td>Windows 10</td>
+                <td><span class="pill low">Low</span></td>
+                <td class="online">● Online</td>
+                <td>8m ago</td>
+                <td>James Lee</td>
+                <td>•••</td>
+              </tr>
+
+              <tr>
+                <td><span class="asset-name">☁️ AWS-EC2-01</span><span class="small">Cloud Instance</span></td>
+                <td>52.15.23.10</td>
+                <td>Cloud</td>
+                <td>Ubuntu 22.04</td>
+                <td><span class="pill medium">Medium</span></td>
+                <td class="online">● Online</td>
+                <td>2m ago</td>
+                <td>Alex Johnson</td>
+                <td>•••</td>
+              </tr>
+
+              <tr>
+                <td><span class="asset-name">☁️ AWS-RDS-01</span><span class="small">Database</span></td>
+                <td>52.15.23.11</td>
+                <td>Database</td>
+                <td>PostgreSQL 14</td>
+                <td><span class="pill high">High</span></td>
+                <td class="online">● Online</td>
+                <td>2m ago</td>
+                <td>Sarah Kim</td>
+                <td>•••</td>
+              </tr>
+
+              <tr>
+                <td><span class="asset-name">🔌 SW-CORE-01</span><span class="small">Switch</span></td>
+                <td>10.0.0.2</td>
+                <td>Network</td>
+                <td>Cisco IOS 17</td>
+                <td><span class="pill low">Low</span></td>
+                <td class="offline">● Offline</td>
+                <td>15m ago</td>
+                <td>David Chen</td>
+                <td>•••</td>
+              </tr>
+
+              <tr>
+                <td><span class="asset-name">🗄️ APP-SRV-01</span><span class="small">Application Server</span></td>
+                <td>10.0.0.30</td>
+                <td>Server</td>
+                <td>Windows Server 2022</td>
+                <td><span class="pill high">High</span></td>
+                <td class="online">● Online</td>
+                <td>1m ago</td>
+                <td>Maria Garcia</td>
+                <td>•••</td>
+              </tr>
+
+              <tr>
+                <td><span class="asset-name">🪟 WS-NY-2045</span><span class="small">Workstation</span></td>
+                <td>10.0.3.17</td>
+                <td>Workstation</td>
+                <td>Windows 11</td>
+                <td><span class="pill medium">Medium</span></td>
+                <td class="online">● Online</td>
+                <td>4m ago</td>
+                <td>James Lee</td>
+                <td>•••</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="pagination">
+            <span>Showing 1 to 10 of 512 assets</span>
+            <div class="pages">
+              <button>‹</button>
+              <button class="active-page">1</button>
+              <button>2</button>
+              <button>3</button>
+              <button>4</button>
+              <button>5</button>
+              <button>...</button>
+              <button>51</button>
+              <button>›</button>
+            </div>
+            <span>Rows per page: 10</span>
+          </div>
+        </div>
+      </section>
+
+      <aside class="right-col">
+        <div class="panel">
+          <h3>Assets by Type</h3>
+          <canvas id="assetTypeChart"></canvas>
+        </div>
+
+        <div class="panel">
+          <h3>Operating Systems</h3>
+
+          <div class="os-row">
+            <span>🪟 Windows 11</span>
+            <div class="bar-bg"><div class="bar-fill blue" style="width:41%"></div></div>
+            <strong>41%</strong>
+          </div>
+
+          <div class="os-row">
+            <span>🪟 Server 2019</span>
+            <div class="bar-bg"><div class="bar-fill orange-fill" style="width:26%"></div></div>
+            <strong>26%</strong>
+          </div>
+
+          <div class="os-row">
+            <span>🪟 Windows 10</span>
+            <div class="bar-bg"><div class="bar-fill purple-fill" style="width:15%"></div></div>
+            <strong>15%</strong>
+          </div>
+
+          <div class="os-row">
+            <span>🐧 Ubuntu 22.04</span>
+            <div class="bar-bg"><div class="bar-fill green-fill" style="width:8%"></div></div>
+            <strong>8%</strong>
+          </div>
+
+          <div class="os-row">
+            <span>Other</span>
+            <div class="bar-bg"><div class="bar-fill red-fill" style="width:10%"></div></div>
+            <strong>10%</strong>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3>Recent Activity</h3>
+          <ul class="activity">
+            <li>
+              <div><strong>New asset discovered</strong><span class="small">AWS-EC2-01</span></div>
+              <span class="time">2m ago</span>
+            </li>
+            <li>
+              <div><strong>Asset went offline</strong><span class="small">SW-CORE-01</span></div>
+              <span class="time">15m ago</span>
+            </li>
+            <li>
+              <div><strong>Vulnerability detected</strong><span class="small">WS-CA-1432</span></div>
+              <span class="time">28m ago</span>
+            </li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </main>
+</div>
+
+<script>
+  Chart.defaults.color = "#9fafc4";
+  Chart.defaults.borderColor = "rgba(255,255,255,.08)";
+
+  new Chart(document.getElementById("assetTypeChart"), {
+    type: "doughnut",
+    data: {
+      labels: ["Workstation", "Server", "Network", "Cloud", "Database"],
+      datasets: [{
+        data: [230, 160, 60, 40, 22],
+        backgroundColor: ["#1e9bff", "#ff8f1f", "#9b5cff", "#37d27f", "#ff4055"],
+        borderWidth: 0
+      }]
+    },
+    options: {
+      cutout: "65%",
+      plugins: {
+        legend: {
+          position: "right",
+          labels: { usePointStyle: true, boxWidth: 10 }
+        }
+      }
+    }
+  });
+</script>
+</body>
+</html>
