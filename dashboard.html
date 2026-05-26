@@ -1,0 +1,469 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+
+<meta charset="UTF-8">
+
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
+/>
+
+<title>
+CyberBench Dashboard
+</title>
+
+<link
+rel="stylesheet"
+href="/styles.css"
+/>
+
+<style>
+
+body{
+
+margin:0;
+
+font-family:Inter,sans-serif;
+
+background:#050816;
+
+color:white;
+
+}
+
+.dashboard{
+
+width:min(1400px,92%);
+
+margin:auto;
+
+padding:60px 0;
+
+}
+
+.dashboard-top{
+
+display:flex;
+
+justify-content:space-between;
+
+align-items:center;
+
+margin-bottom:40px;
+
+flex-wrap:wrap;
+
+gap:20px;
+
+}
+
+.dashboard-title{
+
+font-size:42px;
+
+font-weight:800;
+
+margin:0;
+
+}
+
+.dashboard-sub{
+
+color:rgba(255,255,255,.65);
+
+margin-top:8px;
+
+}
+
+.logout-btn{
+
+padding:14px 24px;
+
+border:none;
+
+border-radius:16px;
+
+background:#4d7cff;
+
+color:white;
+
+font-weight:700;
+
+cursor:pointer;
+
+}
+
+.kpi-grid{
+
+display:grid;
+
+grid-template-columns:
+repeat(
+auto-fit,
+minmax(250px,1fr)
+);
+
+gap:24px;
+
+margin-bottom:40px;
+
+}
+
+.kpi{
+
+background:
+
+linear-gradient(
+180deg,
+rgba(15,22,35,.95),
+rgba(8,12,22,.98)
+);
+
+padding:28px;
+
+border-radius:24px;
+
+border:1px solid rgba(255,255,255,.06);
+
+}
+
+.kpi-label{
+
+color:rgba(255,255,255,.65);
+
+font-size:14px;
+
+}
+
+.kpi-value{
+
+font-size:42px;
+
+font-weight:800;
+
+margin-top:18px;
+
+}
+
+.panel{
+
+background:
+
+linear-gradient(
+180deg,
+rgba(15,22,35,.95),
+rgba(8,12,22,.98)
+);
+
+border-radius:28px;
+
+padding:30px;
+
+border:1px solid rgba(255,255,255,.06);
+
+margin-bottom:24px;
+
+}
+
+.panel-title{
+
+font-size:24px;
+
+font-weight:700;
+
+margin-bottom:20px;
+
+}
+
+.ticket{
+
+padding:18px;
+
+background:#0b1220;
+
+border-radius:18px;
+
+margin-bottom:14px;
+
+}
+
+.ticket-title{
+
+font-weight:700;
+
+margin-bottom:6px;
+
+}
+
+.ticket-sub{
+
+color:rgba(255,255,255,.65);
+
+font-size:14px;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="dashboard">
+
+<div class="dashboard-top">
+
+<div>
+
+<h1 class="dashboard-title">
+
+CyberBench Dashboard
+
+</h1>
+
+<div class="dashboard-sub">
+
+Real-time visibility into security operations
+
+</div>
+
+</div>
+
+<button
+class="logout-btn"
+onclick="logout()"
+>
+
+Logout
+
+</button>
+
+</div>
+
+<div class="kpi-grid">
+
+<div class="kpi">
+
+<div class="kpi-label">
+
+Open Tickets
+
+</div>
+
+<div class="kpi-value">
+
+12
+
+</div>
+
+</div>
+
+<div class="kpi">
+
+<div class="kpi-label">
+
+Critical Issues
+
+</div>
+
+<div class="kpi-value">
+
+2
+
+</div>
+
+</div>
+
+<div class="kpi">
+
+<div class="kpi-label">
+
+Assets Protected
+
+</div>
+
+<div class="kpi-value">
+
+384
+
+</div>
+
+</div>
+
+<div class="kpi">
+
+<div class="kpi-label">
+
+Compliance Status
+
+</div>
+
+<div class="kpi-value">
+
+94%
+
+</div>
+
+</div>
+
+</div>
+
+<div class="panel">
+
+<div class="panel-title">
+
+Recent Activity
+
+</div>
+
+<div class="ticket">
+
+<div class="ticket-title">
+
+Critical vulnerability remediation initiated
+
+</div>
+
+<div class="ticket-sub">
+
+Started 15 minutes ago
+
+</div>
+
+</div>
+
+<div class="ticket">
+
+<div class="ticket-title">
+
+Backup validation completed
+
+</div>
+
+<div class="ticket-sub">
+
+Completed today
+
+</div>
+
+</div>
+
+<div class="ticket">
+
+<div class="ticket-title">
+
+SIEM alert tuning review scheduled
+
+</div>
+
+<div class="ticket-sub">
+
+Tomorrow 9:00 AM
+
+</div>
+
+</div>
+
+</div>
+
+<div class="panel">
+
+<div class="panel-title">
+
+CyberBench Services
+
+</div>
+
+<div class="ticket">
+
+SIEM Monitoring
+
+</div>
+
+<div class="ticket">
+
+Vulnerability Management
+
+</div>
+
+<div class="ticket">
+
+Compliance Support
+
+</div>
+
+<div class="ticket">
+
+Backup Validation
+
+</div>
+
+<div class="ticket">
+
+Incident Response
+
+</div>
+
+</div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+
+const supabaseUrl =
+"https://zrcglelaiumuysuannwt.supabase.co";
+
+const supabaseKey =
+"sb_publishable_liTRmLDG57hTPCMjnasmEQ_n-477YSt";
+
+const supabase =
+window.supabase.createClient(
+supabaseUrl,
+supabaseKey
+);
+
+async function checkUser(){
+
+const{
+
+data
+
+}
+=
+await supabase
+.auth
+.getSession();
+
+if(
+!data.session
+){
+
+window.location.href=
+"/client-portal.html";
+
+}
+
+}
+
+async function logout(){
+
+await supabase
+.auth
+.signOut();
+
+window.location.href=
+"/client-portal.html";
+
+}
+
+checkUser();
+
+</script>
+
+</body>
+
+</html>
