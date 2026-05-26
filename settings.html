@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CyberBench Settings</title>
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Inter, Arial, sans-serif; }
+    body { background: #050d18; color: #fff; }
+    .app { display: flex; min-height: 100vh; background: radial-gradient(circle at top right, rgba(0,123,255,.12), transparent 35%), #050d18; }
+
+    .sidebar { width: 250px; background: #07111f; border-right: 1px solid #132235; padding: 22px 14px; position: fixed; inset: 0 auto 0 0; }
+    .brand { display: flex; align-items: center; gap: 8px; font-size: 26px; font-weight: 800; margin-bottom: 30px; white-space: nowrap; }
+    .brand span { color: #1e9bff; }
+
+    .nav a { display: flex; align-items: center; gap: 12px; color: #c0ccdc; text-decoration: none; padding: 13px 14px; border-radius: 9px; margin-bottom: 8px; font-size: 15px; }
+    .nav a.active { background: linear-gradient(135deg, #0f8cff, #246bff); color: #fff; }
+    .badge { margin-left: auto; background: #ff4055; padding: 3px 8px; border-radius: 20px; font-size: 12px; }
+
+    .sidebar-card { position: absolute; bottom: 22px; left: 14px; right: 14px; background: #0b1828; border: 1px solid #172b42; border-radius: 12px; padding: 15px; }
+    .sidebar-card p { color: #9fafc4; font-size: 13px; margin: 5px 0 14px; }
+    .sidebar-card button { width: 100%; background: #111f31; border: 1px solid #1f334d; color: #fff; padding: 11px; border-radius: 8px; }
+
+    .main { margin-left: 250px; width: calc(100% - 250px); padding: 22px 28px; }
+    .topbar { display: flex; justify-content: flex-end; align-items: center; margin-bottom: 34px; }
+    .userbar { display: flex; align-items: center; gap: 18px; }
+
+    .page-title { margin-bottom: 20px; }
+    .page-title h1 { font-size: 32px; margin-bottom: 8px; }
+    .page-title p { color: #aeb9c8; font-size: 16px; }
+
+    .settings-layout {
+      display: grid;
+      grid-template-columns: 270px 1fr;
+      gap: 22px;
+    }
+
+    .settings-menu,
+    .panel {
+      background: linear-gradient(180deg,#0d1a2b,#091525);
+      border: 1px solid #192b40;
+      border-radius: 12px;
+      box-shadow: 0 15px 40px rgba(0,0,0,.25);
+    }
+
+    .settings-menu {
+      padding: 14px;
+      min-height: 640px;
+    }
+
+    .settings-menu a {
+      display: flex;
+      gap: 12px;
+      padding: 15px;
+      color: #d3deec;
+      text-decoration: none;
+      border-radius: 8px;
+      margin-bottom: 8px;
+      font-weight: 600;
+    }
+
+    .settings-menu a.active {
+      background: rgba(25,156,255,.12);
+      color: #1e9bff;
+    }
+
+    .content-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 18px;
+    }
+
+    .panel {
+      padding: 22px;
+    }
+
+    .wide {
+      grid-column: 1 / -1;
+    }
+
+    .panel h3 {
+      font-size: 18px;
+      margin-bottom: 18px;
+    }
+
+    .org-card {
+      display: grid;
+      grid-template-columns: 120px 1fr auto;
+      gap: 22px;
+      align-items: center;
+    }
+
+    .shield {
+      width: 95px;
+      height: 95px;
+      border-radius: 22px;
+      background: linear-gradient(135deg,#1ecf75,#0d8d54);
+      display: grid;
+      place-items: center;
+      font-size: 48px;
+      box-shadow: 0 0 35px rgba(30,207,117,.25);
+    }
+
+    .org-title h2 {
+      font-size: 28px;
+      margin-bottom: 8px;
+    }
+
+    .plan-pill {
+      display: inline-block;
+      background: rgba(155,92,255,.18);
+      color: #b78cff;
+      border: 1px solid rgba(155,92,255,.35);
+      padding: 5px 10px;
+      border-radius: 14px;
+      font-size: 12px;
+      margin-left: 8px;
+    }
+
+    .org-title p {
+      color: #aeb9c8;
+      max-width: 520px;
+      line-height: 1.5;
+    }
+
+    .org-meta {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 70px;
+      margin-top: 25px;
+      color: #aeb9c8;
+    }
+
+    .org-meta strong {
+      display: block;
+      color: #fff;
+      margin-top: 8px;
+      font-size: 16px;
+    }
+
+    .btn {
+      background: #0b1625;
+      border: 1px solid #1b2d42;
+      color: #fff;
+      border-radius: 8px;
+      padding: 13px 18px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .field-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding: 13px 0;
+      color: #aeb9c8;
+    }
+
+    .field-row strong {
+      color: #fff;
+    }
+
+    .usage-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding: 13px 0;
+      color: #aeb9c8;
+      align-items: center;
+    }
+
+    .usage-row strong {
+      color: #fff;
+    }
+
+    .bar-bg {
+      height: 8px;
+      background: #17283c;
+      border-radius: 999px;
+      overflow: hidden;
+      margin-top: 8px;
+    }
+
+    .bar-fill {
+      height: 100%;
+      background: linear-gradient(90deg,#1e9bff,#7b61ff);
+      border-radius: 999px;
+    }
+
+    .enabled {
+      color: #37d27f;
+      font-weight: 800;
+    }
+
+    .action-list,
+    .activity-list,
+    .resource-list {
+      list-style: none;
+    }
+
+    .action-list li,
+    .activity-list li,
+    .resource-list li {
+      display: flex;
+      justify-content: space-between;
+      padding: 14px 0;
+      border-bottom: 1px solid #17283c;
+      color: #d3deec;
+      font-weight: 600;
+    }
+
+    .activity-list span {
+      color: #8fa1b8;
+      font-weight: 400;
+    }
+
+    .resource-list span {
+      color: #8fa1b8;
+    }
+
+    @media(max-width: 1300px) {
+      .settings-layout,
+      .content-grid,
+      .org-card {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        display: none;
+      }
+
+      .main {
+        margin-left: 0;
+        width: 100%;
+      }
+
+      .org-meta {
+        grid-template-columns: 1fr;
+        gap: 16px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">🛡️ Cyber<span>Bench</span></div>
+
+    <nav class="nav">
+      <a href="/dashboard">🏠 Dashboard</a>
+      <a href="/tickets">🎫 Tickets</a>
+      <a href="/alerts">⚠️ Alerts <span class="badge">23</span></a>
+      <a href="/assets">💻 Assets</a>
+      <a href="/remediation">🛠️ Remediation</a>
+      <a href="/playbooks">📘 Playbooks</a>
+      <a href="/customers">👥 Customers</a>
+      <a href="/reports">📊 Reports</a>
+      <a href="/integrations">🔗 Integrations</a>
+      <a class="active" href="/administration">⚙️ Administration</a>
+    </nav>
+
+    <div class="sidebar-card">
+      <h4>Awesome SOC</h4>
+      <p>Enterprise Plan</p>
+      <button>View Settings</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <div class="userbar">
+        <span>🔔</span>
+        <span>❔</span>
+        <strong>Admin User</strong>
+      </div>
+    </div>
+
+    <div class="page-title">
+      <h1>Settings</h1>
+      <p>Manage your organization, preferences, users, and system configurations</p>
+    </div>
+
+    <div class="settings-layout">
+      <aside class="settings-menu">
+        <a class="active" href="#">🏢 Organization</a>
+        <a href="#">👤 Profile</a>
+        <a href="#">👥 Users & Roles</a>
+        <a href="#">🔔 Notifications</a>
+        <a href="#">🛡️ Security</a>
+        <a href="#">🔗 Integrations</a>
+        <a href="#">💳 Billing & Plan</a>
+        <a href="#">⚙️ System</a>
+      </aside>
+
+      <section class="content-grid">
+        <div class="panel wide">
+          <h3>Organization Overview</h3>
+
+          <div class="org-card">
+            <div class="shield">★</div>
+
+            <div>
+              <div class="org-title">
+                <h2>Awesome SOC <span class="plan-pill">Enterprise Plan</span></h2>
+                <p>Manage your organization details, subscription plan, and security preferences.</p>
+              </div>
+
+              <div class="org-meta">
+                <div>Plan<strong>Enterprise</strong></div>
+                <div>Member Since<strong>Jan 15, 2025</strong></div>
+                <div>Renewal Date<strong>Jan 15, 2026</strong></div>
+                <div>Status<strong><span class="enabled">● Active</span></strong></div>
+              </div>
+            </div>
+
+            <button class="btn">Edit Organization</button>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h3>Organization Details</h3>
+
+          <div class="field-row"><span>Organization Name</span><strong>Awesome SOC</strong></div>
+          <div class="field-row"><span>Industry</span><strong>Managed Security Services</strong></div>
+          <div class="field-row"><span>Country</span><strong>United States</strong></div>
+          <div class="field-row"><span>Time Zone</span><strong>(UTC-05:00) Eastern Time</strong></div>
+          <div class="field-row"><span>Size</span><strong>51 - 200 employees</strong></div>
+
+          <button class="btn" style="width:100%; margin-top:18px;">Update Details</button>
+        </div>
+
+        <div class="panel">
+          <h3>Subscription & Usage</h3>
+
+          <div class="usage-row"><span>Plan</span><strong>Enterprise</strong></div>
+          <div class="usage-row"><span>Seats Used</span><strong>18 / 50</strong></div>
+
+          <div class="usage-row">
+            <span>Storage Used</span>
+            <div>
+              <strong>245 GB / 1 TB</strong>
+              <div class="bar-bg"><div class="bar-fill" style="width:24%"></div></div>
+            </div>
+          </div>
+
+          <div class="usage-row">
+            <span>API Calls</span>
+            <div>
+              <strong>24,568 / 100,000</strong>
+              <div class="bar-bg"><div class="bar-fill" style="width:25%"></div></div>
+            </div>
+          </div>
+
+          <button class="btn" style="width:100%; margin-top:18px;">View Usage</button>
+        </div>
+
+        <div class="panel">
+          <h3>Security & Compliance</h3>
+
+          <div class="field-row"><span>MFA Status</span><strong class="enabled">Enabled</strong></div>
+          <div class="field-row"><span>Password Policy</span><strong>Strong</strong></div>
+          <div class="field-row"><span>Session Timeout</span><strong>30 minutes</strong></div>
+          <div class="field-row"><span>Audit Logging</span><strong class="enabled">Enabled</strong></div>
+          <div class="field-row"><span>Compliance</span><strong>SOC 2, HIPAA</strong></div>
+
+          <button class="btn" style="width:100%; margin-top:18px;">View Security Settings</button>
+        </div>
+
+        <div class="panel">
+          <h3>Quick Actions</h3>
+
+          <ul class="action-list">
+            <li>Add New User <span>›</span></li>
+            <li>Manage API Keys <span>›</span></li>
+            <li>Configure Integrations <span>›</span></li>
+            <li>Download Audit Logs <span>›</span></li>
+          </ul>
+        </div>
+
+        <div class="panel">
+          <h3>Recent Activity</h3>
+
+          <ul class="activity-list">
+            <li>User Alex Johnson logged in <span>2 minutes ago</span></li>
+            <li>New integration Wazuh added <span>15 minutes ago</span></li>
+            <li>Security policy updated <span>1 hour ago</span></li>
+            <li>Backup completed successfully <span>3 hours ago</span></li>
+          </ul>
+
+          <button class="btn" style="width:100%; margin-top:18px;">View All Activity</button>
+        </div>
+
+        <div class="panel">
+          <h3>Support & Resources</h3>
+
+          <ul class="resource-list">
+            <li>Help Center <span>↗</span></li>
+            <li>Documentation <span>↗</span></li>
+            <li>Contact Support <span>↗</span></li>
+            <li>System Status <span>↗</span></li>
+          </ul>
+        </div>
+      </section>
+    </div>
+  </main>
+</div>
+</body>
+</html>
