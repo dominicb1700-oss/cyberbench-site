@@ -520,7 +520,7 @@ const supabaseUrl =
 const supabaseKey =
 "sb_publishable_liTRmLDG57hTPCMjnasmEQ_n-477YSt";
 
-const supabase =
+const client =
 window.supabase.createClient(
 supabaseUrl,
 supabaseKey
@@ -534,7 +534,12 @@ async function(e){
 
 e.preventDefault();
 
-console.log("Submit fired");
+const message =
+document.getElementById(
+"message"
+);
+
+message.innerHTML="";
 
 const email =
 document
@@ -547,51 +552,54 @@ document
 .getElementById("password")
 .value;
 
-console.log(email);
-
 const {
 data,
 error
 }
 =
-await supabase
+await client
 .auth
 .signInWithPassword({
 
-email:
 email,
-
-password:
 password
 
 });
 
 console.log(
-"RESULT:",
+"LOGIN RESULT",
 data,
 error
 );
 
 if(error){
 
-alert(
-"ERROR: "
+message.innerHTML=
+'<div class="error">'
 +
-error.message
-);
+error.message+
+'</div>';
 
 return;
 
 }
 
-alert(
-"SUCCESS LOGIN"
-);
+message.innerHTML=
+'<div class="success">'
++
+'Login successful'
++
+'</div>';
 
-window.location.href =
-"/admin.html";
+setTimeout(()=>{
+
+window.location.href=
+"/dashboard.html";
+
+},800);
 
 }
+
 );
 
 </script>
