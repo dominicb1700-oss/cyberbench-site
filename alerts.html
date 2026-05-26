@@ -1,0 +1,427 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CyberBench Alerts</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Inter, Arial, sans-serif; }
+    body { background: #050d18; color: #fff; }
+    .app { display: flex; min-height: 100vh; background: radial-gradient(circle at top right, rgba(0,123,255,.12), transparent 35%), #050d18; }
+
+    .sidebar { width: 250px; background: #07111f; border-right: 1px solid #132235; padding: 22px 14px; position: fixed; inset: 0 auto 0 0; }
+    .brand { display: flex; align-items: center; gap: 8px; font-size: 26px; font-weight: 800; margin-bottom: 30px; white-space: nowrap; }
+    .brand span { color: #1e9bff; }
+
+    .nav a { display: flex; align-items: center; gap: 12px; color: #c0ccdc; text-decoration: none; padding: 13px 14px; border-radius: 9px; margin-bottom: 8px; font-size: 15px; }
+    .nav a.active { background: linear-gradient(135deg, #0f8cff, #246bff); color: #fff; }
+    .badge { margin-left: auto; background: #ff4055; padding: 3px 8px; border-radius: 20px; font-size: 12px; }
+
+    .sidebar-card { position: absolute; bottom: 22px; left: 14px; right: 14px; background: #0b1828; border: 1px solid #172b42; border-radius: 12px; padding: 15px; }
+    .sidebar-card p { color: #9fafc4; font-size: 13px; margin: 5px 0 14px; }
+    .sidebar-card button { width: 100%; background: #111f31; border: 1px solid #1f334d; color: #fff; padding: 11px; border-radius: 8px; }
+
+    .main { margin-left: 250px; width: calc(100% - 250px); padding: 22px 28px; }
+    .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+    .search-top { width: 500px; background: #0b1625; border: 1px solid #1b2d42; color: white; padding: 13px 18px; border-radius: 10px; outline: none; }
+    .userbar { display: flex; align-items: center; gap: 18px; }
+    .export-btn { background: linear-gradient(135deg,#0f8cff,#1f74ff); color: #fff; border: 0; border-radius: 8px; padding: 13px 20px; font-weight: 700; cursor: pointer; }
+
+    .page-title { margin-bottom: 24px; }
+    .page-title h1 { font-size: 32px; margin-bottom: 8px; }
+    .page-title p { color: #aeb9c8; font-size: 16px; }
+
+    .layout-grid { display: grid; grid-template-columns: 1fr 380px; gap: 22px; }
+    .cards { display: grid; grid-template-columns: repeat(5, 1fr); gap: 18px; margin-bottom: 22px; }
+
+    .card, .panel { background: linear-gradient(180deg,#0d1a2b,#091525); border: 1px solid #192b40; border-radius: 12px; box-shadow: 0 15px 40px rgba(0,0,0,.25); }
+    .card { padding: 20px; min-height: 125px; position: relative; overflow: hidden; }
+    .card h3 { color: #d2dceb; font-size: 15px; margin-bottom: 12px; }
+    .value { font-size: 36px; font-weight: 800; color: #199cff; }
+    .sub { margin-top: 8px; color: #37d27f; font-size: 13px; }
+    .red .value { color: #ff4055; }
+    .orange .value { color: #ff8f1f; }
+    .yellow .value { color: #ffbf2f; }
+    .green .value { color: #37d27f; }
+
+    .icon-circle {
+      position: absolute;
+      right: 22px;
+      top: 34px;
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: rgba(25,156,255,.12);
+      display: grid;
+      place-items: center;
+      font-size: 30px;
+    }
+
+    .alerts-panel { overflow: hidden; }
+    .filters { display: flex; gap: 12px; padding: 14px; border-bottom: 1px solid #17283c; }
+    .filters input, .filters select, .filters button {
+      background: #081422;
+      border: 1px solid #1b3048;
+      color: #d8e2ef;
+      padding: 12px 14px;
+      border-radius: 8px;
+    }
+    .filters input { flex: 1; }
+
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { padding: 15px 12px; border-bottom: 1px solid #17283c; text-align: left; color: #d3deec; vertical-align: top; }
+    th { color: #8fa1b8; font-size: 13px; }
+    .small { color: #8fa1b8; font-size: 12px; margin-top: 5px; display: block; }
+
+    .pill { padding: 5px 10px; border-radius: 12px; font-size: 12px; white-space: nowrap; display: inline-block; }
+    .critical { background: rgba(255,64,85,.15); color: #ff596b; border: 1px solid rgba(255,64,85,.35); }
+    .high { background: rgba(255,143,31,.15); color: #ff9f33; border: 1px solid rgba(255,143,31,.35); }
+    .medium { background: rgba(255,191,47,.15); color: #ffbf2f; border: 1px solid rgba(255,191,47,.35); }
+    .low { background: rgba(55,210,127,.15); color: #37d27f; border: 1px solid rgba(55,210,127,.35); }
+    .new { background: rgba(255,64,85,.15); color: #ff596b; }
+    .progress { background: rgba(25,156,255,.15); color: #36a7ff; }
+    .closed { background: rgba(55,210,127,.15); color: #37d27f; }
+
+    .pagination { display: flex; justify-content: space-between; align-items: center; padding: 16px; color: #aeb9c8; }
+    .pages button { background: #0b1726; color: #d8e2ef; border: 1px solid #1b3048; padding: 8px 12px; border-radius: 8px; margin: 0 4px; }
+    .pages .active-page { background: #0f8cff; color: #fff; }
+
+    .right-col { display: flex; flex-direction: column; gap: 18px; }
+    .panel { padding: 20px; }
+    .panel h3 { font-size: 17px; margin-bottom: 16px; }
+    canvas { width: 100% !important; max-height: 220px; }
+
+    .activity { list-style: none; }
+    .activity li { display: flex; justify-content: space-between; gap: 12px; padding: 13px 0; border-bottom: 1px solid #17283c; color: #cfd9e6; font-size: 13px; }
+    .activity strong { display: block; margin-bottom: 4px; color: #fff; }
+    .time { color: #8fa1b8; white-space: nowrap; }
+
+    @media(max-width: 1300px) {
+      .cards, .layout-grid { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+      .main { margin-left: 0; width: 100%; }
+    }
+  </style>
+</head>
+
+<body>
+<div class="app">
+  <aside class="sidebar">
+    <div class="brand">🛡️ Cyber<span>Bench</span></div>
+
+    <nav class="nav">
+      <a href="/dashboard">🏠 Dashboard</a>
+      <a href="/tickets">🎫 Tickets</a>
+      <a class="active" href="/alerts">⚠️ Alerts <span class="badge">23</span></a>
+      <a href="/kpi">📊 KPI & Reports</a>
+      <a href="/assets">💻 Assets</a>
+      <a href="/remediation">🛠️ Remediation</a>
+      <a href="/playbooks">📘 Playbooks</a>
+      <a href="/customers">👥 Customers</a>
+      <a href="/integrations">🔗 Integrations</a>
+      <a href="/administration">⚙️ Administration</a>
+    </nav>
+
+    <div class="sidebar-card">
+      <h4>Awesome SOC</h4>
+      <p>Enterprise Plan</p>
+      <button>View Settings</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <input class="search-top" placeholder="Search alerts, assets, tickets..." />
+      <div class="userbar">
+        <span>🔔</span>
+        <span>❔</span>
+        <strong>Admin User</strong>
+        <button class="export-btn">Export Report</button>
+      </div>
+    </div>
+
+    <div class="page-title">
+      <h1>Alerts</h1>
+      <p>Real-time security alerts and threats detected across your environment</p>
+    </div>
+
+    <div class="layout-grid">
+      <section>
+        <div class="cards">
+          <div class="card">
+            <h3>Total Alerts</h3>
+            <div class="value">147</div>
+            <div class="sub">↓ 12% vs last 7 days</div>
+            <div class="icon-circle">🔔</div>
+          </div>
+
+          <div class="card red">
+            <h3>Critical Alerts</h3>
+            <div class="value">7</div>
+            <div class="sub" style="color:#ff6b6b;">↓ 22% vs last 7 days</div>
+            <div class="icon-circle">🛡️</div>
+          </div>
+
+          <div class="card orange">
+            <h3>High Priority</h3>
+            <div class="value">38</div>
+            <div class="sub">↑ 8% vs last 7 days</div>
+            <div class="icon-circle">🔥</div>
+          </div>
+
+          <div class="card yellow">
+            <h3>Medium Priority</h3>
+            <div class="value">64</div>
+            <div class="sub">↓ 5% vs last 7 days</div>
+            <div class="icon-circle">⚠️</div>
+          </div>
+
+          <div class="card green">
+            <h3>Low Priority</h3>
+            <div class="value">38</div>
+            <div class="sub">↑ 10% vs last 7 days</div>
+            <div class="icon-circle">ℹ️</div>
+          </div>
+        </div>
+
+        <div class="panel alerts-panel">
+          <div class="filters">
+            <input placeholder="Search alerts..." />
+            <select><option>Severity</option></select>
+            <select><option>Status</option></select>
+            <select><option>Source</option></select>
+            <select><option>Category</option></select>
+            <button>More Filters</button>
+            <button>Clear Filters</button>
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Time</th>
+                <th>Severity</th>
+                <th>Alert Name</th>
+                <th>Source</th>
+                <th>Category</th>
+                <th>Asset</th>
+                <th>Status</th>
+                <th>Assigned To</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td>May 18, 2025<br><span class="small">10:24:53 AM</span></td>
+                <td><span class="pill critical">Critical</span></td>
+                <td><strong>Ransomware Activity Detected</strong><span class="small">Multiple files encrypted</span></td>
+                <td>🛡️ Wazuh</td>
+                <td>Malware</td>
+                <td><strong>WS-CA-1432</strong><span class="small">Windows Server</span></td>
+                <td><span class="pill new">New</span></td>
+                <td>Unassigned</td>
+                <td>•••</td>
+              </tr>
+
+              <tr>
+                <td>May 18, 2025<br><span class="small">09:47:12 AM</span></td>
+                <td><span class="pill critical">Critical</span></td>
+                <td><strong>Privilege Escalation Attempt</strong><span class="small">Suspicious process execution</span></td>
+                <td>🕸️ Suricata</td>
+                <td>Privilege Escalation</td>
+                <td><strong>DC-01</strong><span class="small">Domain Controller</span></td>
+                <td><span class="pill progress">In Progress</span></td>
+                <td>Alex Johnson</td>
+                <td>•••</td>
+              </tr>
+
+              <tr>
+                <td>May 18, 2025<br><span class="small">09:15:33 AM</span></td>
+                <td><span class="pill high">High</span></td>
+                <td><strong>Multiple Failed Logins</strong><span class="small">Brute force attack detected</span></td>
+                <td>🛡️ Wazuh</td>
+                <td>Authentication</td>
+                <td><strong>VPN-GW-01</strong><span class="small">VPN Gateway</span></td>
+                <td><span class="pill new">New</span></td>
+                <td>Sarah Kim</td>
+                <td>•••</td>
+              </tr>
+
+              <tr>
+                <td>May 18, 2025<br><span class="small">08:52:11 AM</span></td>
+                <td><span class="pill high">High</span></td>
+                <td><strong>Malicious File Detected</strong><span class="small">Trojan.Malware.Gen2</span></td>
+                <td>🛡️ Wazuh</td>
+                <td>Malware</td>
+                <td><strong>FILE-SRV-02</strong><span class="small">File Server</span></td>
+                <td><span class="pill progress">In Progress</span></td>
+                <td>David Chen</td>
+                <td>•••</td>
+              </tr>
+
+              <tr>
+                <td>May 18, 2025<br><span class="small">08:33:44 AM</span></td>
+                <td><span class="pill medium">Medium</span></td>
+                <td><strong>Outbound Connection to C2</strong><span class="small">Potential command and control</span></td>
+                <td>🕸️ Suricata</td>
+                <td>Command & Control</td>
+                <td><strong>WS-CA-1021</strong><span class="small">Workstation</span></td>
+                <td><span class="pill new">New</span></td>
+                <td>Unassigned</td>
+                <td>•••</td>
+              </tr>
+
+              <tr>
+                <td>May 18, 2025<br><span class="small">07:58:21 AM</span></td>
+                <td><span class="pill medium">Medium</span></td>
+                <td><strong>Suspicious PowerShell Activity</strong><span class="small">Encoded command detected</span></td>
+                <td>🛡️ Wazuh</td>
+                <td>Defense Evasion</td>
+                <td><strong>WS-NY-2045</strong><span class="small">Workstation</span></td>
+                <td><span class="pill progress">In Progress</span></td>
+                <td>Maria Garcia</td>
+                <td>•••</td>
+              </tr>
+
+              <tr>
+                <td>May 18, 2025<br><span class="small">07:12:09 AM</span></td>
+                <td><span class="pill low">Low</span></td>
+                <td><strong>Policy Violation</strong><span class="small">USB storage device connected</span></td>
+                <td>🛡️ Wazuh</td>
+                <td>Policy Violation</td>
+                <td><strong>WS-LA-3099</strong><span class="small">Workstation</span></td>
+                <td><span class="pill closed">Closed</span></td>
+                <td>James Lee</td>
+                <td>•••</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="pagination">
+            <span>Showing 1 to 7 of 147 alerts</span>
+            <div class="pages">
+              <button>‹</button>
+              <button class="active-page">1</button>
+              <button>2</button>
+              <button>3</button>
+              <button>4</button>
+              <button>5</button>
+              <button>...</button>
+              <button>21</button>
+              <button>›</button>
+            </div>
+            <span>Rows per page: 10</span>
+          </div>
+        </div>
+      </section>
+
+      <aside class="right-col">
+        <div class="panel">
+          <h3>Alerts by Severity</h3>
+          <canvas id="severityChart"></canvas>
+        </div>
+
+        <div class="panel">
+          <h3>Alerts Over Time</h3>
+          <canvas id="alertsOverTime"></canvas>
+        </div>
+
+        <div class="panel">
+          <h3>Top Alert Sources</h3>
+          <canvas id="sourcesChart"></canvas>
+        </div>
+
+        <div class="panel">
+          <h3>Recent Alert Activity</h3>
+          <ul class="activity">
+            <li>
+              <div><strong>Ransomware Activity Detected</strong><span class="small">WS-CA-1432</span></div>
+              <span class="time">10:24 AM</span>
+            </li>
+            <li>
+              <div><strong>Privilege Escalation Attempt</strong><span class="small">DC-01</span></div>
+              <span class="time">09:47 AM</span>
+            </li>
+            <li>
+              <div><strong>Multiple Failed Logins</strong><span class="small">VPN-GW-01</span></div>
+              <span class="time">09:15 AM</span>
+            </li>
+          </ul>
+        </div>
+      </aside>
+    </div>
+  </main>
+</div>
+
+<script>
+  Chart.defaults.color = "#9fafc4";
+  Chart.defaults.borderColor = "rgba(255,255,255,.08)";
+
+  new Chart(document.getElementById("severityChart"), {
+    type: "doughnut",
+    data: {
+      labels: ["Critical", "High", "Medium", "Low"],
+      datasets: [{
+        data: [7, 38, 64, 38],
+        backgroundColor: ["#ff4055", "#ff8f1f", "#ffbf2f", "#37d27f"],
+        borderWidth: 0
+      }]
+    },
+    options: {
+      cutout: "65%",
+      plugins: {
+        legend: {
+          position: "right",
+          labels: { usePointStyle: true, boxWidth: 10 }
+        }
+      }
+    }
+  });
+
+  new Chart(document.getElementById("alertsOverTime"), {
+    type: "line",
+    data: {
+      labels: ["May 12", "May 13", "May 14", "May 15", "May 16", "May 17", "May 18"],
+      datasets: [{
+        data: [58, 64, 47, 59, 61, 78, 66],
+        borderColor: "#ff4055",
+        backgroundColor: "rgba(255,64,85,.22)",
+        fill: true,
+        tension: .4,
+        pointBackgroundColor: "#ff4055",
+        pointRadius: 4
+      }]
+    },
+    options: {
+      plugins: { legend: { display: false } },
+      scales: {
+        y: { beginAtZero: true, max: 100 },
+        x: { grid: { display: false } }
+      }
+    }
+  });
+
+  new Chart(document.getElementById("sourcesChart"), {
+    type: "bar",
+    data: {
+      labels: ["Wazuh", "Suricata", "Microsoft 365", "Other"],
+      datasets: [{
+        data: [85, 45, 12, 5],
+        backgroundColor: ["#1e9bff", "#ff4055", "#ff8f1f", "#37d27f"],
+        borderRadius: 4
+      }]
+    },
+    options: {
+      indexAxis: "y",
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { beginAtZero: true },
+        y: { grid: { display: false } }
+      }
+    }
+  });
+</script>
+</body>
+</html>
