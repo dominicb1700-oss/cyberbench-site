@@ -512,47 +512,44 @@ CyberBench © 2026
 
 <script>
 
-const supabaseUrl=
+console.log("CyberBench Auth Loaded");
+
+const supabaseUrl =
 "https://zrcglelaiumuysuannwt.supabase.co";
 
-const supabaseKey=
+const supabaseKey =
 "sb_publishable_liTRmLDG57hTPCMjnasmEQ_n-477YSt";
 
-const supabase=
+const supabase =
 window.supabase.createClient(
 supabaseUrl,
 supabaseKey
 );
 
-const form=
-document.getElementById(
-"loginForm"
-);
-
-form.addEventListener(
+document
+.getElementById("loginForm")
+.addEventListener(
 "submit",
 async function(e){
 
 e.preventDefault();
 
-const msg=
-document.getElementById(
-"message"
-);
+console.log("Submit fired");
 
-msg.innerHTML="";
+const email =
+document
+.getElementById("email")
+.value
+.trim();
 
-const email=
-document.getElementById(
-"email"
-).value;
+const password =
+document
+.getElementById("password")
+.value;
 
-const password=
-document.getElementById(
-"password"
-).value;
+console.log(email);
 
-const{
+const {
 data,
 error
 }
@@ -561,46 +558,40 @@ await supabase
 .auth
 .signInWithPassword({
 
+email:
 email,
+
+password:
 password
 
 });
 
 console.log(
+"RESULT:",
 data,
 error
 );
 
 if(error){
 
-msg.innerHTML=
-
-'<div class="error">'
+alert(
+"ERROR: "
 +
-error.message+
-'</div>';
+error.message
+);
 
 return;
 
 }
 
-msg.innerHTML=
+alert(
+"SUCCESS LOGIN"
+);
 
-'<div class="success">'
-+
-'Login successful'
-+
-'</div>';
-
-setTimeout(()=>{
-
-window.location.href=
-"/dashboard.html";
-
-},1000);
+window.location.href =
+"/admin.html";
 
 }
-
 );
 
 </script>
