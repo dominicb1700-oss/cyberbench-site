@@ -1,0 +1,44 @@
+<!doctype html>
+<html>
+<body style="background:#050816;color:white;font-family:Arial;padding:40px;">
+
+<h1>Supabase Login Test</h1>
+
+<input id="email" type="email" placeholder="email" style="padding:12px;width:300px;">
+<br><br>
+
+<input id="password" type="password" placeholder="password" style="padding:12px;width:300px;">
+<br><br>
+
+<button onclick="login()" style="padding:12px 24px;">Login Test</button>
+
+<pre id="result" style="margin-top:30px;color:#7da2ff;"></pre>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+
+<script>
+const supabaseUrl = "https://zrcglelaiumuysuannwt.supabase.co";
+const supabaseKey = "sb_publishable_liTRmLDG57hTPCMjnasmEQ_n-477YSt";
+
+const supabase = window.supabase.createClient(supabaseUrl, supabaseKey);
+
+async function login(){
+  const email = document.getElementById("email").value.trim();
+  const password = document.getElementById("password").value;
+
+  const { data, error } = await supabase.auth.signInWithPassword({
+    email,
+    password
+  });
+
+  document.getElementById("result").textContent =
+    JSON.stringify({ data, error }, null, 2);
+
+  if (!error) {
+    window.location.href = "/dashboard.html";
+  }
+}
+</script>
+
+</body>
+</html>
