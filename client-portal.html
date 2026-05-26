@@ -25,11 +25,126 @@ body{
 
 margin:0;
 
-background:#050816;
+background:
+radial-gradient(circle at top left,rgba(45,85,255,.12),transparent 32%),
+#050816;
 
 font-family:Inter,sans-serif;
 
 color:white;
+
+}
+
+.container{
+
+width:min(1300px,92%);
+
+margin:auto;
+
+}
+
+.nav{
+
+position:sticky;
+
+top:0;
+
+z-index:1000;
+
+background:
+rgba(5,8,22,.92);
+
+backdrop-filter:
+blur(10px);
+
+border-bottom:
+1px solid rgba(255,255,255,.06);
+
+}
+
+.nav_row{
+
+display:flex;
+
+align-items:center;
+
+justify-content:space-between;
+
+padding:18px 0;
+
+}
+
+.brand{
+
+display:flex;
+
+align-items:center;
+
+gap:12px;
+
+font-weight:800;
+
+color:white;
+
+text-decoration:none;
+
+}
+
+.logo{
+
+width:34px;
+
+height:34px;
+
+border-radius:50%;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+background:
+
+linear-gradient(
+135deg,
+#4d7cff,
+#6b74ff
+);
+
+}
+
+.nav_links{
+
+display:flex;
+
+gap:28px;
+
+align-items:center;
+
+}
+
+.nav_links a{
+
+text-decoration:none;
+
+color:white;
+
+opacity:.82;
+
+font-size:15px;
+
+}
+
+.nav_links a:hover{
+
+opacity:1;
+
+}
+
+.nav-active{
+
+color:#6f87ff!important;
 
 }
 
@@ -65,6 +180,9 @@ border-radius:28px;
 
 padding:40px;
 
+box-shadow:
+0 20px 50px rgba(0,0,0,.25);
+
 }
 
 .kicker{
@@ -85,7 +203,7 @@ margin-bottom:18px;
 
 font-size:54px;
 
-font-weight:800;
+font-weight:900;
 
 line-height:1;
 
@@ -97,7 +215,7 @@ margin-bottom:18px;
 
 color:rgba(255,255,255,.65);
 
-line-height:1.7;
+line-height:1.8;
 
 margin-bottom:30px;
 
@@ -111,15 +229,15 @@ margin-bottom:20px;
 
 .label{
 
+display:block;
+
+margin-bottom:10px;
+
 font-size:12px;
 
 font-weight:700;
 
 letter-spacing:.15em;
-
-margin-bottom:8px;
-
-display:block;
 
 }
 
@@ -129,13 +247,11 @@ width:100%;
 
 height:62px;
 
-border:none;
-
-border-radius:18px;
-
 background:#040913;
 
-color:white;
+border:1px solid rgba(255,255,255,.06);
+
+border-radius:18px;
 
 padding:0 18px;
 
@@ -143,11 +259,15 @@ box-sizing:border-box;
 
 font-size:16px;
 
+color:white;
+
 }
 
 .input:focus{
 
-outline:2px solid #5576ff;
+outline:none;
+
+border-color:#5576ff;
 
 }
 
@@ -157,7 +277,7 @@ display:flex;
 
 gap:14px;
 
-margin-top:20px;
+margin-top:24px;
 
 }
 
@@ -197,9 +317,9 @@ color:white;
 
 background:#0b1120;
 
-color:white;
-
 border:1px solid rgba(255,255,255,.08);
+
+color:white;
 
 }
 
@@ -213,9 +333,9 @@ border-radius:18px;
 
 background:#0a1120;
 
-color:rgba(255,255,255,.72);
-
 line-height:1.7;
+
+color:rgba(255,255,255,.7);
 
 }
 
@@ -237,13 +357,13 @@ background:#050a14;
 
 padding:24px;
 
-border-radius:20px;
+border-radius:18px;
 
 }
 
 .kpi-title{
 
-color:rgba(255,255,255,.65);
+color:rgba(255,255,255,.62);
 
 }
 
@@ -251,7 +371,7 @@ color:rgba(255,255,255,.65);
 
 font-size:42px;
 
-font-weight:800;
+font-weight:900;
 
 margin-top:14px;
 
@@ -259,35 +379,77 @@ margin-top:14px;
 
 .footer{
 
-margin-top:80px;
-
-padding:40px;
-
-text-align:center;
+padding:60px 0;
 
 border-top:1px solid rgba(255,255,255,.06);
 
-color:rgba(255,255,255,.5);
+margin-top:80px;
+
+text-align:center;
+
+}
+
+.footer-logo{
+
+font-size:24px;
+
+font-weight:900;
+
+margin-bottom:18px;
+
+display:block;
+
+text-decoration:none;
+
+color:white;
+
+}
+
+.footer-nav{
+
+display:flex;
+
+justify-content:center;
+
+gap:24px;
+
+flex-wrap:wrap;
+
+margin-bottom:20px;
+
+}
+
+.footer-nav a{
+
+color:rgba(255,255,255,.72);
+
+text-decoration:none;
+
+}
+
+.footer p{
+
+color:rgba(255,255,255,.55);
 
 }
 
 .error{
 
-margin-top:14px;
+margin-top:18px;
 
-color:#ff7b7b;
+color:#ff7575;
 
-font-weight:600;
+font-weight:700;
 
 }
 
 .success{
 
-margin-top:14px;
+margin-top:18px;
 
 color:#61d891;
 
-font-weight:600;
+font-weight:700;
 
 }
 
@@ -299,6 +461,18 @@ grid-template-columns:1fr;
 
 }
 
+.nav_links{
+
+display:none;
+
+}
+
+.title{
+
+font-size:42px;
+
+}
+
 }
 
 </style>
@@ -306,6 +480,70 @@ grid-template-columns:1fr;
 </head>
 
 <body>
+
+<header class="nav">
+
+<div class="container nav_row">
+
+<a
+class="brand"
+href="/index.html"
+>
+
+<div class="logo">
+
+X
+
+</div>
+
+<span>
+
+CyberBench
+
+</span>
+
+</a>
+
+<nav class="nav_links">
+
+<a href="/services.html">
+
+Services
+
+</a>
+
+<a href="/about.html">
+
+About
+
+</a>
+
+<a href="/blog.html">
+
+Blog
+
+</a>
+
+<a
+href="/client-portal.html"
+class="nav-active"
+>
+
+Client Portal
+
+</a>
+
+<a href="/consultant-portal.html">
+
+Consultant Portal
+
+</a>
+
+</nav>
+
+</div>
+
+</header>
 
 <div class="portal">
 
@@ -325,11 +563,12 @@ Access your workspace
 
 <div class="sub">
 
-Secure access to reporting,
-ticket tracking,
+Secure access to tickets,
+documentation,
 KPIs,
+reporting,
 security operations,
-and documentation.
+and active CyberBench support services.
 
 </div>
 
@@ -347,7 +586,6 @@ EMAIL
 id="email"
 class="input"
 type="email"
-placeholder="name@cyberbench.io"
 required
 />
 
@@ -385,7 +623,6 @@ Login
 type="button"
 class="btn secondary"
 onclick="location.href='/blog.html'"
-
 >
 
 Back
@@ -401,6 +638,8 @@ Back
 <div class="note">
 
 CyberBench Secure Client Portal
+
+<br><br>
 
 support@cyberbench.io
 
@@ -426,7 +665,10 @@ Client KPIs
 
 <div class="sub">
 
-Real-time visibility into operational security metrics.
+Real-time visibility into ticket activity,
+response metrics,
+security operations,
+and cybersecurity execution.
 
 </div>
 
@@ -502,25 +744,77 @@ Compliance
 
 </div>
 
-<div class="footer">
+<footer class="footer">
 
-CyberBench © 2026
+<a
+href="/"
+class="footer-logo"
+>
+
+CyberBench
+
+</a>
+
+<div class="footer-nav">
+
+<a href="/services.html">
+
+Services
+
+</a>
+
+<a href="/about.html">
+
+About
+
+</a>
+
+<a href="/blog.html">
+
+Blog
+
+</a>
+
+<a href="/client-portal.html">
+
+Client Portal
+
+</a>
+
+<a href="/consultant-portal.html">
+
+Consultant Portal
+
+</a>
 
 </div>
+
+<p>
+
+support@cyberbench.io
+
+</p>
+
+<p>
+
+© 2026 CyberBench.
+All rights reserved.
+
+</p>
+
+</footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
 
-console.log("CyberBench Auth Loaded");
-
-const supabaseUrl =
+const supabaseUrl=
 "https://zrcglelaiumuysuannwt.supabase.co";
 
-const supabaseKey =
+const supabaseKey=
 "sb_publishable_liTRmLDG57hTPCMjnasmEQ_n-477YSt";
 
-const client =
+const client=
 window.supabase.createClient(
 supabaseUrl,
 supabaseKey
@@ -534,26 +828,25 @@ async function(e){
 
 e.preventDefault();
 
-const message =
+const message=
 document.getElementById(
 "message"
 );
 
 message.innerHTML="";
 
-const email =
+const email=
 document
 .getElementById("email")
 .value
 .trim();
 
-const password =
+const password=
 document
 .getElementById("password")
 .value;
 
-const {
-data,
+const{
 error
 }
 =
@@ -566,15 +859,10 @@ password
 
 });
 
-console.log(
-"LOGIN RESULT",
-data,
-error
-);
-
 if(error){
 
 message.innerHTML=
+
 '<div class="error">'
 +
 error.message+
@@ -585,10 +873,10 @@ return;
 }
 
 message.innerHTML=
+
 '<div class="success">'
 +
-'Login successful'
-+
+'Login successful'+
 '</div>';
 
 setTimeout(()=>{
@@ -596,7 +884,7 @@ setTimeout(()=>{
 window.location.href=
 "/dashboard.html";
 
-},800);
+},700);
 
 }
 
