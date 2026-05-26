@@ -1,0 +1,813 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+
+<title>CyberBench Remediation</title>
+
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+<style>
+
+*{
+margin:0;
+padding:0;
+box-sizing:border-box;
+font-family:Inter,sans-serif;
+}
+
+body{
+background:#050d18;
+color:white;
+overflow-x:hidden;
+}
+
+.app{
+display:flex;
+min-height:100vh;
+background:
+radial-gradient(circle at top right,
+rgba(0,120,255,.10),
+transparent 35%),
+#050d18;
+}
+
+.sidebar{
+
+width:240px;
+background:#07111f;
+border-right:1px solid #18283d;
+padding:22px;
+position:fixed;
+top:0;
+left:0;
+bottom:0;
+
+}
+
+.brand{
+
+font-size:34px;
+font-weight:800;
+margin-bottom:35px;
+
+}
+
+.brand span{
+
+color:#1798ff;
+
+}
+
+.nav a{
+
+display:flex;
+gap:10px;
+padding:14px;
+margin-bottom:8px;
+text-decoration:none;
+color:#c8d4e3;
+border-radius:10px;
+
+}
+
+.active{
+
+background:#197dff;
+
+}
+
+.main{
+
+margin-left:240px;
+padding:28px;
+width:100%;
+
+}
+
+.top{
+
+display:flex;
+justify-content:space-between;
+margin-bottom:30px;
+
+}
+
+.search{
+
+width:420px;
+background:#081525;
+border:1px solid #18283d;
+padding:14px;
+border-radius:12px;
+color:white;
+
+}
+
+.button{
+
+background:#197dff;
+padding:13px 22px;
+border:none;
+color:white;
+border-radius:10px;
+font-weight:700;
+
+}
+
+.title h1{
+
+font-size:42px;
+margin-bottom:8px;
+
+}
+
+.title p{
+
+color:#91a6bc;
+
+}
+
+.cards{
+
+display:grid;
+grid-template-columns:
+repeat(5,1fr);
+
+gap:18px;
+margin-top:25px;
+
+}
+
+.card{
+
+background:#091526;
+
+padding:22px;
+
+border-radius:14px;
+
+border:1px solid #16273d;
+
+}
+
+.card h3{
+
+font-size:14px;
+color:#b8c7d9;
+margin-bottom:14px;
+
+}
+
+.metric{
+
+font-size:50px;
+font-weight:800;
+
+}
+
+.blue{
+
+color:#2498ff;
+
+}
+
+.red{
+
+color:#ff5555;
+
+}
+
+.green{
+
+color:#34d482;
+
+}
+
+.orange{
+
+color:#f4a029;
+
+}
+
+.purple{
+
+color:#a86fff;
+
+}
+
+.sub{
+
+margin-top:10px;
+font-size:13px;
+color:#5dc78b;
+
+}
+
+.grid{
+
+display:grid;
+
+grid-template-columns:
+2fr 1fr;
+
+gap:18px;
+
+margin-top:20px;
+
+}
+
+.panel{
+
+background:#091526;
+
+border:1px solid #18283d;
+
+border-radius:14px;
+
+padding:22px;
+
+}
+
+.panel h2{
+
+margin-bottom:18px;
+
+}
+
+.filters{
+
+display:flex;
+
+gap:10px;
+
+margin-bottom:20px;
+
+}
+
+.filters select{
+
+background:#081525;
+
+border:1px solid #18283d;
+
+padding:10px;
+
+border-radius:8px;
+
+color:white;
+
+}
+
+table{
+
+width:100%;
+border-collapse:collapse;
+
+}
+
+th{
+
+text-align:left;
+
+padding:16px;
+
+font-size:13px;
+
+color:#91a6bc;
+
+}
+
+td{
+
+padding:16px;
+
+border-top:1px solid #18283d;
+
+}
+
+.badge{
+
+padding:6px 12px;
+
+border-radius:18px;
+
+font-size:12px;
+
+}
+
+.high{
+
+background:#ff555530;
+
+color:#ff5555;
+
+}
+
+.medium{
+
+background:#f4a02930;
+
+color:#f4a029;
+
+}
+
+.low{
+
+background:#34d48230;
+
+color:#34d482;
+
+}
+
+.progress{
+
+height:8px;
+
+background:#18283d;
+
+border-radius:12px;
+
+overflow:hidden;
+
+}
+
+.progress div{
+
+height:100%;
+
+background:#1798ff;
+
+}
+
+.sideMetric{
+
+margin-bottom:28px;
+
+}
+
+.sideMetric h3{
+
+margin-bottom:14px;
+
+}
+
+</style>
+
+</head>
+
+<body>
+
+<div class="app">
+
+<div class="sidebar">
+
+<div class="brand">
+
+Cyber<span>Bench</span>
+
+</div>
+
+<div class="nav">
+
+<a href="/dashboard">🏠 Dashboard</a>
+
+<a href="/tickets">🎫 Tickets</a>
+
+<a href="/alerts">⚠️ Alerts</a>
+
+<a href="/kpi">📊 KPI</a>
+
+<a href="/assets">💻 Assets</a>
+
+<a class="active">🛠️ Remediation</a>
+
+<a>📘 Playbooks</a>
+
+<a>👥 Customers</a>
+
+<a>🔗 Integrations</a>
+
+</div>
+
+</div>
+
+<div class="main">
+
+<div class="top">
+
+<input
+class="search"
+placeholder="Search vulnerabilities, assets...">
+
+<button class="button">
+
+Create Task
+
+</button>
+
+</div>
+
+<div class="title">
+
+<h1>
+
+Remediation
+
+</h1>
+
+<p>
+
+Track remediation and reduce risk
+
+</p>
+
+</div>
+
+<div class="cards">
+
+<div class="card">
+
+<h3>Total Vulnerabilities</h3>
+
+<div class="metric blue">
+
+1248
+
+</div>
+
+<div class="sub">
+
+↓12%
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h3>Critical</h3>
+
+<div class="metric red">
+
+128
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h3>Remediated</h3>
+
+<div class="metric green">
+
+892
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h3>In Progress</h3>
+
+<div class="metric orange">
+
+234
+
+</div>
+
+</div>
+
+<div class="card">
+
+<h3>Pending</h3>
+
+<div class="metric purple">
+
+122
+
+</div>
+
+</div>
+
+</div>
+
+<div class="grid">
+
+<div class="panel">
+
+<h2>
+
+Remediation Tasks
+
+</h2>
+
+<div class="filters">
+
+<select>
+
+<option>Status</option>
+
+</select>
+
+<select>
+
+<option>Priority</option>
+
+</select>
+
+<select>
+
+<option>Assignee</option>
+
+</select>
+
+</div>
+
+<table>
+
+<tr>
+
+<th>ID</th>
+
+<th>Issue</th>
+
+<th>Priority</th>
+
+<th>Owner</th>
+
+<th>Progress</th>
+
+</tr>
+
+<tr>
+
+<td>
+
+RM001
+
+</td>
+
+<td>
+
+OpenSSH Bypass
+
+</td>
+
+<td>
+
+<span class="badge high">
+
+Critical
+
+</span>
+
+</td>
+
+<td>
+
+Alex
+
+</td>
+
+<td>
+
+<div class="progress">
+
+<div
+style="width:75%">
+</div>
+
+</div>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+RM002
+
+</td>
+
+<td>
+
+Windows Patch Missing
+
+</td>
+
+<td>
+
+<span class="badge medium">
+
+High
+
+</span>
+
+</td>
+
+<td>
+
+Maria
+
+</td>
+
+<td>
+
+<div class="progress">
+
+<div
+style="width:50%">
+</div>
+
+</div>
+
+</td>
+
+</tr>
+
+<tr>
+
+<td>
+
+RM003
+
+</td>
+
+<td>
+
+Chrome CVE
+
+</td>
+
+<td>
+
+<span class="badge low">
+
+Low
+
+</span>
+
+</td>
+
+<td>
+
+James
+
+</td>
+
+<td>
+
+<div class="progress">
+
+<div
+style="width:100%">
+</div>
+
+</div>
+
+</td>
+
+</tr>
+
+</table>
+
+</div>
+
+<div>
+
+<div class="panel sideMetric">
+
+<h3>
+
+Remediation Status
+
+</h3>
+
+<canvas id="pie">
+
+</canvas>
+
+</div>
+
+<div class="panel">
+
+<h3>
+
+Risk Reduction
+
+</h3>
+
+<canvas id="line">
+
+</canvas>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+<script>
+
+new Chart(
+
+document
+.getElementById("pie"),
+
+{
+
+type:"doughnut",
+
+data:{
+
+labels:[
+"Done",
+"Progress",
+"Pending"
+],
+
+datasets:[{
+
+data:[
+892,
+234,
+122
+],
+
+backgroundColor:[
+
+"#34d482",
+
+"#2498ff",
+
+"#f4a029"
+
+]
+
+}]
+
+}
+
+}
+
+);
+
+new Chart(
+
+document
+.getElementById("line"),
+
+{
+
+type:"line",
+
+data:{
+
+labels:[
+"Mon",
+"Tue",
+"Wed",
+"Thu",
+"Fri"
+],
+
+datasets:[{
+
+data:[
+40,
+55,
+62,
+75,
+85
+],
+
+borderColor:"#34d482",
+
+backgroundColor:
+"rgba(52,212,130,.2)",
+
+fill:true
+
+}]
+
+}
+
+}
+
+);
+
+</script>
+
+</body>
+</html>
