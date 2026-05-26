@@ -1,813 +1,456 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-
-<title>CyberBench Remediation</title>
-
-<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-<style>
-
-*{
-margin:0;
-padding:0;
-box-sizing:border-box;
-font-family:Inter,sans-serif;
-}
-
-body{
-background:#050d18;
-color:white;
-overflow-x:hidden;
-}
-
-.app{
-display:flex;
-min-height:100vh;
-background:
-radial-gradient(circle at top right,
-rgba(0,120,255,.10),
-transparent 35%),
-#050d18;
-}
-
-.sidebar{
-
-width:240px;
-background:#07111f;
-border-right:1px solid #18283d;
-padding:22px;
-position:fixed;
-top:0;
-left:0;
-bottom:0;
-
-}
-
-.brand{
-
-font-size:34px;
-font-weight:800;
-margin-bottom:35px;
-
-}
-
-.brand span{
-
-color:#1798ff;
-
-}
-
-.nav a{
-
-display:flex;
-gap:10px;
-padding:14px;
-margin-bottom:8px;
-text-decoration:none;
-color:#c8d4e3;
-border-radius:10px;
-
-}
-
-.active{
-
-background:#197dff;
-
-}
-
-.main{
-
-margin-left:240px;
-padding:28px;
-width:100%;
-
-}
-
-.top{
-
-display:flex;
-justify-content:space-between;
-margin-bottom:30px;
-
-}
-
-.search{
-
-width:420px;
-background:#081525;
-border:1px solid #18283d;
-padding:14px;
-border-radius:12px;
-color:white;
-
-}
-
-.button{
-
-background:#197dff;
-padding:13px 22px;
-border:none;
-color:white;
-border-radius:10px;
-font-weight:700;
-
-}
-
-.title h1{
-
-font-size:42px;
-margin-bottom:8px;
-
-}
-
-.title p{
-
-color:#91a6bc;
-
-}
-
-.cards{
-
-display:grid;
-grid-template-columns:
-repeat(5,1fr);
-
-gap:18px;
-margin-top:25px;
-
-}
-
-.card{
-
-background:#091526;
-
-padding:22px;
-
-border-radius:14px;
-
-border:1px solid #16273d;
-
-}
-
-.card h3{
-
-font-size:14px;
-color:#b8c7d9;
-margin-bottom:14px;
-
-}
-
-.metric{
-
-font-size:50px;
-font-weight:800;
-
-}
-
-.blue{
-
-color:#2498ff;
-
-}
-
-.red{
-
-color:#ff5555;
-
-}
-
-.green{
-
-color:#34d482;
-
-}
-
-.orange{
-
-color:#f4a029;
-
-}
-
-.purple{
-
-color:#a86fff;
-
-}
-
-.sub{
-
-margin-top:10px;
-font-size:13px;
-color:#5dc78b;
-
-}
-
-.grid{
-
-display:grid;
-
-grid-template-columns:
-2fr 1fr;
-
-gap:18px;
-
-margin-top:20px;
-
-}
-
-.panel{
-
-background:#091526;
-
-border:1px solid #18283d;
-
-border-radius:14px;
-
-padding:22px;
-
-}
-
-.panel h2{
-
-margin-bottom:18px;
-
-}
-
-.filters{
-
-display:flex;
-
-gap:10px;
-
-margin-bottom:20px;
-
-}
-
-.filters select{
-
-background:#081525;
-
-border:1px solid #18283d;
-
-padding:10px;
-
-border-radius:8px;
-
-color:white;
-
-}
-
-table{
-
-width:100%;
-border-collapse:collapse;
-
-}
-
-th{
-
-text-align:left;
-
-padding:16px;
-
-font-size:13px;
-
-color:#91a6bc;
-
-}
-
-td{
-
-padding:16px;
-
-border-top:1px solid #18283d;
-
-}
-
-.badge{
-
-padding:6px 12px;
-
-border-radius:18px;
-
-font-size:12px;
-
-}
-
-.high{
-
-background:#ff555530;
-
-color:#ff5555;
-
-}
-
-.medium{
-
-background:#f4a02930;
-
-color:#f4a029;
-
-}
-
-.low{
-
-background:#34d48230;
-
-color:#34d482;
-
-}
-
-.progress{
-
-height:8px;
-
-background:#18283d;
-
-border-radius:12px;
-
-overflow:hidden;
-
-}
-
-.progress div{
-
-height:100%;
-
-background:#1798ff;
-
-}
-
-.sideMetric{
-
-margin-bottom:28px;
-
-}
-
-.sideMetric h3{
-
-margin-bottom:14px;
-
-}
-
-</style>
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CyberBench Remediation</title>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Inter, Arial, sans-serif; }
+    body { background: #050d18; color: #fff; }
+    .app { display: flex; min-height: 100vh; background: radial-gradient(circle at top right, rgba(0,123,255,.12), transparent 35%), #050d18; }
+
+    .sidebar { width: 250px; background: #07111f; border-right: 1px solid #132235; padding: 22px 14px; position: fixed; inset: 0 auto 0 0; }
+    .brand { display: flex; align-items: center; gap: 8px; font-size: 26px; font-weight: 800; margin-bottom: 30px; white-space: nowrap; }
+    .brand span { color: #1e9bff; }
+
+    .nav a { display: flex; align-items: center; gap: 12px; color: #c0ccdc; text-decoration: none; padding: 13px 14px; border-radius: 9px; margin-bottom: 8px; font-size: 15px; }
+    .nav a.active { background: linear-gradient(135deg, #0f8cff, #246bff); color: #fff; }
+    .badge { margin-left: auto; background: #ff4055; padding: 3px 8px; border-radius: 20px; font-size: 12px; }
+
+    .sidebar-card { position: absolute; bottom: 22px; left: 14px; right: 14px; background: #0b1828; border: 1px solid #172b42; border-radius: 12px; padding: 15px; }
+    .sidebar-card p { color: #9fafc4; font-size: 13px; margin: 5px 0 14px; }
+    .sidebar-card button { width: 100%; background: #111f31; border: 1px solid #1f334d; color: #fff; padding: 11px; border-radius: 8px; }
+
+    .main { margin-left: 250px; width: calc(100% - 250px); padding: 22px 28px; }
+    .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
+    .search-top { width: 500px; background: #0b1625; border: 1px solid #1b2d42; color: white; padding: 13px 18px; border-radius: 10px; outline: none; }
+    .userbar { display: flex; align-items: center; gap: 18px; }
+    .btn { background: #0b1625; border: 1px solid #1b2d42; color: #fff; border-radius: 8px; padding: 13px 18px; font-weight: 700; cursor: pointer; }
+    .primary { background: linear-gradient(135deg,#0f8cff,#1f74ff); border: 0; }
+
+    .page-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; }
+    .page-title h1 { font-size: 32px; margin-bottom: 8px; }
+    .page-title p { color: #aeb9c8; font-size: 16px; }
+    .page-actions { display: flex; gap: 14px; }
+
+    .layout-grid { display: grid; grid-template-columns: 1fr 380px; gap: 22px; }
+    .cards { display: grid; grid-template-columns: repeat(5, 1fr); gap: 18px; margin-bottom: 22px; }
+
+    .card, .panel {
+      background: linear-gradient(180deg,#0d1a2b,#091525);
+      border: 1px solid #192b40;
+      border-radius: 12px;
+      box-shadow: 0 15px 40px rgba(0,0,0,.25);
+    }
+
+    .card { padding: 20px; min-height: 125px; position: relative; }
+    .card h3 { color: #d2dceb; font-size: 15px; margin-bottom: 12px; padding-left: 48px; }
+    .value { font-size: 36px; font-weight: 800; color: #199cff; padding-left: 48px; }
+    .sub { margin-top: 8px; color: #37d27f; font-size: 13px; padding-left: 48px; }
+    .green .value { color: #37d27f; }
+    .red .value { color: #ff4055; }
+    .orange .value { color: #ff8f1f; }
+    .purple .value { color: #9b5cff; }
+
+    .icon-box {
+      position: absolute;
+      left: 20px;
+      top: 28px;
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: rgba(25,156,255,.14);
+      display: grid;
+      place-items: center;
+      font-size: 22px;
+    }
+
+    .remediation-panel { overflow: hidden; }
+    .filters { display: flex; gap: 12px; padding: 14px; border-bottom: 1px solid #17283c; align-items: center; }
+    .filters input, .filters select, .filters button {
+      background: #081422;
+      border: 1px solid #1b3048;
+      color: #d8e2ef;
+      padding: 12px 14px;
+      border-radius: 8px;
+    }
+    .filters input { margin-left: auto; min-width: 270px; }
+
+    table { width: 100%; border-collapse: collapse; font-size: 14px; }
+    th, td { padding: 15px 12px; border-bottom: 1px solid #17283c; text-align: left; color: #d3deec; vertical-align: middle; }
+    th { color: #8fa1b8; font-size: 13px; }
+    .small { color: #8fa1b8; font-size: 12px; margin-top: 5px; display: block; }
+    .task-id { font-weight: 800; color: #fff; }
+
+    .pill { padding: 5px 10px; border-radius: 12px; font-size: 12px; white-space: nowrap; display: inline-block; }
+    .critical { background: rgba(255,64,85,.15); color: #ff596b; border: 1px solid rgba(255,64,85,.35); }
+    .high { background: rgba(255,143,31,.15); color: #ff9f33; border: 1px solid rgba(255,143,31,.35); }
+    .medium { background: rgba(255,191,47,.15); color: #ffbf2f; border: 1px solid rgba(255,191,47,.35); }
+    .low { background: rgba(55,210,127,.15); color: #37d27f; border: 1px solid rgba(55,210,127,.35); }
+    .progress-pill { background: rgba(25,156,255,.15); color: #36a7ff; border: 1px solid rgba(25,156,255,.35); }
+    .pending { background: rgba(155,92,255,.15); color: #b78cff; border: 1px solid rgba(155,92,255,.35); }
+    .completed { background: rgba(55,210,127,.15); color: #37d27f; border: 1px solid rgba(55,210,127,.35); }
+
+    .due-red { color: #ff4055; font-weight: 700; }
+    .due-normal { color: #d3deec; }
+
+    .progress-wrap { display: flex; align-items: center; gap: 10px; }
+    .progress-track { width: 110px; height: 8px; background: #17283c; border-radius: 999px; overflow: hidden; }
+    .progress-fill { height: 100%; border-radius: 999px; background: linear-gradient(90deg,#1e9bff,#9b5cff); }
+    .progress-fill.green { background: #37d27f; }
+
+    .pagination { display: flex; justify-content: space-between; align-items: center; padding: 16px; color: #aeb9c8; }
+    .pages button { background: #0b1726; color: #d8e2ef; border: 1px solid #1b3048; padding: 8px 12px; border-radius: 8px; margin: 0 4px; }
+    .pages .active-page { background: #0f8cff; color: #fff; }
+
+    .right-col { display: flex; flex-direction: column; gap: 18px; }
+    .panel { padding: 20px; }
+    .panel h3 { font-size: 17px; margin-bottom: 16px; }
+    canvas { width: 100% !important; max-height: 220px; }
+
+    .vuln-row { display: grid; grid-template-columns: 120px 1fr 38px; align-items: center; gap: 12px; margin-bottom: 18px; color: #d3deec; font-size: 14px; }
+    .bar-bg { height: 11px; background: #17283c; border-radius: 10px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 10px; }
+    .bar-red { background: #ff4055; }
+    .bar-orange { background: #ff8f1f; }
+    .bar-yellow { background: #ffbf2f; }
+    .bar-green { background: #37d27f; }
+    .bar-blue { background: #1e9bff; }
+
+    @media(max-width: 1300px) {
+      .cards, .layout-grid { grid-template-columns: 1fr; }
+      .sidebar { display: none; }
+      .main { margin-left: 0; width: 100%; }
+    }
+  </style>
 </head>
 
 <body>
-
 <div class="app">
-
-<div class="sidebar">
-
-<div class="brand">
-
-Cyber<span>Bench</span>
-
-</div>
-
-<div class="nav">
-
-<a href="/dashboard">🏠 Dashboard</a>
-
-<a href="/tickets">🎫 Tickets</a>
-
-<a href="/alerts">⚠️ Alerts</a>
-
-<a href="/kpi">📊 KPI</a>
-
-<a href="/assets">💻 Assets</a>
-
-<a class="active">🛠️ Remediation</a>
-
-<a>📘 Playbooks</a>
-
-<a>👥 Customers</a>
-
-<a>🔗 Integrations</a>
-
-</div>
-
-</div>
-
-<div class="main">
-
-<div class="top">
-
-<input
-class="search"
-placeholder="Search vulnerabilities, assets...">
-
-<button class="button">
-
-Create Task
-
-</button>
-
-</div>
-
-<div class="title">
-
-<h1>
-
-Remediation
-
-</h1>
-
-<p>
-
-Track remediation and reduce risk
-
-</p>
-
-</div>
-
-<div class="cards">
-
-<div class="card">
-
-<h3>Total Vulnerabilities</h3>
-
-<div class="metric blue">
-
-1248
-
-</div>
-
-<div class="sub">
-
-↓12%
-
-</div>
-
-</div>
-
-<div class="card">
-
-<h3>Critical</h3>
-
-<div class="metric red">
-
-128
-
-</div>
-
-</div>
-
-<div class="card">
-
-<h3>Remediated</h3>
-
-<div class="metric green">
-
-892
-
-</div>
-
-</div>
-
-<div class="card">
-
-<h3>In Progress</h3>
-
-<div class="metric orange">
-
-234
-
-</div>
-
-</div>
-
-<div class="card">
-
-<h3>Pending</h3>
-
-<div class="metric purple">
-
-122
-
-</div>
-
-</div>
-
-</div>
-
-<div class="grid">
-
-<div class="panel">
-
-<h2>
-
-Remediation Tasks
-
-</h2>
-
-<div class="filters">
-
-<select>
-
-<option>Status</option>
-
-</select>
-
-<select>
-
-<option>Priority</option>
-
-</select>
-
-<select>
-
-<option>Assignee</option>
-
-</select>
-
-</div>
-
-<table>
-
-<tr>
-
-<th>ID</th>
-
-<th>Issue</th>
-
-<th>Priority</th>
-
-<th>Owner</th>
-
-<th>Progress</th>
-
-</tr>
-
-<tr>
-
-<td>
-
-RM001
-
-</td>
-
-<td>
-
-OpenSSH Bypass
-
-</td>
-
-<td>
-
-<span class="badge high">
-
-Critical
-
-</span>
-
-</td>
-
-<td>
-
-Alex
-
-</td>
-
-<td>
-
-<div class="progress">
-
-<div
-style="width:75%">
-</div>
-
-</div>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-RM002
-
-</td>
-
-<td>
-
-Windows Patch Missing
-
-</td>
-
-<td>
-
-<span class="badge medium">
-
-High
-
-</span>
-
-</td>
-
-<td>
-
-Maria
-
-</td>
-
-<td>
-
-<div class="progress">
-
-<div
-style="width:50%">
-</div>
-
-</div>
-
-</td>
-
-</tr>
-
-<tr>
-
-<td>
-
-RM003
-
-</td>
-
-<td>
-
-Chrome CVE
-
-</td>
-
-<td>
-
-<span class="badge low">
-
-Low
-
-</span>
-
-</td>
-
-<td>
-
-James
-
-</td>
-
-<td>
-
-<div class="progress">
-
-<div
-style="width:100%">
-</div>
-
-</div>
-
-</td>
-
-</tr>
-
-</table>
-
-</div>
-
-<div>
-
-<div class="panel sideMetric">
-
-<h3>
-
-Remediation Status
-
-</h3>
-
-<canvas id="pie">
-
-</canvas>
-
-</div>
-
-<div class="panel">
-
-<h3>
-
-Risk Reduction
-
-</h3>
-
-<canvas id="line">
-
-</canvas>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
+  <aside class="sidebar">
+    <div class="brand">🛡️ Cyber<span>Bench</span></div>
+
+    <nav class="nav">
+      <a href="/dashboard">🏠 Dashboard</a>
+      <a href="/tickets">🎫 Tickets</a>
+      <a href="/alerts">⚠️ Alerts <span class="badge">23</span></a>
+      <a href="/kpi">📊 KPI & Reports</a>
+      <a href="/assets">💻 Assets</a>
+      <a class="active" href="/remediation">🛠️ Remediation</a>
+      <a href="/playbooks">📘 Playbooks</a>
+      <a href="/customers">👥 Customers</a>
+      <a href="/integrations">🔗 Integrations</a>
+      <a href="/administration">⚙️ Administration</a>
+    </nav>
+
+    <div class="sidebar-card">
+      <h4>Awesome SOC</h4>
+      <p>Enterprise Plan</p>
+      <button>View Settings</button>
+    </div>
+  </aside>
+
+  <main class="main">
+    <div class="topbar">
+      <input class="search-top" placeholder="Search vulnerabilities, assets, vulnerabilities..." />
+      <div class="userbar">
+        <span>🔔</span>
+        <span>❔</span>
+        <strong>Admin User</strong>
+      </div>
+    </div>
+
+    <div class="page-head">
+      <div class="page-title">
+        <h1>Remediation</h1>
+        <p>Track and manage remediation activities to reduce security risks</p>
+      </div>
+      <div class="page-actions">
+        <button class="btn">Export Report</button>
+        <button class="btn primary">＋ Create Remediation Task</button>
+      </div>
+    </div>
+
+    <div class="layout-grid">
+      <section>
+        <div class="cards">
+          <div class="card">
+            <div class="icon-box">🛡️</div>
+            <h3>Total Vulnerabilities</h3>
+            <div class="value">1,248</div>
+            <div class="sub">↓ 12% vs last 7 days</div>
+          </div>
+
+          <div class="card red">
+            <div class="icon-box">🛡️</div>
+            <h3>Critical Vulnerabilities</h3>
+            <div class="value">128</div>
+            <div class="sub">↓ 8% vs last 7 days</div>
+          </div>
+
+          <div class="card green">
+            <div class="icon-box">✅</div>
+            <h3>Remediated</h3>
+            <div class="value">892</div>
+            <div class="sub">↑ 15% vs last 7 days</div>
+          </div>
+
+          <div class="card orange">
+            <div class="icon-box">🕘</div>
+            <h3>In Progress</h3>
+            <div class="value">234</div>
+            <div class="sub">↑ 5% vs last 7 days</div>
+          </div>
+
+          <div class="card purple">
+            <div class="icon-box">⌛</div>
+            <h3>Pending</h3>
+            <div class="value">122</div>
+            <div class="sub">↓ 10% vs last 7 days</div>
+          </div>
+        </div>
+
+        <div class="panel remediation-panel">
+          <div class="filters">
+            <strong style="margin-right:10px;">Remediation Tasks</strong>
+            <select><option>Status</option></select>
+            <select><option>Priority</option></select>
+            <select><option>Asset</option></select>
+            <select><option>Assignee</option></select>
+            <button>More Filters</button>
+            <input placeholder="Search tasks..." />
+          </div>
+
+          <table>
+            <thead>
+              <tr>
+                <th>Task ID</th>
+                <th>Vulnerability</th>
+                <th>Asset</th>
+                <th>Priority</th>
+                <th>Status</th>
+                <th>Assignee</th>
+                <th>Due Date</th>
+                <th>Progress</th>
+                <th>Actions</th>
+              </tr>
+            </thead>
+
+            <tbody>
+              <tr>
+                <td class="task-id">RM-2025-001</td>
+                <td><strong>CVE-2024-3094</strong><span class="small">OpenSSH Security Bypass</span></td>
+                <td><strong>WS-CA-1432</strong><span class="small">Workstation</span></td>
+                <td><span class="pill critical">Critical</span></td>
+                <td><span class="pill progress-pill">In Progress</span></td>
+                <td>Alex Johnson</td>
+                <td><strong>May 20, 2025</strong><span class="small due-red">2 days left</span></td>
+                <td><div class="progress-wrap"><span>75%</span><div class="progress-track"><div class="progress-fill" style="width:75%"></div></div></div></td>
+                <td>•••</td>
+              </tr>
+
+              <tr>
+                <td class="task-id">RM-2025-002</td>
+                <td><strong>CVE-2024-21762</strong><span class="small">Windows RDP Vulnerability</span></td>
+                <td><strong>DC-01</strong><span class="small">Domain Controller</span></td>
+                <td><span class="pill critical">Critical</span></td>
+                <td><span class="pill progress-pill">In Progress</span></td>
+                <td>Sarah Kim</td>
+                <td><strong>May 19, 2025</strong><span class="small due-red">1 day left</span></td>
+                <td><div class="progress-wrap"><span>45%</span><div class="progress-track"><div class="progress-fill" style="width:45%"></div></div></div></td>
+                <td>•••</td>
+              </tr>
+
+              <tr>
+                <td class="task-id">RM-2025-003</td>
+                <td><strong>CVE-2024-6387</strong><span class="small">Chrome V8 Type Confusion</span></td>
+                <td><strong>LAPTOP-LA-09</strong><span class="small">Laptop</span></td>
+                <td><span class="pill high">High</span></td>
+                <td><span class="pill pending">Pending</span></td>
+                <td>James Lee</td>
+                <td><strong>May 22, 2025</strong><span class="small">4 days left</span></td>
+                <td><div class="progress-wrap"><span>0%</span><div class="progress-track"><div class="progress-fill" style="width:0%"></div></div></div></td>
+                <td>•••</td>
+              </tr>
+
+              <tr>
+                <td class="task-id">RM-2025-004</td>
+                <td><strong>CVE-2024-27198</strong><span class="small">Fortinet SSL VPN RCE</span></td>
+                <td><strong>FW-01</strong><span class="small">Firewall</span></td>
+                <td><span class="pill high">High</span></td>
+                <td><span class="pill progress-pill">In Progress</span></td>
+                <td>Maria Garcia</td>
+                <td><strong>May 21, 2025</strong><span class="small">3 days left</span></td>
+                <td><div class="progress-wrap"><span>60%</span><div class="progress-track"><div class="progress-fill" style="width:60%"></div></div></div></td>
+                <td>•••</td>
+              </tr>
+
+              <tr>
+                <td class="task-id">RM-2025-005</td>
+                <td><strong>CVE-2024-12686</strong><span class="small">Apache HTTP Server DoS</span></td>
+                <td><strong>APP-SRV-01</strong><span class="small">Application Server</span></td>
+                <td><span class="pill medium">Medium</span></td>
+                <td><span class="pill completed">Completed</span></td>
+                <td>David Chen</td>
+                <td><strong>May 16, 2025</strong><span class="small">Completed</span></td>
+                <td><div class="progress-wrap"><span>100%</span><div class="progress-track"><div class="progress-fill green" style="width:100%"></div></div></div></td>
+                <td>•••</td>
+              </tr>
+
+              <tr>
+                <td class="task-id">RM-2025-006</td>
+                <td><strong>CVE-2024-33333</strong><span class="small">MySQL Auth Bypass</span></td>
+                <td><strong>AWS-RDS-01</strong><span class="small">Database</span></td>
+                <td><span class="pill medium">Medium</span></td>
+                <td><span class="pill pending">Pending</span></td>
+                <td>Sarah Kim</td>
+                <td><strong>May 24, 2025</strong><span class="small">6 days left</span></td>
+                <td><div class="progress-wrap"><span>0%</span><div class="progress-track"><div class="progress-fill" style="width:0%"></div></div></div></td>
+                <td>•••</td>
+              </tr>
+
+              <tr>
+                <td class="task-id">RM-2025-007</td>
+                <td><strong>CVE-2024-48788</strong><span class="small">Sudo Privilege Escalation</span></td>
+                <td><strong>FILE-SRV-02</strong><span class="small">File Server</span></td>
+                <td><span class="pill low">Low</span></td>
+                <td><span class="pill progress-pill">In Progress</span></td>
+                <td>Alex Johnson</td>
+                <td><strong>May 23, 2025</strong><span class="small">5 days left</span></td>
+                <td><div class="progress-wrap"><span>30%</span><div class="progress-track"><div class="progress-fill" style="width:30%"></div></div></div></td>
+                <td>•••</td>
+              </tr>
+
+              <tr>
+                <td class="task-id">RM-2025-008</td>
+                <td><strong>CVE-2024-55555</strong><span class="small">Docker Container Escape</span></td>
+                <td><strong>AWS-EC2-01</strong><span class="small">Cloud Instance</span></td>
+                <td><span class="pill low">Low</span></td>
+                <td><span class="pill pending">Pending</span></td>
+                <td>James Lee</td>
+                <td><strong>May 25, 2025</strong><span class="small">7 days left</span></td>
+                <td><div class="progress-wrap"><span>0%</span><div class="progress-track"><div class="progress-fill" style="width:0%"></div></div></div></td>
+                <td>•••</td>
+              </tr>
+            </tbody>
+          </table>
+
+          <div class="pagination">
+            <span>Showing 1 to 8 of 234 tasks</span>
+            <div class="pages">
+              <button>‹</button>
+              <button class="active-page">1</button>
+              <button>2</button>
+              <button>3</button>
+              <button>4</button>
+              <button>5</button>
+              <button>...</button>
+              <button>30</button>
+              <button>›</button>
+            </div>
+            <span>Rows per page: 10</span>
+          </div>
+        </div>
+      </section>
+
+      <aside class="right-col">
+        <div class="panel">
+          <h3>Remediation Status</h3>
+          <canvas id="remediationStatusChart"></canvas>
+        </div>
+
+        <div class="panel">
+          <h3>Risk Reduction Over Time</h3>
+          <canvas id="riskReductionChart"></canvas>
+        </div>
+
+        <div class="panel">
+          <h3>Top Vulnerabilities</h3>
+
+          <div class="vuln-row">
+            <span>CVE-2024-3094</span>
+            <div class="bar-bg"><div class="bar-fill bar-red" style="width:78%"></div></div>
+            <strong>78</strong>
+          </div>
+
+          <div class="vuln-row">
+            <span>CVE-2024-21762</span>
+            <div class="bar-bg"><div class="bar-fill bar-orange" style="width:56%"></div></div>
+            <strong>56</strong>
+          </div>
+
+          <div class="vuln-row">
+            <span>CVE-2024-6387</span>
+            <div class="bar-bg"><div class="bar-fill bar-yellow" style="width:42%"></div></div>
+            <strong>42</strong>
+          </div>
+
+          <div class="vuln-row">
+            <span>CVE-2024-27198</span>
+            <div class="bar-bg"><div class="bar-fill bar-green" style="width:31%"></div></div>
+            <strong>31</strong>
+          </div>
+
+          <div class="vuln-row">
+            <span>CVE-2024-12686</span>
+            <div class="bar-bg"><div class="bar-fill bar-blue" style="width:28%"></div></div>
+            <strong>28</strong>
+          </div>
+        </div>
+      </aside>
+    </div>
+  </main>
 </div>
 
 <script>
+  Chart.defaults.color = "#9fafc4";
+  Chart.defaults.borderColor = "rgba(255,255,255,.08)";
 
-new Chart(
+  new Chart(document.getElementById("remediationStatusChart"), {
+    type: "doughnut",
+    data: {
+      labels: ["Remediated", "In Progress", "Pending"],
+      datasets: [{
+        data: [892, 234, 122],
+        backgroundColor: ["#37d27f", "#1e9bff", "#ff8f1f"],
+        borderWidth: 0
+      }]
+    },
+    options: {
+      cutout: "65%",
+      plugins: {
+        legend: {
+          position: "right",
+          labels: { usePointStyle: true, boxWidth: 10 }
+        }
+      }
+    }
+  });
 
-document
-.getElementById("pie"),
-
-{
-
-type:"doughnut",
-
-data:{
-
-labels:[
-"Done",
-"Progress",
-"Pending"
-],
-
-datasets:[{
-
-data:[
-892,
-234,
-122
-],
-
-backgroundColor:[
-
-"#34d482",
-
-"#2498ff",
-
-"#f4a029"
-
-]
-
-}]
-
-}
-
-}
-
-);
-
-new Chart(
-
-document
-.getElementById("line"),
-
-{
-
-type:"line",
-
-data:{
-
-labels:[
-"Mon",
-"Tue",
-"Wed",
-"Thu",
-"Fri"
-],
-
-datasets:[{
-
-data:[
-40,
-55,
-62,
-75,
-85
-],
-
-borderColor:"#34d482",
-
-backgroundColor:
-"rgba(52,212,130,.2)",
-
-fill:true
-
-}]
-
-}
-
-}
-
-);
-
+  new Chart(document.getElementById("riskReductionChart"), {
+    type: "line",
+    data: {
+      labels: ["May 12", "May 13", "May 14", "May 15", "May 16", "May 17", "May 18"],
+      datasets: [{
+        data: [40, 45, 52, 61, 70, 78, 86],
+        borderColor: "#37d27f",
+        backgroundColor: "rgba(55,210,127,.22)",
+        fill: true,
+        tension: .4,
+        pointBackgroundColor: "#37d27f",
+        pointRadius: 4
+      }]
+    },
+    options: {
+      plugins: { legend: { display: false } },
+      scales: {
+        y: { beginAtZero: true, max: 100 },
+        x: { grid: { display: false } }
+      }
+    }
+  });
 </script>
-
 </body>
 </html>
