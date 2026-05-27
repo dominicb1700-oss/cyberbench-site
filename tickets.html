@@ -1,231 +1,203 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CyberBench Tickets</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Inter, Arial, sans-serif; }
-    body { background: #050d18; color: #fff; }
-    .app { display: flex; min-height: 100vh; background: radial-gradient(circle at top right, rgba(0,123,255,.12), transparent 35%), #050d18; }
-
-    .sidebar { width: 250px; background: #07111f; border-right: 1px solid #132235; padding: 22px 14px; position: fixed; inset: 0 auto 0 0; }
-    .brand { display: flex; align-items: center; gap: 8px; font-size: 26px; font-weight: 800; margin-bottom: 30px; white-space: nowrap; }
-    .brand span { color: #1e9bff; }
-    .nav a { display: flex; align-items: center; gap: 12px; color: #c0ccdc; text-decoration: none; padding: 13px 14px; border-radius: 9px; margin-bottom: 8px; font-size: 15px; }
-    .nav a.active { background: linear-gradient(135deg, #0f8cff, #246bff); color: #fff; }
-    .badge { margin-left: auto; background: #ff4055; padding: 3px 8px; border-radius: 20px; font-size: 12px; }
-    .sidebar-card { position: absolute; bottom: 22px; left: 14px; right: 14px; background: #0b1828; border: 1px solid #172b42; border-radius: 12px; padding: 15px; }
-    .sidebar-card p { color: #9fafc4; font-size: 13px; margin: 5px 0 14px; }
-    .sidebar-card button { width: 100%; background: #111f31; border: 1px solid #1f334d; color: #fff; padding: 11px; border-radius: 8px; }
-
-    .main { margin-left: 250px; width: calc(100% - 250px); padding: 22px 28px; }
-    .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
-    .search-top { width: 500px; background: #0b1625; border: 1px solid #1b2d42; color: white; padding: 13px 18px; border-radius: 10px; outline: none; }
-    .userbar { display: flex; align-items: center; gap: 18px; }
-    .new-btn { background: linear-gradient(135deg,#0f8cff,#1f74ff); color: #fff; border: 0; border-radius: 8px; padding: 13px 20px; font-weight: 700; cursor: pointer; }
-
-    .page-title { margin-bottom: 24px; }
-    .page-title h1 { font-size: 32px; margin-bottom: 8px; }
-    .page-title p { color: #aeb9c8; font-size: 16px; }
-
-    .layout-grid { display: grid; grid-template-columns: 1fr 360px; gap: 22px; }
-    .cards { display: grid; grid-template-columns: repeat(5, 1fr); gap: 18px; margin-bottom: 22px; }
-
-    .card, .panel { background: linear-gradient(180deg,#0d1a2b,#091525); border: 1px solid #192b40; border-radius: 12px; box-shadow: 0 15px 40px rgba(0,0,0,.25); }
-    .card { padding: 20px; min-height: 125px; position: relative; }
-    .card h3 { color: #d2dceb; font-size: 15px; margin-bottom: 12px; }
-    .value { font-size: 36px; font-weight: 800; color: #199cff; }
-    .sub { margin-top: 8px; color: #37d27f; font-size: 13px; }
-    .orange .value { color: #ff8f1f; } .red .value { color: #ff4055; } .green .value { color: #37d27f; } .purple .value { color: #9b5cff; }
-
-    .tickets-panel { overflow: hidden; }
-    .filters { display: flex; gap: 12px; padding: 14px; border-bottom: 1px solid #17283c; }
-    .filters input, .filters select, .filters button {
-      background: #081422; border: 1px solid #1b3048; color: #d8e2ef; padding: 12px 14px; border-radius: 8px;
-    }
-    .filters input { flex: 1; }
-
-    table { width: 100%; border-collapse: collapse; font-size: 14px; }
-    th, td { padding: 14px 12px; border-bottom: 1px solid #17283c; text-align: left; color: #d3deec; }
-    th { color: #8fa1b8; font-size: 13px; }
-    .tag { display: inline-block; margin-top: 5px; background: #152336; color: #aebbd0; padding: 4px 8px; border-radius: 7px; font-size: 12px; }
-    .pill { padding: 5px 10px; border-radius: 12px; font-size: 12px; white-space: nowrap; }
-    .critical { background: rgba(255,64,85,.15); color: #ff596b; }
-    .high { background: rgba(255,143,31,.15); color: #ff9f33; }
-    .medium { background: rgba(255,191,47,.15); color: #ffbf2f; }
-    .low { background: rgba(55,210,127,.15); color: #37d27f; }
-    .open { background: rgba(25,156,255,.15); color: #36a7ff; }
-    .progress { background: rgba(25,156,255,.2); color: #36a7ff; }
-    .pending { background: rgba(155,92,255,.18); color: #b78cff; }
-    .resolved { background: rgba(55,210,127,.15); color: #37d27f; }
-    .sla-warn { color: #ffbf2f; font-weight: 700; }
-    .sla-bad { color: #ff4055; font-weight: 700; }
-
-    .pagination { display: flex; justify-content: space-between; align-items: center; padding: 16px; color: #aeb9c8; }
-    .pages button { background: #0b1726; color: #d8e2ef; border: 1px solid #1b3048; padding: 8px 12px; border-radius: 8px; margin: 0 4px; }
-    .pages .active-page { background: #0f8cff; color: #fff; }
-
-    .right-col { display: flex; flex-direction: column; gap: 18px; }
-    .panel { padding: 20px; }
-    .panel h3 { font-size: 17px; margin-bottom: 16px; }
-    canvas { width: 100% !important; max-height: 220px; }
-
-    .activity { list-style: none; }
-    .activity li { display: flex; justify-content: space-between; gap: 12px; border-left: 2px solid #23384f; padding: 0 0 18px 15px; color: #cfd9e6; font-size: 13px; }
-    .activity strong { display: block; margin-bottom: 4px; color: #fff; }
-    .time { color: #8fa1b8; white-space: nowrap; }
-
-    .workload-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 18px; }
-    .bar { height: 14px; display: flex; overflow: hidden; border-radius: 9px; background: #18283b; }
-    .bar span:nth-child(1) { width: 45%; background: #1e9bff; }
-    .bar span:nth-child(2) { width: 28%; background: #ff8f1f; }
-    .bar span:nth-child(3) { width: 18%; background: #9b5cff; }
-    .bar span:nth-child(4) { width: 9%; background: #ff4055; }
-
-    @media(max-width: 1300px) {
-      .cards, .layout-grid { grid-template-columns: 1fr; }
-      .sidebar { display: none; }
-      .main { margin-left: 0; width: 100%; }
-    }
-  </style>
-</head>
-
-<body>
-<div class="app">
-  <aside class="sidebar">
-    <div class="brand">🛡️ Cyber<span>Bench</span></div>
-    <nav class="nav">
-      <a href="dashboard.html">🏠 Dashboard</a>
-      <a href="/tickets">🎫 Tickets</a>
-      <a href="/alerts">⚠️ Alerts <span class="badge">23</span></a>
-      <a href="/assets">💻 Assets</a>
-      <a href="/remediation">🛠️ Remediation</a>
-      <a href="/playbooks">📘 Playbooks</a>
-    </nav>
-
-    <div class="sidebar-card">
-      <h4>Awesome SOC</h4>
-      <p>Enterprise Plan</p>
-      <button>View Settings</button>
-    </div>
-  </aside>
-
-  <main class="main">
-    <div class="topbar">
-      <input class="search-top" placeholder="Search tickets, assets, alerts, customers..." />
-      <div class="userbar">
-        <span>🔔</span><span>❔</span><span>Admin User</span>
-        <button class="new-btn">＋ New Ticket</button>
-      </div>
-    </div>
-
-    <div class="page-title">
-      <h1>Tickets</h1>
-      <p>Manage remediation work, alerts, and customer requests</p>
-    </div>
-
-    <div class="layout-grid">
-      <section>
-        <div class="cards">
-          <div class="card"><h3>Open Tickets</h3><div class="value">48</div><div class="sub">↓ 12% vs last 7 days</div></div>
-          <div class="card orange"><h3>In Progress</h3><div class="value">18</div><div class="sub" style="color:#ff8f1f;">↑ 8% vs last 7 days</div></div>
-          <div class="card red"><h3>Overdue</h3><div class="value">6</div><div class="sub" style="color:#ff4055;">↓ 14% vs last 7 days</div></div>
-          <div class="card green"><h3>Closed This Week</h3><div class="value">35</div><div class="sub">↑ 25% vs last 7 days</div></div>
-          <div class="card purple"><h3>Avg Closure Time</h3><div class="value">4.2h</div><div class="sub">↓ 18% vs last 7 days</div></div>
-        </div>
-
-        <div class="panel tickets-panel">
-          <div class="filters">
-            <input placeholder="Search tickets..." />
-            <select><option>Status</option></select>
-            <select><option>Priority</option></select>
-            <select><option>Customer</option></select>
-            <select><option>Assigned To</option></select>
-            <button>More Filters</button>
-            <button>Export</button>
-          </div>
-
-          <table>
-            <thead>
-              <tr>
-                <th></th><th>Ticket ID</th><th>Title</th><th>Customer</th><th>Priority</th><th>Status</th><th>Assigned To</th><th>SLA</th><th>Updated</th><th>Actions</th>
-              </tr>
-            </thead>
-            <tbody>
-              <tr><td><input type="checkbox"></td><td>TKT-000124</td><td>Disable SMBv1 on File Server<br><span class="tag">Remediation</span></td><td>Acme Manufacturing</td><td><span class="pill high">High</span></td><td><span class="pill progress">In Progress</span></td><td>Alex Johnson</td><td class="sla-warn">2h left</td><td>15m ago</td><td>•••</td></tr>
-              <tr><td><input type="checkbox"></td><td>TKT-000123</td><td>Patch OpenSSL CVE-2024-3094<br><span class="tag">Vulnerability</span></td><td>Orlando Law Group</td><td><span class="pill critical">Critical</span></td><td><span class="pill open">Open</span></td><td>Maria Garcia</td><td class="sla-bad">Overdue</td><td>42m ago</td><td>•••</td></tr>
-              <tr><td><input type="checkbox"></td><td>TKT-000122</td><td>Backup Validation Failure<br><span class="tag">Backup</span></td><td>Stellar IT</td><td><span class="pill medium">Medium</span></td><td><span class="pill pending">Pending Customer</span></td><td>James Lee</td><td class="sla-warn">1d left</td><td>1h ago</td><td>•••</td></tr>
-              <tr><td><input type="checkbox"></td><td>TKT-000121</td><td>Brute Force Attack Detected<br><span class="tag">Security Alert</span></td><td>Acme Manufacturing</td><td><span class="pill high">High</span></td><td><span class="pill progress">In Progress</span></td><td>Sarah Kim</td><td class="sla-warn">3h left</td><td>2h ago</td><td>•••</td></tr>
-              <tr><td><input type="checkbox"></td><td>TKT-000120</td><td>Malicious File Detected<br><span class="tag">Security Alert</span></td><td>Orlando Law Group</td><td><span class="pill critical">Critical</span></td><td><span class="pill progress">In Progress</span></td><td>David Chen</td><td class="sla-bad">30m left</td><td>2h ago</td><td>•••</td></tr>
-              <tr><td><input type="checkbox"></td><td>TKT-000119</td><td>MFA Not Enforced on O365<br><span class="tag">Configuration</span></td><td>Acme Manufacturing</td><td><span class="pill medium">Medium</span></td><td><span class="pill open">Open</span></td><td>Alex Johnson</td><td class="sla-warn">2d left</td><td>3h ago</td><td>•••</td></tr>
-              <tr><td><input type="checkbox"></td><td>TKT-000118</td><td>Unapproved Software Found<br><span class="tag">Compliance</span></td><td>Stellar IT</td><td><span class="pill low">Low</span></td><td><span class="pill progress">In Progress</span></td><td>Maria Garcia</td><td class="sla-warn">3d left</td><td>5h ago</td><td>•••</td></tr>
-              <tr><td><input type="checkbox"></td><td>TKT-000117</td><td>Firewall Rule Review<br><span class="tag">Review</span></td><td>Orlando Law Group</td><td><span class="pill medium">Medium</span></td><td><span class="pill pending">Pending Customer</span></td><td>James Lee</td><td class="sla-warn">4d left</td><td>6h ago</td><td>•••</td></tr>
-              <tr><td><input type="checkbox"></td><td>TKT-000116</td><td>Critical Windows Updates<br><span class="tag">Patch Management</span></td><td>Acme Manufacturing</td><td><span class="pill high">High</span></td><td><span class="pill open">Open</span></td><td>Sarah Kim</td><td class="sla-warn">1d left</td><td>8h ago</td><td>•••</td></tr>
-              <tr><td><input type="checkbox"></td><td>TKT-000115</td><td>Phishing Email Reported<br><span class="tag">Phishing</span></td><td>Stellar IT</td><td><span class="pill low">Low</span></td><td><span class="pill resolved">Resolved</span></td><td>David Chen</td><td>-</td><td>1d ago</td><td>•••</td></tr>
-            </tbody>
-          </table>
-
-          <div class="pagination">
-            <span>Showing 1 to 10 of 48 tickets</span>
-            <div class="pages">
-              <button>‹</button><button class="active-page">1</button><button>2</button><button>3</button><button>4</button><button>5</button><button>›</button>
-            </div>
-            <span>Rows per page: 10</span>
-          </div>
-        </div>
-      </section>
-
-      <aside class="right-col">
-        <div class="panel"><h3>Priority Breakdown</h3><canvas id="priorityChart"></canvas></div>
-        <div class="panel"><h3>SLA Health</h3><canvas id="slaChart"></canvas></div>
-
-        <div class="panel">
-          <h3>Recent Activity</h3>
-          <ul class="activity">
-            <li><div><strong>TKT-000124 updated</strong>Status changed to In Progress</div><span class="time">15m ago</span></li>
-            <li><div><strong>TKT-000123 created</strong>New critical vulnerability detected</div><span class="time">42m ago</span></li>
-            <li><div><strong>TKT-000122 updated</strong>Waiting for customer response</div><span class="time">1h ago</span></li>
-          </ul>
-        </div>
-
-        <div class="panel">
-          <h3>My Workload</h3>
-          <div class="workload-row">
-            <strong>Alex Johnson</strong>
-            <div><strong style="font-size:24px;">12</strong><br><span style="color:#9fafc4;">Assigned</span></div>
-          </div>
-          <div class="bar"><span></span><span></span><span></span><span></span></div>
-          <p style="margin-top:14px; color:#9fafc4; font-size:13px;">Open 5 • In Progress 4 • Pending 2 • Overdue 1</p>
-        </div>
-      </aside>
-    </div>
-  </main>
-</div>
+<!-- Use the same tickets.html you uploaded, and add this script RIGHT ABOVE </body> -->
 
 <script>
-  Chart.defaults.color = "#9fafc4";
-  Chart.defaults.borderColor = "rgba(255,255,255,.08)";
+const tickets = [
+  { id:"TKT-000124", title:"Disable SMBv1 on File Server", tag:"Remediation", customer:"Acme Manufacturing", priority:"High", status:"In Progress", assigned:"Alex Johnson", sla:"2h left", updated:"15m ago" },
+  { id:"TKT-000123", title:"Patch OpenSSL CVE-2024-3094", tag:"Vulnerability", customer:"Orlando Law Group", priority:"Critical", status:"Open", assigned:"Maria Garcia", sla:"Overdue", updated:"42m ago" },
+  { id:"TKT-000122", title:"Backup Validation Failure", tag:"Backup", customer:"Stellar IT", priority:"Medium", status:"Pending Customer", assigned:"James Lee", sla:"1d left", updated:"1h ago" },
+  { id:"TKT-000121", title:"Brute Force Attack Detected", tag:"Security Alert", customer:"Acme Manufacturing", priority:"High", status:"In Progress", assigned:"Sarah Kim", sla:"3h left", updated:"2h ago" },
+  { id:"TKT-000120", title:"Malicious File Detected", tag:"Security Alert", customer:"Orlando Law Group", priority:"Critical", status:"In Progress", assigned:"David Chen", sla:"30m left", updated:"2h ago" },
+  { id:"TKT-000119", title:"MFA Not Enforced on O365", tag:"Configuration", customer:"Acme Manufacturing", priority:"Medium", status:"Open", assigned:"Alex Johnson", sla:"2d left", updated:"3h ago" },
+  { id:"TKT-000118", title:"Unapproved Software Found", tag:"Compliance", customer:"Stellar IT", priority:"Low", status:"In Progress", assigned:"Maria Garcia", sla:"3d left", updated:"5h ago" },
+  { id:"TKT-000117", title:"Firewall Rule Review", tag:"Review", customer:"Orlando Law Group", priority:"Medium", status:"Pending Customer", assigned:"James Lee", sla:"4d left", updated:"6h ago" },
+  { id:"TKT-000116", title:"Critical Windows Updates", tag:"Patch Management", customer:"Acme Manufacturing", priority:"High", status:"Open", assigned:"Sarah Kim", sla:"1d left", updated:"8h ago" },
+  { id:"TKT-000115", title:"Phishing Email Reported", tag:"Phishing", customer:"Stellar IT", priority:"Low", status:"Resolved", assigned:"David Chen", sla:"-", updated:"1d ago" }
+];
 
-  new Chart(document.getElementById("priorityChart"), {
-    type: "doughnut",
-    data: {
-      labels: ["Critical", "High", "Medium", "Low"],
-      datasets: [{ data: [7,18,16,7], backgroundColor: ["#ff4055","#ff8f1f","#ffbf2f","#37d27f"], borderWidth: 0 }]
-    },
-    options: { cutout: "65%", plugins: { legend: { position: "right", labels: { usePointStyle: true, boxWidth: 10 }}}}
+let currentPage = 1;
+const rowsPerPage = 10;
+
+const tableBody = document.querySelector("tbody");
+const allInputs = document.querySelectorAll("input");
+const topSearch = document.querySelector(".search-top");
+const tableSearch = document.querySelector(".filters input");
+const selects = document.querySelectorAll(".filters select");
+
+const statusFilter = selects[0];
+const priorityFilter = selects[1];
+const customerFilter = selects[2];
+const assignedFilter = selects[3];
+
+function populateFilters(){
+  statusFilter.innerHTML = `<option value="">Status</option>` + [...new Set(tickets.map(t=>t.status))].map(v=>`<option value="${v}">${v}</option>`).join("");
+  priorityFilter.innerHTML = `<option value="">Priority</option>` + [...new Set(tickets.map(t=>t.priority))].map(v=>`<option value="${v}">${v}</option>`).join("");
+  customerFilter.innerHTML = `<option value="">Customer</option>` + [...new Set(tickets.map(t=>t.customer))].map(v=>`<option value="${v}">${v}</option>`).join("");
+  assignedFilter.innerHTML = `<option value="">Assigned To</option>` + [...new Set(tickets.map(t=>t.assigned))].map(v=>`<option value="${v}">${v}</option>`).join("");
+}
+
+function priorityClass(priority){
+  return priority.toLowerCase();
+}
+
+function statusClass(status){
+  if(status === "In Progress") return "progress";
+  if(status === "Pending Customer") return "pending";
+  if(status === "Resolved") return "resolved";
+  return "open";
+}
+
+function slaClass(sla){
+  if(sla === "Overdue" || sla.includes("30m")) return "sla-bad";
+  if(sla === "-") return "";
+  return "sla-warn";
+}
+
+function filteredTickets(){
+  const searchValue = (tableSearch.value || topSearch.value || "").toLowerCase();
+
+  return tickets.filter(t => {
+    const matchesSearch =
+      t.id.toLowerCase().includes(searchValue) ||
+      t.title.toLowerCase().includes(searchValue) ||
+      t.customer.toLowerCase().includes(searchValue) ||
+      t.priority.toLowerCase().includes(searchValue) ||
+      t.status.toLowerCase().includes(searchValue) ||
+      t.assigned.toLowerCase().includes(searchValue);
+
+    return matchesSearch &&
+      (!statusFilter.value || t.status === statusFilter.value) &&
+      (!priorityFilter.value || t.priority === priorityFilter.value) &&
+      (!customerFilter.value || t.customer === customerFilter.value) &&
+      (!assignedFilter.value || t.assigned === assignedFilter.value);
+  });
+}
+
+function renderTickets(){
+  const filtered = filteredTickets();
+  const start = (currentPage - 1) * rowsPerPage;
+  const paged = filtered.slice(start, start + rowsPerPage);
+
+  tableBody.innerHTML = paged.map(t => `
+    <tr>
+      <td><input type="checkbox" class="row-check"></td>
+      <td>${t.id}</td>
+      <td>${t.title}<br><span class="tag">${t.tag}</span></td>
+      <td>${t.customer}</td>
+      <td><span class="pill ${priorityClass(t.priority)}">${t.priority}</span></td>
+      <td><span class="pill ${statusClass(t.status)}">${t.status}</span></td>
+      <td>${t.assigned}</td>
+      <td class="${slaClass(t.sla)}">${t.sla}</td>
+      <td>${t.updated}</td>
+      <td>
+        <button type="button" onclick="openTicket('${t.id}')" style="background:none;border:none;color:white;cursor:pointer;">•••</button>
+      </td>
+    </tr>
+  `).join("");
+
+  updatePagination(filtered.length);
+}
+
+function updatePagination(total){
+  const pages = document.querySelector(".pages");
+  const totalPages = Math.max(1, Math.ceil(total / rowsPerPage));
+
+  let html = `<button onclick="changePage(${Math.max(1,currentPage-1)})">‹</button>`;
+
+  for(let i = 1; i <= totalPages; i++){
+    html += `<button class="${i === currentPage ? "active-page" : ""}" onclick="changePage(${i})">${i}</button>`;
+  }
+
+  html += `<button onclick="changePage(${Math.min(totalPages,currentPage+1)})">›</button>`;
+  pages.innerHTML = html;
+
+  document.querySelector(".pagination span").innerText =
+    `Showing ${total === 0 ? 0 : 1} to ${Math.min(rowsPerPage,total)} of ${total} tickets`;
+}
+
+function changePage(page){
+  currentPage = page;
+  renderTickets();
+}
+
+function openTicket(id){
+  const t = tickets.find(x => x.id === id);
+  alert(`${t.id}\n\n${t.title}\nCustomer: ${t.customer}\nPriority: ${t.priority}\nStatus: ${t.status}\nAssigned To: ${t.assigned}\nSLA: ${t.sla}`);
+}
+
+function exportTickets(){
+  const rows = [
+    ["Ticket ID","Title","Customer","Priority","Status","Assigned To","SLA","Updated"],
+    ...filteredTickets().map(t => [t.id,t.title,t.customer,t.priority,t.status,t.assigned,t.sla,t.updated])
+  ];
+
+  const csv = rows.map(row => row.map(v => `"${String(v).replaceAll('"','""')}"`).join(",")).join("\n");
+  const blob = new Blob([csv], { type:"text/csv" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+
+  a.href = url;
+  a.download = "cyberbench-tickets.csv";
+  a.click();
+
+  URL.revokeObjectURL(url);
+}
+
+function createNewTicket(){
+  const title = prompt("Enter ticket title:");
+  if(!title) return;
+
+  tickets.unshift({
+    id:`TKT-${String(125 + tickets.length).padStart(6,"0")}`,
+    title,
+    tag:"Manual",
+    customer:"New Customer",
+    priority:"Medium",
+    status:"Open",
+    assigned:"Unassigned",
+    sla:"2d left",
+    updated:"Just now"
   });
 
-  new Chart(document.getElementById("slaChart"), {
-    type: "doughnut",
-    data: {
-      labels: ["Met", "At Risk", "Breached"],
-      datasets: [{ data: [44,3,1], backgroundColor: ["#37d27f","#ffbf2f","#ff4055"], borderWidth: 0 }]
-    },
-    options: { cutout: "70%", plugins: { legend: { position: "right", labels: { usePointStyle: true, boxWidth: 10 }}}}
+  currentPage = 1;
+  renderTickets();
+}
+
+function resetFilters(){
+  topSearch.value = "";
+  tableSearch.value = "";
+  statusFilter.value = "";
+  priorityFilter.value = "";
+  customerFilter.value = "";
+  assignedFilter.value = "";
+  currentPage = 1;
+  renderTickets();
+}
+
+topSearch.addEventListener("input", () => {
+  tableSearch.value = topSearch.value;
+  currentPage = 1;
+  renderTickets();
+});
+
+tableSearch.addEventListener("input", () => {
+  currentPage = 1;
+  renderTickets();
+});
+
+[statusFilter, priorityFilter, customerFilter, assignedFilter].forEach(filter => {
+  filter.addEventListener("change", () => {
+    currentPage = 1;
+    renderTickets();
   });
+});
+
+document.querySelector(".new-btn").addEventListener("click", createNewTicket);
+
+document.querySelectorAll(".filters button").forEach(btn => {
+  if(btn.innerText.includes("Export")) btn.addEventListener("click", exportTickets);
+  if(btn.innerText.includes("More Filters")) btn.addEventListener("click", resetFilters);
+});
+
+populateFilters();
+renderTickets();
 </script>
-</body>
-</html>
