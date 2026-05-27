@@ -58,6 +58,7 @@
       border-radius: 8px;
       margin-bottom: 8px;
       font-weight: 600;
+      cursor: pointer;
     }
 
     .settings-menu a.active {
@@ -206,6 +207,7 @@
       border-bottom: 1px solid #17283c;
       color: #d3deec;
       font-weight: 600;
+      cursor: pointer;
     }
 
     .activity-list span {
@@ -215,6 +217,56 @@
 
     .resource-list span {
       color: #8fa1b8;
+    }
+
+    .form-input {
+      width: 100%;
+      height: 44px;
+      margin-top: 8px;
+      margin-bottom: 14px;
+      background: #081422;
+      border: 1px solid #1b3048;
+      color: white;
+      border-radius: 8px;
+      padding: 0 12px;
+    }
+
+    .toggle-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 14px 0;
+      border-bottom: 1px solid #17283c;
+      color: #d3deec;
+    }
+
+    .toggle {
+      width: 46px;
+      height: 24px;
+      background: #1e9bff;
+      border-radius: 999px;
+      position: relative;
+      cursor: pointer;
+    }
+
+    .toggle::after {
+      content: "";
+      width: 18px;
+      height: 18px;
+      background: white;
+      border-radius: 50%;
+      position: absolute;
+      right: 3px;
+      top: 3px;
+    }
+
+    .toggle.off {
+      background: #34465f;
+    }
+
+    .toggle.off::after {
+      left: 3px;
+      right: auto;
     }
 
     @media(max-width: 1300px) {
@@ -256,13 +308,13 @@
       <a href="/customers">👥 Customers</a>
       <a href="/reports">📊 Reports</a>
       <a href="/integrations">🔗 Integrations</a>
-      <a class="active" href="/administration">⚙️ Administration</a>
+      <a class="active" href="/settings">⚙️ Administration</a>
     </nav>
 
     <div class="sidebar-card">
       <h4>Awesome SOC</h4>
       <p>Enterprise Plan</p>
-      <button>View Settings</button>
+      <button onclick="loadSection('organization')">View Settings</button>
     </div>
   </aside>
 
@@ -282,127 +334,368 @@
 
     <div class="settings-layout">
       <aside class="settings-menu">
-        <a class="active" href="#">🏢 Organization</a>
-        <a href="#">👤 Profile</a>
-        <a href="#">👥 Users & Roles</a>
-        <a href="#">🔔 Notifications</a>
-        <a href="#">🛡️ Security</a>
-        <a href="#">🔗 Integrations</a>
-        <a href="#">💳 Billing & Plan</a>
-        <a href="#">⚙️ System</a>
+        <a class="active" onclick="loadSection('organization')">🏢 Organization</a>
+        <a onclick="loadSection('profile')">👤 Profile</a>
+        <a onclick="loadSection('users')">👥 Users & Roles</a>
+        <a onclick="loadSection('notifications')">🔔 Notifications</a>
+        <a onclick="loadSection('security')">🛡️ Security</a>
+        <a onclick="loadSection('integrations')">🔗 Integrations</a>
+        <a onclick="loadSection('billing')">💳 Billing & Plan</a>
+        <a onclick="loadSection('system')">⚙️ System</a>
       </aside>
 
-      <section class="content-grid">
-        <div class="panel wide">
-          <h3>Organization Overview</h3>
-
-          <div class="org-card">
-            <div class="shield">★</div>
-
-            <div>
-              <div class="org-title">
-                <h2>Awesome SOC <span class="plan-pill">Enterprise Plan</span></h2>
-                <p>Manage your organization details, subscription plan, and security preferences.</p>
-              </div>
-
-              <div class="org-meta">
-                <div>Plan<strong>Enterprise</strong></div>
-                <div>Member Since<strong>Jan 15, 2025</strong></div>
-                <div>Renewal Date<strong>Jan 15, 2026</strong></div>
-                <div>Status<strong><span class="enabled">● Active</span></strong></div>
-              </div>
-            </div>
-
-            <button class="btn">Edit Organization</button>
-          </div>
-        </div>
-
-        <div class="panel">
-          <h3>Organization Details</h3>
-
-          <div class="field-row"><span>Organization Name</span><strong>Awesome SOC</strong></div>
-          <div class="field-row"><span>Industry</span><strong>Managed Security Services</strong></div>
-          <div class="field-row"><span>Country</span><strong>United States</strong></div>
-          <div class="field-row"><span>Time Zone</span><strong>(UTC-05:00) Eastern Time</strong></div>
-          <div class="field-row"><span>Size</span><strong>51 - 200 employees</strong></div>
-
-          <button class="btn" style="width:100%; margin-top:18px;">Update Details</button>
-        </div>
-
-        <div class="panel">
-          <h3>Subscription & Usage</h3>
-
-          <div class="usage-row"><span>Plan</span><strong>Enterprise</strong></div>
-          <div class="usage-row"><span>Seats Used</span><strong>18 / 50</strong></div>
-
-          <div class="usage-row">
-            <span>Storage Used</span>
-            <div>
-              <strong>245 GB / 1 TB</strong>
-              <div class="bar-bg"><div class="bar-fill" style="width:24%"></div></div>
-            </div>
-          </div>
-
-          <div class="usage-row">
-            <span>API Calls</span>
-            <div>
-              <strong>24,568 / 100,000</strong>
-              <div class="bar-bg"><div class="bar-fill" style="width:25%"></div></div>
-            </div>
-          </div>
-
-          <button class="btn" style="width:100%; margin-top:18px;">View Usage</button>
-        </div>
-
-        <div class="panel">
-          <h3>Security & Compliance</h3>
-
-          <div class="field-row"><span>MFA Status</span><strong class="enabled">Enabled</strong></div>
-          <div class="field-row"><span>Password Policy</span><strong>Strong</strong></div>
-          <div class="field-row"><span>Session Timeout</span><strong>30 minutes</strong></div>
-          <div class="field-row"><span>Audit Logging</span><strong class="enabled">Enabled</strong></div>
-          <div class="field-row"><span>Compliance</span><strong>SOC 2, HIPAA</strong></div>
-
-          <button class="btn" style="width:100%; margin-top:18px;">View Security Settings</button>
-        </div>
-
-        <div class="panel">
-          <h3>Quick Actions</h3>
-
-          <ul class="action-list">
-            <li>Add New User <span>›</span></li>
-            <li>Manage API Keys <span>›</span></li>
-            <li>Configure Integrations <span>›</span></li>
-            <li>Download Audit Logs <span>›</span></li>
-          </ul>
-        </div>
-
-        <div class="panel">
-          <h3>Recent Activity</h3>
-
-          <ul class="activity-list">
-            <li>User Alex Johnson logged in <span>2 minutes ago</span></li>
-            <li>New integration Wazuh added <span>15 minutes ago</span></li>
-            <li>Security policy updated <span>1 hour ago</span></li>
-            <li>Backup completed successfully <span>3 hours ago</span></li>
-          </ul>
-
-          <button class="btn" style="width:100%; margin-top:18px;">View All Activity</button>
-        </div>
-
-        <div class="panel">
-          <h3>Support & Resources</h3>
-
-          <ul class="resource-list">
-            <li>Help Center <span>↗</span></li>
-            <li>Documentation <span>↗</span></li>
-            <li>Contact Support <span>↗</span></li>
-            <li>System Status <span>↗</span></li>
-          </ul>
-        </div>
-      </section>
+      <section id="settingsContent" class="content-grid"></section>
     </div>
   </main>
 </div>
+
+<script>
+const settingsContent = document.getElementById("settingsContent");
+
+function setActive(name) {
+  document.querySelectorAll(".settings-menu a").forEach(link => {
+    link.classList.remove("active");
+
+    if (link.innerText.toLowerCase().includes(name)) {
+      link.classList.add("active");
+    }
+
+    if (name === "users" && link.innerText.toLowerCase().includes("users")) {
+      link.classList.add("active");
+    }
+
+    if (name === "billing" && link.innerText.toLowerCase().includes("billing")) {
+      link.classList.add("active");
+    }
+  });
+}
+
+function loadSection(section) {
+  if (section === "organization") renderOrganization();
+  if (section === "profile") renderProfile();
+  if (section === "users") renderUsers();
+  if (section === "notifications") renderNotifications();
+  if (section === "security") renderSecurity();
+  if (section === "integrations") renderIntegrations();
+  if (section === "billing") renderBilling();
+  if (section === "system") renderSystem();
+}
+
+function renderOrganization() {
+  setActive("organization");
+
+  settingsContent.innerHTML = `
+    <div class="panel wide">
+      <h3>Organization Overview</h3>
+
+      <div class="org-card">
+        <div class="shield">★</div>
+
+        <div>
+          <div class="org-title">
+            <h2>Awesome SOC <span class="plan-pill">Enterprise Plan</span></h2>
+            <p>Manage your organization details, subscription plan, and security preferences.</p>
+          </div>
+
+          <div class="org-meta">
+            <div>Plan<strong>Enterprise</strong></div>
+            <div>Member Since<strong>Jan 15, 2025</strong></div>
+            <div>Renewal Date<strong>Jan 15, 2026</strong></div>
+            <div>Status<strong><span class="enabled">● Active</span></strong></div>
+          </div>
+        </div>
+
+        <button class="btn" onclick="editOrganization()">Edit Organization</button>
+      </div>
+    </div>
+
+    <div class="panel">
+      <h3>Organization Details</h3>
+      <div class="field-row"><span>Organization Name</span><strong>Awesome SOC</strong></div>
+      <div class="field-row"><span>Industry</span><strong>Managed Security Services</strong></div>
+      <div class="field-row"><span>Country</span><strong>United States</strong></div>
+      <div class="field-row"><span>Time Zone</span><strong>(UTC-05:00) Eastern Time</strong></div>
+      <div class="field-row"><span>Size</span><strong>51 - 200 employees</strong></div>
+      <button class="btn" style="width:100%; margin-top:18px;" onclick="updateDetails()">Update Details</button>
+    </div>
+
+    <div class="panel">
+      <h3>Subscription & Usage</h3>
+      <div class="usage-row"><span>Plan</span><strong>Enterprise</strong></div>
+      <div class="usage-row"><span>Seats Used</span><strong>18 / 50</strong></div>
+      <div class="usage-row">
+        <span>Storage Used</span>
+        <div>
+          <strong>245 GB / 1 TB</strong>
+          <div class="bar-bg"><div class="bar-fill" style="width:24%"></div></div>
+        </div>
+      </div>
+      <div class="usage-row">
+        <span>API Calls</span>
+        <div>
+          <strong>24,568 / 100,000</strong>
+          <div class="bar-bg"><div class="bar-fill" style="width:25%"></div></div>
+        </div>
+      </div>
+      <button class="btn" style="width:100%; margin-top:18px;" onclick="viewUsage()">View Usage</button>
+    </div>
+
+    <div class="panel">
+      <h3>Security & Compliance</h3>
+      <div class="field-row"><span>MFA Status</span><strong class="enabled">Enabled</strong></div>
+      <div class="field-row"><span>Password Policy</span><strong>Strong</strong></div>
+      <div class="field-row"><span>Session Timeout</span><strong>30 minutes</strong></div>
+      <div class="field-row"><span>Audit Logging</span><strong class="enabled">Enabled</strong></div>
+      <div class="field-row"><span>Compliance</span><strong>SOC 2, HIPAA</strong></div>
+      <button class="btn" style="width:100%; margin-top:18px;" onclick="loadSection('security')">View Security Settings</button>
+    </div>
+
+    <div class="panel">
+      <h3>Quick Actions</h3>
+      <ul class="action-list">
+        <li onclick="addUser()">Add New User <span>›</span></li>
+        <li onclick="manageApiKeys()">Manage API Keys <span>›</span></li>
+        <li onclick="loadSection('integrations')">Configure Integrations <span>›</span></li>
+        <li onclick="downloadAuditLogs()">Download Audit Logs <span>›</span></li>
+      </ul>
+    </div>
+
+    <div class="panel">
+      <h3>Recent Activity</h3>
+      <ul class="activity-list">
+        <li>User Alex Johnson logged in <span>2 minutes ago</span></li>
+        <li>New integration Wazuh added <span>15 minutes ago</span></li>
+        <li>Security policy updated <span>1 hour ago</span></li>
+        <li>Backup completed successfully <span>3 hours ago</span></li>
+      </ul>
+      <button class="btn" style="width:100%; margin-top:18px;" onclick="viewAllActivity()">View All Activity</button>
+    </div>
+
+    <div class="panel">
+      <h3>Support & Resources</h3>
+      <ul class="resource-list">
+        <li onclick="alert('Opening Help Center')">Help Center <span>↗</span></li>
+        <li onclick="alert('Opening Documentation')">Documentation <span>↗</span></li>
+        <li onclick="alert('Opening Contact Support')">Contact Support <span>↗</span></li>
+        <li onclick="alert('System status is operational')">System Status <span>↗</span></li>
+      </ul>
+    </div>
+  `;
+}
+
+function renderProfile() {
+  setActive("profile");
+
+  settingsContent.innerHTML = `
+    <div class="panel wide">
+      <h3>Profile</h3>
+      <p style="color:#aeb9c8;margin-bottom:20px;">Manage your CyberBench user profile.</p>
+
+      <label>Full Name</label>
+      <input id="profileName" class="form-input" value="Admin User">
+
+      <label>Email</label>
+      <input id="profileEmail" class="form-input" value="admin@cyberbench.io">
+
+      <label>Role</label>
+      <input class="form-input" value="CyberBench SOC Administrator" disabled>
+
+      <button class="btn" onclick="saveProfile()">Save Profile</button>
+    </div>
+  `;
+}
+
+function renderUsers() {
+  setActive("users");
+
+  settingsContent.innerHTML = `
+    <div class="panel wide">
+      <h3>Users & Roles</h3>
+      <button class="btn" onclick="addUser()" style="margin-bottom:18px;">Add User</button>
+
+      <div class="field-row"><span>Alex Johnson</span><strong>SOC Analyst</strong></div>
+      <div class="field-row"><span>Maria Garcia</span><strong>Administrator</strong></div>
+      <div class="field-row"><span>Sarah Kim</span><strong>Remediation Lead</strong></div>
+      <div class="field-row"><span>David Chen</span><strong>Analyst</strong></div>
+    </div>
+  `;
+}
+
+function renderNotifications() {
+  setActive("notifications");
+
+  settingsContent.innerHTML = `
+    <div class="panel wide">
+      <h3>Notifications</h3>
+      <div class="toggle-row">Critical Alerts <div class="toggle"></div></div>
+      <div class="toggle-row">Ticket Updates <div class="toggle"></div></div>
+      <div class="toggle-row">Weekly KPI Reports <div class="toggle"></div></div>
+      <div class="toggle-row">Compliance Updates <div class="toggle off"></div></div>
+      <button class="btn" style="margin-top:18px;" onclick="saveNotifications()">Save Notification Settings</button>
+    </div>
+  `;
+
+  document.querySelectorAll(".toggle").forEach(toggle => {
+    toggle.addEventListener("click", () => toggle.classList.toggle("off"));
+  });
+}
+
+function renderSecurity() {
+  setActive("security");
+
+  settingsContent.innerHTML = `
+    <div class="panel">
+      <h3>Authentication</h3>
+      <div class="field-row"><span>MFA</span><strong class="enabled">Enabled</strong></div>
+      <div class="field-row"><span>Password Policy</span><strong>Strong</strong></div>
+      <button class="btn" style="width:100%; margin-top:18px;" onclick="resetPassword()">Reset Password</button>
+    </div>
+
+    <div class="panel">
+      <h3>Session Security</h3>
+      <div class="field-row"><span>Timeout</span><strong>30 minutes</strong></div>
+      <div class="field-row"><span>Audit Logging</span><strong class="enabled">Enabled</strong></div>
+      <button class="btn" style="width:100%; margin-top:18px;" onclick="viewAuditLogs()">View Audit Logs</button>
+    </div>
+
+    <div class="panel">
+      <h3>Compliance</h3>
+      <div class="field-row"><span>SOC 2</span><strong class="enabled">Enabled</strong></div>
+      <div class="field-row"><span>HIPAA</span><strong class="enabled">Enabled</strong></div>
+      <button class="btn" style="width:100%; margin-top:18px;" onclick="downloadAuditLogs()">Download Logs</button>
+    </div>
+  `;
+}
+
+function renderIntegrations() {
+  setActive("integrations");
+
+  settingsContent.innerHTML = `
+    <div class="panel wide">
+      <h3>Integrations</h3>
+      <div class="field-row"><span>Wazuh</span><strong class="enabled">● Connected</strong></div>
+      <div class="field-row"><span>Suricata</span><strong class="enabled">● Connected</strong></div>
+      <div class="field-row"><span>Microsoft 365</span><strong class="enabled">● Connected</strong></div>
+      <div class="field-row"><span>Slack</span><strong>Not Connected</strong></div>
+      <button class="btn" style="margin-top:18px;" onclick="connectIntegration()">Add Integration</button>
+    </div>
+  `;
+}
+
+function renderBilling() {
+  setActive("billing");
+
+  settingsContent.innerHTML = `
+    <div class="panel">
+      <h3>Billing & Plan</h3>
+      <div class="field-row"><span>Current Plan</span><strong>Enterprise</strong></div>
+      <div class="field-row"><span>Seats</span><strong>18 / 50</strong></div>
+      <div class="field-row"><span>Renewal Date</span><strong>Jan 15, 2026</strong></div>
+      <button class="btn" style="width:100%; margin-top:18px;" onclick="upgradePlan()">Upgrade Plan</button>
+    </div>
+
+    <div class="panel">
+      <h3>Usage</h3>
+      <div class="usage-row">
+        <span>Storage</span>
+        <div><strong>245 GB / 1 TB</strong><div class="bar-bg"><div class="bar-fill" style="width:24%"></div></div></div>
+      </div>
+      <div class="usage-row">
+        <span>API Calls</span>
+        <div><strong>24,568 / 100,000</strong><div class="bar-bg"><div class="bar-fill" style="width:25%"></div></div></div>
+      </div>
+      <button class="btn" style="width:100%; margin-top:18px;" onclick="viewUsage()">View Usage</button>
+    </div>
+  `;
+}
+
+function renderSystem() {
+  setActive("system");
+
+  settingsContent.innerHTML = `
+    <div class="panel">
+      <h3>System</h3>
+      <div class="field-row"><span>Platform Version</span><strong>1.0.4</strong></div>
+      <div class="field-row"><span>Status</span><strong class="enabled">Operational</strong></div>
+      <div class="field-row"><span>Last Backup</span><strong>3 hours ago</strong></div>
+      <button class="btn" style="width:100%; margin-top:18px;" onclick="backupConfig()">Backup Config</button>
+    </div>
+
+    <div class="panel">
+      <h3>Logs</h3>
+      <button class="btn" style="width:100%; margin-bottom:12px;" onclick="downloadAuditLogs()">Download Audit Logs</button>
+      <button class="btn" style="width:100%;" onclick="viewAllActivity()">View Activity</button>
+    </div>
+  `;
+}
+
+function editOrganization() {
+  alert("Organization editor opened.");
+}
+
+function updateDetails() {
+  alert("Organization details updated.");
+}
+
+function viewUsage() {
+  alert("Usage details opened.");
+}
+
+function addUser() {
+  const email = prompt("Enter user email:");
+  if (email) alert("User invite sent to " + email);
+}
+
+function manageApiKeys() {
+  alert("API key management opened.");
+}
+
+function downloadAuditLogs() {
+  const content = "CyberBench Audit Logs\\nUser login\\nIntegration updated\\nSecurity policy updated";
+  const blob = new Blob([content], { type: "text/plain" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = "cyberbench-audit-logs.txt";
+  a.click();
+  URL.revokeObjectURL(url);
+}
+
+function viewAllActivity() {
+  alert("Activity timeline opened.");
+}
+
+function saveProfile() {
+  alert("Profile saved successfully.");
+}
+
+function saveNotifications() {
+  alert("Notification settings saved.");
+}
+
+function resetPassword() {
+  alert("Password reset email sent.");
+}
+
+function viewAuditLogs() {
+  alert("Audit logs opened.");
+}
+
+function connectIntegration() {
+  const integration = prompt("Enter integration name:");
+  if (integration) alert(integration + " integration wizard opened.");
+}
+
+function upgradePlan() {
+  alert("Billing upgrade flow opened.");
+}
+
+function backupConfig() {
+  alert("Configuration backup started.");
+}
+
+loadSection("organization");
+</script>
+
 </body>
 </html>
