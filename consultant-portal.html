@@ -1,615 +1,1118 @@
 <!doctype html>
 <html lang="en">
+
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Consultant Portal | CyberBench</title>
-  <link rel="stylesheet" href="/styles.css" />
 
-  <style>
-    html, body{
-      margin:0;
-      min-height:100%;
-      font-family:Inter, sans-serif;
-      background:
-        radial-gradient(circle at top left, rgba(45,85,255,.18), transparent 32%),
-        radial-gradient(circle at bottom right, rgba(0,140,255,.10), transparent 30%),
-        #050816;
-      background-attachment:fixed;
-      color:#f3f6ff;
-    }
+<meta charset="UTF-8">
 
-    .cbcs-main{ padding:80px 0 100px; }
-    .cbcs-container{ width:min(1450px,92%); margin:0 auto; }
+<meta
+name="viewport"
+content="width=device-width, initial-scale=1.0"
+/>
 
-    .cbcs-grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(420px,1fr));
-      gap:28px;
-      align-items:start;
-    }
+<title>
+CyberBench Consultant Portal
+</title>
 
-    .cbcs-full{ grid-column:1/-1; }
+<link
+rel="stylesheet"
+href="/styles.css"
+/>
 
-    .cbcs-card{
-      background:linear-gradient(180deg,rgba(16,22,36,.94),rgba(8,12,22,.98));
-      border:1px solid rgba(255,255,255,.07);
-      border-radius:28px;
-      padding:36px;
-      backdrop-filter:blur(12px);
-      box-shadow:0 10px 40px rgba(0,0,0,.35);
-    }
+<style>
 
-    .cbcs-card-kicker{
-      font-size:13px;
-      font-weight:700;
-      letter-spacing:.18em;
-      color:#4d7cff;
-      margin-bottom:16px;
-    }
+body{
 
-    .cbcs-h2{
-      font-size:40px;
-      line-height:1.05;
-      font-weight:800;
-      margin:0 0 14px;
-    }
+margin:0;
 
-    .cbcs-muted{
-      color:rgba(255,255,255,.72);
-      line-height:1.7;
-      font-size:17px;
-      max-width:60ch;
-      margin-bottom:28px;
-    }
+background:
+radial-gradient(circle at top left,rgba(45,85,255,.12),transparent 32%),
+#050816;
 
-    .cbcs-form{
-      display:flex;
-      flex-direction:column;
-      gap:22px;
-    }
+font-family:Inter,sans-serif;
 
-    .cbcs-field{
-      display:flex;
-      flex-direction:column;
-      gap:10px;
-    }
+color:white;
 
-    .cbcs-label{
-      font-size:13px;
-      font-weight:700;
-      letter-spacing:.12em;
-      color:#dbe3ff;
-    }
+}
 
-    .cbcs-input{
-      height:64px;
-      border-radius:18px;
-      border:1px solid rgba(255,255,255,.08);
-      background:rgba(4,7,18,.9);
-      color:#fff;
-      padding:0 18px;
-      font-size:16px;
-      outline:none;
-    }
+.container{
 
-    .cbcs-input:focus{
-      border-color:#4d7cff;
-      box-shadow:0 0 0 4px rgba(77,124,255,.14);
-    }
+width:min(1300px,92%);
 
-    .cbcs-form-actions{
-      display:flex;
-      gap:14px;
-      flex-wrap:wrap;
-      margin-top:6px;
-    }
+margin:auto;
 
-    .btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      height:54px;
-      padding:0 24px;
-      border-radius:18px;
-      text-decoration:none;
-      font-weight:700;
-      border:none;
-      cursor:pointer;
-    }
+}
 
-    .btn-primary{
-      background:linear-gradient(135deg,#4d7cff,#5a6dff);
-      color:white;
-      box-shadow:0 0 30px rgba(77,124,255,.35);
-    }
+.nav{
 
-    .btn-ghost{
-      border:1px solid rgba(255,255,255,.12);
-      background:rgba(255,255,255,.03);
-      color:#fff;
-    }
+position:sticky;
 
-    .signup-text{
-      margin-top:8px;
-      color:rgba(255,255,255,.7);
-      font-size:15px;
-    }
+top:0;
 
-    .signup-text a{
-      color:#7da2ff;
-      font-weight:800;
-      text-decoration:none;
-      cursor:pointer;
-    }
+z-index:1000;
 
-    .signup-text a:hover{
-      text-decoration:underline;
-    }
+background:
+rgba(5,8,22,.92);
 
-    #loginMessage{
-      margin-top:10px;
-      font-weight:700;
-      color:#7da2ff;
-    }
+backdrop-filter:
+blur(10px);
 
-    .cbcs-note{
-      margin-top:10px;
-      background:rgba(255,255,255,.02);
-      border:1px solid rgba(255,255,255,.05);
-      border-radius:18px;
-      padding:18px;
-      color:rgba(255,255,255,.72);
-      line-height:1.6;
-    }
+border-bottom:
+1px solid rgba(255,255,255,.06);
 
-    .cbcs-kpi-grid{
-      display:grid;
-      grid-template-columns:repeat(2,1fr);
-      gap:18px;
-    }
+}
 
-    .cbcs-kpi{
-      background:rgba(6,10,22,.82);
-      border:1px solid rgba(255,255,255,.06);
-      border-radius:20px;
-      padding:24px;
-      min-height:120px;
-      display:flex;
-      flex-direction:column;
-      justify-content:space-between;
-    }
+.nav_row{
 
-    .cbcs-kpi div:first-child{
-      color:rgba(255,255,255,.72);
-      font-size:15px;
-    }
+display:flex;
 
-    .cbcs-kpi div:last-child{
-      font-size:38px;
-      font-weight:800;
-    }
+align-items:center;
 
-    .cbcs-feature-grid{
-      display:grid;
-      grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
-      gap:20px;
-      margin-top:10px;
-    }
+justify-content:space-between;
 
-    .cbcs-feature{
-      background:rgba(255,255,255,.02);
-      border:1px solid rgba(255,255,255,.05);
-      border-radius:20px;
-      padding:24px;
-    }
+padding:18px 0;
 
-    .cbcs-feature-pill{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-      height:34px;
-      padding:0 14px;
-      border-radius:999px;
-      background:rgba(77,124,255,.12);
-      border:1px solid rgba(77,124,255,.28);
-      color:#7da2ff;
-      font-size:12px;
-      font-weight:700;
-      letter-spacing:.08em;
-    }
+}
 
-    .cbcs-feature-title{
-      margin-top:18px;
-      font-size:22px;
-      font-weight:800;
-    }
+.brand{
 
-    .footer{
-      border-top:1px solid rgba(255,255,255,.06);
-      padding:40px 0;
-      margin-top:40px;
-      text-align:center;
-    }
+display:flex;
 
-    .footer-logo{
-      display:inline-flex;
-      align-items:center;
-      gap:12px;
-      text-decoration:none;
-      color:#fff;
-      font-weight:700;
-      margin-bottom:24px;
-    }
+align-items:center;
 
-    .footer-nav{
-      display:flex;
-      justify-content:center;
-      gap:28px;
-      flex-wrap:wrap;
-      margin-bottom:28px;
-    }
+gap:12px;
 
-    .footer-nav a{
-      color:#fff;
-      text-decoration:none;
-      font-size:15px;
-    }
+font-weight:800;
 
-    .footer-contact{
-      display:flex;
-      flex-direction:column;
-      gap:8px;
-      margin-bottom:22px;
-    }
+color:white;
 
-    .footer-contact span{
-      color:rgba(255,255,255,.65);
-      font-size:13px;
-      letter-spacing:.12em;
-    }
+text-decoration:none;
 
-    .footer-contact a{
-      color:#5d86ff;
-      text-decoration:none;
-    }
+}
 
-    .footer-bottom{
-      color:rgba(255,255,255,.6);
-      font-size:14px;
-    }
+.logo{
 
-    .error{ color:#ff7070!important; }
-    .success{ color:#66db95!important; }
+width:34px;
 
-    @media(max-width:900px){
-      .cbcs-grid{ grid-template-columns:1fr; }
-      .cbcs-h2{ font-size:34px; }
-      .cbcs-kpi-grid{ grid-template-columns:1fr; }
-    }
-  </style>
+height:34px;
+
+border-radius:50%;
+
+display:flex;
+
+align-items:center;
+
+justify-content:center;
+
+background:
+
+linear-gradient(
+135deg,
+#4d7cff,
+#6b74ff
+);
+
+}
+
+.nav_links{
+
+display:flex;
+
+gap:28px;
+
+align-items:center;
+
+}
+
+.nav_links a{
+
+text-decoration:none;
+
+color:white;
+
+opacity:.82;
+
+font-size:15px;
+
+}
+
+.nav_links a:hover{
+
+opacity:1;
+
+}
+
+.nav-active{
+
+color:#6f87ff!important;
+
+}
+
+.portal{
+
+width:min(1200px,92%);
+
+margin:auto;
+
+padding:70px 0;
+
+display:grid;
+
+grid-template-columns:1fr 1fr;
+
+gap:28px;
+
+}
+
+.card{
+
+background:
+
+linear-gradient(
+180deg,
+#0c1222,
+#070d18
+);
+
+border:1px solid rgba(255,255,255,.06);
+
+border-radius:28px;
+
+padding:40px;
+
+box-shadow:
+0 20px 50px rgba(0,0,0,.25);
+
+}
+
+.kicker{
+
+font-size:12px;
+
+letter-spacing:.2em;
+
+font-weight:700;
+
+color:#6f87ff;
+
+margin-bottom:18px;
+
+}
+
+.title{
+
+font-size:54px;
+
+font-weight:900;
+
+line-height:1;
+
+margin-bottom:18px;
+
+}
+
+.sub{
+
+color:rgba(255,255,255,.65);
+
+line-height:1.8;
+
+margin-bottom:30px;
+
+}
+
+.field{
+
+margin-bottom:20px;
+
+}
+
+.label{
+
+display:block;
+
+margin-bottom:10px;
+
+font-size:12px;
+
+font-weight:700;
+
+letter-spacing:.15em;
+
+}
+
+.input{
+
+width:100%;
+
+height:62px;
+
+background:#040913;
+
+border:1px solid rgba(255,255,255,.06);
+
+border-radius:18px;
+
+padding:0 18px;
+
+box-sizing:border-box;
+
+font-size:16px;
+
+color:white;
+
+}
+
+.input:focus{
+
+outline:none;
+
+border-color:#5576ff;
+
+}
+
+.actions{
+
+display:flex;
+
+gap:14px;
+
+margin-top:24px;
+
+}
+
+.btn{
+
+height:56px;
+
+padding:0 30px;
+
+border:none;
+
+border-radius:18px;
+
+cursor:pointer;
+
+font-weight:700;
+
+font-size:15px;
+
+text-decoration:none;
+
+display:inline-flex;
+
+align-items:center;
+
+justify-content:center;
+
+}
+
+.primary{
+
+background:
+
+linear-gradient(
+135deg,
+#4d7cff,
+#6d75ff
+);
+
+color:white;
+
+}
+
+.secondary{
+
+background:#0b1120;
+
+border:1px solid rgba(255,255,255,.08);
+
+color:white;
+
+}
+
+.signup-row{
+
+margin-top:22px;
+
+color:rgba(255,255,255,.68);
+
+font-size:15px;
+
+}
+
+.signup-row a{
+
+color:#6f87ff;
+
+font-weight:800;
+
+text-decoration:none;
+
+cursor:pointer;
+
+}
+
+.signup-row a:hover{
+
+text-decoration:underline;
+
+}
+
+.note{
+
+margin-top:24px;
+
+padding:18px;
+
+border-radius:18px;
+
+background:#0a1120;
+
+line-height:1.7;
+
+color:rgba(255,255,255,.7);
+
+}
+
+.kpi-grid{
+
+display:grid;
+
+grid-template-columns:1fr 1fr;
+
+gap:18px;
+
+margin-top:28px;
+
+}
+
+.kpi{
+
+background:#050a14;
+
+padding:24px;
+
+border-radius:18px;
+
+}
+
+.kpi-title{
+
+color:rgba(255,255,255,.62);
+
+font-size:13px;
+
+font-weight:800;
+
+letter-spacing:.12em;
+
+text-transform:uppercase;
+
+}
+
+.kpi-value{
+
+font-size:42px;
+
+font-weight:900;
+
+margin-top:14px;
+
+}
+
+.error{
+
+margin-top:18px;
+
+color:#ff7575;
+
+font-weight:700;
+
+}
+
+.success{
+
+margin-top:18px;
+
+color:#61d891;
+
+font-weight:700;
+
+}
+
+.footer{
+
+padding:60px 0;
+
+border-top:1px solid rgba(255,255,255,.06);
+
+margin-top:80px;
+
+text-align:center;
+
+}
+
+.footer-logo{
+
+font-size:24px;
+
+font-weight:900;
+
+margin-bottom:18px;
+
+display:block;
+
+text-decoration:none;
+
+color:white;
+
+}
+
+.footer-nav{
+
+display:flex;
+
+justify-content:center;
+
+gap:24px;
+
+flex-wrap:wrap;
+
+margin-bottom:20px;
+
+}
+
+.footer-nav a{
+
+color:rgba(255,255,255,.72);
+
+text-decoration:none;
+
+}
+
+.footer p{
+
+color:rgba(255,255,255,.55);
+
+}
+
+@media(max-width:900px){
+
+.portal{
+
+grid-template-columns:1fr;
+
+}
+
+.nav_links{
+
+display:none;
+
+}
+
+.title{
+
+font-size:42px;
+
+}
+
+}
+
+</style>
+
 </head>
 
 <body>
 
 <header class="nav">
-  <div class="container nav_row">
-    <a class="brand" href="/index.html">
-      <span class="logo" aria-hidden="true">X</span>
-      <span>CyberBench</span>
-    </a>
 
-    <nav class="nav_links">
-      <a href="/services.html">Services</a>
-      <a href="/about.html">About</a>
-      <a href="/blog.html">Blog</a>
-      <a href="/client-portal.html">Client Portal</a>
-      <a href="/consultant-portal.html">Consultant Portal</a>
-      <a class="btn btn-primary" href="/submit-ticket.html">Deploy Security Now</a>
-    </nav>
-  </div>
+<div class="container nav_row">
+
+<a
+class="brand"
+href="/index.html"
+>
+
+<div class="logo">
+
+X
+
+</div>
+
+<span>
+
+CyberBench
+
+</span>
+
+</a>
+
+<nav class="nav_links">
+
+<a href="/services.html">
+
+Services
+
+</a>
+
+<a href="/about.html">
+
+About
+
+</a>
+
+<a href="/blog.html">
+
+Blog
+
+</a>
+
+<a href="/client-portal.html">
+
+Client Portal
+
+</a>
+
+<a
+href="/consultant-portal.html"
+class="nav-active"
+>
+
+Consultant Portal
+
+</a>
+
+</nav>
+
+</div>
+
 </header>
 
-<main class="cbcs-main">
-  <div class="cbcs-container">
-    <section class="cbcs-grid">
+<div class="portal">
 
-      <div class="cbcs-card">
-        <div class="cbcs-card-kicker">CONSULTANT PORTAL</div>
+<div class="card">
 
-        <h2 class="cbcs-h2" id="formTitle">
-          Access your console
-        </h2>
+<div class="kicker">
 
-        <p class="cbcs-muted" id="formSubtitle">
-          Manage assigned tickets, triage workflows,
-          documentation, and cybersecurity operations
-          through the CyberBench delivery platform.
-        </p>
+CONSULTANT PORTAL
 
-        <form class="cbcs-form" onsubmit="loginConsultant(event)" id="consultantForm">
-          <div class="cbcs-field">
-            <label class="cbcs-label">EMAIL</label>
-            <input
-              id="email"
-              class="cbcs-input"
-              type="email"
-              placeholder="name@cyberbench.io"
-              required
-            />
-          </div>
+</div>
 
-          <div class="cbcs-field">
-            <label class="cbcs-label">PASSWORD</label>
-            <input
-              id="password"
-              class="cbcs-input"
-              type="password"
-              placeholder="••••••••"
-              required
-            />
-          </div>
+<div
+class="title"
+id="formTitle"
+>
 
-          <div class="cbcs-form-actions">
-            <button class="btn btn-primary" type="submit" id="loginBtn">
-              Login
-            </button>
+Access your console
 
-            <a class="btn btn-ghost" href="/admin.html">
-              Open Queue
-            </a>
-          </div>
+</div>
 
-          <div class="signup-text">
-            <span id="toggleText">Don’t have a consultant account?</span>
-            <a onclick="toggleSignup()" id="toggleLink">Sign up</a>
-          </div>
+<div
+class="sub"
+id="formSubtitle"
+>
 
-          <div id="loginMessage"></div>
+Secure access to assigned tickets,
+triage workflows,
+documentation,
+remediation playbooks,
+and active CyberBench delivery operations.
 
-          <div class="cbcs-note">
-            Consultant access is used for assigned tickets,
-            SLA workflows, client communication, escalation,
-            documentation, and analyst reporting.
-          </div>
-        </form>
-      </div>
+</div>
 
-      <div class="cbcs-card">
-        <div class="cbcs-card-kicker">OPERATIONS PREVIEW</div>
+<form
+id="consultantForm"
+onsubmit="handleConsultantAuth(event)"
+>
 
-        <h2 class="cbcs-h2">
-          Live workload
-        </h2>
+<div class="field">
 
-        <p class="cbcs-muted">
-          Real-time visibility into ticket queues,
-          response metrics, and consultant operations.
-        </p>
+<label class="label">
 
-        <div class="cbcs-kpi-grid">
-          <div class="cbcs-kpi">
-            <div>Assigned</div>
-            <div>0</div>
-          </div>
+EMAIL
 
-          <div class="cbcs-kpi">
-            <div>Open</div>
-            <div id="kpi-open">—</div>
-          </div>
+</label>
 
-          <div class="cbcs-kpi">
-            <div>SLA Due</div>
-            <div>—</div>
-          </div>
+<input
+id="email"
+class="input"
+type="email"
+required
+/>
 
-          <div class="cbcs-kpi">
-            <div>Avg/day</div>
-            <div id="kpi-avg">—</div>
-          </div>
-        </div>
-      </div>
+</div>
 
-      <div class="cbcs-card cbcs-full">
-        <div class="cbcs-card-kicker">DELIVERY WORKFLOW</div>
+<div class="field">
 
-        <h2 class="cbcs-h2">
-          How consultants deliver outcomes
-        </h2>
+<label class="label">
 
-        <div class="cbcs-feature-grid">
-          <div class="cbcs-feature">
-            <div class="cbcs-feature-pill">1) Intake</div>
-            <div class="cbcs-feature-title">Confirm scope</div>
-          </div>
+PASSWORD
 
-          <div class="cbcs-feature">
-            <div class="cbcs-feature-pill">2) Triage</div>
-            <div class="cbcs-feature-title">Stabilize risk</div>
-          </div>
+</label>
 
-          <div class="cbcs-feature">
-            <div class="cbcs-feature-pill">3) Execute</div>
-            <div class="cbcs-feature-title">Fix + document</div>
-          </div>
+<input
+id="password"
+class="input"
+type="password"
+required
+/>
 
-          <div class="cbcs-feature">
-            <div class="cbcs-feature-pill">4) Close</div>
-            <div class="cbcs-feature-title">Report outcomes</div>
-          </div>
-        </div>
-      </div>
+</div>
 
-    </section>
-  </div>
-</main>
+<div class="actions">
+
+<button
+id="authButton"
+type="submit"
+class="btn primary"
+>
+
+Login
+
+</button>
+
+<button
+type="button"
+class="btn secondary"
+onclick="location.href='/'"
+>
+
+Back
+
+</button>
+
+</div>
+
+<div class="signup-row">
+
+<span id="toggleText">
+
+Don’t have a consultant account?
+
+</span>
+
+<a
+id="toggleLink"
+onclick="toggleSignup()"
+>
+
+Sign up
+
+</a>
+
+</div>
+
+<div id="message">
+
+</div>
+
+<div class="note">
+
+CyberBench Secure Consultant Portal
+
+<br><br>
+
+support@cyberbench.io
+
+</div>
+
+</form>
+
+</div>
+
+<div class="card">
+
+<div class="kicker">
+
+WORKSPACE PREVIEW
+
+</div>
+
+<div class="title">
+
+Consultant KPIs
+
+</div>
+
+<div class="sub">
+
+Real-time visibility into assigned work,
+ticket queues,
+SLA activity,
+and CyberBench delivery execution.
+
+</div>
+
+<div class="kpi-grid">
+
+<div class="kpi">
+
+<div class="kpi-title">
+
+Assigned
+
+</div>
+
+<div class="kpi-value">
+
+0
+
+</div>
+
+</div>
+
+<div class="kpi">
+
+<div class="kpi-title">
+
+Open
+
+</div>
+
+<div
+class="kpi-value"
+id="kpi-open"
+>
+
+—
+
+</div>
+
+</div>
+
+<div class="kpi">
+
+<div class="kpi-title">
+
+SLA Due
+
+</div>
+
+<div class="kpi-value">
+
+—
+
+</div>
+
+</div>
+
+<div class="kpi">
+
+<div class="kpi-title">
+
+Avg/Day
+
+</div>
+
+<div
+class="kpi-value"
+id="kpi-avg"
+>
+
+—
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
 
 <footer class="footer">
-  <div class="container">
-    <a href="/index.html" class="footer-logo" aria-label="CyberBench homepage">
-      <span class="logo" aria-hidden="true"></span>
-      <span>CyberBench</span>
-    </a>
 
-    <nav class="footer-nav">
-      <a href="/services.html">Services</a>
-      <a href="/about.html">About</a>
-      <a href="/blog.html">Blog</a>
-      <a href="/client-portal.html">Client Portal</a>
-      <a href="/consultant-portal.html">Consultant Portal</a>
-    </nav>
+<a
+href="/"
+class="footer-logo"
+>
 
-    <div class="footer-contact">
-      <span>SUPPORT</span>
-      <a href="mailto:support@cyberbench.io">
-        support@cyberbench.io
-      </a>
-    </div>
+CyberBench
 
-    <div class="footer-bottom">
-      © <span id="year"></span> CyberBench.
-      All rights reserved.
-    </div>
-  </div>
+</a>
+
+<div class="footer-nav">
+
+<a href="/services.html">
+
+Services
+
+</a>
+
+<a href="/about.html">
+
+About
+
+</a>
+
+<a href="/blog.html">
+
+Blog
+
+</a>
+
+<a href="/client-portal.html">
+
+Client Portal
+
+</a>
+
+<a href="/consultant-portal.html">
+
+Consultant Portal
+
+</a>
+
+</div>
+
+<p>
+
+support@cyberbench.io
+
+</p>
+
+<p>
+
+© 2026 CyberBench.
+All rights reserved.
+
+</p>
+
 </footer>
 
 <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
 <script>
-  document.getElementById("year").textContent =
-    new Date().getFullYear();
 
-  const supabaseUrl =
-    "https://zrcglelaiumuysuannwt.supabase.co";
+const supabaseUrl=
+"https://zrcglelaiumuysuannwt.supabase.co";
 
-  const supabaseKey =
-    "sb_publishable_liTRmLDG57hTPCMjnasmEQ_n-477YSt";
+const supabaseKey=
+"sb_publishable_liTRmLDG57hTPCMjnasmEQ_n-477YSt";
 
-  const client =
-    window.supabase.createClient(
-      supabaseUrl,
-      supabaseKey
-    );
+const client=
+window.supabase.createClient(
+supabaseUrl,
+supabaseKey
+);
 
-  let signupMode = false;
+let signupMode=false;
 
-  function toggleSignup(){
-    signupMode = !signupMode;
+function toggleSignup(){
 
-    const formTitle =
-      document.getElementById("formTitle");
+signupMode=
+!signupMode;
 
-    const formSubtitle =
-      document.getElementById("formSubtitle");
+const formTitle=
+document.getElementById(
+"formTitle"
+);
 
-    const loginBtn =
-      document.getElementById("loginBtn");
+const formSubtitle=
+document.getElementById(
+"formSubtitle"
+);
 
-    const toggleText =
-      document.getElementById("toggleText");
+const authButton=
+document.getElementById(
+"authButton"
+);
 
-    const toggleLink =
-      document.getElementById("toggleLink");
+const toggleText=
+document.getElementById(
+"toggleText"
+);
 
-    const message =
-      document.getElementById("loginMessage");
+const toggleLink=
+document.getElementById(
+"toggleLink"
+);
 
-    message.innerHTML = "";
-    message.className = "";
+const message=
+document.getElementById(
+"message"
+);
 
-    if(signupMode){
-      formTitle.innerText = "Create consultant account";
-      formSubtitle.innerText =
-        "Create your CyberBench consultant account to access assigned work, tickets, and delivery workflows.";
-      loginBtn.innerText = "Create Account";
-      toggleText.innerText = "Already have a consultant account?";
-      toggleLink.innerText = "Login";
-    } else {
-      formTitle.innerText = "Access your console";
-      formSubtitle.innerText =
-        "Manage assigned tickets, triage workflows, documentation, and cybersecurity operations through the CyberBench delivery platform.";
-      loginBtn.innerText = "Login";
-      toggleText.innerText = "Don’t have a consultant account?";
-      toggleLink.innerText = "Sign up";
-    }
-  }
+message.innerHTML="";
 
-  async function loginConsultant(e){
-    e.preventDefault();
+if(signupMode){
 
-    const email =
-      document.getElementById("email").value.trim();
+formTitle.innerText=
+"Create consultant account";
 
-    const password =
-      document.getElementById("password").value;
+formSubtitle.innerText=
+"Create your CyberBench consultant account to access assigned work, tickets, remediation workflows, and delivery operations.";
 
-    const message =
-      document.getElementById("loginMessage");
+authButton.innerText=
+"Create Account";
 
-    const btn =
-      document.getElementById("loginBtn");
+toggleText.innerText=
+"Already have a consultant account?";
 
-    message.className = "";
-    message.innerHTML = "";
+toggleLink.innerText=
+"Login";
 
-    if(signupMode){
-      btn.innerText = "Creating Account...";
+}else{
 
-      const { error } =
-        await client.auth.signUp({
-          email,
-          password
-        });
+formTitle.innerText=
+"Access your console";
 
-      if(error){
-        message.className = "error";
-        message.innerText = error.message;
-        btn.innerText = "Create Account";
-        return;
-      }
+formSubtitle.innerText=
+"Secure access to assigned tickets, triage workflows, documentation, remediation playbooks, and active CyberBench delivery operations.";
 
-      message.className = "success";
-      message.innerText =
-        "Account created. Check your email to verify your account.";
+authButton.innerText=
+"Login";
 
-      btn.innerText = "Create Account";
-      return;
-    }
+toggleText.innerText=
+"Don’t have a consultant account?";
 
-    btn.innerText = "Signing In...";
+toggleLink.innerText=
+"Sign up";
 
-    const { error } =
-      await client.auth.signInWithPassword({
-        email,
-        password
-      });
+}
 
-    if(error){
-      message.className = "error";
-      message.innerText = error.message;
-      btn.innerText = "Login";
-      return;
-    }
+}
 
-    message.className = "success";
-    message.innerText = "Login successful";
+async function handleConsultantAuth(e){
 
-    setTimeout(() => {
-      window.location.href = "/dashboard.html";
-    }, 700);
-  }
+e.preventDefault();
 
-  fetch("/api/kpi")
-    .then(r => r.json())
-    .then(k => {
-      document.getElementById("kpi-open").textContent =
-        k.open || 0;
+const message=
+document.getElementById(
+"message"
+);
 
-      document.getElementById("kpi-avg").textContent =
-        k.avgPerDay7 || 0;
-    })
-    .catch(() => {});
+const authButton=
+document.getElementById(
+"authButton"
+);
+
+message.innerHTML="";
+
+const email=
+document
+.getElementById("email")
+.value
+.trim();
+
+const password=
+document
+.getElementById("password")
+.value;
+
+if(signupMode){
+
+authButton.innerText=
+"Creating Account...";
+
+const{
+error
+}
+=
+await client
+.auth
+.signUp({
+
+email,
+password
+
+});
+
+if(error){
+
+message.innerHTML=
+'<div class="error">'
++
+error.message+
+'</div>';
+
+authButton.innerText=
+"Create Account";
+
+return;
+
+}
+
+message.innerHTML=
+'<div class="success">'
++
+'Account created. Check your email to verify your account.'+
+'</div>';
+
+authButton.innerText=
+"Create Account";
+
+return;
+
+}
+
+authButton.innerText=
+"Signing In...";
+
+const{
+error
+}
+=
+await client
+.auth
+.signInWithPassword({
+
+email,
+password
+
+});
+
+if(error){
+
+message.innerHTML=
+'<div class="error">'
++
+error.message+
+'</div>';
+
+authButton.innerText=
+"Login";
+
+return;
+
+}
+
+message.innerHTML=
+'<div class="success">'
++
+'Login successful'+
+'</div>';
+
+setTimeout(()=>{
+
+window.location.href=
+"/dashboard.html";
+
+},700);
+
+}
+
+fetch("/api/kpi")
+.then(r=>r.json())
+.then(k=>{
+
+document
+.getElementById("kpi-open")
+.textContent=
+k.open||0;
+
+document
+.getElementById("kpi-avg")
+.textContent=
+k.avgPerDay7||0;
+
+})
+.catch(()=>{});
+
 </script>
 
 </body>
+
 </html>
