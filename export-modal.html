@@ -1,18 +1,12 @@
 <!DOCTYPE html>
 <html>
 <head>
-
 <meta charset="UTF-8">
-<meta
-name="viewport"
-content="width=device-width,initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 
-<title>
-CyberBench Export
-</title>
+<title>CyberBench Export</title>
 
 <style>
-
 *{
 margin:0;
 padding:0;
@@ -21,421 +15,230 @@ font-family:Inter,sans-serif;
 }
 
 body{
-
 background:#050d18;
-
 display:flex;
-
 justify-content:center;
-
 align-items:center;
-
 height:100vh;
-
 color:white;
-
 }
 
 .modal{
-
 width:1400px;
-
-background:
-
-linear-gradient(
-180deg,
-#081524,
-#06111d
-);
-
-border:
-
-1px solid #17304a;
-
+background:linear-gradient(180deg,#081524,#06111d);
+border:1px solid #17304a;
 border-radius:20px;
-
 overflow:hidden;
-
-box-shadow:
-
-0 0 60px
-rgba(0,0,0,.5);
-
+box-shadow:0 0 60px rgba(0,0,0,.5);
 }
 
 .header{
-
 padding:30px;
-
 display:flex;
-
 justify-content:space-between;
-
-border-bottom:
-
-1px solid #17304a;
-
+border-bottom:1px solid #17304a;
 }
 
 .leftHeader{
-
 display:flex;
-
 gap:20px;
-
 align-items:center;
-
 }
 
 .icon{
-
 width:60px;
-
 height:60px;
-
 border-radius:14px;
-
-background:
-
-rgba(25,156,255,.15);
-
+background:rgba(25,156,255,.15);
 display:flex;
-
 justify-content:center;
-
 align-items:center;
-
 font-size:32px;
-
 color:#3ea6ff;
-
 }
 
 .header h1{
-
 font-size:42px;
-
 margin-bottom:8px;
-
 }
 
 .header p{
-
 color:#8ea5be;
-
 }
 
 .close{
-
 font-size:40px;
-
 color:#8ea5be;
-
 cursor:pointer;
-
 }
 
 .content{
-
 display:grid;
-
-grid-template-columns:
-
-1fr 1fr;
-
+grid-template-columns:1fr 1fr;
 }
 
 .section{
-
 padding:35px;
-
-border-right:
-
-1px solid #17304a;
-
+border-right:1px solid #17304a;
 }
 
 .section:last-child{
-
 border-right:none;
-
 }
 
 .block{
-
 margin-bottom:30px;
-
 }
 
 .block h2{
-
 margin-bottom:18px;
-
 font-size:30px;
-
 }
 
 .option{
-
-background:
-
-#091727;
-
-border:
-
-1px solid #17304a;
-
+background:#091727;
+border:1px solid #17304a;
 padding:22px;
-
 border-radius:14px;
-
 margin-bottom:14px;
-
 display:flex;
-
 justify-content:space-between;
-
 align-items:center;
-
 cursor:pointer;
-
 }
 
 .option.active{
-
-border:
-
-2px solid #2d8cff;
-
-box-shadow:
-
-0 0 15px
-rgba(45,140,255,.3);
-
+border:2px solid #2d8cff;
+box-shadow:0 0 15px rgba(45,140,255,.3);
 }
 
 .option h3{
-
 margin-bottom:8px;
-
 }
 
 .option p{
-
 color:#8ea5be;
-
 font-size:15px;
-
 }
 
 .radio{
-
 width:28px;
-
 height:28px;
-
 border-radius:50%;
+border:2px solid #2d8cff;
+}
 
-border:
-
-2px solid #2d8cff;
-
-background:
-
-#2d8cff;
-
+.option.active .radio{
+background:#2d8cff;
 }
 
 .date{
-
 background:#091727;
-
 padding:18px;
-
 border-radius:12px;
-
-border:
-
-1px solid #17304a;
-
+border:1px solid #17304a;
 margin-bottom:18px;
-
 }
 
 .range{
-
 display:flex;
-
 gap:12px;
-
 }
 
 .range button{
-
 flex:1;
-
 background:#091727;
-
 color:white;
-
-border:
-
-1px solid #17304a;
-
+border:1px solid #17304a;
 padding:14px;
-
 border-radius:10px;
-
+cursor:pointer;
 }
 
 .range .selected{
-
-border:
-
-2px solid #2d8cff;
-
+border:2px solid #2d8cff;
 color:#2d8cff;
-
 }
 
 .checkbox{
-
 display:flex;
-
 gap:18px;
-
 margin-bottom:26px;
-
 align-items:flex-start;
-
+cursor:pointer;
 }
 
 .check{
-
 width:28px;
-
 height:28px;
-
 background:#2d8cff;
-
 border-radius:8px;
-
 display:flex;
-
 justify-content:center;
-
 align-items:center;
+}
 
+.checkbox.off .check{
+background:#091727;
+border:1px solid #17304a;
+color:transparent;
 }
 
 .formats{
-
 display:grid;
-
-grid-template-columns:
-
-repeat(4,1fr);
-
+grid-template-columns:repeat(4,1fr);
 gap:14px;
-
 }
 
 .format{
-
 padding:22px;
-
 background:#091727;
-
-border:
-
-1px solid #17304a;
-
+border:1px solid #17304a;
 border-radius:14px;
-
 cursor:pointer;
-
 }
 
 .format.active{
-
-border:
-
-2px solid #2d8cff;
-
+border:2px solid #2d8cff;
 }
 
 .format h4{
-
 font-size:26px;
-
 margin-bottom:12px;
-
 }
 
 .format p{
-
 color:#8ea5be;
-
 }
 
 .footer{
-
 padding:28px;
-
-border-top:
-
-1px solid #17304a;
-
+border-top:1px solid #17304a;
 display:flex;
-
 justify-content:space-between;
-
 }
 
 .cancel{
-
 background:none;
-
-border:
-
-1px solid #17304a;
-
+border:1px solid #17304a;
 color:white;
-
 padding:16px 34px;
-
 border-radius:12px;
-
 font-size:18px;
-
+cursor:pointer;
 }
 
 .generate{
-
-background:
-
-linear-gradient(
-90deg,
-#2d8cff,
-#4d71ff
-);
-
+background:linear-gradient(90deg,#2d8cff,#4d71ff);
 border:none;
-
 padding:16px 40px;
-
 font-size:18px;
-
 font-weight:700;
-
 border-radius:12px;
-
 color:white;
-
+cursor:pointer;
 }
-
 </style>
-
 </head>
 
 <body>
@@ -443,40 +246,14 @@ color:white;
 <div class="modal">
 
 <div class="header">
-
 <div class="leftHeader">
-
-<div class="icon">
-
-⬇
-
-</div>
-
+<div class="icon">⬇</div>
 <div>
-
-<h1>
-
-Export Report
-
-</h1>
-
-<p>
-
-Generate and download reports
-for security operations
-
-</p>
-
+<h1>Export Report</h1>
+<p>Generate and download reports for security operations</p>
 </div>
-
 </div>
-
-<div class="close">
-
-×
-
-</div>
-
+<div class="close">×</div>
 </div>
 
 <div class="content">
@@ -484,175 +261,65 @@ for security operations
 <div class="section">
 
 <div class="block">
-
-<h2>
-
-1. Report Type
-
-</h2>
+<h2>1. Report Type</h2>
 
 <div class="option active">
-
 <div>
-
-<h3>
-
-Executive Summary
-
-</h3>
-
-<p>
-
-High level executive metrics
-
-</p>
-
+<h3>Executive Summary</h3>
+<p>High level executive metrics</p>
 </div>
-
-<div class="radio">
-
-</div>
-
+<div class="radio"></div>
 </div>
 
 <div class="option">
-
 <div>
-
-<h3>
-
-Security Operations
-
-</h3>
-
-<p>
-
-SOC metrics alerts incidents
-
-</p>
-
+<h3>Security Operations</h3>
+<p>SOC metrics alerts incidents</p>
 </div>
-
+<div class="radio"></div>
 </div>
 
 <div class="option">
-
 <div>
-
-<h3>
-
-Compliance Report
-
-</h3>
-
-<p>
-
-Compliance findings audits
-
-</p>
-
+<h3>Compliance Report</h3>
+<p>Compliance findings audits</p>
 </div>
-
+<div class="radio"></div>
 </div>
 
 <div class="option">
-
 <div>
-
-<h3>
-
-Risk Analysis
-
-</h3>
-
-<p>
-
-Risk trends posture recommendations
-
-</p>
-
+<h3>Risk Analysis</h3>
+<p>Risk trends posture recommendations</p>
 </div>
-
+<div class="radio"></div>
 </div>
-
 </div>
 
 <div class="block">
-
-<h2>
-
-4. Export Format
-
-</h2>
+<h2>4. Export Format</h2>
 
 <div class="formats">
-
 <div class="format active">
-
-<h4>
-
-PDF
-
-</h4>
-
-<p>
-
-Formatted report
-
-</p>
-
+<h4>PDF</h4>
+<p>Formatted report</p>
 </div>
 
 <div class="format">
-
-<h4>
-
-Excel
-
-</h4>
-
-<p>
-
-Raw export
-
-</p>
-
+<h4>Excel</h4>
+<p>Raw export</p>
 </div>
 
 <div class="format">
-
-<h4>
-
-CSV
-
-</h4>
-
-<p>
-
-CSV export
-
-</p>
-
+<h4>CSV</h4>
+<p>CSV export</p>
 </div>
 
 <div class="format">
-
-<h4>
-
-HTML
-
-</h4>
-
-<p>
-
-Web report
-
-</p>
-
+<h4>HTML</h4>
+<p>Web report</p>
 </div>
-
 </div>
-
 </div>
 
 </div>
@@ -660,210 +327,242 @@ Web report
 <div class="section">
 
 <div class="block">
+<h2>2. Time Range</h2>
 
-<h2>
-
-2. Time Range
-
-</h2>
-
-<div class="date">
-
-May 12 2025 -
-May 18 2025
-
-</div>
+<div class="date">May 12 2025 - May 18 2025</div>
 
 <div class="range">
-
-<button class="selected">
-
-Last 7 Days
-
-</button>
-
-<button>
-
-30 Days
-
-</button>
-
-<button>
-
-90 Days
-
-</button>
-
-<button>
-
-Custom
-
-</button>
-
+<button class="selected">Last 7 Days</button>
+<button>30 Days</button>
+<button>90 Days</button>
+<button>Custom</button>
 </div>
-
 </div>
 
 <div class="block">
+<h2>3. Include Data</h2>
 
-<h2>
-
-3. Include Data
-
-</h2>
-
-<div class="checkbox">
-
-<div class="check">
-
-✓
-
-</div>
-
+<div class="checkbox" data-name="Tickets & Alerts">
+<div class="check">✓</div>
 <div>
-
-<h3>
-
-Tickets & Alerts
-
-</h3>
-
-<p>
-
-Incidents alerts resolutions
-
-</p>
-
+<h3>Tickets & Alerts</h3>
+<p>Incidents alerts resolutions</p>
+</div>
 </div>
 
-</div>
-
-<div class="checkbox">
-
-<div class="check">
-
-✓
-
-</div>
-
+<div class="checkbox" data-name="Performance Metrics">
+<div class="check">✓</div>
 <div>
-
-<h3>
-
-Performance Metrics
-
-</h3>
-
-<p>
-
-MTTR SLA response times
-
-</p>
-
+<h3>Performance Metrics</h3>
+<p>MTTR SLA response times</p>
+</div>
 </div>
 
-</div>
-
-<div class="checkbox">
-
-<div class="check">
-
-✓
-
-</div>
-
+<div class="checkbox" data-name="Risk & Compliance">
+<div class="check">✓</div>
 <div>
-
-<h3>
-
-Risk & Compliance
-
-</h3>
-
-<p>
-
-Risk scores findings
-
-</p>
-
+<h3>Risk & Compliance</h3>
+<p>Risk scores findings</p>
+</div>
 </div>
 
-</div>
-
-<div class="checkbox">
-
-<div class="check">
-
-✓
-
-</div>
-
+<div class="checkbox" data-name="Asset Overview">
+<div class="check">✓</div>
 <div>
-
-<h3>
-
-Asset Overview
-
-</h3>
-
-<p>
-
-Asset inventory coverage
-
-</p>
-
+<h3>Asset Overview</h3>
+<p>Asset inventory coverage</p>
+</div>
 </div>
 
-</div>
-
-<div class="checkbox">
-
-<div class="check">
-
-✓
-
-</div>
-
+<div class="checkbox" data-name="Remediation Activity">
+<div class="check">✓</div>
 <div>
-
-<h3>
-
-Remediation Activity
-
-</h3>
-
-<p>
-
-Task progress outcomes
-
-</p>
-
+<h3>Remediation Activity</h3>
+<p>Task progress outcomes</p>
+</div>
 </div>
 
 </div>
-
-</div>
-
 </div>
 
 <div class="footer">
-
-<button class="cancel">
-
-Cancel
-
-</button>
-
-<button class="generate">
-
-Generate Report
-
-</button>
-
+<button class="cancel">Cancel</button>
+<button class="generate">Generate Report</button>
 </div>
 
 </div>
+
+<script>
+let selectedReportType = "Executive Summary";
+let selectedTimeRange = "Last 7 Days";
+let selectedFormat = "PDF";
+
+const reportOptions = document.querySelectorAll(".option");
+const rangeButtons = document.querySelectorAll(".range button");
+const formatOptions = document.querySelectorAll(".format");
+const checkboxes = document.querySelectorAll(".checkbox");
+const closeBtn = document.querySelector(".close");
+const cancelBtn = document.querySelector(".cancel");
+const generateBtn = document.querySelector(".generate");
+
+reportOptions.forEach(option => {
+  option.addEventListener("click", () => {
+    reportOptions.forEach(o => o.classList.remove("active"));
+    option.classList.add("active");
+    selectedReportType = option.querySelector("h3").innerText;
+  });
+});
+
+rangeButtons.forEach(button => {
+  button.addEventListener("click", () => {
+    rangeButtons.forEach(b => b.classList.remove("selected"));
+    button.classList.add("selected");
+    selectedTimeRange = button.innerText;
+  });
+});
+
+formatOptions.forEach(format => {
+  format.addEventListener("click", () => {
+    formatOptions.forEach(f => f.classList.remove("active"));
+    format.classList.add("active");
+    selectedFormat = format.querySelector("h4").innerText;
+  });
+});
+
+checkboxes.forEach(box => {
+  box.addEventListener("click", () => {
+    box.classList.toggle("off");
+  });
+});
+
+closeBtn.addEventListener("click", () => {
+  window.location.href = "/dashboard";
+});
+
+cancelBtn.addEventListener("click", () => {
+  window.location.href = "/dashboard";
+});
+
+generateBtn.addEventListener("click", () => {
+  const includedData = [];
+
+  checkboxes.forEach(box => {
+    if (!box.classList.contains("off")) {
+      includedData.push(box.dataset.name);
+    }
+  });
+
+  const includedList =
+    includedData.length > 0
+      ? includedData.map(item => "- " + item).join("\n")
+      : "- No data selected";
+
+  const reportData = `
+CyberBench Report
+=================
+
+Report Type: ${selectedReportType}
+Time Range: ${selectedTimeRange}
+Export Format: ${selectedFormat}
+
+Included Data:
+${includedList}
+
+Summary:
+Open Tickets: 48
+Critical Alerts: 7
+Risk Score: 68
+Compliance Score: 87%
+MTTR: 4.2h
+Remediated Tasks: 892
+Generated By: CyberBench
+`;
+
+  let fileName = "cyberbench-report";
+  let mimeType = "text/plain";
+  let fileContent = reportData;
+
+  if (selectedFormat === "CSV") {
+    fileName += ".csv";
+    mimeType = "text/csv";
+    fileContent =
+      "Metric,Value\n" +
+      "Report Type," + selectedReportType + "\n" +
+      "Time Range," + selectedTimeRange + "\n" +
+      "Open Tickets,48\n" +
+      "Critical Alerts,7\n" +
+      "Risk Score,68\n" +
+      "Compliance Score,87%\n" +
+      "MTTR,4.2h\n" +
+      "Remediated Tasks,892\n";
+  } else if (selectedFormat === "HTML") {
+    fileName += ".html";
+    mimeType = "text/html";
+    fileContent = `
+      <html>
+        <head>
+          <title>CyberBench Report</title>
+        </head>
+        <body style="font-family:Arial;background:#050d18;color:white;padding:40px;">
+          <h1>CyberBench Report</h1>
+          <h2>${selectedReportType}</h2>
+          <p><strong>Time Range:</strong> ${selectedTimeRange}</p>
+          <p><strong>Export Format:</strong> ${selectedFormat}</p>
+
+          <h3>Included Data</h3>
+          <ul>
+            ${includedData.map(item => `<li>${item}</li>`).join("")}
+          </ul>
+
+          <h3>Summary</h3>
+          <ul>
+            <li>Open Tickets: 48</li>
+            <li>Critical Alerts: 7</li>
+            <li>Risk Score: 68</li>
+            <li>Compliance Score: 87%</li>
+            <li>MTTR: 4.2h</li>
+            <li>Remediated Tasks: 892</li>
+          </ul>
+        </body>
+      </html>
+    `;
+  } else if (selectedFormat === "Excel") {
+    fileName += ".xls";
+    mimeType = "application/vnd.ms-excel";
+    fileContent =
+      "Metric\tValue\n" +
+      "Report Type\t" + selectedReportType + "\n" +
+      "Time Range\t" + selectedTimeRange + "\n" +
+      "Open Tickets\t48\n" +
+      "Critical Alerts\t7\n" +
+      "Risk Score\t68\n" +
+      "Compliance Score\t87%\n" +
+      "MTTR\t4.2h\n" +
+      "Remediated Tasks\t892\n";
+  } else {
+    fileName += ".txt";
+    mimeType = "text/plain";
+  }
+
+  const blob = new Blob([fileContent], { type: mimeType });
+  const url = URL.createObjectURL(blob);
+
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = fileName;
+  document.body.appendChild(link);
+  link.click();
+  document.body.removeChild(link);
+
+  URL.revokeObjectURL(url);
+
+  generateBtn.innerText = "Report Generated";
+
+  setTimeout(() => {
+    generateBtn.innerText = "Generate Report";
+  }, 1800);
+});
+</script>
 
 </body>
-
 </html>
