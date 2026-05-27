@@ -4,34 +4,23 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Consultant Portal | CyberBench</title>
-
   <link rel="stylesheet" href="/styles.css" />
 
   <style>
-
-    html,
-    body{
+    html, body{
       margin:0;
       min-height:100%;
       font-family:Inter, sans-serif;
-
       background:
         radial-gradient(circle at top left, rgba(45,85,255,.18), transparent 32%),
         radial-gradient(circle at bottom right, rgba(0,140,255,.10), transparent 30%),
         #050816;
-
       background-attachment:fixed;
       color:#f3f6ff;
     }
 
-    .cbcs-main{
-      padding:80px 0 100px;
-    }
-
-    .cbcs-container{
-      width:min(1450px, 92%);
-      margin:0 auto;
-    }
+    .cbcs-main{ padding:80px 0 100px; }
+    .cbcs-container{ width:min(1450px,92%); margin:0 auto; }
 
     .cbcs-grid{
       display:grid;
@@ -40,31 +29,15 @@
       align-items:start;
     }
 
-    .cbcs-full{
-      grid-column:1/-1;
-    }
+    .cbcs-full{ grid-column:1/-1; }
 
     .cbcs-card{
-      background:
-        linear-gradient(
-          180deg,
-          rgba(16,22,36,.94) 0%,
-          rgba(8,12,22,.98) 100%
-        );
-
+      background:linear-gradient(180deg,rgba(16,22,36,.94),rgba(8,12,22,.98));
       border:1px solid rgba(255,255,255,.07);
       border-radius:28px;
       padding:36px;
-
       backdrop-filter:blur(12px);
-
-      box-shadow:
-        0 10px 40px rgba(0,0,0,.35),
-        inset 0 1px 0 rgba(255,255,255,.03);
-    }
-
-    .cbcs-card-head{
-      margin-bottom:30px;
+      box-shadow:0 10px 40px rgba(0,0,0,.35);
     }
 
     .cbcs-card-kicker{
@@ -79,7 +52,6 @@
       font-size:40px;
       line-height:1.05;
       font-weight:800;
-      letter-spacing:-1px;
       margin:0 0 14px;
     }
 
@@ -88,6 +60,7 @@
       line-height:1.7;
       font-size:17px;
       max-width:60ch;
+      margin-bottom:28px;
     }
 
     .cbcs-form{
@@ -113,10 +86,8 @@
       height:64px;
       border-radius:18px;
       border:1px solid rgba(255,255,255,.08);
-
       background:rgba(4,7,18,.9);
       color:#fff;
-
       padding:0 18px;
       font-size:16px;
       outline:none;
@@ -134,19 +105,60 @@
       margin-top:6px;
     }
 
-    .cbcs-actions{
+    .btn{
+      display:inline-flex;
+      align-items:center;
+      justify-content:center;
+      height:54px;
+      padding:0 24px;
+      border-radius:18px;
+      text-decoration:none;
+      font-weight:700;
+      border:none;
+      cursor:pointer;
+    }
+
+    .btn-primary{
+      background:linear-gradient(135deg,#4d7cff,#5a6dff);
+      color:white;
+      box-shadow:0 0 30px rgba(77,124,255,.35);
+    }
+
+    .btn-ghost{
+      border:1px solid rgba(255,255,255,.12);
+      background:rgba(255,255,255,.03);
+      color:#fff;
+    }
+
+    .signup-text{
       margin-top:8px;
+      color:rgba(255,255,255,.7);
+      font-size:15px;
+    }
+
+    .signup-text a{
+      color:#7da2ff;
+      font-weight:800;
+      text-decoration:none;
+      cursor:pointer;
+    }
+
+    .signup-text a:hover{
+      text-decoration:underline;
+    }
+
+    #loginMessage{
+      margin-top:10px;
+      font-weight:700;
+      color:#7da2ff;
     }
 
     .cbcs-note{
       margin-top:10px;
-
       background:rgba(255,255,255,.02);
       border:1px solid rgba(255,255,255,.05);
-
       border-radius:18px;
       padding:18px;
-
       color:rgba(255,255,255,.72);
       line-height:1.6;
     }
@@ -159,13 +171,10 @@
 
     .cbcs-kpi{
       background:rgba(6,10,22,.82);
-
       border:1px solid rgba(255,255,255,.06);
       border-radius:20px;
-
       padding:24px;
       min-height:120px;
-
       display:flex;
       flex-direction:column;
       justify-content:space-between;
@@ -179,7 +188,6 @@
     .cbcs-kpi div:last-child{
       font-size:38px;
       font-weight:800;
-      letter-spacing:-1px;
     }
 
     .cbcs-feature-grid{
@@ -200,15 +208,11 @@
       display:inline-flex;
       align-items:center;
       justify-content:center;
-
       height:34px;
       padding:0 14px;
-
       border-radius:999px;
-
       background:rgba(77,124,255,.12);
       border:1px solid rgba(77,124,255,.28);
-
       color:#7da2ff;
       font-size:12px;
       font-weight:700;
@@ -219,36 +223,6 @@
       margin-top:18px;
       font-size:22px;
       font-weight:800;
-      letter-spacing:-.5px;
-    }
-
-    .btn{
-      display:inline-flex;
-      align-items:center;
-      justify-content:center;
-
-      height:54px;
-      padding:0 24px;
-
-      border-radius:18px;
-      text-decoration:none;
-      font-weight:700;
-      border:none;
-      cursor:pointer;
-    }
-
-    .btn-primary{
-      background:linear-gradient(135deg,#4d7cff,#5a6dff);
-      color:white;
-
-      box-shadow:
-        0 0 30px rgba(77,124,255,.35);
-    }
-
-    .btn-ghost{
-      border:1px solid rgba(255,255,255,.12);
-      background:rgba(255,255,255,.03);
-      color:#fff;
     }
 
     .footer{
@@ -305,22 +279,14 @@
       font-size:14px;
     }
 
+    .error{ color:#ff7070!important; }
+    .success{ color:#66db95!important; }
+
     @media(max-width:900px){
-
-      .cbcs-grid{
-        grid-template-columns:1fr;
-      }
-
-      .cbcs-h2{
-        font-size:34px;
-      }
-
-      .cbcs-kpi-grid{
-        grid-template-columns:1fr;
-      }
-
+      .cbcs-grid{ grid-template-columns:1fr; }
+      .cbcs-h2{ font-size:34px; }
+      .cbcs-kpi-grid{ grid-template-columns:1fr; }
     }
-
   </style>
 </head>
 
@@ -328,7 +294,6 @@
 
 <header class="nav">
   <div class="container nav_row">
-
     <a class="brand" href="/index.html">
       <span class="logo" aria-hidden="true">X</span>
       <span>CyberBench</span>
@@ -340,45 +305,33 @@
       <a href="/blog.html">Blog</a>
       <a href="/client-portal.html">Client Portal</a>
       <a href="/consultant-portal.html">Consultant Portal</a>
-      <a class="btn btn-primary" href="/submit-ticket.html">
-        Deploy Security Now
-      </a>
+      <a class="btn btn-primary" href="/submit-ticket.html">Deploy Security Now</a>
     </nav>
-
   </div>
 </header>
 
 <main class="cbcs-main">
-
   <div class="cbcs-container">
-
     <section class="cbcs-grid">
 
       <div class="cbcs-card">
+        <div class="cbcs-card-kicker">CONSULTANT PORTAL</div>
 
-        <div class="cbcs-card-head">
-          <div class="cbcs-card-kicker">CONSULTANT PORTAL</div>
+        <h2 class="cbcs-h2" id="formTitle">
+          Access your console
+        </h2>
 
-          <h2 class="cbcs-h2">
-            Access your console
-          </h2>
+        <p class="cbcs-muted" id="formSubtitle">
+          Manage assigned tickets, triage workflows,
+          documentation, and cybersecurity operations
+          through the CyberBench delivery platform.
+        </p>
 
-          <p class="cbcs-muted">
-            Manage assigned tickets, triage workflows,
-            documentation, and cybersecurity operations
-            through the CyberBench delivery platform.
-          </p>
-        </div>
-
-        <form
-          class="cbcs-form"
-          onsubmit="event.preventDefault(); alert('Login coming soon.');"
-        >
-
+        <form class="cbcs-form" onsubmit="loginConsultant(event)" id="consultantForm">
           <div class="cbcs-field">
             <label class="cbcs-label">EMAIL</label>
-
             <input
+              id="email"
               class="cbcs-input"
               type="email"
               placeholder="name@cyberbench.io"
@@ -388,8 +341,8 @@
 
           <div class="cbcs-field">
             <label class="cbcs-label">PASSWORD</label>
-
             <input
+              id="password"
               class="cbcs-input"
               type="password"
               placeholder="••••••••"
@@ -398,54 +351,43 @@
           </div>
 
           <div class="cbcs-form-actions">
-
-            <button class="btn btn-primary" type="submit">
-              Login (Coming Soon)
+            <button class="btn btn-primary" type="submit" id="loginBtn">
+              Login
             </button>
 
             <a class="btn btn-ghost" href="/admin.html">
               Open Queue
             </a>
-
           </div>
 
-          <div class="cbcs-actions">
-            <a class="btn btn-ghost" href="/kpi.html">
-              View KPI Dashboard
-            </a>
+          <div class="signup-text">
+            <span id="toggleText">Don’t have a consultant account?</span>
+            <a onclick="toggleSignup()" id="toggleLink">Sign up</a>
           </div>
+
+          <div id="loginMessage"></div>
 
           <div class="cbcs-note">
-            Upcoming features include assignment routing,
-            SLA timers, secure client communication,
-            escalation workflows, and analyst reporting.
+            Consultant access is used for assigned tickets,
+            SLA workflows, client communication, escalation,
+            documentation, and analyst reporting.
           </div>
-
         </form>
-
       </div>
 
       <div class="cbcs-card">
+        <div class="cbcs-card-kicker">OPERATIONS PREVIEW</div>
 
-        <div class="cbcs-card-head">
+        <h2 class="cbcs-h2">
+          Live workload
+        </h2>
 
-          <div class="cbcs-card-kicker">
-            OPERATIONS PREVIEW
-          </div>
-
-          <h2 class="cbcs-h2">
-            Live workload
-          </h2>
-
-          <p class="cbcs-muted">
-            Real-time visibility into ticket queues,
-            response metrics, and consultant operations.
-          </p>
-
-        </div>
+        <p class="cbcs-muted">
+          Real-time visibility into ticket queues,
+          response metrics, and consultant operations.
+        </p>
 
         <div class="cbcs-kpi-grid">
-
           <div class="cbcs-kpi">
             <div>Assigned</div>
             <div>0</div>
@@ -465,27 +407,17 @@
             <div>Avg/day</div>
             <div id="kpi-avg">—</div>
           </div>
-
         </div>
-
       </div>
 
       <div class="cbcs-card cbcs-full">
+        <div class="cbcs-card-kicker">DELIVERY WORKFLOW</div>
 
-        <div class="cbcs-card-head">
-
-          <div class="cbcs-card-kicker">
-            DELIVERY WORKFLOW
-          </div>
-
-          <h2 class="cbcs-h2">
-            How consultants deliver outcomes
-          </h2>
-
-        </div>
+        <h2 class="cbcs-h2">
+          How consultants deliver outcomes
+        </h2>
 
         <div class="cbcs-feature-grid">
-
           <div class="cbcs-feature">
             <div class="cbcs-feature-pill">1) Intake</div>
             <div class="cbcs-feature-title">Confirm scope</div>
@@ -505,21 +437,15 @@
             <div class="cbcs-feature-pill">4) Close</div>
             <div class="cbcs-feature-title">Report outcomes</div>
           </div>
-
         </div>
-
       </div>
 
     </section>
-
   </div>
-
 </main>
 
 <footer class="footer">
-
   <div class="container">
-
     <a href="/index.html" class="footer-logo" aria-label="CyberBench homepage">
       <span class="logo" aria-hidden="true"></span>
       <span>CyberBench</span>
@@ -544,29 +470,145 @@
       © <span id="year"></span> CyberBench.
       All rights reserved.
     </div>
-
   </div>
-
 </footer>
 
-<script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
+<script>
   document.getElementById("year").textContent =
     new Date().getFullYear();
+
+  const supabaseUrl =
+    "https://zrcglelaiumuysuannwt.supabase.co";
+
+  const supabaseKey =
+    "sb_publishable_liTRmLDG57hTPCMjnasmEQ_n-477YSt";
+
+  const client =
+    window.supabase.createClient(
+      supabaseUrl,
+      supabaseKey
+    );
+
+  let signupMode = false;
+
+  function toggleSignup(){
+    signupMode = !signupMode;
+
+    const formTitle =
+      document.getElementById("formTitle");
+
+    const formSubtitle =
+      document.getElementById("formSubtitle");
+
+    const loginBtn =
+      document.getElementById("loginBtn");
+
+    const toggleText =
+      document.getElementById("toggleText");
+
+    const toggleLink =
+      document.getElementById("toggleLink");
+
+    const message =
+      document.getElementById("loginMessage");
+
+    message.innerHTML = "";
+    message.className = "";
+
+    if(signupMode){
+      formTitle.innerText = "Create consultant account";
+      formSubtitle.innerText =
+        "Create your CyberBench consultant account to access assigned work, tickets, and delivery workflows.";
+      loginBtn.innerText = "Create Account";
+      toggleText.innerText = "Already have a consultant account?";
+      toggleLink.innerText = "Login";
+    } else {
+      formTitle.innerText = "Access your console";
+      formSubtitle.innerText =
+        "Manage assigned tickets, triage workflows, documentation, and cybersecurity operations through the CyberBench delivery platform.";
+      loginBtn.innerText = "Login";
+      toggleText.innerText = "Don’t have a consultant account?";
+      toggleLink.innerText = "Sign up";
+    }
+  }
+
+  async function loginConsultant(e){
+    e.preventDefault();
+
+    const email =
+      document.getElementById("email").value.trim();
+
+    const password =
+      document.getElementById("password").value;
+
+    const message =
+      document.getElementById("loginMessage");
+
+    const btn =
+      document.getElementById("loginBtn");
+
+    message.className = "";
+    message.innerHTML = "";
+
+    if(signupMode){
+      btn.innerText = "Creating Account...";
+
+      const { error } =
+        await client.auth.signUp({
+          email,
+          password
+        });
+
+      if(error){
+        message.className = "error";
+        message.innerText = error.message;
+        btn.innerText = "Create Account";
+        return;
+      }
+
+      message.className = "success";
+      message.innerText =
+        "Account created. Check your email to verify your account.";
+
+      btn.innerText = "Create Account";
+      return;
+    }
+
+    btn.innerText = "Signing In...";
+
+    const { error } =
+      await client.auth.signInWithPassword({
+        email,
+        password
+      });
+
+    if(error){
+      message.className = "error";
+      message.innerText = error.message;
+      btn.innerText = "Login";
+      return;
+    }
+
+    message.className = "success";
+    message.innerText = "Login successful";
+
+    setTimeout(() => {
+      window.location.href = "/dashboard.html";
+    }, 700);
+  }
 
   fetch("/api/kpi")
     .then(r => r.json())
     .then(k => {
-
       document.getElementById("kpi-open").textContent =
         k.open || 0;
 
       document.getElementById("kpi-avg").textContent =
         k.avgPerDay7 || 0;
-
     })
     .catch(() => {});
-
 </script>
 
 </body>
