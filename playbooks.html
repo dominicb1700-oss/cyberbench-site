@@ -1,983 +1,397 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CyberBench Playbooks</title>
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CyberBench Playbooks</title>
+<script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; font-family: Inter, Arial, sans-serif; }
-    body { background: #050d18; color: #fff; }
-    .app { display: flex; min-height: 100vh; background: radial-gradient(circle at top right, rgba(0,123,255,.12), transparent 35%), #050d18; }
-
-    .sidebar { width: 250px; background: #07111f; border-right: 1px solid #132235; padding: 22px 14px; position: fixed; inset: 0 auto 0 0; }
-    .brand { display: flex; align-items: center; gap: 8px; font-size: 26px; font-weight: 800; margin-bottom: 30px; white-space: nowrap; }
-    .brand span { color: #1e9bff; }
-
-    .nav a { display: flex; align-items: center; gap: 12px; color: #c0ccdc; text-decoration: none; padding: 13px 14px; border-radius: 9px; margin-bottom: 8px; font-size: 15px; }
-    .nav a.active { background: linear-gradient(135deg, #0f8cff, #246bff); color: #fff; }
-    .badge { margin-left: auto; background: #ff4055; padding: 3px 8px; border-radius: 20px; font-size: 12px; }
-
-    .sidebar-card { position: absolute; bottom: 22px; left: 14px; right: 14px; background: #0b1828; border: 1px solid #172b42; border-radius: 12px; padding: 15px; }
-    .sidebar-card p { color: #9fafc4; font-size: 13px; margin: 5px 0 14px; }
-    .sidebar-card button { width: 100%; background: #111f31; border: 1px solid #1f334d; color: #fff; padding: 11px; border-radius: 8px; }
-
-    .main { margin-left: 250px; width: calc(100% - 250px); padding: 22px 28px; }
-    .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
-    .search-top { width: 500px; background: #0b1625; border: 1px solid #1b2d42; color: white; padding: 13px 18px; border-radius: 10px; outline: none; }
-    .userbar { display: flex; align-items: center; gap: 18px; }
-    .btn { background: #0b1625; border: 1px solid #1b2d42; color: #fff; border-radius: 8px; padding: 13px 18px; font-weight: 700; cursor: pointer; }
-    .primary { background: linear-gradient(135deg,#0f8cff,#1f74ff); border: 0; }
-
-    .page-head { display: flex; justify-content: space-between; align-items: flex-start; margin-bottom: 24px; }
-    .page-title h1 { font-size: 32px; margin-bottom: 8px; }
-    .page-title p { color: #aeb9c8; font-size: 16px; }
-    .page-actions { display: flex; gap: 14px; }
-
-    .layout-grid { display: grid; grid-template-columns: 1fr 380px; gap: 22px; }
-    .cards { display: grid; grid-template-columns: repeat(5, 1fr); gap: 18px; margin-bottom: 22px; }
-
-    .card, .panel {
-      background: linear-gradient(180deg,#0d1a2b,#091525);
-      border: 1px solid #192b40;
-      border-radius: 12px;
-      box-shadow: 0 15px 40px rgba(0,0,0,.25);
-    }
-
-    .card { padding: 20px; min-height: 125px; position: relative; }
-    .card h3 { color: #d2dceb; font-size: 15px; margin-bottom: 12px; padding-left: 48px; }
-    .value { font-size: 36px; font-weight: 800; color: #199cff; padding-left: 48px; }
-    .sub { margin-top: 8px; color: #37d27f; font-size: 13px; padding-left: 48px; }
-    .green .value { color: #37d27f; }
-    .red .value { color: #ff4055; }
-    .orange .value { color: #ff8f1f; }
-    .purple .value { color: #9b5cff; }
-
-    .icon-box {
-      position: absolute;
-      left: 20px;
-      top: 28px;
-      width: 38px;
-      height: 38px;
-      border-radius: 10px;
-      background: rgba(25,156,255,.14);
-      display: grid;
-      place-items: center;
-      font-size: 22px;
-    }
-
-    .playbooks-panel { overflow: hidden; }
-    .filters { display: flex; gap: 12px; padding: 14px; border-bottom: 1px solid #17283c; align-items: center; }
-    .filters input, .filters select, .filters button {
-      background: #081422;
-      border: 1px solid #1b3048;
-      color: #d8e2ef;
-      padding: 12px 14px;
-      border-radius: 8px;
-    }
-    .filters input { margin-left: auto; min-width: 270px; }
-
-    table { width: 100%; border-collapse: collapse; font-size: 14px; }
-    th, td { padding: 15px 12px; border-bottom: 1px solid #17283c; text-align: left; color: #d3deec; vertical-align: middle; }
-    th { color: #8fa1b8; font-size: 13px; }
-    .small { color: #8fa1b8; font-size: 12px; margin-top: 5px; display: block; }
-    .playbook-title { font-weight: 800; color: #fff; }
-
-    .playbook-icon {
-      display: inline-grid;
-      place-items: center;
-      width: 38px;
-      height: 38px;
-      border-radius: 10px;
-      margin-right: 12px;
-      background: rgba(25,156,255,.14);
-      vertical-align: middle;
-    }
-
-    .pill { padding: 5px 10px; border-radius: 12px; font-size: 12px; white-space: nowrap; display: inline-block; }
-    .incident { background: rgba(25,156,255,.15); color: #36a7ff; border: 1px solid rgba(25,156,255,.35); }
-    .malware { background: rgba(255,143,31,.15); color: #ff9f33; border: 1px solid rgba(255,143,31,.35); }
-    .account { background: rgba(155,92,255,.15); color: #b78cff; border: 1px solid rgba(155,92,255,.35); }
-    .threat { background: rgba(25,156,255,.15); color: #36a7ff; border: 1px solid rgba(25,156,255,.35); }
-    .cloud { background: rgba(55,210,127,.15); color: #37d27f; border: 1px solid rgba(55,210,127,.35); }
-    .email { background: rgba(255,64,140,.15); color: #ff5da2; border: 1px solid rgba(255,64,140,.35); }
-    .data { background: rgba(155,92,255,.15); color: #b78cff; border: 1px solid rgba(155,92,255,.35); }
-    .published { background: rgba(55,210,127,.15); color: #37d27f; border: 1px solid rgba(55,210,127,.35); }
-    .draft { background: rgba(255,143,31,.15); color: #ff9f33; border: 1px solid rgba(255,143,31,.35); }
-    .success { color: #37d27f; font-weight: 800; }
-
-    .pagination { display: flex; justify-content: space-between; align-items: center; padding: 16px; color: #aeb9c8; }
-    .pages button { background: #0b1726; color: #d8e2ef; border: 1px solid #1b3048; padding: 8px 12px; border-radius: 8px; margin: 0 4px; }
-    .pages .active-page { background: #0f8cff; color: #fff; }
-
-    .right-col { display: flex; flex-direction: column; gap: 18px; }
-    .panel { padding: 20px; }
-    .panel h3 { font-size: 17px; margin-bottom: 16px; }
-    canvas { width: 100% !important; max-height: 220px; }
-
-    .top-row { display: grid; grid-template-columns: 150px 1fr 38px; align-items: center; gap: 12px; margin-bottom: 18px; color: #d3deec; font-size: 14px; }
-    .bar-bg { height: 11px; background: #17283c; border-radius: 10px; overflow: hidden; }
-    .bar-fill { height: 100%; border-radius: 10px; }
-    .bar-blue { background: #1e9bff; }
-    .bar-orange { background: #ff8f1f; }
-    .bar-purple { background: #9b5cff; }
-    .bar-green { background: #37d27f; }
-    .bar-cyan { background: #33c7ff; }
-
-
-    .brand { color:white; text-decoration:none; cursor:pointer; }
-
-    .action-btn {
-      background:none;
-      border:none;
-      color:white;
-      cursor:pointer;
-      font-size:18px;
-      padding:6px 10px;
-      border-radius:8px;
-    }
-
-    .action-btn:hover {
-      background:#11243a;
-    }
-
-    .modal {
-      display:none;
-      position:fixed;
-      inset:0;
-      background:rgba(0,0,0,.72);
-      z-index:99999;
-      align-items:center;
-      justify-content:center;
-      backdrop-filter:blur(6px);
-    }
-
-    .modal-content {
-      width:620px;
-      max-width:92%;
-      background:#091525;
-      border:1px solid #192b40;
-      border-radius:16px;
-      padding:24px;
-      box-shadow:0 20px 60px rgba(0,0,0,.45);
-    }
-
-    .modal-header {
-      display:flex;
-      justify-content:space-between;
-      align-items:center;
-      margin-bottom:18px;
-    }
-
-    .modal-header h2 {
-      font-size:24px;
-    }
-
-    .modal-close {
-      background:none;
-      border:none;
-      color:white;
-      font-size:24px;
-      cursor:pointer;
-    }
-
-    .modal-grid {
-      display:grid;
-      grid-template-columns:1fr 1fr;
-      gap:14px;
-    }
-
-    .modal-grid input,
-    .modal-grid select,
-    .modal-grid textarea {
-      width:100%;
-      background:#081422;
-      border:1px solid #1b3048;
-      color:white;
-      border-radius:8px;
-      padding:13px;
-      outline:none;
-    }
-
-    .modal-grid textarea {
-      grid-column:1/-1;
-      min-height:110px;
-      resize:none;
-    }
-
-    .modal-row {
-      display:grid;
-      grid-template-columns:150px 1fr;
-      gap:12px;
-      border-bottom:1px solid #17283c;
-      padding:10px 0;
-      color:#aeb9c8;
-    }
-
-    .modal-row strong {
-      color:white;
-    }
-
-    .modal-actions {
-      margin-top:20px;
-      display:flex;
-      gap:12px;
-      justify-content:flex-end;
-      flex-wrap:wrap;
-    }
-
-    .toast {
-      position:fixed;
-      right:24px;
-      bottom:24px;
-      background:#0f8cff;
-      color:white;
-      padding:14px 18px;
-      border-radius:10px;
-      font-weight:700;
-      z-index:999999;
-      box-shadow:0 15px 40px rgba(0,0,0,.35);
-    }
-
-    @media(max-width: 1300px) {
-      .cards, .layout-grid { grid-template-columns: 1fr; }
-      .sidebar { display: none; }
-      .main { margin-left: 0; width: 100%; }
-    }
-  </style>
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,Arial,sans-serif}
+body{background:#050d18;color:#fff}
+.app{display:flex;min-height:100vh;background:radial-gradient(circle at top right,rgba(0,123,255,.12),transparent 35%),#050d18}
+.sidebar{width:250px;background:#07111f;border-right:1px solid #132235;padding:22px 14px;position:fixed;inset:0 auto 0 0}
+.brand{display:flex;align-items:center;gap:8px;font-size:26px;font-weight:800;margin-bottom:30px;white-space:nowrap;color:white;text-decoration:none}
+.brand span{color:#1e9bff}
+.nav a{display:flex;align-items:center;gap:12px;color:#c0ccdc;text-decoration:none;padding:13px 14px;border-radius:9px;margin-bottom:8px;font-size:15px}
+.nav a.active{background:linear-gradient(135deg,#0f8cff,#246bff);color:#fff}
+.badge{margin-left:auto;background:#ff4055;padding:3px 8px;border-radius:20px;font-size:12px}
+.sidebar-card{position:absolute;bottom:22px;left:14px;right:14px;background:#0b1828;border:1px solid #172b42;border-radius:12px;padding:15px}
+.sidebar-card p{color:#9fafc4;font-size:13px;margin:5px 0 14px}
+.sidebar-card button{width:100%;background:#111f31;border:1px solid #1f334d;color:#fff;padding:11px;border-radius:8px;cursor:pointer}
+.main{margin-left:250px;width:calc(100% - 250px);padding:22px 28px}
+.topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
+.search-top{width:500px;background:#0b1625;border:1px solid #1b2d42;color:white;padding:13px 18px;border-radius:10px;outline:none}
+.userbar{display:flex;align-items:center;gap:18px}
+.btn{background:#0b1625;border:1px solid #1b2d42;color:#fff;border-radius:8px;padding:13px 18px;font-weight:700;cursor:pointer}
+.primary{background:linear-gradient(135deg,#0f8cff,#1f74ff);border:0}
+.page-head{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:24px}
+.page-title h1{font-size:32px;margin-bottom:8px}
+.page-title p{color:#aeb9c8;font-size:16px}
+.page-actions{display:flex;gap:14px}
+.cards{display:grid;grid-template-columns:repeat(5,1fr);gap:18px;margin-bottom:22px}
+.card,.panel{background:linear-gradient(180deg,#0d1a2b,#091525);border:1px solid #192b40;border-radius:12px;box-shadow:0 15px 40px rgba(0,0,0,.25)}
+.card{padding:20px;min-height:125px;position:relative}
+.card h3{color:#d2dceb;font-size:15px;margin-bottom:12px;padding-left:48px}
+.value{font-size:36px;font-weight:800;color:#199cff;padding-left:48px}
+.sub{margin-top:8px;color:#37d27f;font-size:13px;padding-left:48px}
+.green .value{color:#37d27f}.red .value{color:#ff4055}.orange .value{color:#ff8f1f}.purple .value{color:#9b5cff}
+.icon-box{position:absolute;left:20px;top:28px;width:38px;height:38px;border-radius:10px;background:rgba(25,156,255,.14);display:grid;place-items:center;font-size:22px}
+.layout-grid{display:grid;grid-template-columns:1fr 380px;gap:22px}
+.panel{padding:20px}
+.filters{display:flex;gap:12px;padding:14px;border-bottom:1px solid #17283c;align-items:center}
+.filters input,.filters select,.filters button{background:#081422;border:1px solid #1b3048;color:#d8e2ef;padding:12px 14px;border-radius:8px}
+.filters input{margin-left:auto;min-width:270px}
+table{width:100%;border-collapse:collapse;font-size:14px}
+th,td{padding:15px 12px;border-bottom:1px solid #17283c;text-align:left;color:#d3deec;vertical-align:middle}
+th{color:#8fa1b8;font-size:13px}
+.small{color:#8fa1b8;font-size:12px;margin-top:5px;display:block}
+.playbook-title{font-weight:800;color:#fff}
+.playbook-icon{display:inline-grid;place-items:center;width:38px;height:38px;border-radius:10px;margin-right:12px;background:rgba(25,156,255,.14);vertical-align:middle}
+.pill{padding:5px 10px;border-radius:12px;font-size:12px;white-space:nowrap;display:inline-block}
+.incident{background:rgba(25,156,255,.15);color:#36a7ff;border:1px solid rgba(25,156,255,.35)}
+.malware{background:rgba(255,143,31,.15);color:#ff9f33;border:1px solid rgba(255,143,31,.35)}
+.account{background:rgba(155,92,255,.15);color:#b78cff;border:1px solid rgba(155,92,255,.35)}
+.threat{background:rgba(25,156,255,.15);color:#36a7ff;border:1px solid rgba(25,156,255,.35)}
+.cloud{background:rgba(55,210,127,.15);color:#37d27f;border:1px solid rgba(55,210,127,.35)}
+.email{background:rgba(255,64,140,.15);color:#ff5da2;border:1px solid rgba(255,64,140,.35)}
+.data{background:rgba(155,92,255,.15);color:#b78cff;border:1px solid rgba(155,92,255,.35)}
+.published{background:rgba(55,210,127,.15);color:#37d27f;border:1px solid rgba(55,210,127,.35)}
+.draft{background:rgba(255,143,31,.15);color:#ff9f33;border:1px solid rgba(255,143,31,.35)}
+.success{color:#37d27f;font-weight:800}
+.pagination{display:flex;justify-content:space-between;align-items:center;padding:16px;color:#aeb9c8}
+.pages button{background:#0b1726;color:#d8e2ef;border:1px solid #1b3048;padding:8px 12px;border-radius:8px;margin:0 4px;cursor:pointer}
+.pages .active-page{background:#0f8cff;color:#fff}
+.right-col{display:flex;flex-direction:column;gap:18px}
+canvas{width:100%!important;max-height:220px}
+.top-row{display:grid;grid-template-columns:150px 1fr 38px;align-items:center;gap:12px;margin-bottom:18px;color:#d3deec;font-size:14px}
+.bar-bg{height:11px;background:#17283c;border-radius:10px;overflow:hidden}
+.bar-fill{height:100%;border-radius:10px}
+.bar-blue{background:#1e9bff}.bar-orange{background:#ff8f1f}.bar-purple{background:#9b5cff}.bar-green{background:#37d27f}.bar-cyan{background:#33c7ff}
+.action-btn{background:none;border:none;color:white;cursor:pointer;font-size:18px}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:9999;align-items:center;justify-content:center}
+.modal-box{width:720px;max-height:85vh;overflow:auto;background:#091525;border:1px solid #192b40;border-radius:16px;padding:24px}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.modal-close{background:none;border:none;color:white;font-size:24px;cursor:pointer}
+.step{padding:12px;border:1px solid #17283c;border-radius:10px;margin-bottom:10px;background:#081422}
+.form-input{width:100%;margin-bottom:12px;padding:14px;background:#081422;border:1px solid #1b3048;color:white;border-radius:8px}
+.toast{position:fixed;right:24px;bottom:24px;background:#0f8cff;color:white;padding:14px 18px;border-radius:10px;font-weight:700;z-index:99999}
+@media(max-width:1300px){.cards,.layout-grid{grid-template-columns:1fr}.sidebar{display:none}.main{margin-left:0;width:100%}}
+</style>
 </head>
 
 <body>
 <div class="app">
-  <aside class="sidebar">
-    <div class="brand">🛡️ Cyber<span>Bench</span></div>
+<aside class="sidebar">
+<a class="brand" href="/dashboard">🛡️ Cyber<span>Bench</span></a>
+<nav class="nav">
+<a href="/dashboard">🏠 Dashboard</a>
+<a href="/tickets">🎫 Tickets</a>
+<a href="/alerts">⚠️ Alerts <span class="badge">23</span></a>
+<a href="/assets">💻 Assets</a>
+<a href="/remediation">🛠️ Remediation</a>
+<a class="active" href="/playbooks">📘 Playbooks</a>
+</nav>
+<div class="sidebar-card">
+<h4>Awesome SOC</h4>
+<p>Enterprise Plan</p>
+<a href="/settings"><button>View Settings</button></a>
+</div>
+</aside>
 
-    <nav class="nav">
-      <a href="/dashboard">🏠 Dashboard</a>
-      <a href="/tickets">🎫 Tickets</a>
-      <a href="/alerts">⚠️ Alerts <span class="badge">23</span></a>
-      <a href="/assets">💻 Assets</a>
-      <a href="/remediation">🛠️ Remediation</a>
-      <a href="/playbooks">📘 Playbooks</a>
-    </nav>
-
-    <div class="sidebar-card">
-      <h4>Awesome SOC</h4>
-      <p>Enterprise Plan</p>
-      <button>View Settings</button>
-    </div>
-  </aside>
-
-  <main class="main">
-    <div class="topbar">
-      <input class="search-top" placeholder="Search playbooks, tags, categories..." />
-      <div class="userbar">
-        <span>🔔</span>
-        <span>❔</span>
-        <strong>Admin User</strong>
-      </div>
-    </div>
-
-    <div class="page-head">
-      <div class="page-title">
-        <h1>Playbooks</h1>
-        <p>Automate security operations with reusable workflows and runbooks</p>
-      </div>
-      <div class="page-actions">
-        <button class="btn">Import Playbook</button>
-        <button class="btn primary">＋ Create Playbook</button>
-      </div>
-    </div>
-
-    <div class="layout-grid">
-      <section>
-        <div class="cards">
-          <div class="card">
-            <div class="icon-box">📘</div>
-            <h3>Total Playbooks</h3>
-            <div class="value">42</div>
-            <div class="sub">↑ 16% vs last 7 days</div>
-          </div>
-
-          <div class="card green">
-            <div class="icon-box">▶️</div>
-            <h3>Published</h3>
-            <div class="value">28</div>
-            <div class="sub">↑ 12% vs last 7 days</div>
-          </div>
-
-          <div class="card orange">
-            <div class="icon-box">⏸️</div>
-            <h3>Drafts</h3>
-            <div class="value">8</div>
-            <div class="sub" style="color:#ff4055;">↓ 5% vs last 7 days</div>
-          </div>
-
-          <div class="card purple">
-            <div class="icon-box">🕘</div>
-            <h3>Executions (7d)</h3>
-            <div class="value">156</div>
-            <div class="sub">↑ 23% vs last 7 days</div>
-          </div>
-
-          <div class="card red">
-            <div class="icon-box">⚠️</div>
-            <h3>Success Rate</h3>
-            <div class="value">94%</div>
-            <div class="sub" style="color:#ffbf2f;">↑ 4% vs last 7 days</div>
-          </div>
-        </div>
-
-        <div class="panel playbooks-panel">
-          <div class="filters">
-            <select><option>Status</option></select>
-            <select><option>Category</option></select>
-            <select><option>Tags</option></select>
-            <select><option>Owner</option></select>
-            <button>More Filters</button>
-            <input placeholder="Search playbooks..." />
-          </div>
-
-          <table>
-            <thead>
-              <tr>
-                <th>Playbook Name</th>
-                <th>Category</th>
-                <th>Status</th>
-                <th>Executions</th>
-                <th>Success Rate</th>
-                <th>Last Modified</th>
-                <th>Owner</th>
-                <th>Actions</th>
-              </tr>
-            </thead>
-
-            <tbody>
-              <tr>
-                <td><span class="playbook-icon">🚨</span><span class="playbook-title">Phishing Incident Response</span><span class="small">Automated response for phishing attacks</span></td>
-                <td><span class="pill incident">Incident Response</span></td>
-                <td><span class="pill published">Published</span></td>
-                <td><strong>24</strong></td>
-                <td class="success">96%</td>
-                <td><strong>May 18, 2025</strong><span class="small">2 days ago</span></td>
-                <td>Alex Johnson</td>
-                <td>•••</td>
-              </tr>
-
-              <tr>
-                <td><span class="playbook-icon">🔒</span><span class="playbook-title">Malware Containment</span><span class="small">Contain and remediate malware infections</span></td>
-                <td><span class="pill malware">Malware</span></td>
-                <td><span class="pill published">Published</span></td>
-                <td><strong>31</strong></td>
-                <td class="success">93%</td>
-                <td><strong>May 17, 2025</strong><span class="small">3 days ago</span></td>
-                <td>Sarah Kim</td>
-                <td>•••</td>
-              </tr>
-
-              <tr>
-                <td><span class="playbook-icon">👥</span><span class="playbook-title">User Account Lockout</span><span class="small">Handle user account lockout events</span></td>
-                <td><span class="pill account">Account Mgmt</span></td>
-                <td><span class="pill published">Published</span></td>
-                <td><strong>18</strong></td>
-                <td class="success">100%</td>
-                <td><strong>May 16, 2025</strong><span class="small">4 days ago</span></td>
-                <td>David Chen</td>
-                <td>•••</td>
-              </tr>
-
-              <tr>
-                <td><span class="playbook-icon">🧱</span><span class="playbook-title">Brute Force Detection</span><span class="small">Detect and respond to brute force attempts</span></td>
-                <td><span class="pill threat">Threat Detection</span></td>
-                <td><span class="pill published">Published</span></td>
-                <td><strong>27</strong></td>
-                <td class="success">92%</td>
-                <td><strong>May 15, 2025</strong><span class="small">5 days ago</span></td>
-                <td>Maria Garcia</td>
-                <td>•••</td>
-              </tr>
-
-              <tr>
-                <td><span class="playbook-icon">☁️</span><span class="playbook-title">Cloud Misconfiguration Fix</span><span class="small">Identify and fix cloud misconfigurations</span></td>
-                <td><span class="pill cloud">Cloud Security</span></td>
-                <td><span class="pill draft">Draft</span></td>
-                <td>-</td>
-                <td>-</td>
-                <td><strong>May 14, 2025</strong><span class="small">6 days ago</span></td>
-                <td>James Lee</td>
-                <td>•••</td>
-              </tr>
-
-              <tr>
-                <td><span class="playbook-icon">📧</span><span class="playbook-title">Email Threat Triage</span><span class="small">Triage and classify email threats</span></td>
-                <td><span class="pill email">Email Security</span></td>
-                <td><span class="pill published">Published</span></td>
-                <td><strong>22</strong></td>
-                <td class="success">95%</td>
-                <td><strong>May 13, 2025</strong><span class="small">7 days ago</span></td>
-                <td>Alex Johnson</td>
-                <td>•••</td>
-              </tr>
-
-              <tr>
-                <td><span class="playbook-icon">🗄️</span><span class="playbook-title">Data Exfiltration Response</span><span class="small">Respond to potential data exfiltration</span></td>
-                <td><span class="pill data">Data Security</span></td>
-                <td><span class="pill draft">Draft</span></td>
-                <td>-</td>
-                <td>-</td>
-                <td><strong>May 12, 2025</strong><span class="small">8 days ago</span></td>
-                <td>Sarah Kim</td>
-                <td>•••</td>
-              </tr>
-
-              <tr>
-                <td><span class="playbook-icon">🛡️</span><span class="playbook-title">Ransomware Recovery</span><span class="small">Recovery workflow for ransomware incidents</span></td>
-                <td><span class="pill incident">Incident Response</span></td>
-                <td><span class="pill published">Published</span></td>
-                <td><strong>9</strong></td>
-                <td class="success">89%</td>
-                <td><strong>May 11, 2025</strong><span class="small">9 days ago</span></td>
-                <td>David Chen</td>
-                <td>•••</td>
-              </tr>
-            </tbody>
-          </table>
-
-          <div class="pagination">
-            <span>Showing 1 to 8 of 42 playbooks</span>
-            <div class="pages">
-              <button>‹</button>
-              <button class="active-page">1</button>
-              <button>2</button>
-              <button>3</button>
-              <button>4</button>
-              <button>5</button>
-              <button>...</button>
-              <button>6</button>
-              <button>›</button>
-            </div>
-            <span>Rows per page: 10</span>
-          </div>
-        </div>
-      </section>
-
-      <aside class="right-col">
-        <div class="panel">
-          <h3>Playbooks by Category</h3>
-          <canvas id="categoryChart"></canvas>
-        </div>
-
-        <div class="panel">
-          <h3>Executions Over Time</h3>
-          <canvas id="executionsChart"></canvas>
-        </div>
-
-        <div class="panel">
-          <h3>Top Executed Playbooks</h3>
-
-          <div class="top-row">
-            <span>Malware Containment</span>
-            <div class="bar-bg"><div class="bar-fill bar-blue" style="width:100%"></div></div>
-            <strong>31</strong>
-          </div>
-
-          <div class="top-row">
-            <span>Brute Force Detection</span>
-            <div class="bar-bg"><div class="bar-fill bar-orange" style="width:87%"></div></div>
-            <strong>27</strong>
-          </div>
-
-          <div class="top-row">
-            <span>Phishing Incident Response</span>
-            <div class="bar-bg"><div class="bar-fill bar-purple" style="width:77%"></div></div>
-            <strong>24</strong>
-          </div>
-
-          <div class="top-row">
-            <span>Email Threat Triage</span>
-            <div class="bar-bg"><div class="bar-fill bar-green" style="width:71%"></div></div>
-            <strong>22</strong>
-          </div>
-
-          <div class="top-row">
-            <span>User Account Lockout</span>
-            <div class="bar-bg"><div class="bar-fill bar-cyan" style="width:58%"></div></div>
-            <strong>18</strong>
-          </div>
-        </div>
-      </aside>
-    </div>
-  </main>
+<main class="main">
+<div class="topbar">
+<input class="search-top" id="topSearch" placeholder="Search playbooks, tags, categories...">
+<div class="userbar"><span>🔔</span><span>❔</span><strong>Admin User</strong></div>
 </div>
 
-
-<div id="playbookModal" class="modal">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h2 id="modalTitle">Playbook Details</h2>
-      <button class="modal-close" onclick="closePlaybookModal()">✕</button>
-    </div>
-    <div id="modalBody"></div>
-    <div class="modal-actions" id="modalActions"></div>
-  </div>
+<div class="page-head">
+<div class="page-title">
+<h1>Playbooks</h1>
+<p>Automate security operations with reusable workflows and runbooks</p>
+</div>
+<div class="page-actions">
+<button class="btn" onclick="importPlaybook()">Import Playbook</button>
+<button class="btn primary" onclick="openCreateModal()">＋ Create Playbook</button>
+</div>
 </div>
 
-<div id="createModal" class="modal">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h2>Create Playbook</h2>
-      <button class="modal-close" onclick="closeCreateModal()">✕</button>
-    </div>
-
-    <div class="modal-grid">
-      <input id="newName" placeholder="Playbook name">
-      <select id="newCategory">
-        <option>Incident Response</option>
-        <option>Malware</option>
-        <option>Account Mgmt</option>
-        <option>Threat Detection</option>
-        <option>Cloud Security</option>
-        <option>Email Security</option>
-        <option>Data Security</option>
-      </select>
-      <select id="newStatus">
-        <option>Published</option>
-        <option selected>Draft</option>
-      </select>
-      <input id="newOwner" placeholder="Owner" value="Admin User">
-      <textarea id="newDescription" placeholder="Short description"></textarea>
-    </div>
-
-    <div class="modal-actions">
-      <button class="btn" onclick="closeCreateModal()">Cancel</button>
-      <button class="btn primary" onclick="createPlaybook()">Create Playbook</button>
-    </div>
-  </div>
+<div class="cards">
+<div class="card"><div class="icon-box">📘</div><h3>Total Playbooks</h3><div class="value" id="totalCount">42</div><div class="sub">↑ 16% vs last 7 days</div></div>
+<div class="card green"><div class="icon-box">▶️</div><h3>Published</h3><div class="value" id="publishedCount">28</div><div class="sub">↑ 12% vs last 7 days</div></div>
+<div class="card orange"><div class="icon-box">⏸️</div><h3>Drafts</h3><div class="value" id="draftCount">8</div><div class="sub" style="color:#ff4055;">↓ 5% vs last 7 days</div></div>
+<div class="card purple"><div class="icon-box">🕘</div><h3>Executions (7d)</h3><div class="value" id="execCount">156</div><div class="sub">↑ 23% vs last 7 days</div></div>
+<div class="card red"><div class="icon-box">⚠️</div><h3>Success Rate</h3><div class="value" id="successAvg">94%</div><div class="sub" style="color:#ffbf2f;">↑ 4% vs last 7 days</div></div>
 </div>
 
+<div class="layout-grid">
+<section>
+<div class="panel playbooks-panel">
+<div class="filters">
+<select id="statusFilter"><option value="">Status</option></select>
+<select id="categoryFilter"><option value="">Category</option></select>
+<select id="ownerFilter"><option value="">Owner</option></select>
+<button onclick="resetFilters()">More Filters</button>
+<button onclick="exportPlaybooks()">Export</button>
+<input id="tableSearch" placeholder="Search playbooks...">
+</div>
+
+<table>
+<thead>
+<tr>
+<th>Playbook Name</th><th>Category</th><th>Status</th><th>Executions</th><th>Success Rate</th><th>Last Modified</th><th>Owner</th><th>Actions</th>
+</tr>
+</thead>
+<tbody id="playbookTable"></tbody>
+</table>
+
+<div class="pagination">
+<span id="paginationText">Showing 1 to 8 of 42 playbooks</span>
+<div class="pages" id="paginationButtons"></div>
+<span>Rows per page: 8</span>
+</div>
+</div>
+</section>
+
+<aside class="right-col">
+<div class="panel"><h3>Playbooks by Category</h3><canvas id="categoryChart"></canvas></div>
+<div class="panel"><h3>Executions Over Time</h3><canvas id="executionsChart"></canvas></div>
+<div class="panel">
+<h3>Top Executed Playbooks</h3>
+<div id="topExecuted"></div>
+</div>
+</aside>
+</div>
+</main>
+</div>
+
+<div class="modal" id="playbookModal">
+<div class="modal-box">
+<div class="modal-head">
+<h2 id="modalTitle">Playbook Details</h2>
+<button class="modal-close" onclick="closeModal()">✕</button>
+</div>
+<div id="modalBody"></div>
+</div>
+</div>
+
+<div class="modal" id="createModal">
+<div class="modal-box">
+<div class="modal-head">
+<h2>Create Playbook</h2>
+<button class="modal-close" onclick="closeCreateModal()">✕</button>
+</div>
+<input id="newName" class="form-input" placeholder="Playbook name">
+<input id="newDesc" class="form-input" placeholder="Description">
+<select id="newCategory" class="form-input">
+<option>Incident Response</option><option>Malware</option><option>Threat Detection</option><option>Account Mgmt</option><option>Cloud Security</option><option>Email Security</option><option>Data Security</option>
+</select>
+<select id="newStatus" class="form-input"><option>Draft</option><option>Published</option></select>
+<input id="newOwner" class="form-input" placeholder="Owner" value="Admin User">
+<button class="btn primary" onclick="createPlaybook()">Create Playbook</button>
+</div>
+</div>
 
 <script>
-let playbooks = [
-  { icon:"🚨", name:"Phishing Incident Response", description:"Automated response for phishing attacks", category:"Incident Response", status:"Published", executions:24, success:"96%", modified:"May 18, 2025", age:"2 days ago", owner:"Alex Johnson" },
-  { icon:"🔒", name:"Malware Containment", description:"Contain and remediate malware infections", category:"Malware", status:"Published", executions:31, success:"93%", modified:"May 17, 2025", age:"3 days ago", owner:"Sarah Kim" },
-  { icon:"👥", name:"User Account Lockout", description:"Handle user account lockout events", category:"Account Mgmt", status:"Published", executions:18, success:"100%", modified:"May 16, 2025", age:"4 days ago", owner:"David Chen" },
-  { icon:"🧱", name:"Brute Force Detection", description:"Detect and respond to brute force attempts", category:"Threat Detection", status:"Published", executions:27, success:"92%", modified:"May 15, 2025", age:"5 days ago", owner:"Maria Garcia" },
-  { icon:"☁️", name:"Cloud Misconfiguration Fix", description:"Identify and fix cloud misconfigurations", category:"Cloud Security", status:"Draft", executions:null, success:null, modified:"May 14, 2025", age:"6 days ago", owner:"James Lee" },
-  { icon:"📧", name:"Email Threat Triage", description:"Triage and classify email threats", category:"Email Security", status:"Published", executions:22, success:"95%", modified:"May 13, 2025", age:"7 days ago", owner:"Alex Johnson" },
-  { icon:"🗄️", name:"Data Exfiltration Response", description:"Respond to potential data exfiltration", category:"Data Security", status:"Draft", executions:null, success:null, modified:"May 12, 2025", age:"8 days ago", owner:"Sarah Kim" },
-  { icon:"🛡️", name:"Ransomware Recovery", description:"Recovery workflow for ransomware incidents", category:"Incident Response", status:"Published", executions:9, success:"89%", modified:"May 11, 2025", age:"9 days ago", owner:"David Chen" }
+let playbooks=[
+{id:1,icon:"🚨",name:"Phishing Incident Response",desc:"Automated response for phishing attacks",category:"Incident Response",catClass:"incident",status:"Draft",executions:0,success:"-",modified:"May 18, 2025",age:"2 days ago",owner:"Alex Johnson",steps:["Collect reported email headers","Check sender reputation","Search similar messages across tenant","Quarantine malicious emails","Create ticket and notify customer","Document indicators of compromise"]},
+{id:2,icon:"🔒",name:"Malware Containment",desc:"Contain and remediate malware infections",category:"Malware",catClass:"malware",status:"Published",executions:31,success:"93%",modified:"May 17, 2025",age:"3 days ago",owner:"Sarah Kim",steps:["Identify affected endpoint","Isolate host from network","Collect process and file evidence","Run malware scan","Remove malicious artifacts","Restore normal access after validation"]},
+{id:3,icon:"👥",name:"User Account Lockout",desc:"Handle user account lockout events",category:"Account Mgmt",catClass:"account",status:"Published",executions:18,success:"100%",modified:"May 16, 2025",age:"4 days ago",owner:"David Chen",steps:["Verify user identity","Check failed authentication source","Review risky sign-in events","Reset password if needed","Unlock account","Notify user and document closure"]},
+{id:4,icon:"🧱",name:"Brute Force Detection",desc:"Detect and respond to brute force attempts",category:"Threat Detection",catClass:"threat",status:"Published",executions:27,success:"92%",modified:"May 15, 2025",age:"5 days ago",owner:"Maria Garcia",steps:["Validate failed login pattern","Identify source IP and target account","Block malicious source if required","Force password reset","Create incident ticket","Monitor for repeat attempts"]},
+{id:5,icon:"☁️",name:"Cloud Misconfiguration Fix",desc:"Identify and fix cloud misconfigurations",category:"Cloud Security",catClass:"cloud",status:"Draft",executions:0,success:"-",modified:"May 14, 2025",age:"6 days ago",owner:"James Lee",steps:["Identify misconfigured cloud resource","Validate exposure and impact","Apply least privilege or secure baseline","Confirm logging is enabled","Document risk reduction","Notify customer"]},
+{id:6,icon:"📧",name:"Email Threat Triage",desc:"Triage and classify email threats",category:"Email Security",catClass:"email",status:"Published",executions:22,success:"95%",modified:"May 13, 2025",age:"7 days ago",owner:"Alex Johnson",steps:["Review email indicators","Classify threat type","Search mailbox scope","Quarantine or delete message","Create customer summary","Close or escalate ticket"]},
+{id:7,icon:"🗄️",name:"Data Exfiltration Response",desc:"Respond to potential data exfiltration",category:"Data Security",catClass:"data",status:"Draft",executions:0,success:"-",modified:"May 12, 2025",age:"8 days ago",owner:"Sarah Kim",steps:["Validate data transfer event","Identify user and asset involved","Preserve logs","Disable risky session","Open incident ticket","Prepare executive summary"]},
+{id:8,icon:"🛡️",name:"Ransomware Recovery",desc:"Recovery workflow for ransomware incidents",category:"Incident Response",catClass:"incident",status:"Published",executions:9,success:"89%",modified:"May 11, 2025",age:"9 days ago",owner:"David Chen",steps:["Confirm ransomware indicators","Isolate affected endpoint","Disable compromised account","Validate backup restore point","Create critical incident ticket","Restore data and document lessons learned"]}
 ];
 
-let currentPage = 1;
-const rowsPerPage = 8;
-let selectedPlaybook = null;
-let categoryChartLive = null;
-let executionsChartLive = null;
-
-const topSearch = document.querySelector(".search-top");
-const tableSearch = document.querySelector(".filters input");
-const selects = document.querySelectorAll(".filters select");
-const statusFilter = selects[0];
-const categoryFilter = selects[1];
-const tagsFilter = selects[2];
-const ownerFilter = selects[3];
-const tbody = document.querySelector("tbody");
-
-document.querySelector(".brand").onclick = () => window.location.href = "/dashboard";
-document.querySelector(".sidebar-card button").onclick = () => window.location.href = "/settings";
-
-document.querySelectorAll(".page-actions .btn").forEach(btn => {
-  if (btn.innerText.includes("Import")) btn.onclick = importPlaybook;
-  if (btn.innerText.includes("Create")) btn.onclick = openCreateModal;
-});
-
-function categoryClass(category) {
-  if (category === "Incident Response") return "incident";
-  if (category === "Malware") return "malware";
-  if (category === "Account Mgmt") return "account";
-  if (category === "Threat Detection") return "threat";
-  if (category === "Cloud Security") return "cloud";
-  if (category === "Email Security") return "email";
-  if (category === "Data Security") return "data";
-  return "incident";
-}
-
-function statusClass(status) {
-  return status === "Published" ? "published" : "draft";
-}
-
-function populateFilters() {
-  statusFilter.innerHTML = `<option value="">Status</option>` + [...new Set(playbooks.map(p => p.status))].map(v => `<option value="${v}">${v}</option>`).join("");
-  categoryFilter.innerHTML = `<option value="">Category</option>` + [...new Set(playbooks.map(p => p.category))].map(v => `<option value="${v}">${v}</option>`).join("");
-  tagsFilter.innerHTML = `<option value="">Tags</option><option value="incident">Incident</option><option value="automation">Automation</option><option value="response">Response</option><option value="triage">Triage</option>`;
-  ownerFilter.innerHTML = `<option value="">Owner</option>` + [...new Set(playbooks.map(p => p.owner))].map(v => `<option value="${v}">${v}</option>`).join("");
-}
-
-function getFilteredPlaybooks() {
-  const q = (tableSearch.value || topSearch.value || "").toLowerCase();
-
-  return playbooks.filter(p => {
-    const matchesSearch =
-      p.name.toLowerCase().includes(q) ||
-      p.description.toLowerCase().includes(q) ||
-      p.category.toLowerCase().includes(q) ||
-      p.status.toLowerCase().includes(q) ||
-      p.owner.toLowerCase().includes(q);
-
-    return matchesSearch &&
-      (!statusFilter.value || p.status === statusFilter.value) &&
-      (!categoryFilter.value || p.category === categoryFilter.value) &&
-      (!ownerFilter.value || p.owner === ownerFilter.value);
-  });
-}
-
-function renderPlaybooks() {
-  const filtered = getFilteredPlaybooks();
-  const start = (currentPage - 1) * rowsPerPage;
-  const paged = filtered.slice(start, start + rowsPerPage);
-
-  tbody.innerHTML = paged.map((p, index) => {
-    const globalIndex = playbooks.indexOf(p);
-    return `
-      <tr>
-        <td><span class="playbook-icon">${p.icon}</span><span class="playbook-title">${p.name}</span><span class="small">${p.description}</span></td>
-        <td><span class="pill ${categoryClass(p.category)}">${p.category}</span></td>
-        <td><span class="pill ${statusClass(p.status)}">${p.status}</span></td>
-        <td><strong>${p.executions ?? "-"}</strong></td>
-        <td class="${p.success ? "success" : ""}">${p.success ?? "-"}</td>
-        <td><strong>${p.modified}</strong><span class="small">${p.age}</span></td>
-        <td>${p.owner}</td>
-        <td><button class="action-btn" onclick="openPlaybookModal(${globalIndex})">•••</button></td>
-      </tr>
-    `;
-  }).join("");
-
-  updatePagination(filtered.length);
-  updateCards();
-  updateTopExecuted();
-  updateCharts();
-}
-
-function updatePagination(total) {
-  const totalPages = Math.max(1, Math.ceil(total / rowsPerPage));
-  const pages = document.querySelector(".pages");
-
-  let html = `<button onclick="changePage(${Math.max(1, currentPage - 1)})">‹</button>`;
-
-  for (let i = 1; i <= totalPages; i++) {
-    html += `<button class="${i === currentPage ? "active-page" : ""}" onclick="changePage(${i})">${i}</button>`;
-  }
-
-  html += `<button onclick="changePage(${Math.min(totalPages, currentPage + 1)})">›</button>`;
-  pages.innerHTML = html;
-
-  document.querySelector(".pagination span").innerText =
-    `Showing ${total === 0 ? 0 : 1} to ${Math.min(rowsPerPage, total)} of ${total} playbooks`;
-}
-
-function changePage(page) {
-  currentPage = page;
-  renderPlaybooks();
-}
-
-function updateCards() {
-  const total = playbooks.length;
-  const published = playbooks.filter(p => p.status === "Published").length;
-  const drafts = playbooks.filter(p => p.status === "Draft").length;
-  const executions = playbooks.reduce((sum, p) => sum + (p.executions || 0), 0);
-  const successVals = playbooks.filter(p => p.success).map(p => parseInt(p.success));
-  const avgSuccess = successVals.length ? Math.round(successVals.reduce((a,b) => a + b, 0) / successVals.length) : 0;
-
-  document.querySelector(".cards .card:nth-child(1) .value").innerText = total;
-  document.querySelector(".cards .card:nth-child(2) .value").innerText = published;
-  document.querySelector(".cards .card:nth-child(3) .value").innerText = drafts;
-  document.querySelector(".cards .card:nth-child(4) .value").innerText = executions;
-  document.querySelector(".cards .card:nth-child(5) .value").innerText = avgSuccess + "%";
-}
-
-function updateTopExecuted() {
-  const panel = [...document.querySelectorAll(".panel")].find(p => p.querySelector("h3")?.innerText === "Top Executed Playbooks");
-  if (!panel) return;
-
-  const top = [...playbooks]
-    .filter(p => p.executions)
-    .sort((a,b) => b.executions - a.executions)
-    .slice(0,5);
-
-  const max = top[0]?.executions || 1;
-  const colors = ["bar-blue","bar-orange","bar-purple","bar-green","bar-cyan"];
-
-  panel.innerHTML = `<h3>Top Executed Playbooks</h3>` + top.map((p,i) => `
-    <div class="top-row">
-      <span>${p.name}</span>
-      <div class="bar-bg"><div class="bar-fill ${colors[i] || "bar-blue"}" style="width:${Math.round((p.executions / max) * 100)}%"></div></div>
-      <strong>${p.executions}</strong>
-    </div>
-  `).join("");
-}
-
-function openPlaybookModal(index) {
-  selectedPlaybook = index;
-  const p = playbooks[index];
-
-  document.getElementById("modalTitle").innerText = p.name;
-
-  document.getElementById("modalBody").innerHTML = `
-    <div class="modal-row"><span>Description</span><strong>${p.description}</strong></div>
-    <div class="modal-row"><span>Category</span><strong>${p.category}</strong></div>
-    <div class="modal-row"><span>Status</span><strong>${p.status}</strong></div>
-    <div class="modal-row"><span>Executions</span><strong>${p.executions ?? "-"}</strong></div>
-    <div class="modal-row"><span>Success Rate</span><strong>${p.success ?? "-"}</strong></div>
-    <div class="modal-row"><span>Owner</span><strong>${p.owner}</strong></div>
-    <div class="modal-row"><span>Last Modified</span><strong>${p.modified}</strong></div>
-  `;
-
-  document.getElementById("modalActions").innerHTML = `
-    <button class="btn" onclick="closePlaybookModal()">Close</button>
-    <button class="btn primary" onclick="runPlaybook()">Run</button>
-    <button class="btn" onclick="togglePublish()">Publish/Draft</button>
-    <button class="btn" onclick="clonePlaybook()">Clone</button>
-    <button class="btn" onclick="deletePlaybook()">Delete</button>
-  `;
-
-  document.getElementById("playbookModal").style.display = "flex";
-}
-
-function closePlaybookModal() {
-  document.getElementById("playbookModal").style.display = "none";
-}
-
-function openCreateModal() {
-  document.getElementById("createModal").style.display = "flex";
-}
-
-function closeCreateModal() {
-  document.getElementById("createModal").style.display = "none";
-}
-
-function createPlaybook() {
-  const name = document.getElementById("newName").value.trim();
-  const category = document.getElementById("newCategory").value;
-  const status = document.getElementById("newStatus").value;
-  const owner = document.getElementById("newOwner").value.trim() || "Admin User";
-  const description = document.getElementById("newDescription").value.trim();
-
-  if (!name || !description) {
-    alert("Please enter a playbook name and description.");
-    return;
-  }
-
-  playbooks.unshift({
-    icon:"📘",
-    name,
-    description,
-    category,
-    status,
-    executions: status === "Published" ? 0 : null,
-    success: status === "Published" ? "0%" : null,
-    modified: new Date().toLocaleDateString("en-US", { month:"short", day:"numeric", year:"numeric" }),
-    age:"Just now",
-    owner
-  });
-
-  document.getElementById("newName").value = "";
-  document.getElementById("newDescription").value = "";
-
-  closeCreateModal();
-  populateFilters();
-  currentPage = 1;
-  renderPlaybooks();
-  showToast("Playbook created");
-}
-
-function runPlaybook() {
-  const p = playbooks[selectedPlaybook];
-  if (!p) return;
-
-  if (p.status !== "Published") {
-    showToast("Draft playbooks must be published before execution");
-    return;
-  }
-
-  p.executions = (p.executions || 0) + 1;
-  p.success = p.success || "100%";
-  p.modified = new Date().toLocaleDateString("en-US", { month:"short", day:"numeric", year:"numeric" });
-  p.age = "Just now";
-
-  closePlaybookModal();
-  renderPlaybooks();
-  showToast("Playbook executed");
-}
-
-function togglePublish() {
-  const p = playbooks[selectedPlaybook];
-  if (!p) return;
-
-  if (p.status === "Published") {
-    p.status = "Draft";
-    p.executions = null;
-    p.success = null;
-  } else {
-    p.status = "Published";
-    p.executions = 0;
-    p.success = "0%";
-  }
-
-  closePlaybookModal();
-  populateFilters();
-  renderPlaybooks();
-  showToast("Playbook status updated");
-}
-
-function clonePlaybook() {
-  const p = playbooks[selectedPlaybook];
-  if (!p) return;
-
-  playbooks.unshift({
-    ...p,
-    name: p.name + " Copy",
-    status:"Draft",
-    executions:null,
-    success:null,
-    modified:new Date().toLocaleDateString("en-US", { month:"short", day:"numeric", year:"numeric" }),
-    age:"Just now"
-  });
-
-  closePlaybookModal();
-  populateFilters();
-  renderPlaybooks();
-  showToast("Playbook cloned");
-}
-
-function deletePlaybook() {
-  if (selectedPlaybook === null) return;
-  if (!confirm("Delete this playbook?")) return;
-
-  playbooks.splice(selectedPlaybook, 1);
-  selectedPlaybook = null;
-  closePlaybookModal();
-  populateFilters();
-  renderPlaybooks();
-  showToast("Playbook deleted");
-}
-
-function importPlaybook() {
-  const name = prompt("Enter imported playbook name:");
-  if (!name) return;
-
-  playbooks.unshift({
-    icon:"⬆️",
-    name,
-    description:"Imported playbook workflow",
-    category:"Incident Response",
-    status:"Draft",
-    executions:null,
-    success:null,
-    modified:new Date().toLocaleDateString("en-US", { month:"short", day:"numeric", year:"numeric" }),
-    age:"Just now",
-    owner:"Admin User"
-  });
-
-  populateFilters();
-  renderPlaybooks();
-  showToast("Playbook imported");
-}
-
-function resetFilters() {
-  topSearch.value = "";
-  tableSearch.value = "";
-  statusFilter.value = "";
-  categoryFilter.value = "";
-  tagsFilter.value = "";
-  ownerFilter.value = "";
-  currentPage = 1;
-  renderPlaybooks();
-  showToast("Filters reset");
-}
-
-function updateCharts() {
-  const categories = ["Incident Response", "Malware", "Threat Detection", "Account Mgmt", "Cloud Security", "Other"];
-  const counts = categories.map(cat => cat === "Other" ? playbooks.filter(p => !categories.slice(0,5).includes(p.category)).length : playbooks.filter(p => p.category === cat).length);
-
-  if (categoryChartLive) categoryChartLive.destroy();
-  if (executionsChartLive) executionsChartLive.destroy();
-
-  categoryChartLive = new Chart(document.getElementById("categoryChart"), {
-    type: "doughnut",
-    data: {
-      labels: categories,
-      datasets: [{
-        data: counts,
-        backgroundColor: ["#1e9bff", "#ff8f1f", "#9b5cff", "#37d27f", "#33c7ff", "#ff4055"],
-        borderWidth: 0
-      }]
-    },
-    options: {
-      cutout: "65%",
-      plugins: { legend: { position: "right", labels: { usePointStyle: true, boxWidth: 10 }}}
-    }
-  });
-
-  executionsChartLive = new Chart(document.getElementById("executionsChart"), {
-    type: "line",
-    data: {
-      labels: ["May 12", "May 13", "May 14", "May 15", "May 16", "May 17", "May 18"],
-      datasets: [{
-        data: [72, 94, 103, 126, 139, 153, playbooks.reduce((sum,p) => sum + (p.executions || 0), 0)],
-        borderColor: "#37d27f",
-        backgroundColor: "rgba(55,210,127,.22)",
-        fill: true,
-        tension: .4,
-        pointBackgroundColor: "#37d27f",
-        pointRadius: 4
-      }]
-    },
-    options: {
-      plugins: { legend: { display: false } },
-      scales: { y: { beginAtZero: true, max: 250 }, x: { grid: { display: false }}}
-    }
-  });
-}
-
-function showToast(message) {
-  const toast = document.createElement("div");
-  toast.className = "toast";
-  toast.innerText = message;
-  document.body.appendChild(toast);
-  setTimeout(() => toast.remove(), 2500);
-}
-
-document.querySelectorAll(".filters button").forEach(btn => {
-  if (btn.innerText.includes("More Filters")) btn.onclick = resetFilters;
-});
-
-topSearch.addEventListener("input", () => {
-  tableSearch.value = topSearch.value;
-  currentPage = 1;
-  renderPlaybooks();
-});
-
-tableSearch.addEventListener("input", () => {
-  currentPage = 1;
-  renderPlaybooks();
-});
-
-[statusFilter, categoryFilter, tagsFilter, ownerFilter].forEach(filter => {
-  filter.addEventListener("change", () => {
-    currentPage = 1;
-    renderPlaybooks();
-  });
-});
-
-window.onclick = function(event) {
-  if (event.target === document.getElementById("playbookModal")) closePlaybookModal();
-  if (event.target === document.getElementById("createModal")) closeCreateModal();
-};
-
+let currentPage=1;
+const rowsPerPage=8;
+let categoryChart, executionsChart;
+
+function statusClass(s){return s==="Published"?"published":"draft"}
+
+function render(){
+const filtered=getFiltered();
+const start=(currentPage-1)*rowsPerPage;
+const page=filtered.slice(start,start+rowsPerPage);
+
+document.getElementById("playbookTable").innerHTML=page.map(p=>`
+<tr>
+<td><span class="playbook-icon">${p.icon}</span><span class="playbook-title">${p.name}</span><span class="small">${p.desc}</span></td>
+<td><span class="pill ${p.catClass}">${p.category}</span></td>
+<td><span class="pill ${statusClass(p.status)}">${p.status}</span></td>
+<td><strong>${p.executions||"-"}</strong></td>
+<td class="${p.success!=="-"?"success":""}">${p.success}</td>
+<td><strong>${p.modified}</strong><span class="small">${p.age}</span></td>
+<td>${p.owner}</td>
+<td><button class="action-btn" onclick="openPlaybook(${p.id})">•••</button></td>
+</tr>`).join("");
+
+updateCards();
+updatePagination(filtered.length);
 populateFilters();
-renderPlaybooks();
-</script>
+updateTopExecuted();
+updateCharts();
+}
 
+function getFiltered(){
+const q=(document.getElementById("tableSearch").value||document.getElementById("topSearch").value).toLowerCase();
+const status=document.getElementById("statusFilter").value;
+const category=document.getElementById("categoryFilter").value;
+const owner=document.getElementById("ownerFilter").value;
+
+return playbooks.filter(p=>{
+const match=p.name.toLowerCase().includes(q)||p.desc.toLowerCase().includes(q)||p.category.toLowerCase().includes(q)||p.owner.toLowerCase().includes(q);
+return match&&(!status||p.status===status)&&(!category||p.category===category)&&(!owner||p.owner===owner);
+});
+}
+
+function populateFilters(){
+const fill=(id,label,values)=>{
+const el=document.getElementById(id);
+const current=el.value;
+el.innerHTML=`<option value="">${label}</option>`+[...new Set(values)].map(v=>`<option value="${v}">${v}</option>`).join("");
+el.value=current;
+}
+fill("statusFilter","Status",playbooks.map(p=>p.status));
+fill("categoryFilter","Category",playbooks.map(p=>p.category));
+fill("ownerFilter","Owner",playbooks.map(p=>p.owner));
+}
+
+function updateCards(){
+document.getElementById("totalCount").innerText=playbooks.length;
+document.getElementById("publishedCount").innerText=playbooks.filter(p=>p.status==="Published").length;
+document.getElementById("draftCount").innerText=playbooks.filter(p=>p.status==="Draft").length;
+document.getElementById("execCount").innerText=playbooks.reduce((a,p)=>a+(p.executions||0),0);
+const rates=playbooks.filter(p=>p.success!=="-").map(p=>parseInt(p.success));
+document.getElementById("successAvg").innerText=Math.round(rates.reduce((a,b)=>a+b,0)/rates.length)+"%";
+}
+
+function updatePagination(total){
+const totalPages=Math.max(1,Math.ceil(total/rowsPerPage));
+let html=`<button onclick="changePage(${Math.max(1,currentPage-1)})">‹</button>`;
+for(let i=1;i<=totalPages;i++)html+=`<button class="${i===currentPage?"active-page":""}" onclick="changePage(${i})">${i}</button>`;
+html+=`<button onclick="changePage(${Math.min(totalPages,currentPage+1)})">›</button>`;
+document.getElementById("paginationButtons").innerHTML=html;
+document.getElementById("paginationText").innerText=`Showing ${total===0?0:1} to ${Math.min(rowsPerPage,total)} of ${total} playbooks`;
+}
+
+function changePage(p){currentPage=p;render()}
+
+function openPlaybook(id){
+const p=playbooks.find(x=>x.id===id);
+document.getElementById("modalTitle").innerText=p.name;
+document.getElementById("modalBody").innerHTML=`
+<p style="color:#aeb9c8;margin-bottom:16px">${p.desc}</p>
+<p><strong>Category:</strong> ${p.category}</p>
+<p><strong>Status:</strong> ${p.status}</p>
+<p><strong>Owner:</strong> ${p.owner}</p>
+<p><strong>Executions:</strong> ${p.executions||"-"}</p>
+<br>
+<h3>Playbook Steps</h3>
+<br>
+${p.steps.map((s,i)=>`<div class="step"><strong>${i+1}.</strong> ${s}</div>`).join("")}
+<div style="display:flex;gap:12px;margin-top:18px">
+<button class="btn primary" onclick="executePlaybook(${p.id})">▶ Execute</button>
+<button class="btn" onclick="togglePublish(${p.id})">${p.status==="Published"?"Move to Draft":"Publish"}</button>
+<button class="btn" onclick="duplicatePlaybook(${p.id})">Duplicate</button>
+</div>`;
+document.getElementById("playbookModal").style.display="flex";
+}
+
+function closeModal(){document.getElementById("playbookModal").style.display="none"}
+function executePlaybook(id){
+const p=playbooks.find(x=>x.id===id);
+p.executions=(p.executions||0)+1;
+p.success=p.success==="-"?"100%":p.success;
+showToast(`${p.name} executed`);
+closeModal();
+render();
+}
+function togglePublish(id){
+const p=playbooks.find(x=>x.id===id);
+p.status=p.status==="Published"?"Draft":"Published";
+showToast(`${p.name} ${p.status}`);
+closeModal();
+render();
+}
+function duplicatePlaybook(id){
+const p=playbooks.find(x=>x.id===id);
+playbooks.unshift({...p,id:Date.now(),name:p.name+" Copy",status:"Draft",executions:0,success:"-",modified:"Today",age:"Just now"});
+showToast("Playbook duplicated");
+closeModal();
+render();
+}
+
+function openCreateModal(){document.getElementById("createModal").style.display="flex"}
+function closeCreateModal(){document.getElementById("createModal").style.display="none"}
+function createPlaybook(){
+const name=document.getElementById("newName").value.trim();
+const desc=document.getElementById("newDesc").value.trim();
+if(!name||!desc){alert("Enter playbook name and description");return}
+const category=document.getElementById("newCategory").value;
+const status=document.getElementById("newStatus").value;
+const owner=document.getElementById("newOwner").value||"Admin User";
+const catMap={"Incident Response":"incident","Malware":"malware","Threat Detection":"threat","Account Mgmt":"account","Cloud Security":"cloud","Email Security":"email","Data Security":"data"};
+playbooks.unshift({id:Date.now(),icon:"📘",name,desc,category,catClass:catMap[category]||"incident",status,executions:0,success:"-",modified:"Today",age:"Just now",owner,steps:["Validate trigger","Create ticket","Assign owner","Execute remediation","Document outcome"]});
+closeCreateModal();
+showToast("Playbook created");
+render();
+}
+
+function importPlaybook(){
+showToast("Import ready: connect this to file upload later");
+}
+
+function exportPlaybooks(){
+const rows=[["Name","Category","Status","Executions","Success","Owner"],...playbooks.map(p=>[p.name,p.category,p.status,p.executions,p.success,p.owner])];
+const csv=rows.map(r=>r.map(v=>`"${String(v).replaceAll('"','""')}"`).join(",")).join("\n");
+const blob=new Blob([csv],{type:"text/csv"});
+const url=URL.createObjectURL(blob);
+const a=document.createElement("a");
+a.href=url;a.download="cyberbench-playbooks.csv";a.click();
+URL.revokeObjectURL(url);
+}
+
+function resetFilters(){
+document.getElementById("topSearch").value="";
+document.getElementById("tableSearch").value="";
+document.getElementById("statusFilter").value="";
+document.getElementById("categoryFilter").value="";
+document.getElementById("ownerFilter").value="";
+currentPage=1;render();
+}
+
+function updateTopExecuted(){
+const top=[...playbooks].sort((a,b)=>(b.executions||0)-(a.executions||0)).slice(0,5);
+document.getElementById("topExecuted").innerHTML=top.map((p,i)=>{
+const max=top[0].executions||1;
+const pct=((p.executions||0)/max)*100;
+const colors=["bar-blue","bar-orange","bar-purple","bar-green","bar-cyan"];
+return `<div class="top-row"><span>${p.name}</span><div class="bar-bg"><div class="bar-fill ${colors[i]}" style="width:${pct}%"></div></div><strong>${p.executions||0}</strong></div>`;
+}).join("");
+}
+
+function updateCharts(){
+const cats=[...new Set(playbooks.map(p=>p.category))];
+const data=cats.map(c=>playbooks.filter(p=>p.category===c).length);
+if(categoryChart)categoryChart.destroy();
+categoryChart=new Chart(document.getElementById("categoryChart"),{type:"doughnut",data:{labels:cats,datasets:[{data,backgroundColor:["#1e9bff","#ff8f1f","#9b5cff","#37d27f","#33c7ff","#ff4055"],borderWidth:0}]},options:{cutout:"65%",plugins:{legend:{position:"right",labels:{usePointStyle:true,boxWidth:10}}}}});
+}
+
+function showToast(msg){
+const t=document.createElement("div");t.className="toast";t.innerText=msg;document.body.appendChild(t);setTimeout(()=>t.remove(),2500);
+}
+
+Chart.defaults.color="#9fafc4";
+Chart.defaults.borderColor="rgba(255,255,255,.08)";
+executionsChart=new Chart(document.getElementById("executionsChart"),{type:"line",data:{labels:["May 12","May 13","May 14","May 15","May 16","May 17","May 18"],datasets:[{data:[72,94,103,126,139,153,174],borderColor:"#37d27f",backgroundColor:"rgba(55,210,127,.22)",fill:true,tension:.4,pointBackgroundColor:"#37d27f",pointRadius:4}]},options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,max:200},x:{grid:{display:false}}}}});
+
+["topSearch","tableSearch","statusFilter","categoryFilter","ownerFilter"].forEach(id=>document.getElementById(id).addEventListener("input",()=>{currentPage=1;render()}));
+["statusFilter","categoryFilter","ownerFilter"].forEach(id=>document.getElementById(id).addEventListener("change",()=>{currentPage=1;render()}));
+window.onclick=e=>{if(e.target.id==="playbookModal")closeModal();if(e.target.id==="createModal")closeCreateModal()};
+
+render();
+</script>
 </body>
 </html>
