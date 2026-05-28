@@ -224,7 +224,7 @@ document.getElementById("playbookTable").innerHTML=page.map(p=>`
 <td class="${p.success!=="-"?"success":""}">${p.success}</td>
 <td><strong>${p.modified}</strong><span class="small">${p.age}</span></td>
 <td>${p.owner}</td>
-<td><button class="action-btn" onclick="openPlaybook(${p.id})">•••</button></td>
+<td><a href="/playbook-detail" class="btn">Open</a></td>
 </tr>`).join("");
 
 updateCards();
