@@ -12,7 +12,7 @@
     .app { display: flex; min-height: 100vh; background: radial-gradient(circle at top right, rgba(0,123,255,.12), transparent 35%), #050d18; }
 
     .sidebar { width: 250px; background: #07111f; border-right: 1px solid #132235; padding: 22px 14px; position: fixed; inset: 0 auto 0 0; }
-    .brand { display: flex; align-items: center; gap: 8px; font-size: 26px; font-weight: 800; margin-bottom: 30px; white-space: nowrap; }
+    .brand { display: flex; align-items: center; gap: 8px; font-size: 26px; font-weight: 800; margin-bottom: 30px; white-space: nowrap; text-decoration:none; color:white; cursor:pointer; }
     .brand span { color: #1e9bff; }
 
     .nav a { display: flex; align-items: center; gap: 12px; color: #c0ccdc; text-decoration: none; padding: 13px 14px; border-radius: 9px; margin-bottom: 8px; font-size: 15px; }
@@ -119,6 +119,108 @@
     .bar-green { background: #37d27f; }
     .bar-blue { background: #1e9bff; }
 
+
+    .modal {
+      display:none;
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.72);
+      z-index:99999;
+      justify-content:center;
+      align-items:center;
+      backdrop-filter:blur(6px);
+    }
+
+    .modal-content {
+      width:560px;
+      background:#081423;
+      border:1px solid #1b3048;
+      border-radius:16px;
+      padding:24px;
+      box-shadow:0 20px 60px rgba(0,0,0,.45);
+    }
+
+    .modal-header {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:18px;
+    }
+
+    .modal-close {
+      background:none;
+      border:none;
+      color:white;
+      font-size:24px;
+      cursor:pointer;
+    }
+
+    .modal-form {
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .modal-form input,
+    .modal-form select,
+    .modal-form textarea {
+      background:#0d1d30;
+      border:1px solid #1e3550;
+      border-radius:10px;
+      padding:14px;
+      color:white;
+      font-size:14px;
+      outline:none;
+    }
+
+    .modal-form textarea {
+      min-height:100px;
+      resize:none;
+    }
+
+    .modal-actions {
+      display:flex;
+      gap:12px;
+      justify-content:flex-end;
+      margin-top:16px;
+    }
+
+    .modal-actions button {
+      background:#0b1625;
+      border:1px solid #1b3048;
+      color:white;
+      border-radius:8px;
+      padding:12px 16px;
+      cursor:pointer;
+      font-weight:700;
+    }
+
+    .modal-actions .primary {
+      background:linear-gradient(135deg,#0f8cff,#1f74ff);
+      border:0;
+    }
+
+    .action-btn {
+      background:none;
+      border:none;
+      color:white;
+      cursor:pointer;
+      font-size:18px;
+    }
+
+    .toast {
+      position:fixed;
+      bottom:25px;
+      right:25px;
+      background:#0f8cff;
+      padding:16px 20px;
+      border-radius:12px;
+      color:white;
+      font-weight:700;
+      z-index:999999;
+      box-shadow:0 15px 40px rgba(0,0,0,.35);
+    }
+
     @media(max-width: 1300px) {
       .cards, .layout-grid { grid-template-columns: 1fr; }
       .sidebar { display: none; }
@@ -130,27 +232,27 @@
 <body>
 <div class="app">
   <aside class="sidebar">
-    <div class="brand">🛡️ Cyber<span>Bench</span></div>
+    <a href="/dashboard" class="brand">🛡️ Cyber<span>Bench</span></a>
 
     <nav class="nav">
       <a href="/dashboard">🏠 Dashboard</a>
       <a href="/tickets">🎫 Tickets</a>
       <a href="/alerts">⚠️ Alerts <span class="badge">23</span></a>
       <a href="/assets">💻 Assets</a>
-      <a href="/remediation">🛠️ Remediation</a>
+      <a class="active" href="/remediation">🛠️ Remediation</a>
       <a href="/playbooks">📘 Playbooks</a>
     </nav>
 
     <div class="sidebar-card">
       <h4>Awesome SOC</h4>
       <p>Enterprise Plan</p>
-      <button>View Settings</button>
+      <button onclick="window.location.href='/settings'">View Settings</button>
     </div>
   </aside>
 
   <main class="main">
     <div class="topbar">
-      <input class="search-top" placeholder="Search vulnerabilities, assets, vulnerabilities..." />
+      <input id="topSearch" class="search-top" placeholder="Search vulnerabilities, assets, remediation tasks..." />
       <div class="userbar">
         <span>🔔</span>
         <span>❔</span>
@@ -164,8 +266,8 @@
         <p>Track and manage remediation activities to reduce security risks</p>
       </div>
       <div class="page-actions">
-        <button class="btn">Export Report</button>
-        <button class="btn primary">＋ Create Remediation Task</button>
+        <button class="btn" onclick="exportTasks()">Export Report</button>
+        <button class="btn primary" onclick="openTaskModal()">＋ Create Remediation Task</button>
       </div>
     </div>
 
@@ -211,12 +313,12 @@
         <div class="panel remediation-panel">
           <div class="filters">
             <strong style="margin-right:10px;">Remediation Tasks</strong>
-            <select><option>Status</option></select>
-            <select><option>Priority</option></select>
-            <select><option>Asset</option></select>
-            <select><option>Assignee</option></select>
-            <button>More Filters</button>
-            <input placeholder="Search tasks..." />
+            <select id="statusFilter"><option value="">Status</option></select>
+            <select id="priorityFilter"><option value="">Priority</option></select>
+            <select id="assetFilter"><option value="">Asset</option></select>
+            <select id="assigneeFilter"><option value="">Assignee</option></select>
+            <button onclick="resetFilters()">More Filters</button>
+            <input id="taskSearch" placeholder="Search tasks..." />
           </div>
 
           <table>
@@ -234,7 +336,7 @@
               </tr>
             </thead>
 
-            <tbody>
+            <tbody id="taskTable">
               <tr>
                 <td class="task-id">RM-2025-001</td>
                 <td><strong>CVE-2024-3094</strong><span class="small">OpenSSH Security Bypass</span></td>
@@ -334,18 +436,8 @@
           </table>
 
           <div class="pagination">
-            <span>Showing 1 to 8 of 234 tasks</span>
-            <div class="pages">
-              <button>‹</button>
-              <button class="active-page">1</button>
-              <button>2</button>
-              <button>3</button>
-              <button>4</button>
-              <button>5</button>
-              <button>...</button>
-              <button>30</button>
-              <button>›</button>
-            </div>
+            <span id="paginationText">Showing 1 to 8 of 234 tasks</span>
+            <div class="pages" id="paginationButtons"></div>
             <span>Rows per page: 10</span>
           </div>
         </div>
@@ -400,32 +492,206 @@
   </main>
 </div>
 
-<script>
-  Chart.defaults.color = "#9fafc4";
-  Chart.defaults.borderColor = "rgba(255,255,255,.08)";
+<div id="taskModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Create Remediation Task</h2>
+      <button class="modal-close" onclick="closeTaskModal()">✕</button>
+    </div>
 
-  new Chart(document.getElementById("remediationStatusChart"), {
+    <div class="modal-form">
+      <input id="newVuln" placeholder="Vulnerability / CVE">
+      <input id="newDescription" placeholder="Description">
+      <input id="newAsset" placeholder="Asset">
+      <select id="newPriority">
+        <option>Critical</option>
+        <option>High</option>
+        <option selected>Medium</option>
+        <option>Low</option>
+      </select>
+      <select id="newStatus">
+        <option>Pending</option>
+        <option selected>In Progress</option>
+        <option>Completed</option>
+      </select>
+      <input id="newAssignee" placeholder="Assignee">
+      <input id="newDueDate" placeholder="Due Date e.g. May 30, 2025">
+      <textarea id="newNotes" placeholder="Notes / remediation steps"></textarea>
+
+      <div class="modal-actions">
+        <button onclick="closeTaskModal()">Cancel</button>
+        <button class="primary" onclick="createTask()">Create Task</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="detailsModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Remediation Details</h2>
+      <button class="modal-close" onclick="closeDetailsModal()">✕</button>
+    </div>
+
+    <div id="taskDetails"></div>
+
+    <div class="modal-actions">
+      <button onclick="closeDetailsModal()">Close</button>
+      <button class="primary" onclick="markSelectedInProgress()">Mark In Progress</button>
+      <button class="primary" onclick="markSelectedComplete()">Mark Complete</button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+Chart.defaults.color = "#9fafc4";
+Chart.defaults.borderColor = "rgba(255,255,255,.08)";
+
+let tasks = [
+  {id:"RM-2025-001", vuln:"CVE-2024-3094", desc:"OpenSSH Security Bypass", asset:"WS-CA-1432", assetType:"Workstation", priority:"Critical", status:"In Progress", assignee:"Alex Johnson", due:"May 20, 2025", dueText:"2 days left", progress:75},
+  {id:"RM-2025-002", vuln:"CVE-2024-21762", desc:"Windows RDP Vulnerability", asset:"DC-01", assetType:"Domain Controller", priority:"Critical", status:"In Progress", assignee:"Sarah Kim", due:"May 19, 2025", dueText:"1 day left", progress:45},
+  {id:"RM-2025-003", vuln:"CVE-2024-6387", desc:"Chrome V8 Type Confusion", asset:"LAPTOP-LA-09", assetType:"Laptop", priority:"High", status:"Pending", assignee:"James Lee", due:"May 22, 2025", dueText:"4 days left", progress:0},
+  {id:"RM-2025-004", vuln:"CVE-2024-27198", desc:"Fortinet SSL VPN RCE", asset:"FW-01", assetType:"Firewall", priority:"High", status:"In Progress", assignee:"Maria Garcia", due:"May 21, 2025", dueText:"3 days left", progress:60},
+  {id:"RM-2025-005", vuln:"CVE-2024-12686", desc:"Apache HTTP Server DoS", asset:"APP-SRV-01", assetType:"Application Server", priority:"Medium", status:"Completed", assignee:"David Chen", due:"May 16, 2025", dueText:"Completed", progress:100},
+  {id:"RM-2025-006", vuln:"CVE-2024-33333", desc:"MySQL Auth Bypass", asset:"AWS-RDS-01", assetType:"Database", priority:"Medium", status:"Pending", assignee:"Sarah Kim", due:"May 24, 2025", dueText:"6 days left", progress:0},
+  {id:"RM-2025-007", vuln:"CVE-2024-48788", desc:"Sudo Privilege Escalation", asset:"FILE-SRV-02", assetType:"File Server", priority:"Low", status:"In Progress", assignee:"Alex Johnson", due:"May 23, 2025", dueText:"5 days left", progress:30},
+  {id:"RM-2025-008", vuln:"CVE-2024-55555", desc:"Docker Container Escape", asset:"AWS-EC2-01", assetType:"Cloud Instance", priority:"Low", status:"Pending", assignee:"James Lee", due:"May 25, 2025", dueText:"7 days left", progress:0}
+];
+
+let currentPage = 1;
+const rowsPerPage = 8;
+let selectedTaskId = null;
+let statusChart;
+let riskChart;
+
+function priorityClass(priority){
+  return priority.toLowerCase();
+}
+
+function statusClass(status){
+  if(status === "In Progress") return "progress-pill";
+  if(status === "Completed") return "completed";
+  return "pending";
+}
+
+function getFilteredTasks(){
+  const q = (document.getElementById("taskSearch").value || document.getElementById("topSearch").value).toLowerCase();
+  const status = document.getElementById("statusFilter").value;
+  const priority = document.getElementById("priorityFilter").value;
+  const asset = document.getElementById("assetFilter").value;
+  const assignee = document.getElementById("assigneeFilter").value;
+
+  return tasks.filter(t => {
+    const matchesSearch =
+      t.id.toLowerCase().includes(q) ||
+      t.vuln.toLowerCase().includes(q) ||
+      t.desc.toLowerCase().includes(q) ||
+      t.asset.toLowerCase().includes(q) ||
+      t.priority.toLowerCase().includes(q) ||
+      t.status.toLowerCase().includes(q) ||
+      t.assignee.toLowerCase().includes(q);
+
+    return matchesSearch &&
+      (!status || t.status === status) &&
+      (!priority || t.priority === priority) &&
+      (!asset || t.asset === asset) &&
+      (!assignee || t.assignee === assignee);
+  });
+}
+
+function populateFilters(){
+  fillSelect("statusFilter", "Status", tasks.map(t => t.status));
+  fillSelect("priorityFilter", "Priority", tasks.map(t => t.priority));
+  fillSelect("assetFilter", "Asset", tasks.map(t => t.asset));
+  fillSelect("assigneeFilter", "Assignee", tasks.map(t => t.assignee));
+}
+
+function fillSelect(id, label, values){
+  const el = document.getElementById(id);
+  el.innerHTML = `<option value="">${label}</option>` +
+    [...new Set(values)].map(v => `<option value="${v}">${v}</option>`).join("");
+}
+
+function renderTasks(){
+  const filtered = getFilteredTasks();
+  const start = (currentPage - 1) * rowsPerPage;
+  const page = filtered.slice(start, start + rowsPerPage);
+
+  document.getElementById("taskTable").innerHTML = page.map(t => `
+    <tr>
+      <td class="task-id">${t.id}</td>
+      <td><strong>${t.vuln}</strong><span class="small">${t.desc}</span></td>
+      <td><strong>${t.asset}</strong><span class="small">${t.assetType}</span></td>
+      <td><span class="pill ${priorityClass(t.priority)}">${t.priority}</span></td>
+      <td><span class="pill ${statusClass(t.status)}">${t.status}</span></td>
+      <td>${t.assignee}</td>
+      <td><strong>${t.due}</strong><span class="small ${t.dueText.includes("day") && (t.dueText.includes("1") || t.dueText.includes("2")) ? "due-red" : ""}">${t.dueText}</span></td>
+      <td>
+        <div class="progress-wrap">
+          <span>${t.progress}%</span>
+          <div class="progress-track"><div class="progress-fill ${t.progress === 100 ? "green" : ""}" style="width:${t.progress}%"></div></div>
+        </div>
+      </td>
+      <td><button class="action-btn" onclick="openDetailsModal('${t.id}')">•••</button></td>
+    </tr>
+  `).join("");
+
+  updatePagination(filtered.length);
+  updateCards();
+  updateCharts();
+  updateTopVulns();
+}
+
+function updatePagination(total){
+  const totalPages = Math.max(1, Math.ceil(total / rowsPerPage));
+  let html = `<button onclick="changePage(${Math.max(1,currentPage-1)})">‹</button>`;
+
+  for(let i=1;i<=totalPages;i++){
+    html += `<button class="${i === currentPage ? "active-page" : ""}" onclick="changePage(${i})">${i}</button>`;
+  }
+
+  html += `<button onclick="changePage(${Math.min(totalPages,currentPage+1)})">›</button>`;
+  document.getElementById("paginationButtons").innerHTML = html;
+  document.getElementById("paginationText").innerText =
+    `Showing ${total === 0 ? 0 : 1} to ${Math.min(rowsPerPage,total)} of ${total} tasks`;
+}
+
+function changePage(page){
+  currentPage = page;
+  renderTasks();
+}
+
+function updateCards(){
+  document.querySelector(".cards .card:nth-child(1) .value").innerText = tasks.length;
+  document.querySelector(".cards .card:nth-child(2) .value").innerText = tasks.filter(t => t.priority === "Critical").length;
+  document.querySelector(".cards .card:nth-child(3) .value").innerText = tasks.filter(t => t.status === "Completed").length;
+  document.querySelector(".cards .card:nth-child(4) .value").innerText = tasks.filter(t => t.status === "In Progress").length;
+  document.querySelector(".cards .card:nth-child(5) .value").innerText = tasks.filter(t => t.status === "Pending").length;
+}
+
+function updateCharts(){
+  const completed = tasks.filter(t => t.status === "Completed").length;
+  const progress = tasks.filter(t => t.status === "In Progress").length;
+  const pending = tasks.filter(t => t.status === "Pending").length;
+
+  if(statusChart) statusChart.destroy();
+  if(riskChart) riskChart.destroy();
+
+  statusChart = new Chart(document.getElementById("remediationStatusChart"), {
     type: "doughnut",
     data: {
       labels: ["Remediated", "In Progress", "Pending"],
       datasets: [{
-        data: [892, 234, 122],
+        data: [completed, progress, pending],
         backgroundColor: ["#37d27f", "#1e9bff", "#ff8f1f"],
         borderWidth: 0
       }]
     },
-    options: {
-      cutout: "65%",
-      plugins: {
-        legend: {
-          position: "right",
-          labels: { usePointStyle: true, boxWidth: 10 }
-        }
-      }
-    }
+    options: { cutout: "65%", plugins: { legend: { position: "right", labels: { usePointStyle: true, boxWidth: 10 }}}}
   });
 
-  new Chart(document.getElementById("riskReductionChart"), {
+  riskChart = new Chart(document.getElementById("riskReductionChart"), {
     type: "line",
     data: {
       labels: ["May 12", "May 13", "May 14", "May 15", "May 16", "May 17", "May 18"],
@@ -439,14 +705,181 @@
         pointRadius: 4
       }]
     },
-    options: {
-      plugins: { legend: { display: false } },
-      scales: {
-        y: { beginAtZero: true, max: 100 },
-        x: { grid: { display: false } }
-      }
-    }
+    options: { plugins: { legend: { display: false }}, scales: { y: { beginAtZero: true, max: 100 }, x: { grid: { display: false }}}}
   });
+}
+
+function updateTopVulns(){
+  const topPanel = Array.from(document.querySelectorAll(".right-col .panel")).find(p => p.querySelector("h3")?.innerText.includes("Top Vulnerabilities"));
+  const vulns = tasks.slice(0,5).map((t, i) => ({ name:t.vuln, count:[78,56,42,31,28][i] || 10, cls:["bar-red","bar-orange","bar-yellow","bar-green","bar-blue"][i] || "bar-blue" }));
+  topPanel.innerHTML = `<h3>Top Vulnerabilities</h3>` + vulns.map(v => `
+    <div class="vuln-row">
+      <span>${v.name}</span>
+      <div class="bar-bg"><div class="bar-fill ${v.cls}" style="width:${v.count}%"></div></div>
+      <strong>${v.count}</strong>
+    </div>
+  `).join("");
+}
+
+function openTaskModal(){
+  document.getElementById("taskModal").style.display = "flex";
+}
+
+function closeTaskModal(){
+  document.getElementById("taskModal").style.display = "none";
+}
+
+function createTask(){
+  const vuln = document.getElementById("newVuln").value.trim();
+  const desc = document.getElementById("newDescription").value.trim();
+  const asset = document.getElementById("newAsset").value.trim();
+  const priority = document.getElementById("newPriority").value;
+  const status = document.getElementById("newStatus").value;
+  const assignee = document.getElementById("newAssignee").value.trim() || "Unassigned";
+  const due = document.getElementById("newDueDate").value.trim() || "TBD";
+
+  if(!vuln || !desc || !asset){
+    alert("Please complete Vulnerability, Description, and Asset.");
+    return;
+  }
+
+  tasks.unshift({
+    id:`RM-2025-${String(tasks.length + 1).padStart(3,"0")}`,
+    vuln,
+    desc,
+    asset,
+    assetType:"New Asset",
+    priority,
+    status,
+    assignee,
+    due,
+    dueText: status === "Completed" ? "Completed" : "New task",
+    progress: status === "Completed" ? 100 : status === "In Progress" ? 25 : 0
+  });
+
+  closeTaskModal();
+  clearModal();
+  populateFilters();
+  currentPage = 1;
+  renderTasks();
+  showToast("Remediation task created");
+}
+
+function clearModal(){
+  ["newVuln","newDescription","newAsset","newAssignee","newDueDate","newNotes"].forEach(id => document.getElementById(id).value = "");
+}
+
+function openDetailsModal(id){
+  selectedTaskId = id;
+  const t = tasks.find(x => x.id === id);
+
+  document.getElementById("taskDetails").innerHTML = `
+    <div class="modal-form">
+      <input value="${t.id}" disabled>
+      <input value="${t.vuln}" disabled>
+      <input value="${t.desc}" disabled>
+      <input value="${t.asset}" disabled>
+      <input value="${t.priority}" disabled>
+      <input value="${t.status}" disabled>
+      <input value="${t.assignee}" disabled>
+      <input value="${t.progress}% Complete" disabled>
+    </div>
+  `;
+
+  document.getElementById("detailsModal").style.display = "flex";
+}
+
+function closeDetailsModal(){
+  document.getElementById("detailsModal").style.display = "none";
+}
+
+function markSelectedInProgress(){
+  const t = tasks.find(x => x.id === selectedTaskId);
+  if(!t) return;
+
+  t.status = "In Progress";
+  t.progress = Math.max(t.progress, 25);
+  closeDetailsModal();
+  renderTasks();
+  showToast("Task marked In Progress");
+}
+
+function markSelectedComplete(){
+  const t = tasks.find(x => x.id === selectedTaskId);
+  if(!t) return;
+
+  t.status = "Completed";
+  t.progress = 100;
+  t.dueText = "Completed";
+  closeDetailsModal();
+  renderTasks();
+  showToast("Task completed");
+}
+
+function resetFilters(){
+  document.getElementById("topSearch").value = "";
+  document.getElementById("taskSearch").value = "";
+  document.getElementById("statusFilter").value = "";
+  document.getElementById("priorityFilter").value = "";
+  document.getElementById("assetFilter").value = "";
+  document.getElementById("assigneeFilter").value = "";
+  currentPage = 1;
+  renderTasks();
+  showToast("Filters reset");
+}
+
+function exportTasks(){
+  const rows = [
+    ["Task ID","Vulnerability","Description","Asset","Priority","Status","Assignee","Due Date","Progress"],
+    ...getFilteredTasks().map(t => [t.id,t.vuln,t.desc,t.asset,t.priority,t.status,t.assignee,t.due,t.progress + "%"])
+  ];
+
+  const csv = rows.map(row => row.map(v => `"${String(v).replaceAll('"','""')}"`).join(",")).join("\n");
+  const blob = new Blob([csv], { type:"text/csv" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+
+  a.href = url;
+  a.download = "cyberbench-remediation.csv";
+  a.click();
+
+  URL.revokeObjectURL(url);
+  showToast("Remediation report exported");
+}
+
+function showToast(message){
+  const toast = document.createElement("div");
+  toast.className = "toast";
+  toast.innerText = message;
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 2500);
+}
+
+document.getElementById("topSearch").addEventListener("input", () => {
+  document.getElementById("taskSearch").value = document.getElementById("topSearch").value;
+  currentPage = 1;
+  renderTasks();
+});
+
+document.getElementById("taskSearch").addEventListener("input", () => {
+  currentPage = 1;
+  renderTasks();
+});
+
+["statusFilter","priorityFilter","assetFilter","assigneeFilter"].forEach(id => {
+  document.getElementById(id).addEventListener("change", () => {
+    currentPage = 1;
+    renderTasks();
+  });
+});
+
+window.onclick = function(event){
+  if(event.target === document.getElementById("taskModal")) closeTaskModal();
+  if(event.target === document.getElementById("detailsModal")) closeDetailsModal();
+};
+
+populateFilters();
+renderTasks();
 </script>
 </body>
 </html>
