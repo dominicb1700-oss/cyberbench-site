@@ -12,7 +12,7 @@
     .app { display: flex; min-height: 100vh; background: radial-gradient(circle at top right, rgba(0,123,255,.12), transparent 35%), #050d18; }
 
     .sidebar { width: 250px; background: #07111f; border-right: 1px solid #132235; padding: 22px 14px; position: fixed; inset: 0 auto 0 0; }
-    .brand { display: flex; align-items: center; gap: 8px; font-size: 26px; font-weight: 800; margin-bottom: 30px; white-space: nowrap; }
+    .brand { display: flex; align-items: center; gap: 8px; font-size: 26px; font-weight: 800; margin-bottom: 30px; white-space: nowrap; color:#fff; text-decoration:none; cursor:pointer; }
     .brand span { color: #1e9bff; }
 
     .nav a { display: flex; align-items: center; gap: 12px; color: #c0ccdc; text-decoration: none; padding: 13px 14px; border-radius: 9px; margin-bottom: 8px; font-size: 15px; }
@@ -21,7 +21,7 @@
 
     .sidebar-card { position: absolute; bottom: 22px; left: 14px; right: 14px; background: #0b1828; border: 1px solid #172b42; border-radius: 12px; padding: 15px; }
     .sidebar-card p { color: #9fafc4; font-size: 13px; margin: 5px 0 14px; }
-    .sidebar-card button { width: 100%; background: #111f31; border: 1px solid #1f334d; color: #fff; padding: 11px; border-radius: 8px; }
+    .sidebar-card button { width: 100%; background: #111f31; border: 1px solid #1f334d; color: #fff; padding: 11px; border-radius: 8px; cursor:pointer; }
 
     .main { margin-left: 250px; width: calc(100% - 250px); padding: 22px 28px; }
     .topbar { display: flex; justify-content: space-between; align-items: center; margin-bottom: 24px; }
@@ -77,6 +77,7 @@
       border-radius: 8px;
     }
     .filters input { flex: 1; }
+    .filters button, .pages button { cursor:pointer; }
 
     table { width: 100%; border-collapse: collapse; font-size: 14px; }
     th, td { padding: 15px 12px; border-bottom: 1px solid #17283c; text-align: left; color: #d3deec; vertical-align: middle; }
@@ -111,9 +112,101 @@
     .red-fill { background: #ff4055; }
 
     .activity { list-style: none; }
-    .activity li { display: flex; justify-content: space-between; gap: 12px; padding: 13px 0; color: #cfd9e6; font-size: 13px; }
+    .activity li { display: flex; justify-content: space-between; gap: 12px; padding: 13px 0; color: #cfd9e6; font-size: 13px; border-bottom: 1px solid #17283c; }
     .activity strong { display: block; margin-bottom: 4px; color: #fff; }
     .time { color: #8fa1b8; white-space: nowrap; }
+
+    .modal {
+      display:none;
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.72);
+      z-index:99999;
+      align-items:center;
+      justify-content:center;
+      backdrop-filter:blur(6px);
+    }
+
+    .modal-box {
+      width:560px;
+      max-height:85vh;
+      overflow:auto;
+      background:#091525;
+      border:1px solid #192b40;
+      border-radius:16px;
+      padding:24px;
+      box-shadow:0 20px 60px rgba(0,0,0,.45);
+    }
+
+    .modal-head {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:18px;
+    }
+
+    .modal-close {
+      background:none;
+      border:none;
+      color:white;
+      font-size:24px;
+      cursor:pointer;
+    }
+
+    .form-input, .form-select {
+      width:100%;
+      margin-bottom:12px;
+      padding:14px;
+      background:#081422;
+      border:1px solid #1b3048;
+      color:white;
+      border-radius:8px;
+      outline:none;
+    }
+
+    .details-grid {
+      display:grid;
+      gap:12px;
+    }
+
+    .detail-row {
+      display:grid;
+      grid-template-columns:150px 1fr;
+      gap:12px;
+      border-bottom:1px solid #17283c;
+      padding:10px 0;
+      color:#aeb9c8;
+    }
+
+    .detail-row strong { color:white; }
+
+    .modal-actions {
+      display:flex;
+      justify-content:flex-end;
+      gap:12px;
+      margin-top:18px;
+    }
+
+    .toast {
+      position:fixed;
+      bottom:25px;
+      right:25px;
+      background:#0f8cff;
+      color:white;
+      padding:16px 20px;
+      border-radius:12px;
+      font-weight:700;
+      z-index:999999;
+      box-shadow:0 15px 40px rgba(0,0,0,.35);
+    }
+
+    .action-btn {
+      background:none;
+      border:none;
+      color:white;
+      cursor:pointer;
+      font-size:18px;
+    }
 
     @media(max-width: 1300px) {
       .cards, .layout-grid { grid-template-columns: 1fr; }
@@ -126,13 +219,13 @@
 <body>
 <div class="app">
   <aside class="sidebar">
-    <div class="brand">🛡️ Cyber<span>Bench</span></div>
+    <a href="/dashboard" class="brand">🛡️ Cyber<span>Bench</span></a>
 
     <nav class="nav">
       <a href="/dashboard">🏠 Dashboard</a>
       <a href="/tickets">🎫 Tickets</a>
       <a href="/alerts">⚠️ Alerts <span class="badge">23</span></a>
-      <a href="/assets">💻 Assets</a>
+      <a class="active" href="/assets">💻 Assets</a>
       <a href="/remediation">🛠️ Remediation</a>
       <a href="/playbooks">📘 Playbooks</a>
     </nav>
@@ -140,13 +233,13 @@
     <div class="sidebar-card">
       <h4>Awesome SOC</h4>
       <p>Enterprise Plan</p>
-      <button>View Settings</button>
+      <a href="/settings"><button>View Settings</button></a>
     </div>
   </aside>
 
   <main class="main">
     <div class="topbar">
-      <input class="search-top" placeholder="Search assets, IP, hostnames, users..." />
+      <input class="search-top" id="topSearch" placeholder="Search assets, IP, hostnames, users..." />
       <div class="userbar">
         <span>🔔</span>
         <span>❔</span>
@@ -160,8 +253,8 @@
         <p>Discover, monitor, and manage all assets in your environment</p>
       </div>
       <div class="page-actions">
-        <button class="btn">Import Assets</button>
-        <button class="btn primary">＋ Add Asset</button>
+        <button class="btn" onclick="openImportModal()">Import Assets</button>
+        <button class="btn primary" onclick="openAddAssetModal()">＋ Add Asset</button>
       </div>
     </div>
 
@@ -171,48 +264,48 @@
           <div class="card">
             <div class="icon-box">🖥️</div>
             <h3>Total Assets</h3>
-            <div class="value">512</div>
+            <div class="value" id="totalAssets">512</div>
             <div class="sub">↑ 14% vs last 7 days</div>
           </div>
 
           <div class="card green">
             <div class="icon-box">●</div>
             <h3>Online Assets</h3>
-            <div class="value">392</div>
+            <div class="value" id="onlineAssets">392</div>
             <div class="sub">↑ 9% vs last 7 days</div>
           </div>
 
           <div class="card red">
             <div class="icon-box">🛡️</div>
             <h3>High Risk Assets</h3>
-            <div class="value">37</div>
+            <div class="value" id="highRiskAssets">37</div>
             <div class="sub" style="color:#ff6b6b;">↑ 6% vs last 7 days</div>
           </div>
 
           <div class="card orange">
             <div class="icon-box">⚠️</div>
             <h3>Critical Vulnerabilities</h3>
-            <div class="value">128</div>
+            <div class="value" id="criticalVulns">128</div>
             <div class="sub">↓ 8% vs last 7 days</div>
           </div>
 
           <div class="card purple">
             <div class="icon-box">🧩</div>
             <h3>Unmanaged Assets</h3>
-            <div class="value">24</div>
+            <div class="value" id="unmanagedAssets">24</div>
             <div class="sub">↓ 4% vs last 7 days</div>
           </div>
         </div>
 
         <div class="panel assets-panel">
           <div class="filters">
-            <input placeholder="Search assets..." />
-            <select><option>Status</option></select>
-            <select><option>Asset Type</option></select>
-            <select><option>OS</option></select>
-            <select><option>Risk Level</option></select>
-            <button>More Filters</button>
-            <button>Export</button>
+            <input id="tableSearch" placeholder="Search assets..." />
+            <select id="statusFilter"><option value="">Status</option></select>
+            <select id="typeFilter"><option value="">Asset Type</option></select>
+            <select id="osFilter"><option value="">OS</option></select>
+            <select id="riskFilter"><option value="">Risk Level</option></select>
+            <button onclick="resetFilters()">More Filters</button>
+            <button onclick="exportAssets()">Export</button>
           </div>
 
           <table>
@@ -230,142 +323,12 @@
               </tr>
             </thead>
 
-            <tbody>
-              <tr>
-                <td><span class="asset-name">🪟 WS-CA-1432</span><span class="small">Workstation</span></td>
-                <td>10.0.1.15</td>
-                <td>Workstation</td>
-                <td>Windows 11</td>
-                <td><span class="pill critical">Critical</span></td>
-                <td class="online">● Online</td>
-                <td>2m ago</td>
-                <td>Alex Johnson</td>
-                <td>•••</td>
-              </tr>
-
-              <tr>
-                <td><span class="asset-name">🗄️ DC-01</span><span class="small">Domain Controller</span></td>
-                <td>10.0.0.10</td>
-                <td>Server</td>
-                <td>Windows Server 2019</td>
-                <td><span class="pill high">High</span></td>
-                <td class="online">● Online</td>
-                <td>1m ago</td>
-                <td>Sarah Kim</td>
-                <td>•••</td>
-              </tr>
-
-              <tr>
-                <td><span class="asset-name">🗄️ FILE-SRV-02</span><span class="small">File Server</span></td>
-                <td>10.0.0.25</td>
-                <td>Server</td>
-                <td>Windows Server 2019</td>
-                <td><span class="pill high">High</span></td>
-                <td class="online">● Online</td>
-                <td>3m ago</td>
-                <td>David Chen</td>
-                <td>•••</td>
-              </tr>
-
-              <tr>
-                <td><span class="asset-name">🧱 FW-01</span><span class="small">Firewall</span></td>
-                <td>10.0.0.1</td>
-                <td>Network</td>
-                <td>FortiOS 7.2</td>
-                <td><span class="pill medium">Medium</span></td>
-                <td class="online">● Online</td>
-                <td>5m ago</td>
-                <td>Maria Garcia</td>
-                <td>•••</td>
-              </tr>
-
-              <tr>
-                <td><span class="asset-name">💻 LAPTOP-LA-09</span><span class="small">Laptop</span></td>
-                <td>10.0.2.45</td>
-                <td>Workstation</td>
-                <td>Windows 10</td>
-                <td><span class="pill low">Low</span></td>
-                <td class="online">● Online</td>
-                <td>8m ago</td>
-                <td>James Lee</td>
-                <td>•••</td>
-              </tr>
-
-              <tr>
-                <td><span class="asset-name">☁️ AWS-EC2-01</span><span class="small">Cloud Instance</span></td>
-                <td>52.15.23.10</td>
-                <td>Cloud</td>
-                <td>Ubuntu 22.04</td>
-                <td><span class="pill medium">Medium</span></td>
-                <td class="online">● Online</td>
-                <td>2m ago</td>
-                <td>Alex Johnson</td>
-                <td>•••</td>
-              </tr>
-
-              <tr>
-                <td><span class="asset-name">☁️ AWS-RDS-01</span><span class="small">Database</span></td>
-                <td>52.15.23.11</td>
-                <td>Database</td>
-                <td>PostgreSQL 14</td>
-                <td><span class="pill high">High</span></td>
-                <td class="online">● Online</td>
-                <td>2m ago</td>
-                <td>Sarah Kim</td>
-                <td>•••</td>
-              </tr>
-
-              <tr>
-                <td><span class="asset-name">🔌 SW-CORE-01</span><span class="small">Switch</span></td>
-                <td>10.0.0.2</td>
-                <td>Network</td>
-                <td>Cisco IOS 17</td>
-                <td><span class="pill low">Low</span></td>
-                <td class="offline">● Offline</td>
-                <td>15m ago</td>
-                <td>David Chen</td>
-                <td>•••</td>
-              </tr>
-
-              <tr>
-                <td><span class="asset-name">🗄️ APP-SRV-01</span><span class="small">Application Server</span></td>
-                <td>10.0.0.30</td>
-                <td>Server</td>
-                <td>Windows Server 2022</td>
-                <td><span class="pill high">High</span></td>
-                <td class="online">● Online</td>
-                <td>1m ago</td>
-                <td>Maria Garcia</td>
-                <td>•••</td>
-              </tr>
-
-              <tr>
-                <td><span class="asset-name">🪟 WS-NY-2045</span><span class="small">Workstation</span></td>
-                <td>10.0.3.17</td>
-                <td>Workstation</td>
-                <td>Windows 11</td>
-                <td><span class="pill medium">Medium</span></td>
-                <td class="online">● Online</td>
-                <td>4m ago</td>
-                <td>James Lee</td>
-                <td>•••</td>
-              </tr>
-            </tbody>
+            <tbody id="assetTable"></tbody>
           </table>
 
           <div class="pagination">
-            <span>Showing 1 to 10 of 512 assets</span>
-            <div class="pages">
-              <button>‹</button>
-              <button class="active-page">1</button>
-              <button>2</button>
-              <button>3</button>
-              <button>4</button>
-              <button>5</button>
-              <button>...</button>
-              <button>51</button>
-              <button>›</button>
-            </div>
+            <span id="paginationText">Showing 1 to 10 of 512 assets</span>
+            <div class="pages" id="paginationButtons"></div>
             <span>Rows per page: 10</span>
           </div>
         </div>
@@ -379,70 +342,267 @@
 
         <div class="panel">
           <h3>Operating Systems</h3>
-
-          <div class="os-row">
-            <span>🪟 Windows 11</span>
-            <div class="bar-bg"><div class="bar-fill blue" style="width:41%"></div></div>
-            <strong>41%</strong>
-          </div>
-
-          <div class="os-row">
-            <span>🪟 Server 2019</span>
-            <div class="bar-bg"><div class="bar-fill orange-fill" style="width:26%"></div></div>
-            <strong>26%</strong>
-          </div>
-
-          <div class="os-row">
-            <span>🪟 Windows 10</span>
-            <div class="bar-bg"><div class="bar-fill purple-fill" style="width:15%"></div></div>
-            <strong>15%</strong>
-          </div>
-
-          <div class="os-row">
-            <span>🐧 Ubuntu 22.04</span>
-            <div class="bar-bg"><div class="bar-fill green-fill" style="width:8%"></div></div>
-            <strong>8%</strong>
-          </div>
-
-          <div class="os-row">
-            <span>Other</span>
-            <div class="bar-bg"><div class="bar-fill red-fill" style="width:10%"></div></div>
-            <strong>10%</strong>
-          </div>
+          <div id="osBreakdown"></div>
         </div>
 
         <div class="panel">
           <h3>Recent Activity</h3>
-          <ul class="activity">
-            <li>
-              <div><strong>New asset discovered</strong><span class="small">AWS-EC2-01</span></div>
-              <span class="time">2m ago</span>
-            </li>
-            <li>
-              <div><strong>Asset went offline</strong><span class="small">SW-CORE-01</span></div>
-              <span class="time">15m ago</span>
-            </li>
-            <li>
-              <div><strong>Vulnerability detected</strong><span class="small">WS-CA-1432</span></div>
-              <span class="time">28m ago</span>
-            </li>
-          </ul>
+          <ul class="activity" id="activityList"></ul>
         </div>
       </aside>
     </div>
   </main>
 </div>
 
-<script>
-  Chart.defaults.color = "#9fafc4";
-  Chart.defaults.borderColor = "rgba(255,255,255,.08)";
+<div id="addAssetModal" class="modal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h2>Add Asset</h2>
+      <button class="modal-close" onclick="closeAddAssetModal()">✕</button>
+    </div>
 
-  new Chart(document.getElementById("assetTypeChart"), {
+    <input id="assetName" class="form-input" placeholder="Asset Name">
+    <input id="assetIP" class="form-input" placeholder="IP Address">
+
+    <select id="assetType" class="form-select">
+      <option>Workstation</option>
+      <option>Server</option>
+      <option>Network</option>
+      <option>Cloud</option>
+      <option>Database</option>
+    </select>
+
+    <input id="assetOS" class="form-input" placeholder="Operating System">
+
+    <select id="assetRisk" class="form-select">
+      <option>Critical</option>
+      <option>High</option>
+      <option selected>Medium</option>
+      <option>Low</option>
+    </select>
+
+    <select id="assetStatus" class="form-select">
+      <option selected>Online</option>
+      <option>Offline</option>
+    </select>
+
+    <input id="assetOwner" class="form-input" placeholder="Owner" value="Admin User">
+
+    <div class="modal-actions">
+      <button class="btn" onclick="closeAddAssetModal()">Cancel</button>
+      <button class="btn primary" onclick="addAsset()">Add Asset</button>
+    </div>
+  </div>
+</div>
+
+<div id="importModal" class="modal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h2>Import Assets</h2>
+      <button class="modal-close" onclick="closeImportModal()">✕</button>
+    </div>
+
+    <p style="color:#aeb9c8;line-height:1.6;margin-bottom:16px;">
+      Paste CSV rows in this format:
+      <br><strong style="color:white;">Name,IP,Type,OS,Risk,Status,Owner</strong>
+    </p>
+
+    <textarea id="importText" class="form-input" style="height:160px;" placeholder="EXAMPLE-SRV,10.0.0.99,Server,Windows Server 2022,High,Online,Admin User"></textarea>
+
+    <div class="modal-actions">
+      <button class="btn" onclick="closeImportModal()">Cancel</button>
+      <button class="btn primary" onclick="importAssets()">Import</button>
+    </div>
+  </div>
+</div>
+
+<div id="detailsModal" class="modal">
+  <div class="modal-box">
+    <div class="modal-head">
+      <h2>Asset Details</h2>
+      <button class="modal-close" onclick="closeDetailsModal()">✕</button>
+    </div>
+
+    <div class="details-grid" id="assetDetails"></div>
+
+    <div class="modal-actions">
+      <button class="btn" onclick="closeDetailsModal()">Close</button>
+      <button class="btn" onclick="toggleSelectedStatus()">Toggle Status</button>
+      <button class="btn primary" onclick="markSelectedHighRisk()">Mark High Risk</button>
+    </div>
+  </div>
+</div>
+
+<script>
+let assets = [
+  {id:1, icon:"🪟", name:"WS-CA-1432", subtitle:"Workstation", ip:"10.0.1.15", type:"Workstation", os:"Windows 11", risk:"Critical", status:"Online", lastSeen:"2m ago", owner:"Alex Johnson", managed:true, vulns:18},
+  {id:2, icon:"🗄️", name:"DC-01", subtitle:"Domain Controller", ip:"10.0.0.10", type:"Server", os:"Windows Server 2019", risk:"High", status:"Online", lastSeen:"1m ago", owner:"Sarah Kim", managed:true, vulns:12},
+  {id:3, icon:"🗄️", name:"FILE-SRV-02", subtitle:"File Server", ip:"10.0.0.25", type:"Server", os:"Windows Server 2019", risk:"High", status:"Online", lastSeen:"3m ago", owner:"David Chen", managed:true, vulns:9},
+  {id:4, icon:"🧱", name:"FW-01", subtitle:"Firewall", ip:"10.0.0.1", type:"Network", os:"FortiOS 7.2", risk:"Medium", status:"Online", lastSeen:"5m ago", owner:"Maria Garcia", managed:true, vulns:4},
+  {id:5, icon:"💻", name:"LAPTOP-LA-09", subtitle:"Laptop", ip:"10.0.2.45", type:"Workstation", os:"Windows 10", risk:"Low", status:"Online", lastSeen:"8m ago", owner:"James Lee", managed:true, vulns:1},
+  {id:6, icon:"☁️", name:"AWS-EC2-01", subtitle:"Cloud Instance", ip:"52.15.23.10", type:"Cloud", os:"Ubuntu 22.04", risk:"Medium", status:"Online", lastSeen:"2m ago", owner:"Alex Johnson", managed:true, vulns:5},
+  {id:7, icon:"☁️", name:"AWS-RDS-01", subtitle:"Database", ip:"52.15.23.11", type:"Database", os:"PostgreSQL 14", risk:"High", status:"Online", lastSeen:"2m ago", owner:"Sarah Kim", managed:true, vulns:8},
+  {id:8, icon:"🔌", name:"SW-CORE-01", subtitle:"Switch", ip:"10.0.0.2", type:"Network", os:"Cisco IOS 17", risk:"Low", status:"Offline", lastSeen:"15m ago", owner:"David Chen", managed:false, vulns:0},
+  {id:9, icon:"🗄️", name:"APP-SRV-01", subtitle:"Application Server", ip:"10.0.0.30", type:"Server", os:"Windows Server 2022", risk:"High", status:"Online", lastSeen:"1m ago", owner:"Maria Garcia", managed:true, vulns:11},
+  {id:10, icon:"🪟", name:"WS-NY-2045", subtitle:"Workstation", ip:"10.0.3.17", type:"Workstation", os:"Windows 11", risk:"Medium", status:"Online", lastSeen:"4m ago", owner:"James Lee", managed:true, vulns:3}
+];
+
+let currentPage = 1;
+const rowsPerPage = 10;
+let selectedAssetId = null;
+let assetTypeChart;
+
+function riskClass(risk){
+  return risk.toLowerCase();
+}
+
+function iconForType(type){
+  if(type === "Server") return "🗄️";
+  if(type === "Network") return "🔌";
+  if(type === "Cloud") return "☁️";
+  if(type === "Database") return "☁️";
+  return "🪟";
+}
+
+function populateFilters(){
+  fillSelect("statusFilter", "Status", assets.map(a => a.status));
+  fillSelect("typeFilter", "Asset Type", assets.map(a => a.type));
+  fillSelect("osFilter", "OS", assets.map(a => a.os));
+  fillSelect("riskFilter", "Risk Level", assets.map(a => a.risk));
+}
+
+function fillSelect(id, label, values){
+  const select = document.getElementById(id);
+  const current = select.value;
+  select.innerHTML = `<option value="">${label}</option>` +
+    [...new Set(values)].map(v => `<option value="${v}">${v}</option>`).join("");
+  select.value = current;
+}
+
+function getFilteredAssets(){
+  const search = (
+    document.getElementById("tableSearch").value ||
+    document.getElementById("topSearch").value
+  ).toLowerCase();
+
+  const status = document.getElementById("statusFilter").value;
+  const type = document.getElementById("typeFilter").value;
+  const os = document.getElementById("osFilter").value;
+  const risk = document.getElementById("riskFilter").value;
+
+  return assets.filter(a => {
+    const matchesSearch =
+      a.name.toLowerCase().includes(search) ||
+      a.ip.toLowerCase().includes(search) ||
+      a.type.toLowerCase().includes(search) ||
+      a.os.toLowerCase().includes(search) ||
+      a.risk.toLowerCase().includes(search) ||
+      a.status.toLowerCase().includes(search) ||
+      a.owner.toLowerCase().includes(search);
+
+    return matchesSearch &&
+      (!status || a.status === status) &&
+      (!type || a.type === type) &&
+      (!os || a.os === os) &&
+      (!risk || a.risk === risk);
+  });
+}
+
+function renderAssets(){
+  const filtered = getFilteredAssets();
+  const start = (currentPage - 1) * rowsPerPage;
+  const paged = filtered.slice(start, start + rowsPerPage);
+
+  document.getElementById("assetTable").innerHTML = paged.map(a => `
+    <tr>
+      <td><span class="asset-name">${a.icon} ${a.name}</span><span class="small">${a.subtitle}</span></td>
+      <td>${a.ip}</td>
+      <td>${a.type}</td>
+      <td>${a.os}</td>
+      <td><span class="pill ${riskClass(a.risk)}">${a.risk}</span></td>
+      <td class="${a.status === "Online" ? "online" : "offline"}">● ${a.status}</td>
+      <td>${a.lastSeen}</td>
+      <td>${a.owner}</td>
+      <td><button class="action-btn" onclick="openAssetDetails(${a.id})">•••</button></td>
+    </tr>
+  `).join("");
+
+  updateCards();
+  updatePagination(filtered.length);
+  updateActivity();
+  updateOsBreakdown();
+  updateCharts();
+}
+
+function updateCards(){
+  document.getElementById("totalAssets").innerText = assets.length;
+  document.getElementById("onlineAssets").innerText = assets.filter(a => a.status === "Online").length;
+  document.getElementById("highRiskAssets").innerText = assets.filter(a => a.risk === "Critical" || a.risk === "High").length;
+  document.getElementById("criticalVulns").innerText = assets.reduce((sum, a) => sum + a.vulns, 0);
+  document.getElementById("unmanagedAssets").innerText = assets.filter(a => !a.managed).length;
+}
+
+function updatePagination(total){
+  const totalPages = Math.max(1, Math.ceil(total / rowsPerPage));
+  let html = `<button onclick="changePage(${Math.max(1,currentPage-1)})">‹</button>`;
+
+  for(let i = 1; i <= totalPages; i++){
+    html += `<button class="${i === currentPage ? "active-page" : ""}" onclick="changePage(${i})">${i}</button>`;
+  }
+
+  html += `<button onclick="changePage(${Math.min(totalPages,currentPage+1)})">›</button>`;
+
+  document.getElementById("paginationButtons").innerHTML = html;
+  document.getElementById("paginationText").innerText =
+    `Showing ${total === 0 ? 0 : 1} to ${Math.min(rowsPerPage,total)} of ${total} assets`;
+}
+
+function changePage(page){
+  currentPage = page;
+  renderAssets();
+}
+
+function updateActivity(){
+  document.getElementById("activityList").innerHTML = `
+    <li><div><strong>New asset discovered</strong><span class="small">${assets[0]?.name || "No assets"}</span></div><span class="time">Just now</span></li>
+    <li><div><strong>Asset inventory updated</strong><span class="small">${assets.length} assets tracked</span></div><span class="time">2m ago</span></li>
+    <li><div><strong>High risk assets reviewed</strong><span class="small">${assets.filter(a => a.risk === "Critical" || a.risk === "High").length} assets</span></div><span class="time">15m ago</span></li>
+  `;
+}
+
+function updateOsBreakdown(){
+  const total = Math.max(assets.length, 1);
+  const osCounts = {};
+  assets.forEach(a => osCounts[a.os] = (osCounts[a.os] || 0) + 1);
+
+  const colors = ["blue", "orange-fill", "purple-fill", "green-fill", "red-fill"];
+
+  document.getElementById("osBreakdown").innerHTML = Object.entries(osCounts)
+    .slice(0,5)
+    .map(([os,count], index) => {
+      const pct = Math.round((count / total) * 100);
+      return `
+        <div class="os-row">
+          <span>${os.includes("Windows") ? "🪟" : os.includes("Ubuntu") ? "🐧" : "🧩"} ${os}</span>
+          <div class="bar-bg"><div class="bar-fill ${colors[index] || "blue"}" style="width:${pct}%"></div></div>
+          <strong>${pct}%</strong>
+        </div>
+      `;
+    }).join("");
+}
+
+function updateCharts(){
+  const typeLabels = [...new Set(assets.map(a => a.type))];
+  const typeData = typeLabels.map(t => assets.filter(a => a.type === t).length);
+
+  if(assetTypeChart) assetTypeChart.destroy();
+
+  assetTypeChart = new Chart(document.getElementById("assetTypeChart"), {
     type: "doughnut",
     data: {
-      labels: ["Workstation", "Server", "Network", "Cloud", "Database"],
+      labels: typeLabels,
       datasets: [{
-        data: [230, 160, 60, 40, 22],
+        data: typeData,
         backgroundColor: ["#1e9bff", "#ff8f1f", "#9b5cff", "#37d27f", "#ff4055"],
         borderWidth: 0
       }]
@@ -457,6 +617,220 @@
       }
     }
   });
+}
+
+function openAddAssetModal(){
+  document.getElementById("addAssetModal").style.display = "flex";
+}
+
+function closeAddAssetModal(){
+  document.getElementById("addAssetModal").style.display = "none";
+}
+
+function addAsset(){
+  const name = document.getElementById("assetName").value.trim();
+  const ip = document.getElementById("assetIP").value.trim();
+  const type = document.getElementById("assetType").value;
+  const os = document.getElementById("assetOS").value.trim();
+  const risk = document.getElementById("assetRisk").value;
+  const status = document.getElementById("assetStatus").value;
+  const owner = document.getElementById("assetOwner").value.trim() || "Admin User";
+
+  if(!name || !ip || !os){
+    alert("Please complete Asset Name, IP Address, and Operating System.");
+    return;
+  }
+
+  assets.unshift({
+    id: Date.now(),
+    icon: iconForType(type),
+    name,
+    subtitle: type,
+    ip,
+    type,
+    os,
+    risk,
+    status,
+    lastSeen: "Just now",
+    owner,
+    managed: true,
+    vulns: risk === "Critical" ? 10 : risk === "High" ? 6 : risk === "Medium" ? 3 : 1
+  });
+
+  closeAddAssetModal();
+
+  document.getElementById("assetName").value = "";
+  document.getElementById("assetIP").value = "";
+  document.getElementById("assetOS").value = "";
+
+  currentPage = 1;
+  populateFilters();
+  renderAssets();
+  showToast("Asset added successfully");
+}
+
+function openImportModal(){
+  document.getElementById("importModal").style.display = "flex";
+}
+
+function closeImportModal(){
+  document.getElementById("importModal").style.display = "none";
+}
+
+function importAssets(){
+  const text = document.getElementById("importText").value.trim();
+
+  if(!text){
+    alert("Paste at least one CSV row.");
+    return;
+  }
+
+  const rows = text.split("\n");
+
+  rows.forEach(row => {
+    const [name, ip, type, os, risk, status, owner] = row.split(",").map(v => (v || "").trim());
+
+    if(name && ip && type && os){
+      assets.unshift({
+        id: Date.now() + Math.random(),
+        icon: iconForType(type),
+        name,
+        subtitle: type,
+        ip,
+        type,
+        os,
+        risk: risk || "Medium",
+        status: status || "Online",
+        lastSeen: "Just now",
+        owner: owner || "Admin User",
+        managed: true,
+        vulns: 2
+      });
+    }
+  });
+
+  document.getElementById("importText").value = "";
+  closeImportModal();
+  currentPage = 1;
+  populateFilters();
+  renderAssets();
+  showToast("Assets imported");
+}
+
+function openAssetDetails(id){
+  selectedAssetId = id;
+  const a = assets.find(x => x.id === id);
+
+  document.getElementById("assetDetails").innerHTML = `
+    <div class="detail-row"><span>Asset Name</span><strong>${a.name}</strong></div>
+    <div class="detail-row"><span>IP Address</span><strong>${a.ip}</strong></div>
+    <div class="detail-row"><span>Type</span><strong>${a.type}</strong></div>
+    <div class="detail-row"><span>Operating System</span><strong>${a.os}</strong></div>
+    <div class="detail-row"><span>Risk Level</span><strong>${a.risk}</strong></div>
+    <div class="detail-row"><span>Status</span><strong>${a.status}</strong></div>
+    <div class="detail-row"><span>Last Seen</span><strong>${a.lastSeen}</strong></div>
+    <div class="detail-row"><span>Owner</span><strong>${a.owner}</strong></div>
+    <div class="detail-row"><span>Managed</span><strong>${a.managed ? "Yes" : "No"}</strong></div>
+    <div class="detail-row"><span>Vulnerabilities</span><strong>${a.vulns}</strong></div>
+  `;
+
+  document.getElementById("detailsModal").style.display = "flex";
+}
+
+function closeDetailsModal(){
+  document.getElementById("detailsModal").style.display = "none";
+}
+
+function toggleSelectedStatus(){
+  const a = assets.find(x => x.id === selectedAssetId);
+  if(!a) return;
+
+  a.status = a.status === "Online" ? "Offline" : "Online";
+  a.lastSeen = "Just now";
+
+  closeDetailsModal();
+  renderAssets();
+  showToast("Asset status updated");
+}
+
+function markSelectedHighRisk(){
+  const a = assets.find(x => x.id === selectedAssetId);
+  if(!a) return;
+
+  a.risk = "High";
+  closeDetailsModal();
+  renderAssets();
+  showToast("Asset marked high risk");
+}
+
+function exportAssets(){
+  const rows = [
+    ["Asset Name","IP Address","Type","OS","Risk","Status","Last Seen","Owner"],
+    ...getFilteredAssets().map(a => [a.name,a.ip,a.type,a.os,a.risk,a.status,a.lastSeen,a.owner])
+  ];
+
+  const csv = rows.map(row => row.map(v => `"${String(v).replaceAll('"','""')}"`).join(",")).join("\n");
+  const blob = new Blob([csv], { type:"text/csv" });
+  const url = URL.createObjectURL(blob);
+  const link = document.createElement("a");
+
+  link.href = url;
+  link.download = "cyberbench-assets.csv";
+  link.click();
+
+  URL.revokeObjectURL(url);
+  showToast("Assets exported");
+}
+
+function resetFilters(){
+  document.getElementById("topSearch").value = "";
+  document.getElementById("tableSearch").value = "";
+  document.getElementById("statusFilter").value = "";
+  document.getElementById("typeFilter").value = "";
+  document.getElementById("osFilter").value = "";
+  document.getElementById("riskFilter").value = "";
+  currentPage = 1;
+  renderAssets();
+  showToast("Filters reset");
+}
+
+function showToast(message){
+  const toast = document.createElement("div");
+  toast.className = "toast";
+  toast.innerText = message;
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 2500);
+}
+
+document.getElementById("topSearch").addEventListener("input", () => {
+  document.getElementById("tableSearch").value = document.getElementById("topSearch").value;
+  currentPage = 1;
+  renderAssets();
+});
+
+document.getElementById("tableSearch").addEventListener("input", () => {
+  currentPage = 1;
+  renderAssets();
+});
+
+["statusFilter","typeFilter","osFilter","riskFilter"].forEach(id => {
+  document.getElementById(id).addEventListener("change", () => {
+    currentPage = 1;
+    renderAssets();
+  });
+});
+
+window.onclick = function(event){
+  if(event.target.id === "addAssetModal") closeAddAssetModal();
+  if(event.target.id === "importModal") closeImportModal();
+  if(event.target.id === "detailsModal") closeDetailsModal();
+};
+
+Chart.defaults.color = "#9fafc4";
+Chart.defaults.borderColor = "rgba(255,255,255,.08)";
+
+populateFilters();
+renderAssets();
 </script>
 </body>
 </html>
