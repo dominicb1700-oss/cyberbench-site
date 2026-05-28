@@ -17,7 +17,7 @@ body{background:#050d18;color:#fff}
 .badge{margin-left:auto;background:#ff4055;padding:3px 8px;border-radius:999px;font-size:12px}
 .sidebar-card{position:absolute;bottom:22px;left:16px;right:16px;background:#0b1828;border:1px solid #172b42;border-radius:14px;padding:18px}
 .sidebar-card p{color:#9fafc4;margin:6px 0 16px}
-.sidebar-card button{width:100%;background:#111f31;border:1px solid #1f334d;color:white;padding:12px;border-radius:9px;font-weight:700}
+.sidebar-card button{width:100%;background:#111f31;border:1px solid #1f334d;color:white;padding:12px;border-radius:9px;font-weight:700;cursor:pointer}
 .main{margin-left:250px;width:calc(100% - 250px);padding:22px 28px}
 .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
 .search{width:560px;background:#0b1625;border:1px solid #1b2d42;color:white;padding:14px 18px;border-radius:12px;outline:none}
@@ -30,9 +30,12 @@ h1{font-size:34px;margin-bottom:8px}
 .muted{color:#aeb9c8;line-height:1.6}
 .badge-pill{display:inline-block;padding:7px 12px;border-radius:9px;background:#081a30;border:1px solid #1c4f91;color:#58a6ff;margin:12px 8px 0 0;font-size:13px}
 .orange{color:#ff9f33;border-color:rgba(255,143,31,.45);background:rgba(255,143,31,.12)}
+.green-pill{color:#37d27f;border-color:rgba(55,210,127,.45);background:rgba(55,210,127,.12)}
 .actions{display:flex;gap:14px;align-items:flex-start}
 .btn{background:#0b1625;border:1px solid #1b2d42;color:white;border-radius:10px;padding:14px 20px;font-weight:800;cursor:pointer;text-decoration:none}
+.btn:hover{filter:brightness(1.12)}
 .primary{background:linear-gradient(135deg,#0f8cff,#246bff);border:0}
+.success-btn{background:linear-gradient(135deg,#18b96f,#0c8f56);border:0}
 .danger{background:rgba(255,64,85,.12);border:1px solid rgba(255,64,85,.4);color:#ff596b}
 .grid{display:grid;grid-template-columns:1fr 380px;gap:24px}
 .panel{background:linear-gradient(180deg,#0d1a2b,#091525);border:1px solid #192b40;border-radius:14px;box-shadow:0 15px 40px rgba(0,0,0,.25)}
@@ -41,26 +44,41 @@ h1{font-size:34px;margin-bottom:8px}
 .tabs button.active{color:#1e9bff;border-bottom:2px solid #1e9bff}
 .section{padding:22px}
 .section h3{margin-bottom:12px}
-.steps-toolbar{display:flex;justify-content:space-between;align-items:center;margin:22px 0}
+.steps-toolbar{display:flex;justify-content:space-between;align-items:center;margin:22px 0;gap:12px}
 .step{display:grid;grid-template-columns:46px 58px 1fr 100px 80px 40px;gap:16px;align-items:center;padding:14px 0;border-bottom:1px solid #17283c}
+.step.expanded{background:#081422;border:1px solid #1b3048;border-radius:12px;padding:14px;margin-bottom:10px}
 .num{width:36px;height:36px;border-radius:50%;background:#1463ff;display:grid;place-items:center;font-weight:900}
 .step-icon{width:48px;height:48px;border-radius:12px;background:#0b203b;border:1px solid #1b4f91;display:grid;place-items:center;font-size:24px}
 .step-title{font-weight:800}
 .step-desc{color:#9fafc4;font-size:14px;margin-top:4px}
-.auto{padding:5px 10px;border-radius:8px;border:1px solid #1e70d8;color:#58a6ff;background:rgba(30,112,216,.12);font-size:12px}
-.manual{padding:5px 10px;border-radius:8px;border:1px solid #ff8f1f;color:#ff9f33;background:rgba(255,143,31,.12);font-size:12px}
+.step-detail{display:none;color:#aeb9c8;margin-top:10px;line-height:1.5;font-size:13px}
+.step.expanded .step-detail{display:block}
+.auto{padding:5px 10px;border-radius:8px;border:1px solid #1e70d8;color:#58a6ff;background:rgba(30,112,216,.12);font-size:12px;text-align:center}
+.manual{padding:5px 10px;border-radius:8px;border:1px solid #ff8f1f;color:#ff9f33;background:rgba(255,143,31,.12);font-size:12px;text-align:center}
 .time{color:#37d27f;font-weight:700}
 .outcome{margin-top:22px;display:flex;gap:16px;padding:18px;background:#081422;border:1px solid #1b3048;border-radius:12px}
-.check{width:28px;height:28px;border-radius:50%;background:#18b96f;display:grid;place-items:center}
+.check{width:28px;height:28px;border-radius:50%;background:#18b96f;display:grid;place-items:center;flex:0 0 auto}
 .side{display:flex;flex-direction:column;gap:18px}
 .side .panel{padding:22px}
-.side-row{display:flex;justify-content:space-between;padding:11px 0;color:#aeb9c8}
+.side-row{display:flex;justify-content:space-between;padding:11px 0;color:#aeb9c8;border-bottom:1px solid rgba(255,255,255,.04)}
 .side-row strong{color:white}
 .criteria li,.trigger li,.integrations li{list-style:none;padding:8px 0;color:#cfd9e6}
 .criteria li:before{content:"✓";color:#37d27f;margin-right:10px}
 .trigger li:before{content:"•";color:#8fa1b8;margin-right:10px}
-.toast{position:fixed;right:24px;bottom:24px;background:#0f8cff;color:white;padding:15px 20px;border-radius:12px;font-weight:800}
-@media(max-width:1200px){.sidebar{display:none}.main{margin-left:0;width:100%}.grid,.head{grid-template-columns:1fr;display:block}.actions{margin-top:18px}.step{grid-template-columns:40px 1fr}.step-icon,.auto,.manual,.time,.step button{display:none}}
+.toast{position:fixed;right:24px;bottom:24px;background:#0f8cff;color:white;padding:15px 20px;border-radius:12px;font-weight:800;z-index:99999;box-shadow:0 15px 40px rgba(0,0,0,.45)}
+.modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.72);z-index:9999;align-items:center;justify-content:center;backdrop-filter:blur(6px)}
+.modal-box{width:620px;max-width:92vw;max-height:86vh;overflow:auto;background:#091525;border:1px solid #192b40;border-radius:16px;padding:24px;box-shadow:0 25px 80px rgba(0,0,0,.55)}
+.modal-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.close{background:none;border:none;color:white;font-size:24px;cursor:pointer}
+.form-input,.form-select,.form-textarea{width:100%;background:#081422;border:1px solid #1b3048;color:white;border-radius:10px;padding:13px 14px;margin:8px 0 14px}
+.form-textarea{min-height:90px;resize:vertical}
+.execution-list{display:grid;gap:10px}
+.execution-item{display:grid;grid-template-columns:90px 1fr 120px;gap:12px;padding:12px;background:#081422;border:1px solid #1b3048;border-radius:10px;color:#d3deec}
+.attachment{display:flex;justify-content:space-between;align-items:center;padding:12px;background:#081422;border:1px solid #1b3048;border-radius:10px;margin-bottom:10px}
+.search-result{padding:12px;border:1px solid #1b3048;border-radius:10px;background:#081422;margin-top:12px}
+.progress-bar{height:10px;background:#17283c;border-radius:999px;overflow:hidden;margin:10px 0}
+.progress-fill{height:100%;width:0;background:linear-gradient(90deg,#0f8cff,#37d27f);border-radius:999px;transition:width .35s}
+@media(max-width:1200px){.sidebar{display:none}.main{margin-left:0;width:100%}.grid,.head{grid-template-columns:1fr;display:block}.actions{margin-top:18px;flex-wrap:wrap}.step{grid-template-columns:40px 1fr}.step-icon,.auto,.manual,.time,.step button{display:none}.search{width:100%}.topbar{display:block}.userbar{margin-top:14px}.title-wrap{display:block}.icon-large{margin-bottom:18px}}
 </style>
 </head>
 
@@ -87,7 +105,7 @@ h1{font-size:34px;margin-bottom:8px}
 
 <main class="main">
 <div class="topbar">
-<input class="search" placeholder="Search playbooks, tags, categories..." />
+<input id="globalSearch" class="search" placeholder="Search playbooks, tags, categories..." />
 <div class="userbar"><span>🔔</span><span>❔</span><strong>Admin User</strong></div>
 </div>
 
@@ -97,21 +115,21 @@ h1{font-size:34px;margin-bottom:8px}
 <div class="title-wrap">
 <div class="icon-large">✉️</div>
 <div>
-<h1>Phishing Incident Response <span class="badge-pill orange">Draft</span></h1>
-<p class="muted">Automated response for phishing attacks and suspicious email threats.</p>
-<span class="badge-pill">Category: Incident Response</span>
-<span class="badge-pill orange">Severity: Medium</span>
-<span class="badge-pill">Version: 1.3</span>
+<h1><span id="playbookName">Phishing Incident Response</span> <span id="statusBadge" class="badge-pill orange">Draft</span></h1>
+<p id="playbookDescription" class="muted">Automated response for phishing attacks and suspicious email threats.</p>
+<span class="badge-pill">Category: <span id="categoryValue">Incident Response</span></span>
+<span class="badge-pill orange">Severity: <span id="severityValue">Medium</span></span>
+<span class="badge-pill">Version: <span id="versionValue">1.3</span></span>
 <span class="badge-pill">Created: May 10, 2025</span>
-<span class="badge-pill">Updated: May 18, 2025</span>
+<span class="badge-pill">Updated: <span id="updatedValue">May 18, 2025</span></span>
 </div>
 </div>
 
 <div class="actions">
 <button class="btn primary" onclick="executePlaybook()">▶ Execute Playbook</button>
-<button class="btn" onclick="showToast('Edit mode opened')">✎ Edit</button>
-<button class="btn" onclick="showToast('Playbook duplicated')">⧉ Duplicate</button>
-<button class="btn danger" onclick="showToast('Delete confirmation opened')">🗑 Delete</button>
+<button class="btn" onclick="openEditModal()">✎ Edit</button>
+<button class="btn" onclick="duplicatePlaybook()">⧉ Duplicate</button>
+<button class="btn danger" onclick="deletePlaybook()">🗑 Delete</button>
 </div>
 </div>
 
@@ -132,8 +150,8 @@ h1{font-size:34px;margin-bottom:8px}
 <aside class="side">
 <div class="panel">
 <h3>Playbook Details</h3>
-<div class="side-row"><span>Owner</span><strong>Alex Johnson</strong></div>
-<div class="side-row"><span>Status</span><strong>Draft</strong></div>
+<div class="side-row"><span>Owner</span><strong id="ownerValue">Alex Johnson</strong></div>
+<div class="side-row"><span>Status</span><strong id="sideStatus">Draft</strong></div>
 <div class="side-row"><span>Executions</span><strong id="execCount">-</strong></div>
 <div class="side-row"><span>Avg. Success Rate</span><strong id="successRate">-</strong></div>
 <div class="side-row"><span>Last Executed</span><strong id="lastExec">Never</strong></div>
@@ -141,7 +159,7 @@ h1{font-size:34px;margin-bottom:8px}
 
 <div class="panel">
 <h3>Success Criteria</h3>
-<ul class="criteria">
+<ul class="criteria" id="criteriaList">
 <li>Malicious email is quarantined</li>
 <li>Sender is blocked if malicious</li>
 <li>User is notified</li>
@@ -175,16 +193,79 @@ h1{font-size:34px;margin-bottom:8px}
 </main>
 </div>
 
+<div id="editModal" class="modal">
+<div class="modal-box">
+<div class="modal-head">
+<h2>Edit Playbook</h2>
+<button class="close" onclick="closeEditModal()">✕</button>
+</div>
+<label>Name</label>
+<input id="editName" class="form-input">
+<label>Description</label>
+<textarea id="editDescription" class="form-textarea"></textarea>
+<label>Status</label>
+<select id="editStatus" class="form-select">
+<option>Draft</option>
+<option>Published</option>
+</select>
+<label>Severity</label>
+<select id="editSeverity" class="form-select">
+<option>Low</option>
+<option selected>Medium</option>
+<option>High</option>
+<option>Critical</option>
+</select>
+<label>Owner</label>
+<input id="editOwner" class="form-input">
+<div style="display:flex;justify-content:flex-end;gap:12px">
+<button class="btn" onclick="closeEditModal()">Cancel</button>
+<button class="btn primary" onclick="saveEdit()">Save Changes</button>
+</div>
+</div>
+</div>
+
+<div id="executeModal" class="modal">
+<div class="modal-box">
+<div class="modal-head">
+<h2>Executing Playbook</h2>
+<button class="close" onclick="closeExecuteModal()">✕</button>
+</div>
+<p class="muted">CyberBench is executing the phishing response workflow and creating a tracked SOC record.</p>
+<div class="progress-bar"><div id="executionProgress" class="progress-fill"></div></div>
+<div id="executionSteps" style="margin-top:16px"></div>
+</div>
+</div>
+
 <script>
-let executions = 0;
+let playbook = {
+  name:"Phishing Incident Response",
+  description:"Automated response for phishing attacks and suspicious email threats.",
+  category:"Incident Response",
+  severity:"Medium",
+  version:"1.3",
+  status:"Draft",
+  owner:"Alex Johnson",
+  executions:0,
+  successRate:"-",
+  lastExecuted:"Never",
+  deleted:false
+};
+
+let executionHistory = [];
+let activityLog = [
+  "May 18, 2025 — Playbook updated by Alex Johnson.",
+  "May 17, 2025 — Step order reviewed.",
+  "May 15, 2025 — Microsoft 365 Defender integration validated."
+];
+let attachments = [];
 
 const steps = [
-  ["✉️","Collect reported email headers","Extract full email headers and attachments from the reported phishing email.","Automated","~ 30 sec"],
-  ["🛡️","Check sender reputation","Check the sender’s domain, IP address, and URL reputation against threat intelligence.","Automated","~ 45 sec"],
-  ["🔎","Search similar messages across tenant","Search for similar phishing emails in mailboxes across the organization.","Automated","~ 2 min"],
-  ["📥","Quarantine malicious emails","Quarantine identified malicious emails and block sender if necessary.","Automated","~ 1 min"],
-  ["🎫","Create ticket and notify customer","Create an incident ticket and notify the customer with details and recommendations.","Manual","~ 2 min"],
-  ["📄","Document indicators of compromise","Document IOCs, findings, and actions taken in the incident report.","Manual","~ 3 min"]
+  ["✉️","Collect reported email headers","Extract full email headers and attachments from the reported phishing email.","Automated","~ 30 sec","This pulls headers, sender, recipient, subject, attachments, and message IDs for evidence."],
+  ["🛡️","Check sender reputation","Check the sender’s domain, IP address, and URL reputation against threat intelligence.","Automated","~ 45 sec","Uses integrated threat intelligence sources to classify sender/domain reputation."],
+  ["🔎","Search similar messages across tenant","Search for similar phishing emails in mailboxes across the organization.","Automated","~ 2 min","Scopes blast radius across mailboxes using sender, subject, URL, and attachment hash."],
+  ["📥","Quarantine malicious emails","Quarantine identified malicious emails and block sender if necessary.","Automated","~ 1 min","Moves malicious messages to quarantine and prepares sender/domain block recommendations."],
+  ["🎫","Create ticket and notify customer","Create an incident ticket and notify the customer with details and recommendations.","Manual","~ 2 min","Creates a CyberBench ticket with findings, owner, customer impact, and recommended next steps."],
+  ["📄","Document indicators of compromise","Document IOCs, findings, and actions taken in the incident report.","Manual","~ 3 min","Stores IOCs, actions, timestamps, and analyst notes for reporting and lessons learned."]
 ];
 
 function renderOverview(){
@@ -195,24 +276,14 @@ document.getElementById("content").innerHTML = `
 <div class="steps-toolbar">
 <h3>Playbook Steps</h3>
 <div>
-<button class="btn" onclick="showToast('Expanded all steps')">Expand All</button>
-<button class="btn" onclick="showToast('Collapsed all steps')">Collapse All</button>
+<button class="btn" onclick="expandAllSteps()">Expand All</button>
+<button class="btn" onclick="collapseAllSteps()">Collapse All</button>
 </div>
 </div>
 
-${steps.map((s,i)=>`
-<div class="step">
-<div class="num">${i+1}</div>
-<div class="step-icon">${s[0]}</div>
-<div>
-<div class="step-title">${s[1]}</div>
-<div class="step-desc">${s[2]}</div>
+<div id="stepsList">
+${steps.map((s,i)=>stepHtml(s,i)).join("")}
 </div>
-<span class="${s[3]==='Automated'?'auto':'manual'}">${s[3]}</span>
-<span class="time">${s[4]}</span>
-<button class="btn" onclick="showToast('Step details opened')">⌄</button>
-</div>
-`).join("")}
 
 <div class="outcome">
 <div class="check">✓</div>
@@ -224,6 +295,37 @@ ${steps.map((s,i)=>`
 `;
 }
 
+function stepHtml(s,i){
+return `
+<div class="step" id="step-${i}">
+<div class="num">${i+1}</div>
+<div class="step-icon">${s[0]}</div>
+<div>
+<div class="step-title">${s[1]}</div>
+<div class="step-desc">${s[2]}</div>
+<div class="step-detail">${s[5]}</div>
+</div>
+<span class="${s[3]==='Automated'?'auto':'manual'}">${s[3]}</span>
+<span class="time">${s[4]}</span>
+<button class="btn" onclick="toggleStep(${i})">⌄</button>
+</div>
+`;
+}
+
+function toggleStep(i){
+document.getElementById(`step-${i}`).classList.toggle("expanded");
+}
+
+function expandAllSteps(){
+steps.forEach((_,i)=>document.getElementById(`step-${i}`)?.classList.add("expanded"));
+showToast("All steps expanded");
+}
+
+function collapseAllSteps(){
+steps.forEach((_,i)=>document.getElementById(`step-${i}`)?.classList.remove("expanded"));
+showToast("All steps collapsed");
+}
+
 function switchTab(btn, tab){
 document.querySelectorAll(".tabs button").forEach(b=>b.classList.remove("active"));
 btn.classList.add("active");
@@ -231,29 +333,158 @@ btn.classList.add("active");
 if(tab==="overview" || tab==="steps"){renderOverview();return;}
 
 if(tab==="executions"){
-document.getElementById("content").innerHTML=`<h3>Executions</h3><p class="muted">No previous executions yet. Execute this playbook to start tracking history.</p>`;
+document.getElementById("content").innerHTML=`
+<h3>Executions</h3>
+${executionHistory.length ? `<div class="execution-list">${executionHistory.map(e=>`
+<div class="execution-item"><strong>${e.id}</strong><span>${e.result}</span><span>${e.time}</span></div>`).join("")}</div>` : `<p class="muted">No previous executions yet. Execute this playbook to start tracking history.</p>`}
+`;
 }
 
 if(tab==="alerts"){
-document.getElementById("content").innerHTML=`<h3>Associated Alerts</h3><p class="muted">Phishing Detected, Suspicious Email Reported, Malicious Link Clicked.</p>`;
+document.getElementById("content").innerHTML=`
+<h3>Associated Alerts</h3>
+<div class="execution-list">
+<div class="execution-item"><strong>ALERT-001</strong><span>Phishing Detected</span><span>New</span></div>
+<div class="execution-item"><strong>ALERT-002</strong><span>Suspicious Email Reported</span><span>Open</span></div>
+<div class="execution-item"><strong>ALERT-003</strong><span>Malicious Link Clicked</span><span>In Progress</span></div>
+</div>
+`;
 }
 
 if(tab==="activity"){
-document.getElementById("content").innerHTML=`<h3>Activity Log</h3><p class="muted">May 18, 2025 — Playbook updated by Alex Johnson.</p>`;
+document.getElementById("content").innerHTML=`
+<h3>Activity Log</h3>
+<div class="execution-list">${activityLog.map(a=>`<div class="search-result">${a}</div>`).join("")}</div>
+`;
 }
 
 if(tab==="attachments"){
-document.getElementById("content").innerHTML=`<h3>Attachments</h3><p class="muted">No attachments uploaded.</p><button class="btn primary" onclick="showToast('Upload coming soon')">Upload Attachment</button>`;
+document.getElementById("content").innerHTML=`
+<h3>Attachments</h3>
+<p class="muted" style="margin-bottom:14px">Upload supporting documentation, customer evidence, screenshots, or runbook notes.</p>
+<input type="file" id="fileInput" style="display:none" onchange="uploadAttachment(event)">
+<button class="btn primary" onclick="document.getElementById('fileInput').click()">Upload Attachment</button>
+<div style="margin-top:16px">
+${attachments.length ? attachments.map((a,i)=>`<div class="attachment"><span>📎 ${a}</span><button class="btn danger" onclick="removeAttachment(${i})">Remove</button></div>`).join("") : `<p class="muted">No attachments uploaded.</p>`}
+</div>
+`;
 }
 }
 
 function executePlaybook(){
-executions++;
-document.getElementById("execCount").innerText = executions;
-document.getElementById("successRate").innerText = "100%";
-document.getElementById("lastExec").innerText = "Just now";
-showToast("Playbook executed — ticket created and customer notification queued");
+document.getElementById("executeModal").style.display="flex";
+const list = document.getElementById("executionSteps");
+const bar = document.getElementById("executionProgress");
+list.innerHTML="";
+bar.style.width="0%";
+
+let i=0;
+const timer=setInterval(()=>{
+if(i<steps.length){
+list.insertAdjacentHTML("beforeend",`<div class="search-result">✅ ${steps[i][1]}</div>`);
+bar.style.width = Math.round(((i+1)/steps.length)*100)+"%";
+i++;
+}else{
+clearInterval(timer);
+playbook.executions++;
+playbook.successRate="100%";
+playbook.lastExecuted="Just now";
+const execId = "EXEC-" + String(Date.now()).slice(-6);
+executionHistory.unshift({id:execId,result:"Completed successfully — ticket created and customer notification queued",time:"Just now"});
+activityLog.unshift(`Just now — ${execId} completed successfully.`);
+updateDetails();
+showToast("Playbook executed successfully");
 }
+},450);
+}
+
+function closeExecuteModal(){
+document.getElementById("executeModal").style.display="none";
+}
+
+function openEditModal(){
+document.getElementById("editName").value=playbook.name;
+document.getElementById("editDescription").value=playbook.description;
+document.getElementById("editStatus").value=playbook.status;
+document.getElementById("editSeverity").value=playbook.severity;
+document.getElementById("editOwner").value=playbook.owner;
+document.getElementById("editModal").style.display="flex";
+}
+
+function closeEditModal(){
+document.getElementById("editModal").style.display="none";
+}
+
+function saveEdit(){
+playbook.name=document.getElementById("editName").value.trim() || playbook.name;
+playbook.description=document.getElementById("editDescription").value.trim() || playbook.description;
+playbook.status=document.getElementById("editStatus").value;
+playbook.severity=document.getElementById("editSeverity").value;
+playbook.owner=document.getElementById("editOwner").value.trim() || playbook.owner;
+playbook.version=(parseFloat(playbook.version)+0.1).toFixed(1);
+activityLog.unshift(`Just now — Playbook updated by Admin User.`);
+updateDetails();
+closeEditModal();
+showToast("Playbook updated");
+}
+
+function duplicatePlaybook(){
+activityLog.unshift("Just now — Playbook duplicated as draft.");
+showToast("Duplicate created as draft");
+}
+
+function deletePlaybook(){
+if(confirm("Delete this playbook?")){
+playbook.deleted=true;
+showToast("Playbook deleted");
+setTimeout(()=>location.href="/playbooks",900);
+}
+}
+
+function uploadAttachment(e){
+const file=e.target.files[0];
+if(!file)return;
+attachments.push(file.name);
+activityLog.unshift(`Just now — Attachment uploaded: ${file.name}`);
+showToast("Attachment uploaded");
+document.querySelector(".tabs button:nth-child(6)").click();
+}
+
+function removeAttachment(i){
+const removed=attachments.splice(i,1)[0];
+activityLog.unshift(`Just now — Attachment removed: ${removed}`);
+showToast("Attachment removed");
+document.querySelector(".tabs button:nth-child(6)").click();
+}
+
+function updateDetails(){
+document.getElementById("playbookName").innerText=playbook.name;
+document.getElementById("playbookDescription").innerText=playbook.description;
+document.getElementById("categoryValue").innerText=playbook.category;
+document.getElementById("severityValue").innerText=playbook.severity;
+document.getElementById("versionValue").innerText=playbook.version;
+document.getElementById("ownerValue").innerText=playbook.owner;
+document.getElementById("sideStatus").innerText=playbook.status;
+document.getElementById("execCount").innerText=playbook.executions || "-";
+document.getElementById("successRate").innerText=playbook.successRate;
+document.getElementById("lastExec").innerText=playbook.lastExecuted;
+document.getElementById("updatedValue").innerText="Today";
+
+const badge=document.getElementById("statusBadge");
+badge.innerText=playbook.status;
+badge.className=playbook.status==="Published" ? "badge-pill green-pill" : "badge-pill orange";
+}
+
+document.getElementById("globalSearch").addEventListener("input",e=>{
+const q=e.target.value.toLowerCase();
+if(!q){renderOverview();return;}
+const matches = steps.filter(s=>s.join(" ").toLowerCase().includes(q));
+document.getElementById("content").innerHTML = `
+<h3>Search Results</h3>
+<p class="muted">${matches.length} result(s) found for "${q}"</p>
+${matches.map((s,i)=>`<div class="search-result"><strong>${s[1]}</strong><p class="muted">${s[2]}</p></div>`).join("") || `<p class="muted">No results found.</p>`}
+`;
+});
 
 function showToast(msg){
 const t=document.createElement("div");
@@ -263,6 +494,12 @@ document.body.appendChild(t);
 setTimeout(()=>t.remove(),2600);
 }
 
+window.onclick=e=>{
+if(e.target.id==="editModal")closeEditModal();
+if(e.target.id==="executeModal")closeExecuteModal();
+}
+
+updateDetails();
 renderOverview();
 </script>
 </body>
