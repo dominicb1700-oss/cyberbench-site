@@ -125,6 +125,121 @@
     .bar-green { background: #37d27f; }
     .bar-cyan { background: #33c7ff; }
 
+
+    .brand { color:white; text-decoration:none; cursor:pointer; }
+
+    .action-btn {
+      background:none;
+      border:none;
+      color:white;
+      cursor:pointer;
+      font-size:18px;
+      padding:6px 10px;
+      border-radius:8px;
+    }
+
+    .action-btn:hover {
+      background:#11243a;
+    }
+
+    .modal {
+      display:none;
+      position:fixed;
+      inset:0;
+      background:rgba(0,0,0,.72);
+      z-index:99999;
+      align-items:center;
+      justify-content:center;
+      backdrop-filter:blur(6px);
+    }
+
+    .modal-content {
+      width:620px;
+      max-width:92%;
+      background:#091525;
+      border:1px solid #192b40;
+      border-radius:16px;
+      padding:24px;
+      box-shadow:0 20px 60px rgba(0,0,0,.45);
+    }
+
+    .modal-header {
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      margin-bottom:18px;
+    }
+
+    .modal-header h2 {
+      font-size:24px;
+    }
+
+    .modal-close {
+      background:none;
+      border:none;
+      color:white;
+      font-size:24px;
+      cursor:pointer;
+    }
+
+    .modal-grid {
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:14px;
+    }
+
+    .modal-grid input,
+    .modal-grid select,
+    .modal-grid textarea {
+      width:100%;
+      background:#081422;
+      border:1px solid #1b3048;
+      color:white;
+      border-radius:8px;
+      padding:13px;
+      outline:none;
+    }
+
+    .modal-grid textarea {
+      grid-column:1/-1;
+      min-height:110px;
+      resize:none;
+    }
+
+    .modal-row {
+      display:grid;
+      grid-template-columns:150px 1fr;
+      gap:12px;
+      border-bottom:1px solid #17283c;
+      padding:10px 0;
+      color:#aeb9c8;
+    }
+
+    .modal-row strong {
+      color:white;
+    }
+
+    .modal-actions {
+      margin-top:20px;
+      display:flex;
+      gap:12px;
+      justify-content:flex-end;
+      flex-wrap:wrap;
+    }
+
+    .toast {
+      position:fixed;
+      right:24px;
+      bottom:24px;
+      background:#0f8cff;
+      color:white;
+      padding:14px 18px;
+      border-radius:10px;
+      font-weight:700;
+      z-index:999999;
+      box-shadow:0 15px 40px rgba(0,0,0,.35);
+    }
+
     @media(max-width: 1300px) {
       .cards, .layout-grid { grid-template-columns: 1fr; }
       .sidebar { display: none; }
@@ -396,37 +511,420 @@
   </main>
 </div>
 
-<script>
-  Chart.defaults.color = "#9fafc4";
-  Chart.defaults.borderColor = "rgba(255,255,255,.08)";
 
-  new Chart(document.getElementById("categoryChart"), {
+<div id="playbookModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2 id="modalTitle">Playbook Details</h2>
+      <button class="modal-close" onclick="closePlaybookModal()">✕</button>
+    </div>
+    <div id="modalBody"></div>
+    <div class="modal-actions" id="modalActions"></div>
+  </div>
+</div>
+
+<div id="createModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h2>Create Playbook</h2>
+      <button class="modal-close" onclick="closeCreateModal()">✕</button>
+    </div>
+
+    <div class="modal-grid">
+      <input id="newName" placeholder="Playbook name">
+      <select id="newCategory">
+        <option>Incident Response</option>
+        <option>Malware</option>
+        <option>Account Mgmt</option>
+        <option>Threat Detection</option>
+        <option>Cloud Security</option>
+        <option>Email Security</option>
+        <option>Data Security</option>
+      </select>
+      <select id="newStatus">
+        <option>Published</option>
+        <option selected>Draft</option>
+      </select>
+      <input id="newOwner" placeholder="Owner" value="Admin User">
+      <textarea id="newDescription" placeholder="Short description"></textarea>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn" onclick="closeCreateModal()">Cancel</button>
+      <button class="btn primary" onclick="createPlaybook()">Create Playbook</button>
+    </div>
+  </div>
+</div>
+
+
+<script>
+let playbooks = [
+  { icon:"🚨", name:"Phishing Incident Response", description:"Automated response for phishing attacks", category:"Incident Response", status:"Published", executions:24, success:"96%", modified:"May 18, 2025", age:"2 days ago", owner:"Alex Johnson" },
+  { icon:"🔒", name:"Malware Containment", description:"Contain and remediate malware infections", category:"Malware", status:"Published", executions:31, success:"93%", modified:"May 17, 2025", age:"3 days ago", owner:"Sarah Kim" },
+  { icon:"👥", name:"User Account Lockout", description:"Handle user account lockout events", category:"Account Mgmt", status:"Published", executions:18, success:"100%", modified:"May 16, 2025", age:"4 days ago", owner:"David Chen" },
+  { icon:"🧱", name:"Brute Force Detection", description:"Detect and respond to brute force attempts", category:"Threat Detection", status:"Published", executions:27, success:"92%", modified:"May 15, 2025", age:"5 days ago", owner:"Maria Garcia" },
+  { icon:"☁️", name:"Cloud Misconfiguration Fix", description:"Identify and fix cloud misconfigurations", category:"Cloud Security", status:"Draft", executions:null, success:null, modified:"May 14, 2025", age:"6 days ago", owner:"James Lee" },
+  { icon:"📧", name:"Email Threat Triage", description:"Triage and classify email threats", category:"Email Security", status:"Published", executions:22, success:"95%", modified:"May 13, 2025", age:"7 days ago", owner:"Alex Johnson" },
+  { icon:"🗄️", name:"Data Exfiltration Response", description:"Respond to potential data exfiltration", category:"Data Security", status:"Draft", executions:null, success:null, modified:"May 12, 2025", age:"8 days ago", owner:"Sarah Kim" },
+  { icon:"🛡️", name:"Ransomware Recovery", description:"Recovery workflow for ransomware incidents", category:"Incident Response", status:"Published", executions:9, success:"89%", modified:"May 11, 2025", age:"9 days ago", owner:"David Chen" }
+];
+
+let currentPage = 1;
+const rowsPerPage = 8;
+let selectedPlaybook = null;
+let categoryChartLive = null;
+let executionsChartLive = null;
+
+const topSearch = document.querySelector(".search-top");
+const tableSearch = document.querySelector(".filters input");
+const selects = document.querySelectorAll(".filters select");
+const statusFilter = selects[0];
+const categoryFilter = selects[1];
+const tagsFilter = selects[2];
+const ownerFilter = selects[3];
+const tbody = document.querySelector("tbody");
+
+document.querySelector(".brand").onclick = () => window.location.href = "/dashboard";
+document.querySelector(".sidebar-card button").onclick = () => window.location.href = "/settings";
+
+document.querySelectorAll(".page-actions .btn").forEach(btn => {
+  if (btn.innerText.includes("Import")) btn.onclick = importPlaybook;
+  if (btn.innerText.includes("Create")) btn.onclick = openCreateModal;
+});
+
+function categoryClass(category) {
+  if (category === "Incident Response") return "incident";
+  if (category === "Malware") return "malware";
+  if (category === "Account Mgmt") return "account";
+  if (category === "Threat Detection") return "threat";
+  if (category === "Cloud Security") return "cloud";
+  if (category === "Email Security") return "email";
+  if (category === "Data Security") return "data";
+  return "incident";
+}
+
+function statusClass(status) {
+  return status === "Published" ? "published" : "draft";
+}
+
+function populateFilters() {
+  statusFilter.innerHTML = `<option value="">Status</option>` + [...new Set(playbooks.map(p => p.status))].map(v => `<option value="${v}">${v}</option>`).join("");
+  categoryFilter.innerHTML = `<option value="">Category</option>` + [...new Set(playbooks.map(p => p.category))].map(v => `<option value="${v}">${v}</option>`).join("");
+  tagsFilter.innerHTML = `<option value="">Tags</option><option value="incident">Incident</option><option value="automation">Automation</option><option value="response">Response</option><option value="triage">Triage</option>`;
+  ownerFilter.innerHTML = `<option value="">Owner</option>` + [...new Set(playbooks.map(p => p.owner))].map(v => `<option value="${v}">${v}</option>`).join("");
+}
+
+function getFilteredPlaybooks() {
+  const q = (tableSearch.value || topSearch.value || "").toLowerCase();
+
+  return playbooks.filter(p => {
+    const matchesSearch =
+      p.name.toLowerCase().includes(q) ||
+      p.description.toLowerCase().includes(q) ||
+      p.category.toLowerCase().includes(q) ||
+      p.status.toLowerCase().includes(q) ||
+      p.owner.toLowerCase().includes(q);
+
+    return matchesSearch &&
+      (!statusFilter.value || p.status === statusFilter.value) &&
+      (!categoryFilter.value || p.category === categoryFilter.value) &&
+      (!ownerFilter.value || p.owner === ownerFilter.value);
+  });
+}
+
+function renderPlaybooks() {
+  const filtered = getFilteredPlaybooks();
+  const start = (currentPage - 1) * rowsPerPage;
+  const paged = filtered.slice(start, start + rowsPerPage);
+
+  tbody.innerHTML = paged.map((p, index) => {
+    const globalIndex = playbooks.indexOf(p);
+    return `
+      <tr>
+        <td><span class="playbook-icon">${p.icon}</span><span class="playbook-title">${p.name}</span><span class="small">${p.description}</span></td>
+        <td><span class="pill ${categoryClass(p.category)}">${p.category}</span></td>
+        <td><span class="pill ${statusClass(p.status)}">${p.status}</span></td>
+        <td><strong>${p.executions ?? "-"}</strong></td>
+        <td class="${p.success ? "success" : ""}">${p.success ?? "-"}</td>
+        <td><strong>${p.modified}</strong><span class="small">${p.age}</span></td>
+        <td>${p.owner}</td>
+        <td><button class="action-btn" onclick="openPlaybookModal(${globalIndex})">•••</button></td>
+      </tr>
+    `;
+  }).join("");
+
+  updatePagination(filtered.length);
+  updateCards();
+  updateTopExecuted();
+  updateCharts();
+}
+
+function updatePagination(total) {
+  const totalPages = Math.max(1, Math.ceil(total / rowsPerPage));
+  const pages = document.querySelector(".pages");
+
+  let html = `<button onclick="changePage(${Math.max(1, currentPage - 1)})">‹</button>`;
+
+  for (let i = 1; i <= totalPages; i++) {
+    html += `<button class="${i === currentPage ? "active-page" : ""}" onclick="changePage(${i})">${i}</button>`;
+  }
+
+  html += `<button onclick="changePage(${Math.min(totalPages, currentPage + 1)})">›</button>`;
+  pages.innerHTML = html;
+
+  document.querySelector(".pagination span").innerText =
+    `Showing ${total === 0 ? 0 : 1} to ${Math.min(rowsPerPage, total)} of ${total} playbooks`;
+}
+
+function changePage(page) {
+  currentPage = page;
+  renderPlaybooks();
+}
+
+function updateCards() {
+  const total = playbooks.length;
+  const published = playbooks.filter(p => p.status === "Published").length;
+  const drafts = playbooks.filter(p => p.status === "Draft").length;
+  const executions = playbooks.reduce((sum, p) => sum + (p.executions || 0), 0);
+  const successVals = playbooks.filter(p => p.success).map(p => parseInt(p.success));
+  const avgSuccess = successVals.length ? Math.round(successVals.reduce((a,b) => a + b, 0) / successVals.length) : 0;
+
+  document.querySelector(".cards .card:nth-child(1) .value").innerText = total;
+  document.querySelector(".cards .card:nth-child(2) .value").innerText = published;
+  document.querySelector(".cards .card:nth-child(3) .value").innerText = drafts;
+  document.querySelector(".cards .card:nth-child(4) .value").innerText = executions;
+  document.querySelector(".cards .card:nth-child(5) .value").innerText = avgSuccess + "%";
+}
+
+function updateTopExecuted() {
+  const panel = [...document.querySelectorAll(".panel")].find(p => p.querySelector("h3")?.innerText === "Top Executed Playbooks");
+  if (!panel) return;
+
+  const top = [...playbooks]
+    .filter(p => p.executions)
+    .sort((a,b) => b.executions - a.executions)
+    .slice(0,5);
+
+  const max = top[0]?.executions || 1;
+  const colors = ["bar-blue","bar-orange","bar-purple","bar-green","bar-cyan"];
+
+  panel.innerHTML = `<h3>Top Executed Playbooks</h3>` + top.map((p,i) => `
+    <div class="top-row">
+      <span>${p.name}</span>
+      <div class="bar-bg"><div class="bar-fill ${colors[i] || "bar-blue"}" style="width:${Math.round((p.executions / max) * 100)}%"></div></div>
+      <strong>${p.executions}</strong>
+    </div>
+  `).join("");
+}
+
+function openPlaybookModal(index) {
+  selectedPlaybook = index;
+  const p = playbooks[index];
+
+  document.getElementById("modalTitle").innerText = p.name;
+
+  document.getElementById("modalBody").innerHTML = `
+    <div class="modal-row"><span>Description</span><strong>${p.description}</strong></div>
+    <div class="modal-row"><span>Category</span><strong>${p.category}</strong></div>
+    <div class="modal-row"><span>Status</span><strong>${p.status}</strong></div>
+    <div class="modal-row"><span>Executions</span><strong>${p.executions ?? "-"}</strong></div>
+    <div class="modal-row"><span>Success Rate</span><strong>${p.success ?? "-"}</strong></div>
+    <div class="modal-row"><span>Owner</span><strong>${p.owner}</strong></div>
+    <div class="modal-row"><span>Last Modified</span><strong>${p.modified}</strong></div>
+  `;
+
+  document.getElementById("modalActions").innerHTML = `
+    <button class="btn" onclick="closePlaybookModal()">Close</button>
+    <button class="btn primary" onclick="runPlaybook()">Run</button>
+    <button class="btn" onclick="togglePublish()">Publish/Draft</button>
+    <button class="btn" onclick="clonePlaybook()">Clone</button>
+    <button class="btn" onclick="deletePlaybook()">Delete</button>
+  `;
+
+  document.getElementById("playbookModal").style.display = "flex";
+}
+
+function closePlaybookModal() {
+  document.getElementById("playbookModal").style.display = "none";
+}
+
+function openCreateModal() {
+  document.getElementById("createModal").style.display = "flex";
+}
+
+function closeCreateModal() {
+  document.getElementById("createModal").style.display = "none";
+}
+
+function createPlaybook() {
+  const name = document.getElementById("newName").value.trim();
+  const category = document.getElementById("newCategory").value;
+  const status = document.getElementById("newStatus").value;
+  const owner = document.getElementById("newOwner").value.trim() || "Admin User";
+  const description = document.getElementById("newDescription").value.trim();
+
+  if (!name || !description) {
+    alert("Please enter a playbook name and description.");
+    return;
+  }
+
+  playbooks.unshift({
+    icon:"📘",
+    name,
+    description,
+    category,
+    status,
+    executions: status === "Published" ? 0 : null,
+    success: status === "Published" ? "0%" : null,
+    modified: new Date().toLocaleDateString("en-US", { month:"short", day:"numeric", year:"numeric" }),
+    age:"Just now",
+    owner
+  });
+
+  document.getElementById("newName").value = "";
+  document.getElementById("newDescription").value = "";
+
+  closeCreateModal();
+  populateFilters();
+  currentPage = 1;
+  renderPlaybooks();
+  showToast("Playbook created");
+}
+
+function runPlaybook() {
+  const p = playbooks[selectedPlaybook];
+  if (!p) return;
+
+  if (p.status !== "Published") {
+    showToast("Draft playbooks must be published before execution");
+    return;
+  }
+
+  p.executions = (p.executions || 0) + 1;
+  p.success = p.success || "100%";
+  p.modified = new Date().toLocaleDateString("en-US", { month:"short", day:"numeric", year:"numeric" });
+  p.age = "Just now";
+
+  closePlaybookModal();
+  renderPlaybooks();
+  showToast("Playbook executed");
+}
+
+function togglePublish() {
+  const p = playbooks[selectedPlaybook];
+  if (!p) return;
+
+  if (p.status === "Published") {
+    p.status = "Draft";
+    p.executions = null;
+    p.success = null;
+  } else {
+    p.status = "Published";
+    p.executions = 0;
+    p.success = "0%";
+  }
+
+  closePlaybookModal();
+  populateFilters();
+  renderPlaybooks();
+  showToast("Playbook status updated");
+}
+
+function clonePlaybook() {
+  const p = playbooks[selectedPlaybook];
+  if (!p) return;
+
+  playbooks.unshift({
+    ...p,
+    name: p.name + " Copy",
+    status:"Draft",
+    executions:null,
+    success:null,
+    modified:new Date().toLocaleDateString("en-US", { month:"short", day:"numeric", year:"numeric" }),
+    age:"Just now"
+  });
+
+  closePlaybookModal();
+  populateFilters();
+  renderPlaybooks();
+  showToast("Playbook cloned");
+}
+
+function deletePlaybook() {
+  if (selectedPlaybook === null) return;
+  if (!confirm("Delete this playbook?")) return;
+
+  playbooks.splice(selectedPlaybook, 1);
+  selectedPlaybook = null;
+  closePlaybookModal();
+  populateFilters();
+  renderPlaybooks();
+  showToast("Playbook deleted");
+}
+
+function importPlaybook() {
+  const name = prompt("Enter imported playbook name:");
+  if (!name) return;
+
+  playbooks.unshift({
+    icon:"⬆️",
+    name,
+    description:"Imported playbook workflow",
+    category:"Incident Response",
+    status:"Draft",
+    executions:null,
+    success:null,
+    modified:new Date().toLocaleDateString("en-US", { month:"short", day:"numeric", year:"numeric" }),
+    age:"Just now",
+    owner:"Admin User"
+  });
+
+  populateFilters();
+  renderPlaybooks();
+  showToast("Playbook imported");
+}
+
+function resetFilters() {
+  topSearch.value = "";
+  tableSearch.value = "";
+  statusFilter.value = "";
+  categoryFilter.value = "";
+  tagsFilter.value = "";
+  ownerFilter.value = "";
+  currentPage = 1;
+  renderPlaybooks();
+  showToast("Filters reset");
+}
+
+function updateCharts() {
+  const categories = ["Incident Response", "Malware", "Threat Detection", "Account Mgmt", "Cloud Security", "Other"];
+  const counts = categories.map(cat => cat === "Other" ? playbooks.filter(p => !categories.slice(0,5).includes(p.category)).length : playbooks.filter(p => p.category === cat).length);
+
+  if (categoryChartLive) categoryChartLive.destroy();
+  if (executionsChartLive) executionsChartLive.destroy();
+
+  categoryChartLive = new Chart(document.getElementById("categoryChart"), {
     type: "doughnut",
     data: {
-      labels: ["Incident Response", "Malware", "Threat Detection", "Account Mgmt", "Cloud Security", "Other"],
+      labels: categories,
       datasets: [{
-        data: [14, 8, 6, 5, 5, 4],
+        data: counts,
         backgroundColor: ["#1e9bff", "#ff8f1f", "#9b5cff", "#37d27f", "#33c7ff", "#ff4055"],
         borderWidth: 0
       }]
     },
     options: {
       cutout: "65%",
-      plugins: {
-        legend: {
-          position: "right",
-          labels: { usePointStyle: true, boxWidth: 10 }
-        }
-      }
+      plugins: { legend: { position: "right", labels: { usePointStyle: true, boxWidth: 10 }}}
     }
   });
 
-  new Chart(document.getElementById("executionsChart"), {
+  executionsChartLive = new Chart(document.getElementById("executionsChart"), {
     type: "line",
     data: {
       labels: ["May 12", "May 13", "May 14", "May 15", "May 16", "May 17", "May 18"],
       datasets: [{
-        data: [72, 94, 103, 126, 139, 153, 174],
+        data: [72, 94, 103, 126, 139, 153, playbooks.reduce((sum,p) => sum + (p.executions || 0), 0)],
         borderColor: "#37d27f",
         backgroundColor: "rgba(55,210,127,.22)",
         fill: true,
@@ -437,12 +935,49 @@
     },
     options: {
       plugins: { legend: { display: false } },
-      scales: {
-        y: { beginAtZero: true, max: 200 },
-        x: { grid: { display: false } }
-      }
+      scales: { y: { beginAtZero: true, max: 250 }, x: { grid: { display: false }}}
     }
   });
+}
+
+function showToast(message) {
+  const toast = document.createElement("div");
+  toast.className = "toast";
+  toast.innerText = message;
+  document.body.appendChild(toast);
+  setTimeout(() => toast.remove(), 2500);
+}
+
+document.querySelectorAll(".filters button").forEach(btn => {
+  if (btn.innerText.includes("More Filters")) btn.onclick = resetFilters;
+});
+
+topSearch.addEventListener("input", () => {
+  tableSearch.value = topSearch.value;
+  currentPage = 1;
+  renderPlaybooks();
+});
+
+tableSearch.addEventListener("input", () => {
+  currentPage = 1;
+  renderPlaybooks();
+});
+
+[statusFilter, categoryFilter, tagsFilter, ownerFilter].forEach(filter => {
+  filter.addEventListener("change", () => {
+    currentPage = 1;
+    renderPlaybooks();
+  });
+});
+
+window.onclick = function(event) {
+  if (event.target === document.getElementById("playbookModal")) closePlaybookModal();
+  if (event.target === document.getElementById("createModal")) closeCreateModal();
+};
+
+populateFilters();
+renderPlaybooks();
 </script>
+
 </body>
 </html>
