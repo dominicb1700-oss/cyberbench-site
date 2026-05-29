@@ -4,13 +4,12 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>CyberBench Ticket Detail</title>
-
 <style>
 *{box-sizing:border-box;margin:0;padding:0;font-family:Inter,Arial,sans-serif}
 body{background:#050d18;color:#fff}
 .app{display:flex;min-height:100vh;background:radial-gradient(circle at top right,rgba(0,123,255,.14),transparent 35%),#050d18}
 .sidebar{width:250px;background:#07111f;border-right:1px solid #132235;padding:22px 16px;position:fixed;top:0;bottom:0;left:0}
-.brand{display:flex;gap:10px;align-items:center;font-size:26px;font-weight:900;color:white;text-decoration:none;margin-bottom:35px}
+.brand{display:flex;gap:10px;align-items:center;font-size:24px;font-weight:900;color:white;text-decoration:none;margin-bottom:35px}
 .brand span{color:#1e9bff}
 .nav a{display:flex;align-items:center;gap:12px;color:#c0ccdc;text-decoration:none;padding:14px;border-radius:10px;margin-bottom:8px}
 .nav a.active{background:linear-gradient(135deg,#0f8cff,#246bff);color:white}
@@ -18,53 +17,63 @@ body{background:#050d18;color:#fff}
 .sidebar-card{position:absolute;bottom:22px;left:16px;right:16px;background:#0b1828;border:1px solid #172b42;border-radius:14px;padding:18px}
 .sidebar-card p{color:#9fafc4;margin:6px 0 16px}
 .sidebar-card button{width:100%;background:#111f31;border:1px solid #1f334d;color:white;padding:12px;border-radius:9px;font-weight:700}
+
 .main{margin-left:250px;width:calc(100% - 250px);padding:22px 28px}
 .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px}
 .search{width:560px;background:#0b1625;border:1px solid #1b2d42;color:white;padding:14px 18px;border-radius:12px;outline:none}
 .userbar{display:flex;gap:18px;align-items:center}
-.back{display:inline-flex;color:#58a6ff;text-decoration:none;background:#081422;border:1px solid #1b3048;padding:12px 16px;border-radius:10px;margin-bottom:22px;font-weight:700}
-.header{display:flex;justify-content:space-between;gap:20px;margin-bottom:24px}
-h1{font-size:32px;margin:10px 0}
-.meta{display:flex;gap:24px;color:#c9d5e6;flex-wrap:wrap}
-.pill{display:inline-block;padding:7px 12px;border-radius:9px;font-size:13px;margin-right:8px}
+.avatar{width:42px;height:42px;border-radius:50%;background:#5c3db8;display:grid;place-items:center;font-weight:900;border:1px solid #8364e8}
+.back{display:inline-flex;color:#58a6ff;text-decoration:none;margin-bottom:18px;font-weight:700}
+
+.header{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:22px}
+h1{font-size:28px;margin:10px 0}
+.meta{display:flex;gap:24px;color:#c9d5e6;flex-wrap:wrap;font-size:14px}
+.pill{display:inline-block;padding:6px 11px;border-radius:8px;font-size:12px;margin-right:8px}
 .critical{background:rgba(255,64,85,.15);color:#ff596b;border:1px solid rgba(255,64,85,.4)}
 .progress{background:rgba(15,140,255,.15);color:#58a6ff;border:1px solid rgba(15,140,255,.4)}
-.btn{background:#0b1625;border:1px solid #1b2d42;color:white;border-radius:10px;padding:13px 18px;font-weight:800;cursor:pointer;text-decoration:none}
+.btn{background:#0b1625;border:1px solid #1b2d42;color:white;border-radius:10px;padding:12px 18px;font-weight:800;cursor:pointer;text-decoration:none}
 .primary{background:linear-gradient(135deg,#0f8cff,#246bff);border:0}
 .success{background:linear-gradient(135deg,#18b96f,#0c8f56);border:0}
-.grid{display:grid;grid-template-columns:1fr 420px;gap:24px}
+
+.grid{display:grid;grid-template-columns:minmax(0,1fr) 410px;gap:24px}
 .panel{background:linear-gradient(180deg,#0d1a2b,#091525);border:1px solid #192b40;border-radius:14px;box-shadow:0 15px 40px rgba(0,0,0,.25)}
-.tabs{display:flex;gap:24px;border-bottom:1px solid #17283c;padding:0 20px}
+.tabs{display:flex;gap:28px;border-bottom:1px solid #17283c;padding:0 20px}
 .tabs button{background:none;border:none;color:#aeb9c8;padding:18px 0;font-size:15px;cursor:pointer}
 .tabs button.active{color:#1e9bff;border-bottom:2px solid #1e9bff}
 .section{padding:22px}
-.detail-grid{display:grid;grid-template-columns:280px 1fr;gap:20px}
-.info-list div{padding:11px 0;color:#aeb9c8}
+.detail-grid{display:grid;grid-template-columns:260px 1fr;gap:22px}
+.info-list{border-right:1px solid #17283c;padding-right:20px}
+.info-list div{padding:10px 0;color:#aeb9c8}
 .info-list strong{display:block;color:#fff;margin-top:5px}
 .desc{line-height:1.65;color:#d8e2ef;margin-bottom:18px}
-.evidence{margin-top:20px}
-.file{display:flex;justify-content:space-between;align-items:center;background:#081422;border:1px solid #1b3048;border-radius:10px;padding:13px;margin-bottom:10px}
 .data-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:18px 0}
 .data-card{background:#081422;border:1px solid #1b3048;border-radius:12px;padding:15px}
 .data-card span{display:block;color:#8fa1b8;font-size:12px;margin-bottom:8px}
-.side{display:flex;flex-direction:column;gap:18px}
-.side .panel{padding:20px}
-.sla h3,.analysis h3,.resolution h3{margin-bottom:16px}
-.big-red{font-size:26px;color:#ff596b;font-weight:900}
-.progress-bar{height:12px;background:#17283c;border-radius:999px;overflow:hidden;margin-top:14px}
-.progress-fill{height:100%;width:65%;background:linear-gradient(90deg,#ff4055,#ff596b);border-radius:999px}
-.score{font-size:38px;color:#ff596b;font-weight:900;margin:12px 0}
-.recs li{list-style:none;padding:7px 0;color:#d3deec}
-.recs li:before{content:"⊙";color:#ff596b;margin-right:8px}
-.resolution select,.resolution textarea,.resolution input{width:100%;background:#081422;border:1px solid #1b3048;color:white;border-radius:9px;padding:12px;margin:8px 0 14px}
-.resolution textarea{height:90px;resize:none}
+.file{display:flex;justify-content:space-between;align-items:center;background:#081422;border:1px solid #1b3048;border-radius:10px;padding:13px;margin-bottom:10px}
+
 .timeline{margin-top:18px}
 .timeline-item{display:grid;grid-template-columns:24px 1fr 70px;gap:14px;margin-bottom:18px}
 .dot{width:14px;height:14px;background:#0f8cff;border-radius:50%;margin-top:5px}
 .green-dot{background:#18b96f}
 .timeline-item p{color:#9fafc4;margin-top:5px}
-.toast{position:fixed;right:24px;bottom:24px;background:#0f8cff;color:white;padding:15px 20px;border-radius:12px;font-weight:800}
-@media(max-width:1200px){.sidebar{display:none}.main{margin-left:0;width:100%}.grid,.detail-grid{grid-template-columns:1fr}.data-grid{grid-template-columns:1fr 1fr}}
+
+.side{display:flex;flex-direction:column;gap:18px}
+.side .panel{padding:20px}
+.big-red{font-size:26px;color:#ff596b;font-weight:900}
+.progress-bar{height:12px;background:#17283c;border-radius:999px;overflow:hidden;margin-top:14px}
+.progress-fill{height:100%;width:65%;background:linear-gradient(90deg,#ff4055,#ff596b);border-radius:999px}
+.score-grid{display:grid;grid-template-columns:1fr 110px;gap:16px;margin-bottom:18px}
+.score-box{background:#081422;border:1px solid #1b3048;border-radius:12px;padding:16px}
+.score{font-size:38px;color:#ff596b;font-weight:900;margin:8px 0}
+.confidence{width:92px;height:92px;border-radius:50%;background:conic-gradient(#9b5cff 92%,#17283c 0);display:grid;place-items:center;font-weight:900;margin:auto}
+.confidence span{background:#091525;border-radius:50%;width:62px;height:62px;display:grid;place-items:center}
+.recs li{list-style:none;padding:7px 0;color:#d3deec}
+.recs li:before{content:"⊙";color:#ff596b;margin-right:8px}
+.resolution select,.resolution textarea,.resolution input{width:100%;background:#081422;border:1px solid #1b3048;color:white;border-radius:9px;padding:12px;margin:8px 0 14px}
+.resolution textarea{height:90px;resize:none}
+.timer-row{display:grid;grid-template-columns:70px 70px 1fr;gap:10px}
+.toast{position:fixed;right:24px;bottom:24px;background:#0f8cff;color:white;padding:15px 20px;border-radius:12px;font-weight:800;z-index:999}
+@media(max-width:1200px){.sidebar{display:none}.main{margin-left:0;width:100%}.grid,.detail-grid,.data-grid,.score-grid{grid-template-columns:1fr}.info-list{border-right:0}}
 </style>
 </head>
 
@@ -80,8 +89,11 @@ h1{font-size:32px;margin:10px 0}
 <a href="/playbooks">📘 Playbooks</a>
 <a href="/remediation">🛠️ Remediation</a>
 <a href="/reports">📊 Reports</a>
+<a href="/locations">📍 Locations</a>
+<a href="/integrations">🔗 Integrations</a>
 <a href="/settings">⚙️ Settings</a>
 </nav>
+
 <div class="sidebar-card">
 <h4>Acme Manufacturing</h4>
 <p>Enterprise Plan</p>
@@ -92,32 +104,28 @@ h1{font-size:32px;margin:10px 0}
 <main class="main">
 <div class="topbar">
 <input class="search" placeholder="Search tickets, assets, alerts, customers...">
-<div class="userbar"><span>🔔</span><span>❔</span><strong>Admin User</strong></div>
+<div class="userbar"><span>🔔</span><span>❔</span><div class="avatar">AJ</div></div>
 </div>
 
 <a class="back" href="/tickets">← Back to Tickets</a>
 
 <div class="header">
 <div>
-<div>
-<span class="pill critical" id="priorityPill">Critical</span>
+<span class="pill critical">Critical</span>
 <span class="pill progress" id="statusPill">In Progress</span>
-</div>
-<h1 id="ticketTitle">Possible RDP Brute Force Attack Detected</h1>
+<h1>Possible RDP Brute Force Attack Detected</h1>
 <div class="meta">
 <span>🏢 Acme Manufacturing</span>
 <span>📍 Miami Office</span>
 <span>💻 Windows Server 2019</span>
 </div>
 </div>
-
-<div>
 <button class="btn" onclick="showToast('Actions menu opened')">Actions⌄</button>
-</div>
 </div>
 
 <div class="grid">
-<section class="panel">
+<section>
+<div class="panel">
 <div class="tabs">
 <button class="active" onclick="switchTab(this,'overview')">Overview</button>
 <button onclick="switchTab(this,'analysis')">Analysis</button>
@@ -125,12 +133,12 @@ h1{font-size:32px;margin:10px 0}
 <button onclick="switchTab(this,'comments')">Comments</button>
 <button onclick="switchTab(this,'related')">Related</button>
 </div>
-
 <div id="content" class="section"></div>
+</div>
 </section>
 
 <aside class="side">
-<div class="panel sla">
+<div class="panel">
 <h3>SLA Status</h3>
 <div class="big-red" id="slaText">2h 15m left</div>
 <p style="color:#aeb9c8;margin-top:8px;">Due: May 18, 2025 3:00 PM</p>
@@ -138,13 +146,25 @@ h1{font-size:32px;margin:10px 0}
 <p style="text-align:right;color:#aeb9c8;margin-top:8px;">65%</p>
 </div>
 
-<div class="panel analysis">
+<div class="panel">
 <h3>Analysis <span class="pill progress" style="float:right">AI</span></h3>
-<div>Severity Score</div>
+<div class="score-grid">
+<div class="score-box">
+<span style="color:#aeb9c8">Severity Score</span>
 <div class="score">9.2 <span style="font-size:14px;color:#ff596b;">Critical</span></div>
-<p style="color:#d8e2ef;line-height:1.6;margin-bottom:14px;">
+<div class="progress-bar"><div class="progress-fill" style="width:92%"></div></div>
+</div>
+<div class="score-box">
+<span style="color:#aeb9c8">Confidence</span>
+<div class="confidence"><span>92%</span></div>
+</div>
+</div>
+
+<h4>AI Analysis Summary</h4>
+<p style="color:#d8e2ef;line-height:1.6;margin:10px 0 14px;">
 This appears to be a brute force attack targeting RDP on Windows Server 2019. Recommend immediate IP blocking and account lockout review.
 </p>
+
 <h4>Recommendations</h4>
 <ul class="recs">
 <li>Block IP address 185.220.101.23</li>
@@ -169,10 +189,13 @@ This appears to be a brute force attack targeting RDP on Windows Server 2019. Re
 <textarea id="resolutionNotes">Investigating source IP and reviewing firewall logs. Implementing IP block and account lockout policy.</textarea>
 
 <label>Worklog</label>
-<input id="worklog" value="01:30 hrs">
+<div class="timer-row">
+<input value="01">
+<input value="30">
+<button class="btn" onclick="startTimer()">▷ Start Timer</button>
+</div>
 
-<button class="btn primary" style="width:100%;margin-bottom:10px;" onclick="startTimer()">▷ Start Timer</button>
-<button class="btn success" style="width:100%;" onclick="markComplete()">✓ Mark as Complete</button>
+<button class="btn success" style="width:100%;margin-top:12px;" onclick="markComplete()">✓ Mark as Complete</button>
 </div>
 </aside>
 </div>
@@ -187,7 +210,7 @@ document.getElementById("content").innerHTML=`
 <h3>Ticket Details</h3>
 <div>Priority<strong>Critical</strong></div>
 <div>Status<strong id="detailStatus">In Progress</strong></div>
-<div>Assigned To<strong>Alex Johnson</strong></div>
+<div>Assigned To<strong>🟣 Alex Johnson</strong></div>
 <div>Reporter<strong>Wazuh SIEM</strong></div>
 <div>Created<strong>May 18, 2025 8:45 AM</strong></div>
 <div>Updated<strong id="updatedTime">May 18, 2025 10:45 AM</strong></div>
@@ -203,36 +226,33 @@ This may indicate a brute force attack attempting to gain unauthorized access.
 </p>
 
 <div class="data-grid">
-<div class="data-card"><span>Source IP</span><strong>185.220.101.23</strong><p class="muted">Germany</p></div>
-<div class="data-card"><span>Target IP</span><strong>10.20.30.45</strong><p class="muted">Miami Office</p></div>
-<div class="data-card"><span>Attempts</span><strong>142</strong><p class="muted">Failed Logins</p></div>
-<div class="data-card"><span>First Seen</span><strong>May 18, 2025</strong><p class="muted">8:32 AM</p></div>
+<div class="data-card"><span>Source IP</span><strong>185.220.101.23</strong><p style="color:#aeb9c8;margin-top:5px;">🇩🇪 Germany</p></div>
+<div class="data-card"><span>Target IP</span><strong>10.20.30.45</strong><p style="color:#aeb9c8;margin-top:5px;">Miami Office</p></div>
+<div class="data-card"><span>Attempts</span><strong>142</strong><p style="color:#aeb9c8;margin-top:5px;">Failed Logins</p></div>
+<div class="data-card"><span>First Seen</span><strong>May 18, 2025</strong><p style="color:#aeb9c8;margin-top:5px;">8:32 AM</p></div>
 </div>
 
-<div class="evidence">
 <h3>Evidence</h3>
 <div class="file"><span>📄 wazuh-alert.json</span><span>2.4 KB ⬇</span></div>
 <div class="file"><span>📄 failed_logins.log</span><span>5.8 KB ⬇</span></div>
 <div class="file"><span>📄 geoip_lookup.txt</span><span>1.2 KB ⬇</span></div>
 </div>
 </div>
-</div>
 
-<div class="timeline">
+<div class="panel timeline" style="padding:22px;margin-top:18px;">
 <h3>Timeline</h3>
 ${[
-["red","Brute force attack detected","Multiple failed RDP logins detected from 185.220.101.23","8:32 AM"],
-["orange","Alert triggered","Wazuh rule 60204 triggered","8:33 AM"],
-["blue","Ticket created","Automatically created by Wazuh integration","8:45 AM"],
-["green","Assigned to Alex Johnson","Ticket assigned for investigation","8:46 AM"]
-].map(i=>`
+["Brute force attack detected","Multiple failed RDP logins detected from 185.220.101.23","8:32 AM"],
+["Alert triggered","Wazuh rule 60204 triggered","8:33 AM"],
+["Ticket created","Automatically created by Wazuh integration","8:45 AM"],
+["Assigned to Alex Johnson","Ticket assigned for investigation","8:46 AM"]
+].map((i,idx)=>`
 <div class="timeline-item">
-<div class="dot ${i[0]==='green'?'green-dot':''}"></div>
-<div><strong>${i[1]}</strong><p>${i[2]}</p></div>
-<span style="color:#aeb9c8">${i[3]}</span>
+<div class="dot ${idx===3?'green-dot':''}"></div>
+<div><strong>${i[0]}</strong><p>${i[1]}</p></div>
+<span style="color:#aeb9c8">${i[2]}</span>
 </div>`).join("")}
-</div>
-`;
+</div>`;
 }
 
 function switchTab(btn,tab){
@@ -260,30 +280,22 @@ if(tab==="activity"){
 document.getElementById("content").innerHTML=`<h3>Activity Log</h3><div class="file">Ticket created by Wazuh integration</div><div class="file">Assigned to Alex Johnson</div><div class="file">Analyst added investigation notes</div>`;
 }
 if(tab==="comments"){
-document.getElementById("content").innerHTML=`<h3>Comments</h3><textarea id="commentBox" style="width:100%;height:120px;background:#081422;border:1px solid #1b3048;color:white;border-radius:10px;padding:14px;" placeholder="Add comment..."></textarea><br><br><button class="btn primary" onclick="showToast('Comment added')">Add Comment</button>`;
+document.getElementById("content").innerHTML=`<h3>Comments</h3><textarea style="width:100%;height:120px;background:#081422;border:1px solid #1b3048;color:white;border-radius:10px;padding:14px;" placeholder="Add comment..."></textarea><br><br><button class="btn primary" onclick="showToast('Comment added')">Add Comment</button>`;
 }
 if(tab==="related"){
 document.getElementById("content").innerHTML=`<h3>Related Items</h3><div class="file">Alert: Multiple Failed Logins</div><div class="file">Asset: Windows Server 2019</div><div class="file">Playbook: Brute Force Detection</div>`;
 }
 }
 
-function switchToAnalysis(){
-document.querySelectorAll(".tabs button")[1].click();
-}
-
-function startTimer(){
-showToast("Timer started");
-}
-
+function switchToAnalysis(){document.querySelectorAll(".tabs button")[1].click()}
+function startTimer(){showToast("Timer started")}
 function markComplete(){
 document.getElementById("resolutionStatus").value="Completed";
 document.getElementById("statusPill").innerText="Completed";
-document.getElementById("statusPill").className="pill progress";
 document.getElementById("detailStatus").innerText="Completed";
 document.getElementById("slaText").innerText="Completed";
 showToast("Ticket marked complete");
 }
-
 function showToast(msg){
 const t=document.createElement("div");
 t.className="toast";
@@ -291,7 +303,6 @@ t.innerText=msg;
 document.body.appendChild(t);
 setTimeout(()=>t.remove(),2500);
 }
-
 renderOverview();
 </script>
 </body>
