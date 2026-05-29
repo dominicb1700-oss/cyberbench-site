@@ -187,6 +187,144 @@
       box-shadow:0 15px 40px rgba(0,0,0,.35);
     }
 
+
+
+    /* Enhanced Alert Modal */
+    .alert-modal {
+      width: 1040px;
+      max-width: calc(100vw - 48px);
+      max-height: calc(100vh - 48px);
+      overflow: auto;
+      background: linear-gradient(180deg,#0d1a2b,#07111f);
+      border: 1px solid rgba(36,107,255,.45);
+      border-radius: 22px;
+      box-shadow: 0 40px 110px rgba(0,0,0,.7), inset 0 1px 0 rgba(255,255,255,.05);
+    }
+
+    .alert-header {
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      padding:28px 32px 20px;
+      border-bottom:1px solid #17283c;
+    }
+
+    .alert-title-wrap { display:flex; align-items:center; gap:18px; }
+
+    .alert-icon {
+      width:58px; height:58px; border-radius:18px;
+      display:grid; place-items:center; font-size:30px;
+      background:linear-gradient(135deg,#246bff,#6e4cff);
+      box-shadow:0 12px 35px rgba(36,107,255,.35);
+    }
+
+    .alert-header h2 { font-size:30px; margin-bottom:8px; }
+    .alert-header p { color:#9fafc4; }
+
+    .enhanced-close {
+      width:42px; height:42px; border-radius:12px;
+      background:#081422 !important;
+      border:1px solid #1b3048 !important;
+    }
+
+    .alert-badges { padding:18px 32px 0; display:flex; gap:10px; }
+
+    .alert-grid {
+      display:grid;
+      grid-template-columns:1fr 300px;
+      gap:22px;
+      padding:24px 32px 32px;
+    }
+
+    .alert-main { display:grid; gap:18px; }
+
+    .info-card, .timeline-card, .side-card {
+      background:#081422;
+      border:1px solid #1b3048;
+      border-radius:16px;
+      padding:20px;
+    }
+
+    .info-card h3, .timeline-card h3, .side-card h3 { margin-bottom:16px; }
+
+    .info-row {
+      display:grid;
+      grid-template-columns:160px 1fr;
+      gap:16px;
+      padding:13px 0;
+      border-bottom:1px solid #17283c;
+      color:#9fafc4;
+    }
+
+    .info-row:last-child { border-bottom:0; }
+    .info-row strong { color:#fff; }
+
+    .alert-description { color:#d7e2f0; line-height:1.7; }
+
+    .timeline-item {
+      display:flex;
+      gap:14px;
+      padding:12px 0;
+      color:#d3deec;
+    }
+
+    .timeline-item p { color:#9fafc4; margin-top:4px; }
+
+    .dot { width:13px; height:13px; border-radius:50%; margin-top:5px; flex:none; }
+    .dot.red { background:#ff4055; box-shadow:0 0 12px rgba(255,64,85,.55); }
+    .dot.blue { background:#0f8cff; box-shadow:0 0 12px rgba(15,140,255,.55); }
+    .dot.green { background:#18b96f; box-shadow:0 0 12px rgba(24,185,111,.55); }
+
+    .alert-sidebar { display:flex; flex-direction:column; gap:18px; }
+
+    .score {
+      font-size:52px;
+      color:#ff596b;
+      font-weight:900;
+      margin-bottom:10px;
+    }
+
+    .side-card p { color:#cfd9e6; line-height:1.6; }
+
+    .action-btn {
+      width:100%;
+      background:linear-gradient(135deg,#0f8cff,#246bff);
+      border:0;
+      color:white;
+      padding:14px;
+      border-radius:12px;
+      font-weight:800;
+      cursor:pointer;
+      margin-bottom:12px;
+    }
+
+    .action-btn.danger { background:linear-gradient(135deg,#ff4055,#d92b3f); }
+
+    .assign-modal {
+      width:560px;
+      background:linear-gradient(180deg,#0d1a2b,#07111f);
+      border:1px solid #1b3048;
+      border-radius:18px;
+      padding:24px;
+      box-shadow:0 30px 90px rgba(0,0,0,.65);
+    }
+
+    .assign-header { display:flex; justify-content:space-between; align-items:center; margin-bottom:18px; }
+    .assign-modal label { display:block; color:#9fafc4; margin:14px 0 6px; }
+    .assign-modal select, .assign-modal textarea {
+      width:100%; background:#081422; border:1px solid #1b3048; color:white;
+      padding:13px; border-radius:10px; outline:none;
+    }
+    .assign-modal textarea { height:110px; resize:none; }
+    .assign-actions { display:flex; justify-content:flex-end; gap:12px; margin-top:20px; }
+    .assign-actions button { background:#0b1625; border:1px solid #1b3048; color:white; padding:12px 16px; border-radius:10px; font-weight:700; cursor:pointer; }
+    .assign-actions .save-assignment { background:linear-gradient(135deg,#0f8cff,#246bff); border:0; }
+
+    @media(max-width: 900px) {
+      .alert-grid { grid-template-columns:1fr; }
+      .alert-modal { width:calc(100vw - 24px); }
+    }
+
     @media(max-width: 1300px) {
       .cards, .layout-grid { grid-template-columns: 1fr; }
       .sidebar { display: none; }
@@ -304,18 +442,103 @@
 </div>
 
 <div id="alertModal" class="modal">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h2>Alert Details</h2>
-      <button class="modal-close" onclick="closeAlertModal()">✕</button>
+  <div class="alert-modal">
+    <div class="alert-header">
+      <div class="alert-title-wrap">
+        <div class="alert-icon">🛡️</div>
+        <div>
+          <h2 id="alertTitle">Alert Details</h2>
+          <p id="alertSubtitle">Security event requiring investigation</p>
+        </div>
+      </div>
+      <button class="modal-close enhanced-close" onclick="closeAlertModal()">✕</button>
     </div>
 
-    <div class="modal-grid" id="alertDetails"></div>
+    <div class="alert-badges">
+      <span id="alertSeverityBadge" class="pill critical">Critical</span>
+      <span id="alertStatusBadge" class="pill new">New</span>
+    </div>
 
-    <div class="modal-actions">
-      <button onclick="closeAlertModal()">Close</button>
-      <button onclick="assignSelectedAlert()" class="primary">Assign To Me</button>
-      <button onclick="closeSelectedAlert()" class="primary">Close Alert</button>
+    <div class="alert-grid">
+      <div class="alert-main">
+        <div class="info-card">
+          <h3>Alert Information</h3>
+          <div class="info-row"><span>Alert ID</span><strong id="alertId"></strong></div>
+          <div class="info-row"><span>Source</span><strong id="alertSource"></strong></div>
+          <div class="info-row"><span>Category</span><strong id="alertCategory"></strong></div>
+          <div class="info-row"><span>Asset</span><strong id="alertAsset"></strong></div>
+          <div class="info-row"><span>Assigned To</span><strong id="alertAssigned"></strong></div>
+        </div>
+
+        <div class="info-card">
+          <h3>Description</h3>
+          <p id="alertDescription" class="alert-description"></p>
+        </div>
+
+        <div class="timeline-card">
+          <h3>Investigation Timeline</h3>
+          <div class="timeline-item"><div class="dot red"></div><div><strong>Alert Triggered</strong><p id="alertTime"></p></div></div>
+          <div class="timeline-item"><div class="dot blue"></div><div><strong>Investigation Started</strong><p>SOC analyst review initiated</p></div></div>
+          <div class="timeline-item"><div class="dot green"></div><div><strong>Response Pending</strong><p>Awaiting analyst action</p></div></div>
+        </div>
+      </div>
+
+      <div class="alert-sidebar">
+        <div class="side-card">
+          <h3>AI Analysis</h3>
+          <div class="score">9.1</div>
+          <p>High confidence malicious activity detected. Recommend immediate investigation and response workflow execution.</p>
+        </div>
+
+        <div class="side-card">
+          <h3>Actions</h3>
+          <button class="action-btn" onclick="assignSelectedAlert()">Assign Alert</button>
+          <button class="action-btn" onclick="createTicketFromAlert()">Create Ticket</button>
+          <button class="action-btn danger" onclick="closeSelectedAlert()">Close Alert</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div id="assignModal" class="modal">
+  <div class="assign-modal">
+    <div class="assign-header">
+      <h2>Assign Alert</h2>
+      <button class="modal-close" onclick="closeAssignModal()">✕</button>
+    </div>
+
+    <label>Assign To</label>
+    <select id="assignedUser">
+      <option>Alex Johnson</option>
+      <option>Sarah Kim</option>
+      <option>Maria Garcia</option>
+      <option>David Chen</option>
+      <option>James Lee</option>
+    </select>
+
+    <label>Priority</label>
+    <select id="assignedPriority">
+      <option>Critical</option>
+      <option>High</option>
+      <option>Medium</option>
+      <option>Low</option>
+    </select>
+
+    <label>Status</label>
+    <select id="assignedStatus">
+      <option>New</option>
+      <option selected>In Progress</option>
+      <option>Pending Customer</option>
+      <option>Resolved</option>
+    </select>
+
+    <label>Assignment Notes</label>
+    <textarea id="assignmentNotes" placeholder="Add assignment notes..."></textarea>
+
+    <div class="assign-actions">
+      <button onclick="closeAssignModal()">Cancel</button>
+      <button class="save-assignment" onclick="saveAssignment()">Save Assignment</button>
     </div>
   </div>
 </div>
@@ -459,18 +682,29 @@ function updateActivity() {
 function openAlertModal(id) {
   selectedAlertId = id;
   const a = alerts.find(x => x.id === id);
+  if (!a) return;
 
-  document.getElementById("alertDetails").innerHTML = `
-    <div class="modal-row"><span>Alert ID</span><strong>${a.id}</strong></div>
-    <div class="modal-row"><span>Name</span><strong>${a.name}</strong></div>
-    <div class="modal-row"><span>Description</span><strong>${a.detail}</strong></div>
-    <div class="modal-row"><span>Severity</span><strong>${a.severity}</strong></div>
-    <div class="modal-row"><span>Source</span><strong>${a.source}</strong></div>
-    <div class="modal-row"><span>Category</span><strong>${a.category}</strong></div>
-    <div class="modal-row"><span>Asset</span><strong>${a.asset}</strong></div>
-    <div class="modal-row"><span>Status</span><strong>${a.status}</strong></div>
-    <div class="modal-row"><span>Assigned To</span><strong>${a.assigned}</strong></div>
-  `;
+  document.getElementById("alertTitle").innerText = a.name;
+  document.getElementById("alertSubtitle").innerText = a.detail;
+  document.getElementById("alertId").innerText = a.id;
+  document.getElementById("alertSource").innerText = a.source;
+  document.getElementById("alertCategory").innerText = a.category;
+  document.getElementById("alertAsset").innerText = a.asset;
+  document.getElementById("alertAssigned").innerText = a.assigned;
+  document.getElementById("alertDescription").innerText = a.detail;
+  document.getElementById("alertTime").innerText = `${a.time} ${a.hour}`;
+
+  const severityBadge = document.getElementById("alertSeverityBadge");
+  severityBadge.className = "pill " + severityClass(a.severity);
+  severityBadge.innerText = a.severity;
+
+  const statusBadge = document.getElementById("alertStatusBadge");
+  statusBadge.className = "pill " + statusClass(a.status);
+  statusBadge.innerText = a.status;
+
+  document.getElementById("assignedUser").value = a.assigned === "Unassigned" ? "Alex Johnson" : a.assigned;
+  document.getElementById("assignedPriority").value = a.severity;
+  document.getElementById("assignedStatus").value = a.status === "Closed" ? "Resolved" : a.status;
 
   document.getElementById("alertModal").style.display = "flex";
 }
@@ -480,15 +714,32 @@ function closeAlertModal() {
 }
 
 function assignSelectedAlert() {
+  document.getElementById("assignModal").style.display = "flex";
+}
+
+function closeAssignModal() {
+  document.getElementById("assignModal").style.display = "none";
+}
+
+function saveAssignment() {
   const alert = alerts.find(a => a.id === selectedAlertId);
   if (!alert) return;
 
-  alert.assigned = "Admin User";
-  alert.status = "In Progress";
+  alert.assigned = document.getElementById("assignedUser").value;
+  alert.severity = document.getElementById("assignedPriority").value;
+  alert.status = document.getElementById("assignedStatus").value === "Resolved" ? "Closed" : document.getElementById("assignedStatus").value;
 
+  closeAssignModal();
   closeAlertModal();
   renderAlerts();
-  showToast("Alert assigned to Admin User");
+  showToast("Alert assigned to " + alert.assigned);
+}
+
+function createTicketFromAlert() {
+  const alert = alerts.find(a => a.id === selectedAlertId);
+  if (!alert) return;
+
+  showToast("Ticket created from " + alert.id);
 }
 
 function closeSelectedAlert() {
@@ -633,7 +884,9 @@ document.getElementById("alertSearch").addEventListener("input", () => {
 
 window.onclick = function(event) {
   const modal = document.getElementById("alertModal");
+  const assignModal = document.getElementById("assignModal");
   if (event.target === modal) closeAlertModal();
+  if (event.target === assignModal) closeAssignModal();
 };
 
 populateFilters();
