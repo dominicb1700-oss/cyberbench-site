@@ -225,8 +225,8 @@
     /* ===== Enhanced Remediation Details Modal ===== */
     .remediation-detail-modal{
       width:780px;
-      max-height:90vh;
-      overflow:auto;
+      max-height:none;
+      overflow:visible;
       background:linear-gradient(180deg,#0d1a2b,#081321);
       border:1px solid #203650;
       border-radius:18px;
@@ -480,6 +480,41 @@
       border:1px solid #1f4265;
     }
 
+
+
+
+    /* Remove internal remediation detail scrollbar */
+    #detailsModal{
+      overflow:hidden;
+    }
+
+    #detailsModal .remediation-detail-modal{
+      max-height:none !important;
+      overflow:visible !important;
+    }
+
+    #detailsModal .remediation-detail-header{
+      padding:18px 22px !important;
+    }
+
+    #detailsModal .remediation-meta,
+    #detailsModal .remediation-summary,
+    #detailsModal .remediation-detail-grid,
+    #detailsModal .remediation-timeline,
+    #detailsModal .remediation-detail-footer{
+      padding-left:22px !important;
+      padding-right:22px !important;
+    }
+
+    #detailsModal .remediation-summary,
+    #detailsModal .remediation-detail-grid,
+    #detailsModal .remediation-timeline{
+      margin-top:14px !important;
+    }
+
+    #detailsModal .remediation-timeline-item{
+      padding:8px 0 !important;
+    }
 
     @media(max-width: 1300px) {
       .cards, .layout-grid { grid-template-columns: 1fr; }
