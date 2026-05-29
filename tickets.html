@@ -134,15 +134,15 @@
       cursor:pointer;
     }
 
-    .ticket-form {
+    .-form {
       display:flex;
       flex-direction:column;
       gap:14px;
     }
 
-    .ticket-form input,
-    .ticket-form select,
-    .ticket-form textarea {
+    .-form input,
+    .-form select,
+    .-form textarea {
       background:#0d1d30;
       border:1px solid #1e3550;
       border-radius:10px;
@@ -152,9 +152,9 @@
       outline:none;
     }
 
-    .ticket-form textarea { height:120px; resize:none; }
+    .-form textarea { height:120px; resize:none; }
 
-    .create-ticket-submit {
+    .create--submit {
       background:linear-gradient(135deg,#0f8cff,#246bff);
       border:none;
       padding:14px;
@@ -446,8 +446,7 @@ function changePage(page) {
 }
 
 function openTicket(id) {
-  const t = tickets.find(x => x.id === id);
-  alert(`${t.id}\n\n${t.title}\nCustomer: ${t.customer}\nPriority: ${t.priority}\nStatus: ${t.status}\nAssigned To: ${t.assigned}\nSLA: ${t.sla}`);
+  window.location.href = `/ticket-detail?id=${id}`;
 }
 
 function exportTickets() {
