@@ -2750,3 +2750,291 @@ box-shadow:
 rgba(77,124,255,.28);
 
 }
+/* =====================================
+   CYBERBENCH TICKET PAGE ENHANCEMENTS
+   Add to bottom of existing CSS
+===================================== */
+
+/* Better background */
+body{
+  background:
+    radial-gradient(circle at top right, rgba(15,140,255,.12), transparent 35%),
+    radial-gradient(circle at bottom left, rgba(96,56,255,.08), transparent 30%),
+    #050d18;
+}
+
+/* Glass effect */
+.panel{
+  background: rgba(12,22,38,.78) !important;
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(255,255,255,.06) !important;
+  box-shadow:
+    0 10px 40px rgba(0,0,0,.30),
+    inset 0 1px 0 rgba(255,255,255,.03);
+}
+
+/* Sidebar */
+.sidebar{
+  width: 170px !important;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(7,17,31,.98),
+      rgba(4,12,22,.98)
+    ) !important;
+}
+
+.main{
+  margin-left:170px !important;
+  width:calc(100% - 170px) !important;
+}
+
+/* Logo */
+.brand{
+  font-size:30px !important;
+  font-weight:900 !important;
+  margin-bottom:40px !important;
+}
+
+/* Navigation */
+.nav a{
+  border-radius:12px !important;
+  margin-bottom:6px !important;
+  transition:.25s ease;
+}
+
+.nav a:hover{
+  background:rgba(255,255,255,.04);
+  transform:translateX(4px);
+}
+
+.nav a.active{
+  background:
+    linear-gradient(
+      135deg,
+      #0f8cff,
+      #246bff
+    ) !important;
+}
+
+/* Search */
+.search{
+  height:52px !important;
+  border-radius:14px !important;
+  background:#081422 !important;
+}
+
+/* Ticket title */
+h1{
+  font-size:42px !important;
+  font-weight:800 !important;
+  letter-spacing:-1px;
+  margin-top:12px !important;
+}
+
+/* Ticket header spacing */
+.header{
+  margin-bottom:30px !important;
+}
+
+/* Tabs */
+.tabs{
+  padding-left:24px !important;
+}
+
+.tabs button{
+  font-size:14px !important;
+}
+
+.tabs button.active{
+  color:#4aa3ff !important;
+}
+
+/* Main content layout */
+.grid{
+  grid-template-columns:minmax(0,1fr) 360px !important;
+  gap:20px !important;
+}
+
+.detail-grid{
+  grid-template-columns:260px 1fr !important;
+  gap:28px !important;
+}
+
+/* Ticket details left panel */
+.info-list{
+  border-right:1px solid rgba(255,255,255,.05) !important;
+  padding-right:24px !important;
+}
+
+.info-list strong{
+  font-size:15px;
+}
+
+/* Description */
+.desc{
+  color:#cfd9e8 !important;
+  line-height:1.7 !important;
+}
+
+/* Asset cards */
+.data-grid{
+  gap:14px !important;
+}
+
+.data-card{
+  background:#081422 !important;
+  border:1px solid rgba(255,255,255,.06) !important;
+  border-radius:14px !important;
+  transition:.25s ease;
+}
+
+.data-card:hover{
+  transform:translateY(-2px);
+  border-color:#246bff !important;
+}
+
+/* Evidence */
+.file{
+  border-radius:12px !important;
+  transition:.2s ease;
+}
+
+.file:hover{
+  border-color:#246bff !important;
+  background:#0b1828 !important;
+}
+
+/* Timeline */
+.timeline{
+  margin-top:24px !important;
+}
+
+.timeline-item{
+  padding:8px 0 !important;
+}
+
+.timeline-item strong{
+  font-size:15px;
+}
+
+.timeline-item p{
+  margin-top:6px !important;
+  color:#9fb1c8 !important;
+}
+
+/* Right side cards */
+.side .panel{
+  border-radius:16px !important;
+}
+
+/* SLA card */
+.big-red{
+  font-size:36px !important;
+  font-weight:900 !important;
+}
+
+.progress-bar{
+  height:10px !important;
+}
+
+.progress-fill{
+  background:
+    linear-gradient(
+      90deg,
+      #ff5263,
+      #ff6b7a
+    ) !important;
+}
+
+/* AI card */
+.score{
+  font-size:48px !important;
+}
+
+.score-grid{
+  margin-bottom:20px !important;
+}
+
+.score-box{
+  border-radius:14px !important;
+}
+
+.confidence{
+  width:105px !important;
+  height:105px !important;
+}
+
+/* Recommendations */
+.recs li{
+  margin-bottom:6px !important;
+}
+
+/* Buttons */
+.btn{
+  border-radius:12px !important;
+  transition:.25s ease;
+}
+
+.btn:hover{
+  transform:translateY(-1px);
+}
+
+.primary{
+  background:
+    linear-gradient(
+      135deg,
+      #0f8cff,
+      #246bff
+    ) !important;
+}
+
+.success{
+  background:
+    linear-gradient(
+      135deg,
+      #18b96f,
+      #11a45f
+    ) !important;
+}
+
+/* Resolution area */
+.resolution textarea,
+.resolution select,
+.resolution input{
+  border-radius:12px !important;
+}
+
+.timer-row{
+  gap:8px !important;
+}
+
+/* User avatar */
+.avatar{
+  box-shadow:
+    0 0 20px rgba(96,56,255,.45);
+}
+
+/* Bottom company card */
+.sidebar-card{
+  border-radius:16px !important;
+  background:
+    linear-gradient(
+      180deg,
+      rgba(10,24,42,.95),
+      rgba(8,18,32,.95)
+    ) !important;
+}
+
+/* Responsive */
+@media(max-width:1400px){
+
+  .grid{
+    grid-template-columns:1fr !important;
+  }
+
+  .side{
+    order:-1;
+  }
+}
