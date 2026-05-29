@@ -221,6 +221,266 @@
       box-shadow:0 15px 40px rgba(0,0,0,.35);
     }
 
+
+    /* ===== Enhanced Remediation Details Modal ===== */
+    .remediation-detail-modal{
+      width:780px;
+      max-height:90vh;
+      overflow:auto;
+      background:linear-gradient(180deg,#0d1a2b,#081321);
+      border:1px solid #203650;
+      border-radius:18px;
+      box-shadow:0 40px 90px rgba(0,0,0,.65);
+    }
+
+    .remediation-detail-header{
+      display:flex;
+      justify-content:space-between;
+      align-items:flex-start;
+      padding:24px;
+      border-bottom:1px solid #17283c;
+    }
+
+    .remediation-detail-header h2{
+      font-size:26px;
+      margin-bottom:6px;
+    }
+
+    .remediation-detail-header p{
+      color:#8fa1b8;
+      line-height:1.5;
+    }
+
+    .remediation-close{
+      background:#0b1625;
+      border:1px solid #1b3048;
+      color:#cfd9e6;
+      width:38px;
+      height:38px;
+      border-radius:10px;
+      font-size:22px;
+      cursor:pointer;
+    }
+
+    .remediation-meta-grid{
+      display:grid;
+      grid-template-columns:repeat(4,1fr);
+      gap:14px;
+      padding:24px;
+    }
+
+    .remediation-meta-card{
+      background:#081422;
+      border:1px solid #1b3048;
+      padding:16px;
+      border-radius:12px;
+    }
+
+    .remediation-meta-card span{
+      display:block;
+      font-size:12px;
+      color:#8fa1b8;
+      margin-bottom:8px;
+    }
+
+    .remediation-meta-card strong{
+      font-size:15px;
+      color:white;
+    }
+
+    .remediation-vuln-section{
+      padding:0 24px 24px;
+    }
+
+    .remediation-vuln-card{
+      background:#081422;
+      border:1px solid #1b3048;
+      border-radius:14px;
+      padding:20px;
+    }
+
+    .remediation-vuln-header{
+      display:flex;
+      justify-content:space-between;
+      gap:20px;
+      align-items:flex-start;
+      margin-bottom:18px;
+    }
+
+    .remediation-vuln-header h3{
+      font-size:22px;
+      margin-bottom:6px;
+    }
+
+    .remediation-vuln-header p{
+      color:#8fa1b8;
+      line-height:1.5;
+    }
+
+    .remediation-badges{
+      display:flex;
+      gap:10px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    .remediation-progress-wrap{
+      margin-top:18px;
+      background:#0b1625;
+      border:1px solid #1b3048;
+      border-radius:14px;
+      padding:18px;
+    }
+
+    .remediation-progress-top{
+      display:flex;
+      justify-content:space-between;
+      margin-bottom:12px;
+      color:#d8e2ef;
+      font-weight:700;
+    }
+
+    .remediation-progress-bar{
+      height:12px;
+      background:#12243a;
+      border-radius:999px;
+      overflow:hidden;
+    }
+
+    .remediation-progress-fill{
+      height:100%;
+      width:75%;
+      background:linear-gradient(90deg,#0f8cff,#246bff);
+      border-radius:999px;
+    }
+
+    .remediation-detail-grid{
+      display:grid;
+      grid-template-columns:1fr 1fr;
+      gap:18px;
+      padding:0 24px 24px;
+    }
+
+    .remediation-info-card{
+      background:#081422;
+      border:1px solid #1b3048;
+      border-radius:14px;
+      padding:18px;
+    }
+
+    .remediation-info-card h3{
+      margin-bottom:14px;
+    }
+
+    .remediation-info-row{
+      display:flex;
+      justify-content:space-between;
+      gap:16px;
+      padding:11px 0;
+      border-bottom:1px solid #17283c;
+      color:#8fa1b8;
+    }
+
+    .remediation-info-row:last-child{
+      border-bottom:0;
+    }
+
+    .remediation-info-row strong{
+      color:white;
+      text-align:right;
+    }
+
+    .remediation-timeline{
+      padding:0 24px 24px;
+    }
+
+    .remediation-timeline h3{
+      margin-bottom:18px;
+    }
+
+    .remediation-timeline-card{
+      background:#081422;
+      border:1px solid #1b3048;
+      border-radius:14px;
+      padding:18px;
+    }
+
+    .remediation-timeline-item{
+      display:flex;
+      gap:14px;
+      margin-bottom:18px;
+    }
+
+    .remediation-timeline-item:last-child{
+      margin-bottom:0;
+    }
+
+    .timeline-dot{
+      width:14px;
+      height:14px;
+      border-radius:50%;
+      background:#3d4f67;
+      margin-top:6px;
+      flex:none;
+    }
+
+    .timeline-dot.blue{
+      background:#0f8cff;
+      box-shadow:0 0 12px rgba(15,140,255,.55);
+    }
+
+    .timeline-dot.green{
+      background:#18b96f;
+      box-shadow:0 0 12px rgba(24,185,111,.55);
+    }
+
+    .timeline-dot.orange{
+      background:#ff8f1f;
+      box-shadow:0 0 12px rgba(255,143,31,.55);
+    }
+
+    .remediation-timeline-item p{
+      color:#8fa1b8;
+      margin-top:4px;
+      line-height:1.45;
+    }
+
+    .remediation-detail-footer{
+      display:flex;
+      justify-content:space-between;
+      align-items:center;
+      gap:14px;
+      padding:20px 24px;
+      border-top:1px solid #17283c;
+      background:#07111f;
+    }
+
+    .footer-actions{
+      display:flex;
+      gap:12px;
+      flex-wrap:wrap;
+      justify-content:flex-end;
+    }
+
+    .btn.warning{
+      background:linear-gradient(135deg,#ffb347,#ff8f1f);
+      color:#111;
+      border:0;
+    }
+
+    .btn.success{
+      background:linear-gradient(135deg,#18b96f,#0c8f56);
+      color:white;
+      border:0;
+    }
+
+    .btn.secondary{
+      background:#13263d;
+      color:#58a6ff;
+      border:1px solid #1f4265;
+    }
+
+
     @media(max-width: 1300px) {
       .cards, .layout-grid { grid-template-columns: 1fr; }
       .sidebar { display: none; }
@@ -527,19 +787,8 @@
 </div>
 
 <div id="detailsModal" class="modal">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h2>Remediation Details</h2>
-      <button class="modal-close" onclick="closeDetailsModal()">✕</button>
-    </div>
-
+  <div class="remediation-detail-modal">
     <div id="taskDetails"></div>
-
-    <div class="modal-actions">
-      <button onclick="closeDetailsModal()">Close</button>
-      <button class="primary" onclick="markSelectedInProgress()">Mark In Progress</button>
-      <button class="primary" onclick="markSelectedComplete()">Mark Complete</button>
-    </div>
   </div>
 </div>
 
@@ -772,17 +1021,158 @@ function clearModal(){
 function openDetailsModal(id){
   selectedTaskId = id;
   const t = tasks.find(x => x.id === id);
+  if(!t) return;
+
+  const progressLabel = `${t.progress}% Complete`;
+  const statusClassName = statusClass(t.status);
+  const priorityClassName = priorityClass(t.priority);
 
   document.getElementById("taskDetails").innerHTML = `
-    <div class="modal-form">
-      <input value="${t.id}" disabled>
-      <input value="${t.vuln}" disabled>
-      <input value="${t.desc}" disabled>
-      <input value="${t.asset}" disabled>
-      <input value="${t.priority}" disabled>
-      <input value="${t.status}" disabled>
-      <input value="${t.assignee}" disabled>
-      <input value="${t.progress}% Complete" disabled>
+    <div class="remediation-detail-header">
+      <div>
+        <h2>Remediation Details</h2>
+        <p>Track remediation workflow, vulnerability mitigation status, and analyst progress.</p>
+      </div>
+      <button class="remediation-close" onclick="closeDetailsModal()">✕</button>
+    </div>
+
+    <div class="remediation-meta-grid">
+      <div class="remediation-meta-card">
+        <span>Task ID</span>
+        <strong>${t.id}</strong>
+      </div>
+
+      <div class="remediation-meta-card">
+        <span>CVE / Finding</span>
+        <strong>${t.vuln}</strong>
+      </div>
+
+      <div class="remediation-meta-card">
+        <span>Asset</span>
+        <strong>${t.asset}</strong>
+      </div>
+
+      <div class="remediation-meta-card">
+        <span>Assigned To</span>
+        <strong>${t.assignee}</strong>
+      </div>
+    </div>
+
+    <div class="remediation-vuln-section">
+      <div class="remediation-vuln-card">
+        <div class="remediation-vuln-header">
+          <div>
+            <h3>${t.desc}</h3>
+            <p>${t.assetType} remediation workflow for ${t.asset}. Validate mitigation, document actions, and close only after verification.</p>
+          </div>
+
+          <div class="remediation-badges">
+            <span class="pill ${priorityClassName}">${t.priority}</span>
+            <span class="pill ${statusClassName}">${t.status}</span>
+          </div>
+        </div>
+
+        <div class="remediation-progress-wrap">
+          <div class="remediation-progress-top">
+            <span>Remediation Progress</span>
+            <span>${t.progress}%</span>
+          </div>
+
+          <div class="remediation-progress-bar">
+            <div class="remediation-progress-fill" style="width:${t.progress}%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="remediation-detail-grid">
+      <div class="remediation-info-card">
+        <h3>Task Information</h3>
+
+        <div class="remediation-info-row">
+          <span>Priority</span>
+          <strong>${t.priority}</strong>
+        </div>
+
+        <div class="remediation-info-row">
+          <span>Status</span>
+          <strong>${t.status}</strong>
+        </div>
+
+        <div class="remediation-info-row">
+          <span>Due Date</span>
+          <strong>${t.due}</strong>
+        </div>
+
+        <div class="remediation-info-row">
+          <span>Due Status</span>
+          <strong>${t.dueText}</strong>
+        </div>
+      </div>
+
+      <div class="remediation-info-card">
+        <h3>Recommended Actions</h3>
+
+        <div class="remediation-info-row">
+          <span>1</span>
+          <strong>Validate affected asset</strong>
+        </div>
+
+        <div class="remediation-info-row">
+          <span>2</span>
+          <strong>Apply patch or mitigation</strong>
+        </div>
+
+        <div class="remediation-info-row">
+          <span>3</span>
+          <strong>Run verification scan</strong>
+        </div>
+
+        <div class="remediation-info-row">
+          <span>4</span>
+          <strong>Document closure notes</strong>
+        </div>
+      </div>
+    </div>
+
+    <div class="remediation-timeline">
+      <h3>Activity Timeline</h3>
+
+      <div class="remediation-timeline-card">
+        <div class="remediation-timeline-item">
+          <div class="timeline-dot blue"></div>
+          <div>
+            <strong>Task Created</strong>
+            <p>${t.vuln} remediation task generated for ${t.asset}.</p>
+          </div>
+        </div>
+
+        <div class="remediation-timeline-item">
+          <div class="timeline-dot orange"></div>
+          <div>
+            <strong>Remediation In Progress</strong>
+            <p>${t.assignee} is assigned to validate and remediate the vulnerability.</p>
+          </div>
+        </div>
+
+        <div class="remediation-timeline-item">
+          <div class="timeline-dot ${t.status === "Completed" ? "green" : "blue"}"></div>
+          <div>
+            <strong>${t.status === "Completed" ? "Validation Complete" : "Validation Pending"}</strong>
+            <p>${t.status === "Completed" ? "Mitigation has been completed and is ready for reporting." : "Awaiting remediation validation and verification scan results."}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="remediation-detail-footer">
+      <button class="btn secondary" onclick="exportTasks()">Export</button>
+
+      <div class="footer-actions">
+        <button class="btn" onclick="closeDetailsModal()">Close</button>
+        <button class="btn warning" onclick="markSelectedInProgress()">Mark In Progress</button>
+        <button class="btn success" onclick="markSelectedComplete()">Mark Complete</button>
+      </div>
     </div>
   `;
 
