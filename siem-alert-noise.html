@@ -13,6 +13,10 @@
   font-family:Inter,Arial,sans-serif;
 }
 
+html{
+  scroll-behavior:smooth;
+}
+
 body{
   background:#030814;
   color:#f5f7fb;
@@ -62,12 +66,19 @@ a{
   font-weight:600;
 }
 
+.nav a:hover{
+  color:#7db8ff;
+}
+
 .actions{
   display:flex;
   gap:14px;
 }
 
 .btn{
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
   padding:13px 20px;
   border-radius:10px;
   border:1px solid #23344f;
@@ -75,6 +86,12 @@ a{
   color:white;
   font-weight:800;
   cursor:pointer;
+  transition:.2s ease;
+}
+
+.btn:hover{
+  transform:translateY(-1px);
+  border-color:#356dff;
 }
 
 .btn.primary{
@@ -129,6 +146,7 @@ h1{
   color:#a9b5c8;
   margin-top:26px;
   font-size:15px;
+  flex-wrap:wrap;
 }
 
 .hero-art{
@@ -202,10 +220,28 @@ h1{
   font-weight:900;
 }
 
+.share-btn:hover{
+  background:#10233b;
+  border-color:#246bff;
+}
+
 .article p{
   color:#d6deeb;
   font-size:18px;
   margin-bottom:24px;
+}
+
+.article h2{
+  font-size:34px;
+  line-height:1.2;
+  margin:48px 0 18px;
+  letter-spacing:-.6px;
+  scroll-margin-top:110px;
+}
+
+.article h3{
+  font-size:23px;
+  margin:30px 0 12px;
 }
 
 .callout{
@@ -235,22 +271,17 @@ h1{
   line-height:1.35;
 }
 
-.article h2{
-  font-size:34px;
-  line-height:1.2;
-  margin:42px 0 18px;
-  letter-spacing:-.6px;
-}
-
-.noise-list{
+.noise-list,
+.topic-list{
   border:1px solid #1b3048;
   border-radius:16px;
   overflow:hidden;
-  margin-top:22px;
+  margin:22px 0 34px;
   background:#081422;
 }
 
-.noise-item{
+.noise-item,
+.topic-item{
   display:grid;
   grid-template-columns:64px 1fr;
   gap:18px;
@@ -258,11 +289,13 @@ h1{
   border-bottom:1px solid #17283c;
 }
 
-.noise-item:last-child{
+.noise-item:last-child,
+.topic-item:last-child{
   border-bottom:0;
 }
 
-.noise-icon{
+.noise-icon,
+.topic-icon{
   width:48px;
   height:48px;
   border-radius:14px;
@@ -272,17 +305,39 @@ h1{
   font-size:24px;
 }
 
-.noise-item strong{
+.noise-item strong,
+.topic-item strong{
   font-size:18px;
 }
 
-.noise-item p{
+.noise-item p,
+.topic-item p{
   font-size:15px;
   color:#aeb9c8;
   margin:4px 0 0;
 }
 
+.section-card{
+  padding:24px;
+  border-radius:18px;
+  border:1px solid #1b3048;
+  background:rgba(8,20,34,.72);
+  margin:30px 0;
+}
+
+.section-card p:last-child{
+  margin-bottom:0;
+}
+
 .sidebar{
+  display:flex;
+  flex-direction:column;
+  gap:24px;
+}
+
+.sticky-stack{
+  position:sticky;
+  top:104px;
   display:flex;
   flex-direction:column;
   gap:24px;
@@ -303,11 +358,19 @@ h1{
 
 .toc li{
   list-style:none;
+}
+
+.toc a{
   display:grid;
   grid-template-columns:38px 1fr;
   gap:10px;
   padding:8px 0;
   color:#d7e0ee;
+  text-decoration:none;
+}
+
+.toc a:hover{
+  color:#58a6ff;
 }
 
 .toc span{
@@ -379,6 +442,10 @@ h1{
   .article{
     max-width:100%;
   }
+
+  .sticky-stack{
+    position:static;
+  }
 }
 
 @media(max-width:600px){
@@ -401,6 +468,19 @@ h1{
   .hero p,
   .article p{
     font-size:16px;
+  }
+
+  .callout,
+  .noise-item,
+  .topic-item{
+    grid-template-columns:1fr;
+    display:block;
+  }
+
+  .callout-icon,
+  .noise-icon,
+  .topic-icon{
+    margin-bottom:14px;
   }
 }
 </style>
@@ -494,21 +574,27 @@ h1{
         </strong>
       </div>
 
-      <h2>Why SIEM Noise Happens</h2>
+      <h2 id="why-siem-noise-happens">01. Why SIEM Noise Happens</h2>
+
+      <p>
+        SIEM noise happens when alerts are created without enough context,
+        tuning, prioritization, or business impact. A SIEM may be technically
+        detecting events correctly, but that does not mean every event deserves
+        analyst attention.
+      </p>
 
       <p>
         Most SIEM environments begin with default rulesets, broad log ingestion,
-        and very little environment-specific tuning.
+        and very little environment-specific tuning. That creates a high-volume
+        alert stream before the team has defined what normal behavior looks like.
       </p>
-
-      <p>This creates a situation where:</p>
 
       <div class="noise-list">
         <div class="noise-item">
           <div class="noise-icon">👤</div>
           <div>
             <strong>Normal administrator activity triggers alerts</strong>
-            <p>Routine actions like logins, privilege use, and configuration changes generate unnecessary noise.</p>
+            <p>Routine logins, privilege use, software installs, and configuration changes generate unnecessary alerts if trusted activity is not baselined.</p>
           </div>
         </div>
 
@@ -516,7 +602,7 @@ h1{
           <div class="noise-icon">🎯</div>
           <div>
             <strong>Vulnerability scanners create detection storms</strong>
-            <p>Scans generate thousands of events that drown out real threats.</p>
+            <p>Internal scans can trigger thousands of port, service, authentication, and web events that drown out real threats.</p>
           </div>
         </div>
 
@@ -524,7 +610,7 @@ h1{
           <div class="noise-icon">🛡️</div>
           <div>
             <strong>Authentication retries flood dashboards</strong>
-            <p>Failed logins, brute force attempts, and noisy endpoints dominate alert queues.</p>
+            <p>Failed logins, expired passwords, service account issues, and endpoint retries often dominate the alert queue.</p>
           </div>
         </div>
 
@@ -532,66 +618,300 @@ h1{
           <div class="noise-icon">📄</div>
           <div>
             <strong>Lack of context increases false positives</strong>
-            <p>Without asset criticality, user behavior baselines, and threat context, alerts lose accuracy.</p>
+            <p>Without asset criticality, user roles, known business processes, and threat context, analysts cannot quickly separate noise from risk.</p>
           </div>
         </div>
       </div>
 
-      <h2>The fastest path to less noise</h2>
+      <h2 id="impact-of-alert-noise">02. The Impact of Alert Noise</h2>
 
       <p>
-        Start by identifying the alerts that repeatedly trigger without producing
-        meaningful security outcomes. Group them by source, rule, asset, and
-        business impact.
+        Alert noise creates operational risk because it slows down response.
+        When every alert appears urgent, teams waste time investigating low-value
+        events while real threats sit in the queue.
       </p>
 
       <p>
-        Then tune alert thresholds, suppress known-good behavior, enrich alerts
-        with asset context, and convert repeatable investigations into playbooks.
+        The biggest issue is not just the number of alerts. It is the lack of
+        prioritization. A failed login against a test machine should not compete
+        with suspicious activity on a domain controller or production file server.
       </p>
 
-      <h2>How CyberBench helps</h2>
+      <div class="section-card">
+        <h3>What alert noise causes</h3>
+        <div class="topic-list">
+          <div class="topic-item">
+            <div class="topic-icon">⏱️</div>
+            <div>
+              <strong>Slower response times</strong>
+              <p>Analysts spend more time filtering noise before they can respond to real incidents.</p>
+            </div>
+          </div>
+
+          <div class="topic-item">
+            <div class="topic-icon">😵</div>
+            <div>
+              <strong>Analyst fatigue</strong>
+              <p>Too many low-value alerts create burnout and reduce investigation quality over time.</p>
+            </div>
+          </div>
+
+          <div class="topic-item">
+            <div class="topic-icon">🚨</div>
+            <div>
+              <strong>Missed critical threats</strong>
+              <p>High-risk alerts can be overlooked when they are buried inside large volumes of routine events.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h2 id="fastest-path-less-noise">03. The Fastest Path to Less Noise</h2>
 
       <p>
-        CyberBench helps teams reduce SIEM noise by combining alert management,
-        ticketing, remediation workflows, playbooks, asset context, and executive
-        reporting into one operational platform.
+        The fastest way to reduce SIEM noise is to start with the alerts that
+        trigger the most often but rarely lead to meaningful action. Do not tune
+        everything at once. Start with the top alert sources and rules that create
+        the highest volume.
       </p>
+
+      <p>
+        Group alerts by source, rule name, asset, user, and outcome. Then ask:
+        did this alert lead to investigation, remediation, or reporting? If not,
+        it should be tuned, suppressed, grouped, or downgraded.
+      </p>
+
+      <div class="section-card">
+        <h3>Fast tuning workflow</h3>
+        <div class="topic-list">
+          <div class="topic-item">
+            <div class="topic-icon">01</div>
+            <div>
+              <strong>Identify top noisy rules</strong>
+              <p>Find the rules creating the highest volume of alerts in the last 7 days.</p>
+            </div>
+          </div>
+
+          <div class="topic-item">
+            <div class="topic-icon">02</div>
+            <div>
+              <strong>Check business value</strong>
+              <p>Keep alerts that drive action. Tune alerts that repeatedly produce no useful outcome.</p>
+            </div>
+          </div>
+
+          <div class="topic-item">
+            <div class="topic-icon">03</div>
+            <div>
+              <strong>Add context</strong>
+              <p>Enrich alerts with asset criticality, user role, location, vulnerability data, and known-good activity.</p>
+            </div>
+          </div>
+
+          <div class="topic-item">
+            <div class="topic-icon">04</div>
+            <div>
+              <strong>Create playbooks</strong>
+              <p>Turn repeat investigations into structured workflows so analysts respond consistently.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h2 id="week-one-fixes">04. Week One: What You Can Fix Fast</h2>
+
+      <p>
+        In week one, focus on changes that reduce alert volume without reducing
+        security visibility. You are not trying to make the dashboard quiet. You
+        are trying to make it useful.
+      </p>
+
+      <p>
+        Start with scanner noise, known admin activity, repeated authentication
+        failures, endpoint health alerts, and duplicate rules. These usually
+        create the fastest measurable reduction in alert volume.
+      </p>
+
+      <div class="topic-list">
+        <div class="topic-item">
+          <div class="topic-icon">🔍</div>
+          <div>
+            <strong>Tune vulnerability scanner noise</strong>
+            <p>Create maintenance windows or suppression rules for approved scanner IPs.</p>
+          </div>
+        </div>
+
+        <div class="topic-item">
+          <div class="topic-icon">🧑‍💻</div>
+          <div>
+            <strong>Baseline admin activity</strong>
+            <p>Identify approved administrators and expected management tools so routine work does not create unnecessary alerts.</p>
+          </div>
+        </div>
+
+        <div class="topic-item">
+          <div class="topic-icon">🔐</div>
+          <div>
+            <strong>Group failed login events</strong>
+            <p>Convert repeated login failures into grouped incidents instead of individual alerts.</p>
+          </div>
+        </div>
+
+        <div class="topic-item">
+          <div class="topic-icon">📘</div>
+          <div>
+            <strong>Create playbooks for repeat alerts</strong>
+            <p>Build repeatable response steps for phishing, malware, brute force, suspicious PowerShell, and vulnerability events.</p>
+          </div>
+        </div>
+      </div>
+
+      <h2 id="best-practices-reduce-noise">05. Best Practices That Reduce Noise</h2>
+
+      <p>
+        Strong SIEM tuning is not a one-time cleanup. It is an operational habit.
+        Each alert should have a clear purpose, owner, severity, response path,
+        and business reason for existing.
+      </p>
+
+      <p>
+        If an alert does not lead to investigation, remediation, escalation, or
+        reporting, it should be reviewed. The goal is to build a detection model
+        where high-priority alerts represent real business risk.
+      </p>
+
+      <div class="section-card">
+        <h3>Best practices</h3>
+        <div class="topic-list">
+          <div class="topic-item">
+            <div class="topic-icon">🏷️</div>
+            <div>
+              <strong>Tag critical assets</strong>
+              <p>Alerts on domain controllers, file servers, executive laptops, and production systems should carry more weight.</p>
+            </div>
+          </div>
+
+          <div class="topic-item">
+            <div class="topic-icon">📊</div>
+            <div>
+              <strong>Normalize severity</strong>
+              <p>Make severity consistent across tools so analysts understand what needs immediate action.</p>
+            </div>
+          </div>
+
+          <div class="topic-item">
+            <div class="topic-icon">🧹</div>
+            <div>
+              <strong>Review false positives weekly</strong>
+              <p>Track repeat false positives and tune them during a recurring detection review.</p>
+            </div>
+          </div>
+
+          <div class="topic-item">
+            <div class="topic-icon">🔁</div>
+            <div>
+              <strong>Deduplicate related alerts</strong>
+              <p>Group repeated events into one investigation so analysts work incidents instead of endless rows.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <h2 id="how-cyberbench-helps">06. How CyberBench Helps</h2>
+
+      <p>
+        CyberBench helps reduce SIEM noise by turning alerts into structured,
+        prioritized workflows. Instead of leaving teams with raw detections,
+        CyberBench organizes alerts by severity, customer, asset, status,
+        assignment, remediation task, and business impact.
+      </p>
+
+      <p>
+        CyberBench is designed to connect monitoring to execution. Alerts can
+        become tickets. Tickets can trigger playbooks. Playbooks can drive
+        remediation. Remediation progress can roll into executive reporting.
+      </p>
+
+      <div class="callout">
+        <div class="callout-icon">🛡️</div>
+        <strong>
+          CyberBench helps teams move from alert overload to security operations
+          that are measurable, repeatable, and action-oriented.
+        </strong>
+      </div>
+
+      <div class="topic-list">
+        <div class="topic-item">
+          <div class="topic-icon">🎫</div>
+          <div>
+            <strong>Alert-to-ticket workflow</strong>
+            <p>Convert important alerts into assigned tickets with status, SLA, notes, and ownership.</p>
+          </div>
+        </div>
+
+        <div class="topic-item">
+          <div class="topic-icon">📘</div>
+          <div>
+            <strong>Playbooks</strong>
+            <p>Standardize response steps for common events like ransomware, brute force, malware, phishing, and backup failures.</p>
+          </div>
+        </div>
+
+        <div class="topic-item">
+          <div class="topic-icon">🛠️</div>
+          <div>
+            <strong>Remediation tracking</strong>
+            <p>Track what was fixed, who owns it, what is still open, and how much risk was reduced.</p>
+          </div>
+        </div>
+
+        <div class="topic-item">
+          <div class="topic-icon">📈</div>
+          <div>
+            <strong>Executive reporting</strong>
+            <p>Show leadership the trends that matter: risk reduced, alerts handled, tickets closed, and critical gaps remaining.</p>
+          </div>
+        </div>
+      </div>
 
     </article>
 
     <aside class="sidebar">
 
-      <div class="side-card">
-        <h3>Table of contents</h3>
-        <ul class="toc">
-          <li><span>01</span> Why SIEM Noise Happens</li>
-          <li><span>02</span> The Impact of Alert Noise</li>
-          <li><span>03</span> The Fastest Path to Less Noise</li>
-          <li><span>04</span> Week One: What You Can Fix Fast</li>
-          <li><span>05</span> Best Practices That Reduce Noise</li>
-          <li><span>06</span> How CyberBench Helps</li>
-        </ul>
-      </div>
+      <div class="sticky-stack">
 
-      <div class="side-card">
-        <h3>Key takeaways</h3>
-        <ul class="takeaway">
-          <li><span class="check">✓</span> Alert noise hides the threats that matter.</li>
-          <li><span class="check">✓</span> Most noise comes from default rules, scanners, and lack of context.</li>
-          <li><span class="check">✓</span> You can reduce noise significantly in your first week.</li>
-          <li><span class="check">✓</span> Better signal leads to faster response and stronger outcomes.</li>
-          <li><span class="check">✓</span> CyberBench helps teams focus on what matters.</li>
-        </ul>
-      </div>
+        <div class="side-card">
+          <h3>Table of contents</h3>
+          <ul class="toc">
+            <li><a href="#why-siem-noise-happens"><span>01</span> Why SIEM Noise Happens</a></li>
+            <li><a href="#impact-of-alert-noise"><span>02</span> The Impact of Alert Noise</a></li>
+            <li><a href="#fastest-path-less-noise"><span>03</span> The Fastest Path to Less Noise</a></li>
+            <li><a href="#week-one-fixes"><span>04</span> Week One: What You Can Fix Fast</a></li>
+            <li><a href="#best-practices-reduce-noise"><span>05</span> Best Practices That Reduce Noise</a></li>
+            <li><a href="#how-cyberbench-helps"><span>06</span> How CyberBench Helps</a></li>
+          </ul>
+        </div>
 
-      <div class="side-card cta">
-        <div class="cta-icon">🛡️</div>
-        <h3>Transform your SIEM into a high-signal engine.</h3>
-        <p>
-          See how CyberBench reduces alert noise and improves detection workflows.
-        </p>
-        <a class="btn primary full" href="/contact">Request a Demo →</a>
+        <div class="side-card">
+          <h3>Key takeaways</h3>
+          <ul class="takeaway">
+            <li><span class="check">✓</span> Alert noise hides the threats that matter.</li>
+            <li><span class="check">✓</span> Most noise comes from default rules, scanners, and lack of context.</li>
+            <li><span class="check">✓</span> You can reduce noise significantly in your first week.</li>
+            <li><span class="check">✓</span> Better signal leads to faster response and stronger outcomes.</li>
+            <li><span class="check">✓</span> CyberBench helps teams focus on what matters.</li>
+          </ul>
+        </div>
+
+        <div class="side-card cta">
+          <div class="cta-icon">🛡️</div>
+          <h3>Transform your SIEM into a high-signal engine.</h3>
+          <p>
+            See how CyberBench reduces alert noise and improves detection workflows.
+          </p>
+          <a class="btn primary full" href="/contact">Request a Demo →</a>
+        </div>
+
       </div>
 
     </aside>
