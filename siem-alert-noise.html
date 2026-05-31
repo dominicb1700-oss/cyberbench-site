@@ -421,6 +421,89 @@ h1{
   width:100%;
 }
 
+
+
+/* ===== CyberBench Current Website Header ===== */
+.site-header{
+  height:58px;
+  border-bottom:1px solid #121827;
+  background:#050814;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 24px;
+  position:sticky;
+  top:0;
+  z-index:100;
+}
+
+.site-brand{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  color:#fff;
+  font-size:22px;
+  font-weight:900;
+  letter-spacing:-.4px;
+  white-space:nowrap;
+}
+
+.site-logo{
+  width:26px;
+  height:26px;
+  border-radius:10px;
+  display:grid;
+  place-items:center;
+  background:linear-gradient(135deg,#246bff,#7b5cff);
+  color:#fff;
+  font-size:18px;
+  line-height:1;
+  font-weight:900;
+  box-shadow:0 0 20px rgba(123,92,255,.55);
+}
+
+.site-nav{
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  gap:30px;
+  color:#d8dfec;
+  font-size:14px;
+  font-weight:800;
+  margin-left:auto;
+  margin-right:28px;
+}
+
+.site-nav a{
+  color:#d8dfec;
+  transition:.2s ease;
+}
+
+.site-nav a:hover{
+  color:#fff;
+}
+
+.site-cta{
+  min-width:180px;
+  height:46px;
+  display:inline-flex;
+  align-items:center;
+  justify-content:center;
+  padding:0 22px;
+  border-radius:16px;
+  color:#fff;
+  font-size:14px;
+  font-weight:900;
+  background:linear-gradient(135deg,#5f74ff,#7b5cff);
+  box-shadow:0 12px 30px rgba(94,92,255,.22);
+  transition:.2s ease;
+}
+
+.site-cta:hover{
+  transform:translateY(-1px);
+  box-shadow:0 16px 36px rgba(94,92,255,.32);
+}
+
 @media(max-width:1000px){
   .hero,
   .content-grid{
@@ -435,7 +518,8 @@ h1{
     font-size:44px;
   }
 
-  .nav{
+  .nav,
+  .site-nav{
     display:none;
   }
 
@@ -453,7 +537,8 @@ h1{
     padding:0 18px;
   }
 
-  .actions{
+  .actions,
+  .site-cta{
     display:none;
   }
 
@@ -488,24 +573,21 @@ h1{
 
 <body>
 
-<header class="header">
-  <a class="logo" href="/">
-    <span class="logo-icon">⬢</span>
-    CyberBench
+<header class="site-header">
+  <a class="site-brand" href="/" aria-label="CyberBench home">
+    <span class="site-logo" aria-hidden="true">×</span>
+    <span>CyberBench</span>
   </a>
 
-  <nav class="nav">
-    <a href="/platform">Platform</a>
-    <a href="/solutions">Solutions⌄</a>
-    <a href="/resources">Resources⌄</a>
-    <a href="/company">Company⌄</a>
-    <a href="/pricing">Pricing</a>
+  <nav class="site-nav" aria-label="Main navigation">
+    <a href="/services">Services</a>
+    <a href="/about">About</a>
+    <a href="/blog">Blog</a>
+    <a href="/client-portal">Client Portal</a>
+    <a href="/consultant-portal">Consultant Portal</a>
   </nav>
 
-  <div class="actions">
-    <a class="btn" href="/client-portal">Log in</a>
-    <a class="btn primary" href="/contact">Request a Demo</a>
-  </div>
+  <a class="site-cta" href="/client-portal">Deploy Security Now</a>
 </header>
 
 <main class="page">
