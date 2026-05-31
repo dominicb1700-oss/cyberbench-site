@@ -1,6 +1,5 @@
 <!doctype html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,140 +7,382 @@
   <title>Cyber Incident Response | CyberBench</title>
 
   <link rel="icon" type="image/png" href="/favicon.png">
-
   <link rel="stylesheet" href="/styles.css" />
 
   <style>
+    html{
+      scroll-behavior:smooth;
+    }
 
     body{
       background:
         radial-gradient(circle at top left, rgba(45,85,255,.16), transparent 30%),
+        radial-gradient(circle at top right, rgba(130,83,255,.12), transparent 28%),
         #050816;
-
       color:#f3f6ff;
     }
 
-    .blog-wrap{
-      width:min(900px,92%);
+    .article-page{
+      width:min(1180px,92%);
       margin:0 auto;
-      padding:80px 0;
+      padding:72px 0 90px;
+    }
+
+    .article-hero{
+      display:grid;
+      grid-template-columns:minmax(0,1fr) 430px;
+      gap:56px;
+      align-items:center;
+      padding-bottom:52px;
+      border-bottom:1px solid rgba(255,255,255,.08);
     }
 
     .blog-tag{
       display:inline-flex;
       align-items:center;
-
       height:34px;
       padding:0 14px;
-
       border-radius:999px;
-
       background:rgba(77,124,255,.12);
-
       border:1px solid rgba(77,124,255,.28);
-
       color:#7da2ff;
-
       font-size:12px;
-      font-weight:700;
+      font-weight:800;
       letter-spacing:.08em;
-
       margin-bottom:24px;
     }
 
     .blog-title{
-      font-size:56px;
-      line-height:1.05;
-      font-weight:800;
-      letter-spacing:-2px;
-
-      max-width:13ch;
-
+      font-size:58px;
+      line-height:1.04;
+      font-weight:900;
+      letter-spacing:-2.2px;
+      max-width:12ch;
       margin:0 0 24px;
     }
 
-    .blog-meta{
-      color:rgba(255,255,255,.55);
-
-      font-size:15px;
-
-      margin-bottom:40px;
-    }
-
-    .blog-intro{
-      font-size:22px;
-      line-height:1.7;
-
-      color:rgba(255,255,255,.88);
-
-      margin-bottom:40px;
-    }
-
-    .blog-wrap p{
-      color:rgba(255,255,255,.74);
-
-      line-height:1.9;
-
-      font-size:18px;
-
+    .hero-copy{
+      max-width:690px;
+      color:rgba(255,255,255,.76);
+      font-size:20px;
+      line-height:1.75;
       margin-bottom:28px;
     }
 
-    .blog-wrap h2{
+    .blog-meta{
+      display:flex;
+      flex-wrap:wrap;
+      gap:14px;
+      color:rgba(255,255,255,.56);
+      font-size:15px;
+      align-items:center;
+    }
+
+    .hero-visual{
+      min-height:330px;
+      border-radius:22px;
+      border:1px solid rgba(77,124,255,.25);
+      background:
+        radial-gradient(circle at 50% 45%, rgba(77,124,255,.42), transparent 24%),
+        radial-gradient(circle at 75% 35%, rgba(255,64,85,.16), transparent 30%),
+        linear-gradient(145deg, rgba(11,22,40,.96), rgba(7,12,28,.96));
+      box-shadow:0 30px 90px rgba(0,0,0,.42);
+      display:grid;
+      place-items:center;
+      overflow:hidden;
+      position:relative;
+    }
+
+    .hero-visual::before{
+      content:"";
+      position:absolute;
+      inset:34px;
+      border:1px solid rgba(255,255,255,.05);
+      border-radius:18px;
+      background:
+        linear-gradient(90deg, rgba(255,255,255,.04) 1px, transparent 1px),
+        linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px);
+      background-size:34px 34px;
+      mask-image:radial-gradient(circle, black 35%, transparent 72%);
+    }
+
+    .incident-orb{
+      width:180px;
+      height:180px;
+      border-radius:50%;
+      background:radial-gradient(circle at 35% 30%, #ff6b7a, #246bff 48%, #111b34 72%);
+      box-shadow:
+        0 0 70px rgba(36,107,255,.72),
+        0 0 38px rgba(255,64,85,.42);
+      position:relative;
+      display:grid;
+      place-items:center;
+      font-size:72px;
+      z-index:2;
+    }
+
+    .incident-orb::before,
+    .incident-orb::after{
+      content:"";
+      position:absolute;
+      inset:-34px;
+      border:1px solid rgba(125,162,255,.25);
+      border-radius:50%;
+    }
+
+    .incident-orb::after{
+      inset:-68px;
+      opacity:.45;
+    }
+
+    .content-grid{
+      display:grid;
+      grid-template-columns:minmax(0, 700px) 360px;
+      gap:72px;
+      align-items:start;
+      margin-top:42px;
+    }
+
+    .article{
+      max-width:700px;
+      width:100%;
+    }
+
+    .share{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      margin-bottom:34px;
+      color:rgba(255,255,255,.62);
+    }
+
+    .share-btn{
+      width:42px;
+      height:42px;
+      border-radius:50%;
+      background:rgba(255,255,255,.04);
+      border:1px solid rgba(255,255,255,.08);
+      display:grid;
+      place-items:center;
+      font-weight:800;
+      transition:.2s ease;
+    }
+
+    .share-btn:hover{
+      transform:translateY(-2px);
+      border-color:rgba(77,124,255,.5);
+      color:#7da2ff;
+    }
+
+    .article p{
+      color:rgba(255,255,255,.75);
+      line-height:1.9;
+      font-size:18px;
+      margin-bottom:26px;
+    }
+
+    .article h2{
       font-size:34px;
       line-height:1.2;
-
-      margin-top:70px;
+      margin-top:68px;
       margin-bottom:20px;
-
       letter-spacing:-1px;
+      scroll-margin-top:110px;
     }
 
-    .blog-wrap h3{
-      font-size:26px;
-
-      margin-top:42px;
-      margin-bottom:16px;
-
-      letter-spacing:-.5px;
-    }
-
-    .blog-wrap ul{
-      padding-left:22px;
-      margin-bottom:34px;
-    }
-
-    .blog-wrap li{
+    .article h3{
+      font-size:24px;
+      margin-top:34px;
       margin-bottom:14px;
+    }
 
+    .article ul{
+      margin:16px 0 30px;
+      padding-left:22px;
+    }
+
+    .article li{
       color:rgba(255,255,255,.74);
-
+      margin-bottom:12px;
       line-height:1.8;
-      font-size:18px;
+      font-size:17px;
     }
 
     .article-callout{
-      background:rgba(255,255,255,.03);
-
-      border:1px solid rgba(255,255,255,.06);
-
-      border-left:4px solid #4d7cff;
-
-      padding:28px;
-
+      display:flex;
+      gap:18px;
+      align-items:center;
+      background:linear-gradient(135deg,rgba(77,124,255,.16),rgba(123,92,255,.10));
+      border:1px solid rgba(77,124,255,.34);
+      padding:26px;
       border-radius:20px;
-
       margin:40px 0;
+      line-height:1.7;
+      font-size:20px;
+      font-weight:800;
+    }
 
-      line-height:1.8;
+    .callout-icon{
+      width:62px;
+      height:62px;
+      border-radius:18px;
+      display:grid;
+      place-items:center;
+      background:linear-gradient(135deg,#246bff,#7b5cff);
+      flex:none;
+      font-size:30px;
+      box-shadow:0 18px 45px rgba(36,107,255,.25);
+    }
+
+    .step-card-list{
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:18px;
+      overflow:hidden;
+      background:rgba(8,20,34,.72);
+      margin:24px 0 36px;
+    }
+
+    .step-card{
+      display:grid;
+      grid-template-columns:58px 1fr;
+      gap:18px;
+      padding:20px;
+      border-bottom:1px solid rgba(255,255,255,.08);
+    }
+
+    .step-card:last-child{
+      border-bottom:0;
+    }
+
+    .step-icon{
+      width:48px;
+      height:48px;
+      border-radius:14px;
+      background:rgba(77,124,255,.16);
+      display:grid;
+      place-items:center;
+      font-size:24px;
+    }
+
+    .step-card strong{
+      display:block;
+      font-size:18px;
+      margin-bottom:5px;
+    }
+
+    .step-card p{
+      margin:0;
+      font-size:15px;
+      color:rgba(255,255,255,.62);
+    }
+
+    .article-sidebar{
+      position:sticky;
+      top:110px;
+      align-self:start;
+      height:max-content;
+      display:flex;
+      flex-direction:column;
+      gap:24px;
+      z-index:1;
+    }
+
+    .side-card{
+      background:rgba(8,20,34,.88);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:18px;
+      padding:24px;
+      box-shadow:0 20px 60px rgba(0,0,0,.22);
+    }
+
+    .side-card h3{
+      font-size:22px;
+      margin-bottom:18px;
+    }
+
+    .toc{
+      display:flex;
+      flex-direction:column;
+      gap:12px;
+    }
+
+    .toc a{
+      display:grid;
+      grid-template-columns:36px 1fr;
+      gap:10px;
+      color:rgba(255,255,255,.74);
+      text-decoration:none;
+      line-height:1.5;
+      font-weight:700;
+      transition:.2s ease;
+    }
+
+    .toc a:hover{
+      color:#7da2ff;
+      transform:translateX(2px);
+    }
+
+    .toc span{
+      color:#7da2ff;
+      font-weight:900;
+    }
+
+    .takeaway{
+      display:flex;
+      flex-direction:column;
+      gap:14px;
+    }
+
+    .takeaway li{
+      list-style:none;
+      display:flex;
+      gap:12px;
+      color:rgba(255,255,255,.76);
+      line-height:1.55;
+    }
+
+    .check{
+      width:24px;
+      height:24px;
+      border-radius:50%;
+      background:linear-gradient(135deg,#246bff,#7b5cff);
+      display:grid;
+      place-items:center;
+      flex:none;
+      font-size:13px;
+      font-weight:900;
+    }
+
+    .cta{
+      background:linear-gradient(180deg,rgba(77,124,255,.18),rgba(8,20,34,.92));
+    }
+
+    .cta-icon{
+      width:58px;
+      height:58px;
+      border-radius:16px;
+      display:grid;
+      place-items:center;
+      background:rgba(77,124,255,.18);
+      font-size:28px;
+      margin-bottom:18px;
+    }
+
+    .cta p{
+      color:rgba(255,255,255,.64);
+      line-height:1.65;
+      margin:10px 0 22px;
+    }
+
+    .full{
+      width:100%;
+      text-align:center;
     }
 
     .footer{
       border-top:1px solid rgba(255,255,255,.06);
-
       margin-top:80px;
       padding:40px 0;
-
       text-align:center;
     }
 
@@ -150,7 +391,6 @@
       justify-content:center;
       gap:24px;
       flex-wrap:wrap;
-
       margin-bottom:20px;
     }
 
@@ -163,372 +403,347 @@
       color:rgba(255,255,255,.55);
     }
 
-    @media(max-width:900px){
+    @media(max-width:1050px){
+      .article-hero,
+      .content-grid{
+        grid-template-columns:1fr;
+      }
+
+      .article,
+      .blog-title{
+        max-width:100%;
+      }
+
+      .article-sidebar{
+        position:static;
+      }
+    }
+
+    @media(max-width:700px){
+      .article-page{
+        padding:46px 0 70px;
+      }
 
       .blog-title{
         font-size:42px;
       }
 
-      .blog-intro{
-        font-size:19px;
+      .hero-copy{
+        font-size:18px;
       }
 
+      .hero-visual{
+        min-height:260px;
+      }
+
+      .article p{
+        font-size:16px;
+      }
+
+      .article-callout{
+        align-items:flex-start;
+        flex-direction:column;
+      }
     }
-
   </style>
-
 </head>
 
 <body>
 
 <header class="nav">
-
   <div class="container nav_row">
-
     <a class="brand" href="/index.html">
       <span class="logo">X</span>
       <span>CyberBench</span>
     </a>
 
     <nav class="nav_links">
-
       <a href="/services.html">Services</a>
-
       <a href="/about.html">About</a>
-
       <a href="/blog.html" class="nav-active">Blog</a>
-
       <a href="/client-portal.html">Client Portal</a>
-
       <a href="/consultant-portal.html">Consultant Portal</a>
-
-      <a class="btn btn-primary" href="/submit-ticket.html">
-        Deploy Security Now
-      </a>
-
+      <a class="btn btn-primary" href="/submit-ticket.html">Deploy Security Now</a>
     </nav>
-
   </div>
-
 </header>
 
-<main class="blog-wrap">
-
-  <div class="blog-tag">
-    INCIDENT
-  </div>
-
-  <h1 class="blog-title">
-    What to do in the first 30 minutes of a cyber incident
-  </h1>
-
-  <div class="blog-meta">
-    6 min read · Playbook
-  </div>
-
-  <p class="blog-intro">
-    The first 30 minutes of a cyber incident often determine the outcome.
-    Organizations that respond quickly and methodically reduce operational impact,
-    preserve visibility, and improve containment effectiveness.
-  </p>
-
-  <p>
-    Unfortunately, many organizations enter incidents without clear ownership,
-    communication workflows, or operational procedures.
-    This creates confusion during the exact moment clarity matters most.
-  </p>
-
-  <p>
-    Strong incident response is not just technical.
-    It is operational discipline under pressure.
-  </p>
-
-  <div class="article-callout">
-
-    During a cyber incident, confusion spreads faster than malware.
-    The first priority is stabilizing operations and creating structure.
-
-  </div>
-
-  <h2>
-    Minute 1–5: Confirm the Incident
-  </h2>
-
-  <p>
-    The first step is determining whether the event is real,
-    what systems may be affected,
-    and whether the organization is facing operational risk.
-  </p>
-
-  <p>
-    Security teams should immediately:
-  </p>
-
-  <ul>
-
-    <li>Validate alerts</li>
-
-    <li>Identify impacted systems</li>
-
-    <li>Determine severity</li>
-
-    <li>Review active user sessions</li>
-
-    <li>Check for suspicious lateral movement</li>
-
-  </ul>
-
-  <p>
-    Avoid rushing directly into containment without understanding the scope.
-    Premature actions can destroy visibility and complicate investigations.
-  </p>
-
-  <h2>
-    Minute 5–10: Establish Leadership
-  </h2>
-
-  <p>
-    Every incident requires clear ownership.
-  </p>
-
-  <p>
-    Organizations should assign:
-  </p>
-
-  <ul>
-
-    <li>Incident lead</li>
-
-    <li>Technical lead</li>
-
-    <li>Executive communication lead</li>
-
-    <li>Documentation owner</li>
-
-  </ul>
-
-  <p>
-    Communication channels should be established immediately.
-  </p>
-
-  <p>
-    Teams should avoid relying on potentially compromised platforms when possible.
-  </p>
-
-  <h2>
-    Minute 10–15: Stabilize the Environment
-  </h2>
-
-  <p>
-    Once the incident is confirmed,
-    teams should begin reducing immediate risk.
-  </p>
-
-  <p>
-    Common stabilization actions include:
-  </p>
-
-  <ul>
-
-    <li>Isolating affected endpoints</li>
-
-    <li>Disabling compromised accounts</li>
-
-    <li>Restricting administrative access</li>
-
-    <li>Blocking malicious IPs</li>
-
-    <li>Segmenting affected systems</li>
-
-  </ul>
-
-  <p>
-    The goal is containment without destroying forensic visibility.
-  </p>
-
-  <h2>
-    Minute 15–20: Preserve Evidence
-  </h2>
-
-  <p>
-    Many organizations accidentally destroy critical evidence during response operations.
-  </p>
-
-  <p>
-    Preserve:
-  </p>
-
-  <ul>
-
-    <li>System logs</li>
-
-    <li>Firewall telemetry</li>
-
-    <li>Endpoint alerts</li>
-
-    <li>Authentication events</li>
-
-    <li>Memory captures when appropriate</li>
-
-  </ul>
-
-  <p>
-    Documentation should begin immediately.
-  </p>
-
-  <p>
-    Track:
-  </p>
-
-  <ul>
-
-    <li>Timeline of events</li>
-
-    <li>Actions taken</li>
-
-    <li>Systems impacted</li>
-
-    <li>Decision points</li>
-
-    <li>Containment actions</li>
-
-  </ul>
-
-  <h2>
-    Minute 20–25: Assess Business Impact
-  </h2>
-
-  <p>
-    Technical severity does not always equal operational severity.
-  </p>
-
-  <p>
-    Organizations should evaluate:
-  </p>
-
-  <ul>
-
-    <li>Critical systems affected</li>
-
-    <li>Customer impact</li>
-
-    <li>Operational downtime</li>
-
-    <li>Data exposure risk</li>
-
-    <li>Regulatory obligations</li>
-
-  </ul>
-
-  <p>
-    Executive stakeholders should receive concise,
-    operationally focused updates.
-  </p>
-
-  <h2>
-    Minute 25–30: Establish the Operating Picture
-  </h2>
-
-  <p>
-    By the 30-minute mark,
-    the organization should understand:
-  </p>
-
-  <ul>
-
-    <li>What happened</li>
-
-    <li>What systems are affected</li>
-
-    <li>What actions were taken</li>
-
-    <li>What the immediate priorities are</li>
-
-    <li>What additional resources may be required</li>
-
-  </ul>
-
-  <p>
-    The objective is not solving the incident within 30 minutes.
-  </p>
-
-  <p>
-    The objective is creating operational control.
-  </p>
-
-  <h2>
-    Common Incident Response Mistakes
-  </h2>
-
-  <p>
-    Organizations frequently:
-  </p>
-
-  <ul>
-
-    <li>Panic and overreact</li>
-
-    <li>Destroy evidence</li>
-
-    <li>Shut systems down too early</li>
-
-    <li>Fail to document decisions</li>
-
-    <li>Delay executive communication</li>
-
-    <li>Operate without clear ownership</li>
-
-  </ul>
-
-  <p>
-    Mature incident response depends on structure,
-    communication,
-    and repeatable workflows.
-  </p>
-
-  <h2>
-    Final Thoughts
-  </h2>
-
-  <p>
-    The first 30 minutes of a cyber incident are about stabilization,
-    coordination,
-    and visibility.
-  </p>
-
-  <p>
-    Organizations that prepare before incidents occur respond faster,
-    contain threats more effectively,
-    and reduce operational damage significantly.
-  </p>
-
-  <p>
-    Incident response is not only about technology.
-    It is about maintaining operational clarity during chaos.
-  </p>
+<main class="article-page">
+
+  <section class="article-hero">
+    <div>
+      <div class="blog-tag">INCIDENT RESPONSE</div>
+
+      <h1 class="blog-title">
+        What to do in the first 30 minutes of a cyber incident
+      </h1>
+
+      <p class="hero-copy">
+        The first 30 minutes of a cyber incident often determine the outcome.
+        Fast, structured decisions reduce operational impact, preserve evidence,
+        and improve containment effectiveness.
+      </p>
+
+      <div class="blog-meta">
+        <span>May 2026</span>
+        <span>·</span>
+        <span>6 min read</span>
+        <span>·</span>
+        <span>Playbook</span>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="incident-orb">⚡</div>
+    </div>
+  </section>
+
+  <section class="content-grid">
+
+    <article class="article">
+
+      <div class="share">
+        <span>Share this article:</span>
+        <a class="share-btn" href="#">in</a>
+        <a class="share-btn" href="#">𝕏</a>
+        <a class="share-btn" href="#">f</a>
+        <a class="share-btn" href="#">🔗</a>
+      </div>
+
+      <p>
+        Unfortunately, many organizations enter incidents without clear ownership,
+        communication workflows, or operational procedures. This creates confusion
+        during the exact moment clarity matters most.
+      </p>
+
+      <p>
+        Strong incident response is not just technical. It is operational discipline
+        under pressure.
+      </p>
+
+      <div class="article-callout">
+        <div class="callout-icon">🚨</div>
+        <div>
+          During a cyber incident, confusion spreads faster than malware.
+          The first priority is stabilizing operations and creating structure.
+        </div>
+      </div>
+
+      <h2 id="confirm-incident">01. Minute 1–5: Confirm the Incident</h2>
+
+      <p>
+        The first step is determining whether the event is real, what systems may be
+        affected, and whether the organization is facing operational risk.
+      </p>
+
+      <div class="step-card-list">
+        <div class="step-card">
+          <div class="step-icon">🔎</div>
+          <div>
+            <strong>Validate alerts</strong>
+            <p>Confirm the event with available SIEM, endpoint, firewall, and identity telemetry.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-icon">💻</div>
+          <div>
+            <strong>Identify impacted systems</strong>
+            <p>Determine which assets, users, servers, or applications appear affected.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-icon">⚠️</div>
+          <div>
+            <strong>Determine severity</strong>
+            <p>Assess whether the event is isolated, spreading, business-impacting, or data-related.</p>
+          </div>
+        </div>
+      </div>
+
+      <p>
+        Avoid rushing directly into containment without understanding the scope.
+        Premature actions can destroy visibility and complicate investigations.
+      </p>
+
+      <h2 id="establish-leadership">02. Minute 5–10: Establish Leadership</h2>
+
+      <p>
+        Every incident requires clear ownership. Assign an incident lead, technical
+        lead, executive communication lead, and documentation owner as early as possible.
+      </p>
+
+      <p>
+        Communication channels should be established immediately, and teams should
+        avoid relying on potentially compromised platforms when possible.
+      </p>
+
+      <h2 id="stabilize-environment">03. Minute 10–15: Stabilize the Environment</h2>
+
+      <p>
+        Once the incident is confirmed, teams should begin reducing immediate risk
+        without destroying the evidence needed to understand what happened.
+      </p>
+
+      <div class="step-card-list">
+        <div class="step-card">
+          <div class="step-icon">🧱</div>
+          <div>
+            <strong>Contain affected systems</strong>
+            <p>Isolate impacted endpoints, segment affected networks, or restrict risky traffic.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-icon">🔐</div>
+          <div>
+            <strong>Control accounts</strong>
+            <p>Disable compromised users, reset credentials, and restrict administrative access.</p>
+          </div>
+        </div>
+        <div class="step-card">
+          <div class="step-icon">🌐</div>
+          <div>
+            <strong>Block known malicious indicators</strong>
+            <p>Block malicious IPs, domains, hashes, or command-and-control infrastructure.</p>
+          </div>
+        </div>
+      </div>
+
+      <h2 id="preserve-evidence">04. Minute 15–20: Preserve Evidence</h2>
+
+      <p>
+        Many organizations accidentally destroy critical evidence during response
+        operations. Preserve system logs, firewall telemetry, endpoint alerts,
+        authentication events, and memory captures when appropriate.
+      </p>
+
+      <p>
+        Documentation should begin immediately. Track the timeline of events,
+        actions taken, systems impacted, decision points, and containment actions.
+      </p>
+
+      <h2 id="assess-impact">05. Minute 20–25: Assess Business Impact</h2>
+
+      <p>
+        Technical severity does not always equal operational severity. Evaluate
+        critical systems affected, customer impact, downtime, data exposure risk,
+        and regulatory obligations.
+      </p>
+
+      <p>
+        Executive stakeholders should receive concise, operationally focused updates
+        instead of raw technical detail.
+      </p>
+
+      <h2 id="operating-picture">06. Minute 25–30: Establish the Operating Picture</h2>
+
+      <p>
+        By the 30-minute mark, the organization should understand what happened,
+        what systems are affected, what actions were taken, what the immediate
+        priorities are, and what additional resources may be required.
+      </p>
+
+      <p>
+        The objective is not solving the incident within 30 minutes. The objective
+        is creating operational control.
+      </p>
+
+      <h2 id="common-mistakes">Common Incident Response Mistakes</h2>
+
+      <p>
+        Organizations frequently panic, overreact, destroy evidence, shut systems
+        down too early, fail to document decisions, delay executive communication,
+        and operate without clear ownership.
+      </p>
+
+      <p>
+        Mature incident response depends on structure, communication, and repeatable
+        workflows.
+      </p>
+
+      <h2 id="how-cyberbench-helps">How CyberBench Helps</h2>
+
+      <p>
+        CyberBench helps organizations turn incident response into an operational
+        workflow. Alerts can become tickets, tickets can launch playbooks, analysts
+        can track containment actions, and leadership can see progress through
+        executive-ready reporting.
+      </p>
+
+      <p>
+        Instead of managing incidents through scattered notes, chat messages, and
+        disconnected tools, CyberBench centralizes visibility, ownership, response
+        actions, remediation, and documentation.
+      </p>
+
+      <h2>Final Thoughts</h2>
+
+      <p>
+        The first 30 minutes of a cyber incident are about stabilization,
+        coordination, and visibility. Organizations that prepare before incidents
+        occur respond faster, contain threats more effectively, and reduce
+        operational damage significantly.
+      </p>
+
+      <p>
+        Incident response is not only about technology. It is about maintaining
+        operational clarity during chaos.
+      </p>
+
+    </article>
+
+    <aside class="article-sidebar">
+
+      <div class="side-card">
+        <h3>Table of contents</h3>
+        <nav class="toc">
+          <a href="#confirm-incident"><span>01</span> Minute 1–5: Confirm the Incident</a>
+          <a href="#establish-leadership"><span>02</span> Minute 5–10: Establish Leadership</a>
+          <a href="#stabilize-environment"><span>03</span> Minute 10–15: Stabilize the Environment</a>
+          <a href="#preserve-evidence"><span>04</span> Minute 15–20: Preserve Evidence</a>
+          <a href="#assess-impact"><span>05</span> Minute 20–25: Assess Business Impact</a>
+          <a href="#operating-picture"><span>06</span> Minute 25–30: Establish the Operating Picture</a>
+        </nav>
+      </div>
+
+      <div class="side-card">
+        <h3>Key takeaways</h3>
+        <ul class="takeaway">
+          <li><span class="check">✓</span> The first 30 minutes should create control, not chaos.</li>
+          <li><span class="check">✓</span> Clear ownership prevents duplicated or missed actions.</li>
+          <li><span class="check">✓</span> Containment should not destroy visibility.</li>
+          <li><span class="check">✓</span> Evidence preservation protects investigation quality.</li>
+          <li><span class="check">✓</span> Executive updates should focus on business impact.</li>
+        </ul>
+      </div>
+
+      <div class="side-card cta">
+        <div class="cta-icon">🛡️</div>
+        <h3>Turn incidents into structured response workflows.</h3>
+        <p>
+          CyberBench helps teams track alerts, execute playbooks, assign ownership,
+          and report response progress.
+        </p>
+        <a class="btn btn-primary full" href="/submit-ticket.html">Deploy Security Now</a>
+      </div>
+
+    </aside>
+
+  </section>
 
 </main>
 
 <footer class="footer">
-
   <nav class="footer-nav">
-
     <a href="/services.html">Services</a>
-
     <a href="/about.html">About</a>
-
     <a href="/blog.html">Blog</a>
-
     <a href="/client-portal.html">Client Portal</a>
-
     <a href="/consultant-portal.html">Consultant Portal</a>
-
   </nav>
 
   <div class="footer-bottom">
     © 2026 CyberBench. All rights reserved.
   </div>
-
 </footer>
 
 </body>
