@@ -1,6 +1,5 @@
 <!doctype html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,140 +7,367 @@
   <title>Compliance Readiness | CyberBench</title>
 
   <link rel="icon" type="image/png" href="/favicon.png">
-
   <link rel="stylesheet" href="/styles.css" />
 
   <style>
+    html{scroll-behavior:smooth}
 
     body{
       background:
-        radial-gradient(circle at top left, rgba(45,85,255,.16), transparent 30%),
+        radial-gradient(circle at top left, rgba(45,85,255,.18), transparent 30%),
+        radial-gradient(circle at top right, rgba(123,92,255,.12), transparent 28%),
         #050816;
-
       color:#f3f6ff;
     }
 
-    .blog-wrap{
-      width:min(900px,92%);
+    .article-shell{
+      width:min(1180px,92%);
       margin:0 auto;
-      padding:80px 0;
+      padding:76px 0 90px;
+    }
+
+    .article-hero{
+      display:grid;
+      grid-template-columns:minmax(0,1fr) 500px;
+      gap:52px;
+      align-items:center;
+      padding-bottom:48px;
+      border-bottom:1px solid rgba(255,255,255,.07);
     }
 
     .blog-tag{
       display:inline-flex;
       align-items:center;
-
       height:34px;
       padding:0 14px;
-
       border-radius:999px;
-
       background:rgba(77,124,255,.12);
-
       border:1px solid rgba(77,124,255,.28);
-
       color:#7da2ff;
-
       font-size:12px;
-      font-weight:700;
+      font-weight:800;
       letter-spacing:.08em;
-
       margin-bottom:24px;
     }
 
-    .blog-title{
-      font-size:56px;
-      line-height:1.05;
-      font-weight:800;
+    .article-title{
+      font-size:58px;
+      line-height:1.04;
+      font-weight:850;
       letter-spacing:-2px;
-
-      max-width:14ch;
-
+      max-width:12ch;
       margin:0 0 24px;
     }
 
-    .blog-meta{
+    .article-intro{
+      font-size:21px;
+      line-height:1.75;
+      color:rgba(255,255,255,.82);
+      max-width:680px;
+    }
+
+    .article-meta{
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
       color:rgba(255,255,255,.55);
-
       font-size:15px;
-
-      margin-bottom:40px;
+      margin-top:28px;
     }
 
-    .blog-intro{
-      font-size:22px;
-      line-height:1.7;
-
-      color:rgba(255,255,255,.88);
-
-      margin-bottom:40px;
+    .hero-visual{
+      min-height:340px;
+      border-radius:24px;
+      border:1px solid rgba(77,124,255,.28);
+      background:
+        radial-gradient(circle at 50% 35%,rgba(77,124,255,.34),transparent 28%),
+        radial-gradient(circle at 72% 72%,rgba(123,92,255,.28),transparent 30%),
+        linear-gradient(145deg,#07111f,#0b1530);
+      box-shadow:0 30px 90px rgba(0,0,0,.46);
+      display:grid;
+      place-items:center;
+      overflow:hidden;
+      position:relative;
     }
 
-    .blog-wrap p{
-      color:rgba(255,255,255,.74);
+    .hero-visual::before{
+      content:"";
+      position:absolute;
+      inset:38px;
+      border-radius:22px;
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(255,255,255,.025);
+    }
 
-      line-height:1.9;
+    .compliance-mark{
+      width:210px;
+      height:210px;
+      border-radius:34px;
+      background:linear-gradient(135deg,rgba(36,107,255,.95),rgba(123,92,255,.95));
+      display:grid;
+      place-items:center;
+      font-size:88px;
+      box-shadow:0 0 70px rgba(77,124,255,.55);
+      position:relative;
+      z-index:2;
+    }
 
-      font-size:18px;
+    .compliance-mark::after{
+      content:"Controls";
+      position:absolute;
+      bottom:-42px;
+      font-size:15px;
+      letter-spacing:.14em;
+      text-transform:uppercase;
+      color:#b8c4d8;
+    }
 
+    .content-grid{
+      display:grid;
+      grid-template-columns:minmax(0,720px) 360px;
+      gap:64px;
+      align-items:start;
+      margin-top:42px;
+    }
+
+    .article{
+      max-width:720px;
+      width:100%;
+    }
+
+    .share{
+      display:flex;
+      align-items:center;
+      gap:14px;
       margin-bottom:28px;
+      color:#b8c4d8;
     }
 
-    .blog-wrap h2{
+    .share-btn{
+      width:42px;
+      height:42px;
+      border-radius:50%;
+      background:#081422;
+      border:1px solid #1b3048;
+      display:grid;
+      place-items:center;
+      font-weight:900;
+      transition:.2s ease;
+    }
+
+    .share-btn:hover{
+      transform:translateY(-2px);
+      border-color:#4d7cff;
+    }
+
+    .article p{
+      color:rgba(255,255,255,.74);
+      line-height:1.9;
+      font-size:18px;
+      margin-bottom:26px;
+    }
+
+    .article h2{
       font-size:34px;
       line-height:1.2;
-
-      margin-top:70px;
+      margin-top:72px;
       margin-bottom:20px;
-
       letter-spacing:-1px;
+      scroll-margin-top:110px;
     }
 
-    .blog-wrap h3{
-      font-size:26px;
-
-      margin-top:42px;
-      margin-bottom:16px;
-
+    .article h3{
+      font-size:24px;
+      margin-top:34px;
+      margin-bottom:14px;
       letter-spacing:-.5px;
     }
 
-    .blog-wrap ul{
-      padding-left:22px;
-      margin-bottom:34px;
+    .article ul{
+      padding-left:0;
+      margin:22px 0 34px;
+      display:grid;
+      gap:12px;
     }
 
-    .blog-wrap li{
-      margin-bottom:14px;
+    .article li{
+      list-style:none;
+      color:rgba(255,255,255,.76);
+      line-height:1.75;
+      font-size:17px;
+      background:rgba(255,255,255,.025);
+      border:1px solid rgba(255,255,255,.06);
+      border-radius:14px;
+      padding:14px 16px 14px 46px;
+      position:relative;
+    }
 
-      color:rgba(255,255,255,.74);
-
-      line-height:1.8;
-      font-size:18px;
+    .article li::before{
+      content:"✓";
+      position:absolute;
+      left:16px;
+      top:14px;
+      width:22px;
+      height:22px;
+      border-radius:999px;
+      display:grid;
+      place-items:center;
+      background:linear-gradient(135deg,#246bff,#7b5cff);
+      color:#fff;
+      font-size:12px;
+      font-weight:900;
     }
 
     .article-callout{
-      background:rgba(255,255,255,.03);
+      display:flex;
+      gap:20px;
+      align-items:center;
+      background:linear-gradient(135deg,rgba(77,124,255,.16),rgba(123,92,255,.10));
+      border:1px solid rgba(77,124,255,.34);
+      padding:26px;
+      border-radius:22px;
+      margin:42px 0;
+      line-height:1.7;
+      color:#f5f7fb;
+      font-size:20px;
+      font-weight:800;
+    }
 
+    .callout-icon{
+      width:62px;
+      height:62px;
+      border-radius:16px;
+      flex:none;
+      display:grid;
+      place-items:center;
+      background:linear-gradient(135deg,#246bff,#7b5cff);
+      font-size:28px;
+      box-shadow:0 0 36px rgba(77,124,255,.38);
+    }
+
+    .section-card{
       border:1px solid rgba(255,255,255,.06);
-
-      border-left:4px solid #4d7cff;
-
-      padding:28px;
-
+      background:rgba(8,20,34,.55);
       border-radius:20px;
+      padding:24px;
+      margin:30px 0;
+    }
 
-      margin:40px 0;
+    .section-card p:last-child{
+      margin-bottom:0;
+    }
 
-      line-height:1.8;
+    .sidebar{
+      position:sticky;
+      top:110px;
+      align-self:start;
+      height:max-content;
+      display:flex;
+      flex-direction:column;
+      gap:24px;
+      z-index:1;
+    }
+
+    .side-card{
+      background:rgba(8,20,34,.88);
+      border:1px solid #1b3048;
+      border-radius:18px;
+      padding:24px;
+      box-shadow:0 20px 60px rgba(0,0,0,.25);
+    }
+
+    .side-card h3{
+      font-size:22px;
+      margin-bottom:18px;
+      letter-spacing:-.4px;
+    }
+
+    .toc{
+      display:grid;
+      gap:10px;
+    }
+
+    .toc li{
+      list-style:none;
+    }
+
+    .toc a{
+      display:grid;
+      grid-template-columns:38px 1fr;
+      gap:10px;
+      color:#d7e0ee;
+      text-decoration:none;
+      line-height:1.45;
+      padding:8px 0;
+      transition:.2s ease;
+    }
+
+    .toc a:hover{
+      color:#58a6ff;
+      transform:translateX(3px);
+    }
+
+    .toc span{
+      color:#58a6ff;
+      font-weight:900;
+    }
+
+    .takeaway{
+      display:grid;
+      gap:12px;
+    }
+
+    .takeaway li{
+      list-style:none;
+      display:flex;
+      gap:12px;
+      color:#d7e0ee;
+      line-height:1.55;
+    }
+
+    .check{
+      width:24px;
+      height:24px;
+      border-radius:50%;
+      background:linear-gradient(135deg,#246bff,#7b5cff);
+      display:grid;
+      place-items:center;
+      flex:none;
+      font-size:13px;
+      font-weight:900;
+    }
+
+    .cta{
+      background:linear-gradient(180deg,rgba(36,107,255,.18),rgba(8,20,34,.9));
+    }
+
+    .cta-icon{
+      width:58px;
+      height:58px;
+      border-radius:16px;
+      background:rgba(123,92,255,.22);
+      display:grid;
+      place-items:center;
+      font-size:28px;
+      margin-bottom:18px;
+    }
+
+    .cta p{
+      color:#aeb9c8;
+      margin:10px 0 20px;
+      line-height:1.7;
+    }
+
+    .full{
+      width:100%;
+      text-align:center;
+      display:inline-block;
     }
 
     .footer{
       border-top:1px solid rgba(255,255,255,.06);
-
       margin-top:80px;
       padding:40px 0;
-
       text-align:center;
     }
 
@@ -150,7 +376,6 @@
       justify-content:center;
       gap:24px;
       flex-wrap:wrap;
-
       margin-bottom:20px;
     }
 
@@ -163,355 +388,318 @@
       color:rgba(255,255,255,.55);
     }
 
-    @media(max-width:900px){
-
-      .blog-title{
-        font-size:42px;
+    @media(max-width:1050px){
+      .article-hero,
+      .content-grid{
+        grid-template-columns:1fr;
       }
 
-      .blog-intro{
-        font-size:19px;
+      .hero-visual{
+        min-height:260px;
       }
 
+      .sidebar{
+        position:static;
+      }
+
+      .article{
+        max-width:100%;
+      }
+
+      .article-title{
+        font-size:44px;
+      }
     }
 
-  </style>
+    @media(max-width:650px){
+      .article-shell{
+        padding:42px 0 70px;
+      }
 
+      .article-title{
+        font-size:38px;
+      }
+
+      .article-intro,
+      .article p{
+        font-size:16px;
+      }
+
+      .article-callout{
+        align-items:flex-start;
+        font-size:17px;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
 <header class="nav">
-
   <div class="container nav_row">
-
     <a class="brand" href="/index.html">
       <span class="logo">X</span>
       <span>CyberBench</span>
     </a>
 
     <nav class="nav_links">
-
       <a href="/services.html">Services</a>
-
       <a href="/about.html">About</a>
-
       <a href="/blog.html" class="nav-active">Blog</a>
-
       <a href="/client-portal.html">Client Portal</a>
-
       <a href="/consultant-portal.html">Consultant Portal</a>
-
-      <a class="btn btn-primary" href="/submit-ticket.html">
-        Deploy Security Now
-      </a>
-
+      <a class="btn btn-primary" href="/submit-ticket.html">Deploy Security Now</a>
     </nav>
-
   </div>
-
 </header>
 
-<main class="blog-wrap">
-
-  <div class="blog-tag">
-    COMPLIANCE
-  </div>
-
-  <h1 class="blog-title">
-    Compliance readiness is not a binder.
-    It is an operating discipline.
-  </h1>
-
-  <div class="blog-meta">
-    5 min read · Perspective
-  </div>
-
-  <p class="blog-intro">
-    Many organizations prepare for audits instead of preparing for security.
-    The result is a compliance program that looks complete on paper
-    while operational gaps continue growing underneath the surface.
-  </p>
-
-  <p>
-    Compliance readiness is often misunderstood.
-    Organizations create policies, collect screenshots,
-    store evidence in folders, and update documentation right before assessments.
-  </p>
-
-  <p>
-    But mature compliance programs do not operate once a year.
-    They operate continuously.
-  </p>
-
-  <div class="article-callout">
-
-    Real compliance maturity happens when security controls operate consistently every day — not only during audit season.
-
-  </div>
-
-  <h2>
-    Why Compliance Programs Fail
-  </h2>
-
-  <p>
-    Many organizations treat compliance as a documentation exercise instead of an operational discipline.
-  </p>
-
-  <p>
-    This creates several major problems:
-  </p>
-
-  <ul>
-
-    <li>Policies disconnected from real operations</li>
-
-    <li>Missing technical enforcement</li>
-
-    <li>Outdated procedures</li>
-
-    <li>Manual evidence collection</li>
-
-    <li>Inconsistent control execution</li>
-
-    <li>No operational ownership</li>
-
-  </ul>
-
-  <p>
-    During audits, teams scramble to gather screenshots,
-    update spreadsheets,
-    and recreate evidence that should already exist naturally through operations.
-  </p>
-
-  <h2>
-    Strong Programs Align Policy to Execution
-  </h2>
-
-  <p>
-    Mature organizations align:
-  </p>
-
-  <ul>
-
-    <li>Policy</li>
-
-    <li>Procedure</li>
-
-    <li>Technical controls</li>
-
-    <li>Operational workflows</li>
-
-    <li>Continuous monitoring</li>
-
-  </ul>
-
-  <p>
-    Compliance should support security operations —
-    not compete against them.
-  </p>
-
-  <h2>
-    Compliance Is Continuous
-  </h2>
-
-  <p>
-    Real readiness happens through operational consistency.
-  </p>
-
-  <p>
-    Organizations should continuously:
-  </p>
-
-  <ul>
-
-    <li>Review privileged access</li>
-
-    <li>Validate logging</li>
-
-    <li>Monitor vulnerabilities</li>
-
-    <li>Track remediation timelines</li>
-
-    <li>Review backup operations</li>
-
-    <li>Validate incident response workflows</li>
-
-  </ul>
-
-  <p>
-    Continuous execution naturally creates audit evidence over time.
-  </p>
-
-  <h2>
-    Evidence Should Be Operational Byproducts
-  </h2>
-
-  <p>
-    One of the biggest signs of an immature program is when evidence only exists because an audit is approaching.
-  </p>
-
-  <p>
-    Mature organizations generate evidence naturally through:
-  </p>
-
-  <ul>
-
-    <li>Ticketing workflows</li>
-
-    <li>SIEM monitoring</li>
-
-    <li>Access reviews</li>
-
-    <li>Configuration management</li>
-
-    <li>Automated reporting</li>
-
-    <li>Operational dashboards</li>
-
-  </ul>
-
-  <p>
-    Security operations and compliance operations should support each other continuously.
-  </p>
-
-  <h2>
-    Technical Enforcement Matters
-  </h2>
-
-  <p>
-    Policies alone do not reduce risk.
-  </p>
-
-  <p>
-    Organizations must validate that technical controls are actually functioning correctly.
-  </p>
-
-  <p>
-    This includes:
-  </p>
-
-  <ul>
-
-    <li>MFA enforcement</li>
-
-    <li>Endpoint protection deployment</li>
-
-    <li>Centralized logging</li>
-
-    <li>Backup validation</li>
-
-    <li>Network segmentation</li>
-
-    <li>Privilege management</li>
-
-  </ul>
-
-  <p>
-    Compliance maturity improves significantly when organizations measure real operational effectiveness instead of relying only on written documentation.
-  </p>
-
-  <h2>
-    Common Compliance Mistakes
-  </h2>
-
-  <p>
-    Organizations frequently:
-  </p>
-
-  <ul>
-
-    <li>Focus on passing audits instead of reducing risk</li>
-
-    <li>Treat policies as static documents</li>
-
-    <li>Operate without ownership accountability</li>
-
-    <li>Delay remediation until assessments approach</li>
-
-    <li>Fail to continuously validate controls</li>
-
-  </ul>
-
-  <p>
-    These gaps eventually create operational risk,
-    audit findings,
-    and security weaknesses that continue growing over time.
-  </p>
-
-  <h2>
-    Compliance Should Improve Security
-  </h2>
-
-  <p>
-    Mature compliance programs improve:
-  </p>
-
-  <ul>
-
-    <li>Operational consistency</li>
-
-    <li>Security visibility</li>
-
-    <li>Risk management</li>
-
-    <li>Executive reporting</li>
-
-    <li>Accountability</li>
-
-    <li>Incident readiness</li>
-
-  </ul>
-
-  <p>
-    Strong programs create safer operating environments,
-    not just cleaner audit reports.
-  </p>
-
-  <h2>
-    Final Thoughts
-  </h2>
-
-  <p>
-    Compliance readiness is not a binder stored on a shelf.
-  </p>
-
-  <p>
-    It is an operational discipline built through continuous execution,
-    technical validation,
-    ownership accountability,
-    and measurable security outcomes.
-  </p>
-
-  <p>
-    Organizations that operationalize compliance reduce risk faster,
-    improve visibility,
-    strengthen security posture,
-    and prepare for audits naturally through disciplined daily operations.
-  </p>
+<main class="article-shell">
+
+  <section class="article-hero">
+    <div>
+      <div class="blog-tag">COMPLIANCE</div>
+
+      <h1 class="article-title">
+        Compliance readiness is not a binder. It is an operating discipline.
+      </h1>
+
+      <p class="article-intro">
+        Many organizations prepare for audits instead of preparing for security.
+        The result is a compliance program that looks complete on paper while
+        operational gaps continue growing underneath the surface.
+      </p>
+
+      <div class="article-meta">
+        <span>📅 May 2026</span>
+        <span>•</span>
+        <span>⏱ 5 min read</span>
+        <span>•</span>
+        <span>📁 Perspective</span>
+      </div>
+    </div>
+
+    <div class="hero-visual">
+      <div class="compliance-mark">✓</div>
+    </div>
+  </section>
+
+  <section class="content-grid">
+
+    <article class="article">
+
+      <div class="share">
+        <span>Share this article:</span>
+        <a class="share-btn" href="#">in</a>
+        <a class="share-btn" href="#">𝕏</a>
+        <a class="share-btn" href="#">f</a>
+        <a class="share-btn" href="#">🔗</a>
+      </div>
+
+      <p>
+        Compliance readiness is often misunderstood. Organizations create policies,
+        collect screenshots, store evidence in folders, and update documentation right
+        before assessments.
+      </p>
+
+      <p>
+        But mature compliance programs do not operate once a year. They operate continuously.
+      </p>
+
+      <div class="article-callout">
+        <div class="callout-icon">📋</div>
+        <div>
+          Real compliance maturity happens when security controls operate consistently every day —
+          not only during audit season.
+        </div>
+      </div>
+
+      <h2 id="why-programs-fail">01. Why Compliance Programs Fail</h2>
+
+      <p>
+        Many organizations treat compliance as a documentation exercise instead of an
+        operational discipline. This creates several major problems that eventually
+        show up as audit findings, security gaps, and unresolved risk.
+      </p>
+
+      <ul>
+        <li>Policies disconnected from real operations</li>
+        <li>Missing technical enforcement</li>
+        <li>Outdated procedures</li>
+        <li>Manual evidence collection</li>
+        <li>Inconsistent control execution</li>
+        <li>No operational ownership</li>
+      </ul>
+
+      <p>
+        During audits, teams scramble to gather screenshots, update spreadsheets,
+        and recreate evidence that should already exist naturally through operations.
+      </p>
+
+      <h2 id="policy-to-execution">02. Strong Programs Align Policy to Execution</h2>
+
+      <p>
+        Mature organizations connect written requirements to real operating workflows.
+        A policy should not sit disconnected from technical controls, ticketing systems,
+        monitoring tools, or daily operational responsibilities.
+      </p>
+
+      <div class="section-card">
+        <p>
+          Strong programs align policy, procedure, technical controls, operational workflows,
+          and continuous monitoring into one repeatable system.
+        </p>
+      </div>
+
+      <p>
+        Compliance should support security operations — not compete against them.
+      </p>
+
+      <h2 id="continuous-compliance">03. Compliance Is Continuous</h2>
+
+      <p>
+        Real readiness happens through operational consistency. Organizations should
+        continuously review access, validate logging, monitor vulnerabilities, track
+        remediation, validate backups, and test incident response workflows.
+      </p>
+
+      <ul>
+        <li>Review privileged access</li>
+        <li>Validate logging</li>
+        <li>Monitor vulnerabilities</li>
+        <li>Track remediation timelines</li>
+        <li>Review backup operations</li>
+        <li>Validate incident response workflows</li>
+      </ul>
+
+      <p>
+        Continuous execution naturally creates audit evidence over time.
+      </p>
+
+      <h2 id="operational-evidence">04. Evidence Should Be Operational Byproducts</h2>
+
+      <p>
+        One of the biggest signs of an immature program is when evidence only exists
+        because an audit is approaching. Mature organizations generate evidence naturally
+        through the systems they already use to operate securely.
+      </p>
+
+      <ul>
+        <li>Ticketing workflows</li>
+        <li>SIEM monitoring</li>
+        <li>Access reviews</li>
+        <li>Configuration management</li>
+        <li>Automated reporting</li>
+        <li>Operational dashboards</li>
+      </ul>
+
+      <p>
+        Security operations and compliance operations should support each other continuously.
+      </p>
+
+      <h2 id="technical-enforcement">05. Technical Enforcement Matters</h2>
+
+      <p>
+        Policies alone do not reduce risk. Organizations must validate that technical
+        controls are actually functioning correctly and consistently across the environment.
+      </p>
+
+      <ul>
+        <li>MFA enforcement</li>
+        <li>Endpoint protection deployment</li>
+        <li>Centralized logging</li>
+        <li>Backup validation</li>
+        <li>Network segmentation</li>
+        <li>Privilege management</li>
+      </ul>
+
+      <p>
+        Compliance maturity improves significantly when organizations measure real
+        operational effectiveness instead of relying only on written documentation.
+      </p>
+
+      <h2 id="how-cyberbench-helps">06. How CyberBench Helps</h2>
+
+      <p>
+        CyberBench helps organizations turn compliance from a documentation burden into
+        an operational workflow. Instead of waiting until audit season, CyberBench helps
+        teams continuously track controls, remediation tasks, vulnerabilities, alerts,
+        backup validation, and incident response activity.
+      </p>
+
+      <p>
+        Through ticketing, dashboards, playbooks, evidence tracking, executive reporting,
+        and remediation workflows, CyberBench helps organizations prove that security
+        controls are operating — not just documented.
+      </p>
+
+      <h2 id="final-thoughts">Final Thoughts</h2>
+
+      <p>
+        Compliance readiness is not a binder stored on a shelf. It is an operational
+        discipline built through continuous execution, technical validation, ownership
+        accountability, and measurable security outcomes.
+      </p>
+
+      <p>
+        Organizations that operationalize compliance reduce risk faster, improve visibility,
+        strengthen security posture, and prepare for audits naturally through disciplined
+        daily operations.
+      </p>
+
+    </article>
+
+    <aside class="sidebar">
+
+      <div class="side-card">
+        <h3>Table of contents</h3>
+        <ul class="toc">
+          <li><a href="#why-programs-fail"><span>01</span> Why Compliance Programs Fail</a></li>
+          <li><a href="#policy-to-execution"><span>02</span> Policy to Execution</a></li>
+          <li><a href="#continuous-compliance"><span>03</span> Compliance Is Continuous</a></li>
+          <li><a href="#operational-evidence"><span>04</span> Operational Evidence</a></li>
+          <li><a href="#technical-enforcement"><span>05</span> Technical Enforcement</a></li>
+          <li><a href="#how-cyberbench-helps"><span>06</span> How CyberBench Helps</a></li>
+        </ul>
+      </div>
+
+      <div class="side-card">
+        <h3>Key takeaways</h3>
+        <ul class="takeaway">
+          <li><span class="check">✓</span> Compliance is an operating discipline, not a binder.</li>
+          <li><span class="check">✓</span> Evidence should come from real workflows.</li>
+          <li><span class="check">✓</span> Policies must map to technical enforcement.</li>
+          <li><span class="check">✓</span> Continuous execution creates audit readiness.</li>
+          <li><span class="check">✓</span> CyberBench helps operationalize compliance.</li>
+        </ul>
+      </div>
+
+      <div class="side-card cta">
+        <div class="cta-icon">🛡️</div>
+        <h3>Operationalize compliance with CyberBench.</h3>
+        <p>
+          Track controls, remediation, evidence, and security workflows in one platform.
+        </p>
+        <a class="btn btn-primary full" href="/submit-ticket.html">Deploy Security Now →</a>
+      </div>
+
+    </aside>
+
+  </section>
 
 </main>
 
 <footer class="footer">
-
   <nav class="footer-nav">
-
     <a href="/services.html">Services</a>
-
     <a href="/about.html">About</a>
-
     <a href="/blog.html">Blog</a>
-
     <a href="/client-portal.html">Client Portal</a>
-
     <a href="/consultant-portal.html">Consultant Portal</a>
-
   </nav>
 
   <div class="footer-bottom">
     © 2026 CyberBench. All rights reserved.
   </div>
-
 </footer>
 
 </body>
