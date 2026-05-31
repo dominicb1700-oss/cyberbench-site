@@ -2750,9 +2750,26 @@ box-shadow:
 rgba(77,124,255,.28);
 
 }
+.content-grid{
+  display:grid;
+  grid-template-columns:minmax(0, 720px) 360px;
+  gap:64px;
+  align-items:start;
+}
+
+.article{
+  max-width:720px;
+  width:100%;
+}
+
 .sidebar{
-  position: sticky;
-  top: 100px;
-  align-self: start;
-  height: fit-content;
+  position:sticky;
+  top:110px;
+  align-self:start;
+  height:max-content;
+  z-index:1;
+}
+
+.side-card{
+  width:100%;
 }
