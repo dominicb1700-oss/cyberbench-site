@@ -1,430 +1,604 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>The Fastest Way to Reduce SIEM Alert Noise | CyberBench</title>
 
-  <title>SIEM Alert Noise | CyberBench</title>
+<style>
+*{
+  box-sizing:border-box;
+  margin:0;
+  padding:0;
+  font-family:Inter,Arial,sans-serif;
+}
 
-  <link rel="icon" type="image/png" href="/favicon.png">
+body{
+  background:#030814;
+  color:#f5f7fb;
+  line-height:1.7;
+}
 
-  <link rel="stylesheet" href="/styles.css" />
+a{
+  color:inherit;
+  text-decoration:none;
+}
 
-  <style>
+.header{
+  height:78px;
+  border-bottom:1px solid #121c2f;
+  background:rgba(3,8,20,.92);
+  backdrop-filter:blur(14px);
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:0 36px;
+  position:sticky;
+  top:0;
+  z-index:100;
+}
 
-    body{
-      background:
-        radial-gradient(circle at top left, rgba(45,85,255,.16), transparent 30%),
-        #050816;
+.logo{
+  display:flex;
+  align-items:center;
+  gap:12px;
+  font-size:24px;
+  font-weight:900;
+}
 
-      color:#f3f6ff;
-    }
+.logo-icon{
+  width:34px;
+  height:34px;
+  border-radius:10px;
+  background:linear-gradient(135deg,#246bff,#7b5cff);
+  display:grid;
+  place-items:center;
+}
 
-    .blog-wrap{
-      width:min(900px,92%);
-      margin:0 auto;
-      padding:80px 0;
-    }
+.nav{
+  display:flex;
+  gap:34px;
+  color:#d8dfec;
+  font-weight:600;
+}
 
-    .blog-tag{
-      display:inline-flex;
-      align-items:center;
+.actions{
+  display:flex;
+  gap:14px;
+}
 
-      height:34px;
-      padding:0 14px;
+.btn{
+  padding:13px 20px;
+  border-radius:10px;
+  border:1px solid #23344f;
+  background:#07111f;
+  color:white;
+  font-weight:800;
+  cursor:pointer;
+}
 
-      border-radius:999px;
+.btn.primary{
+  border:0;
+  background:linear-gradient(135deg,#246bff,#7b5cff);
+}
 
-      background:rgba(77,124,255,.12);
+.page{
+  max-width:1180px;
+  margin:0 auto;
+  padding:54px 28px 80px;
+}
 
-      border:1px solid rgba(77,124,255,.28);
+.hero{
+  display:grid;
+  grid-template-columns:1fr 520px;
+  gap:54px;
+  align-items:center;
+  padding-bottom:40px;
+  border-bottom:1px solid #121c2f;
+}
 
-      color:#7da2ff;
+.badge{
+  display:inline-block;
+  padding:7px 14px;
+  border-radius:999px;
+  background:rgba(36,107,255,.12);
+  border:1px solid rgba(36,107,255,.45);
+  color:#7db8ff;
+  font-size:13px;
+  font-weight:900;
+  letter-spacing:.05em;
+  margin-bottom:22px;
+}
 
-      font-size:12px;
-      font-weight:700;
-      letter-spacing:.08em;
+h1{
+  font-size:58px;
+  line-height:1.08;
+  letter-spacing:-2px;
+  margin-bottom:24px;
+}
 
-      margin-bottom:24px;
-    }
+.hero p{
+  color:#b8c4d8;
+  font-size:20px;
+  max-width:650px;
+}
 
-    .blog-title{
-      font-size:56px;
-      line-height:1.05;
-      font-weight:800;
-      letter-spacing:-2px;
+.meta{
+  display:flex;
+  gap:16px;
+  color:#a9b5c8;
+  margin-top:26px;
+  font-size:15px;
+}
 
-      max-width:14ch;
+.hero-art{
+  min-height:330px;
+  border-radius:18px;
+  border:1px solid #172b52;
+  background:
+    radial-gradient(circle at 70% 30%,rgba(123,92,255,.42),transparent 24%),
+    radial-gradient(circle at 55% 70%,rgba(36,107,255,.38),transparent 28%),
+    linear-gradient(135deg,#07111f,#0b1530);
+  display:grid;
+  place-items:center;
+  overflow:hidden;
+  box-shadow:0 30px 90px rgba(0,0,0,.45);
+}
 
-      margin:0 0 24px;
-    }
+.funnel{
+  width:230px;
+  height:230px;
+  position:relative;
+}
 
-    .blog-meta{
-      color:rgba(255,255,255,.55);
+.funnel:before{
+  content:"";
+  position:absolute;
+  inset:30px 20px 80px;
+  background:linear-gradient(180deg,#246bff,#7b5cff);
+  clip-path:polygon(0 0,100% 0,58% 100%,42% 100%);
+  filter:drop-shadow(0 0 40px rgba(123,92,255,.8));
+}
 
-      font-size:15px;
+.funnel:after{
+  content:"";
+  position:absolute;
+  left:92px;
+  bottom:20px;
+  width:46px;
+  height:90px;
+  background:linear-gradient(180deg,#7b5cff,#246bff);
+  border-radius:0 0 18px 18px;
+  box-shadow:0 0 50px rgba(36,107,255,.8);
+}
 
-      margin-bottom:40px;
-    }
+.content-grid{
+  display:grid;
+  grid-template-columns:minmax(0,1fr) 360px;
+  gap:58px;
+  margin-top:34px;
+}
 
-    .blog-intro{
-      font-size:22px;
-      line-height:1.7;
+.article{
+  max-width:720px;
+}
 
-      color:rgba(255,255,255,.88);
+.share{
+  display:flex;
+  align-items:center;
+  gap:14px;
+  margin-bottom:28px;
+  color:#b8c4d8;
+}
 
-      margin-bottom:40px;
-    }
+.share-btn{
+  width:42px;
+  height:42px;
+  border-radius:50%;
+  background:#081422;
+  border:1px solid #1b3048;
+  display:grid;
+  place-items:center;
+  font-weight:900;
+}
 
-    .blog-wrap p{
-      color:rgba(255,255,255,.74);
+.article p{
+  color:#d6deeb;
+  font-size:18px;
+  margin-bottom:24px;
+}
 
-      line-height:1.9;
+.callout{
+  display:flex;
+  gap:20px;
+  align-items:center;
+  padding:24px;
+  border-radius:16px;
+  border:1px solid #2d63ff;
+  background:linear-gradient(135deg,rgba(36,107,255,.18),rgba(123,92,255,.12));
+  margin:34px 0;
+}
 
-      font-size:18px;
+.callout-icon{
+  width:62px;
+  height:62px;
+  border-radius:16px;
+  background:linear-gradient(135deg,#246bff,#7b5cff);
+  display:grid;
+  place-items:center;
+  font-size:28px;
+  flex:none;
+}
 
-      margin-bottom:28px;
-    }
+.callout strong{
+  font-size:22px;
+  line-height:1.35;
+}
 
-    .blog-wrap h2{
-      font-size:34px;
-      line-height:1.2;
+.article h2{
+  font-size:34px;
+  line-height:1.2;
+  margin:42px 0 18px;
+  letter-spacing:-.6px;
+}
 
-      margin-top:70px;
-      margin-bottom:20px;
+.noise-list{
+  border:1px solid #1b3048;
+  border-radius:16px;
+  overflow:hidden;
+  margin-top:22px;
+  background:#081422;
+}
 
-      letter-spacing:-1px;
-    }
+.noise-item{
+  display:grid;
+  grid-template-columns:64px 1fr;
+  gap:18px;
+  padding:18px;
+  border-bottom:1px solid #17283c;
+}
 
-    .blog-wrap ul{
-      padding-left:22px;
-      margin-bottom:34px;
-    }
+.noise-item:last-child{
+  border-bottom:0;
+}
 
-    .blog-wrap li{
-      margin-bottom:14px;
+.noise-icon{
+  width:48px;
+  height:48px;
+  border-radius:14px;
+  background:rgba(123,92,255,.18);
+  display:grid;
+  place-items:center;
+  font-size:24px;
+}
 
-      color:rgba(255,255,255,.74);
+.noise-item strong{
+  font-size:18px;
+}
 
-      line-height:1.8;
-      font-size:18px;
-    }
+.noise-item p{
+  font-size:15px;
+  color:#aeb9c8;
+  margin:4px 0 0;
+}
 
-    .article-callout{
-      background:rgba(255,255,255,.03);
+.sidebar{
+  display:flex;
+  flex-direction:column;
+  gap:24px;
+}
 
-      border:1px solid rgba(255,255,255,.06);
+.side-card{
+  background:rgba(8,20,34,.88);
+  border:1px solid #1b3048;
+  border-radius:18px;
+  padding:24px;
+  box-shadow:0 20px 60px rgba(0,0,0,.25);
+}
 
-      border-left:4px solid #4d7cff;
+.side-card h3{
+  font-size:24px;
+  margin-bottom:18px;
+}
 
-      padding:28px;
+.toc li{
+  list-style:none;
+  display:grid;
+  grid-template-columns:38px 1fr;
+  gap:10px;
+  padding:8px 0;
+  color:#d7e0ee;
+}
 
-      border-radius:20px;
+.toc span{
+  color:#58a6ff;
+  font-weight:900;
+}
 
-      margin:40px 0;
+.takeaway li{
+  list-style:none;
+  display:flex;
+  gap:12px;
+  padding:11px 0;
+  color:#d7e0ee;
+}
 
-      line-height:1.8;
-    }
+.check{
+  width:24px;
+  height:24px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#246bff,#7b5cff);
+  display:grid;
+  place-items:center;
+  flex:none;
+  font-size:13px;
+}
 
-    .footer{
-      border-top:1px solid rgba(255,255,255,.06);
+.cta{
+  background:linear-gradient(180deg,rgba(36,107,255,.16),rgba(8,20,34,.9));
+}
 
-      margin-top:80px;
-      padding:40px 0;
+.cta-icon{
+  width:58px;
+  height:58px;
+  border-radius:16px;
+  background:rgba(123,92,255,.22);
+  display:grid;
+  place-items:center;
+  font-size:28px;
+  margin-bottom:18px;
+}
 
-      text-align:center;
-    }
+.cta p{
+  color:#aeb9c8;
+  margin:10px 0 20px;
+}
 
-    .footer-nav{
-      display:flex;
-      justify-content:center;
-      gap:24px;
-      flex-wrap:wrap;
+.full{
+  width:100%;
+}
 
-      margin-bottom:20px;
-    }
+@media(max-width:1000px){
+  .hero,
+  .content-grid{
+    grid-template-columns:1fr;
+  }
 
-    .footer-nav a{
-      color:#fff;
-      text-decoration:none;
-    }
+  .hero-art{
+    min-height:260px;
+  }
 
-    .footer-bottom{
-      color:rgba(255,255,255,.55);
-    }
+  h1{
+    font-size:44px;
+  }
 
-    @media(max-width:900px){
+  .nav{
+    display:none;
+  }
 
-      .blog-title{
-        font-size:42px;
-      }
+  .article{
+    max-width:100%;
+  }
+}
 
-      .blog-intro{
-        font-size:19px;
-      }
+@media(max-width:600px){
+  .header{
+    padding:0 18px;
+  }
 
-    }
+  .actions{
+    display:none;
+  }
 
-  </style>
+  .page{
+    padding:34px 18px;
+  }
 
+  h1{
+    font-size:36px;
+  }
+
+  .hero p,
+  .article p{
+    font-size:16px;
+  }
+}
+</style>
 </head>
 
 <body>
 
-<header class="nav">
-
-  <div class="container nav_row">
-
-    <a class="brand" href="/index.html">
-      <span class="logo">X</span>
-      <span>CyberBench</span>
-    </a>
-
-    <nav class="nav_links">
-
-      <a href="/services.html">Services</a>
-
-      <a href="/about.html">About</a>
-
-      <a href="/blog.html" class="nav-active">Blog</a>
-
-      <a href="/client-portal.html">Client Portal</a>
-
-      <a href="/consultant-portal.html">Consultant Portal</a>
-
-      <a class="btn btn-primary" href="/submit-ticket.html">
-        Deploy Security Now
-      </a>
-
-    </nav>
-
-  </div>
-
-</header>
-
-<main class="blog-wrap">
-
-  <div class="blog-tag">
-    SIEM
-  </div>
-
-  <h1 class="blog-title">
-    The fastest way to reduce SIEM alert noise in week one
-  </h1>
-
-  <div class="blog-meta">
-    6 min read · Playbook
-  </div>
-
-  <p class="blog-intro">
-    Security teams do not usually fail because they lack alerts.
-    They fail because they have too many.
-  </p>
-
-  <p>
-    Most organizations deploy a SIEM expecting centralized visibility,
-    faster incident response, and better detection capability.
-    Instead, many teams are immediately overwhelmed with thousands of low-value alerts,
-    duplicate detections, and endless false positives.
-  </p>
-
-  <p>
-    The result is alert fatigue.
-    Analysts become overwhelmed, critical threats become buried,
-    and security operations begin operating reactively instead of strategically.
-  </p>
-
-  <h2>
-    Why SIEM Noise Happens
-  </h2>
-
-  <p>
-    Most SIEM environments begin with default rulesets,
-    broad log ingestion, and very little environment-specific tuning.
-  </p>
-
-  <p>
-    This creates a situation where:
-  </p>
-
-  <ul>
-
-    <li>Normal administrator activity triggers alerts</li>
-
-    <li>Vulnerability scanners create detection storms</li>
-
-    <li>Authentication retries flood dashboards</li>
-
-    <li>Cloud telemetry generates duplicate incidents</li>
-
-    <li>Analysts spend more time filtering noise than investigating threats</li>
-
-  </ul>
-
-  <div class="article-callout">
-
-    A SIEM should improve visibility.
-    It should not bury analysts under thousands of meaningless alerts.
-
-  </div>
-
-  <h2>
-    Step 1: Identify the Noisiest Alerts
-  </h2>
-
-  <p>
-    The fastest way to improve a SIEM is by identifying the alerts generating
-    the highest volume.
-  </p>
-
-  <p>
-    In most environments, a small number of detections are responsible for
-    the majority of analyst workload.
-  </p>
-
-  <ul>
-
-    <li>Failed logins</li>
-
-    <li>PowerShell executions</li>
-
-    <li>DNS anomalies</li>
-
-    <li>Internal scans</li>
-
-    <li>Cloud authentication events</li>
-
-  </ul>
-
-  <h2>
-    Step 2: Prioritize Critical Assets
-  </h2>
-
-  <p>
-    Not every system should generate the same alert severity.
-  </p>
-
-  <p>
-    Security teams should prioritize:
-  </p>
-
-  <ul>
-
-    <li>Domain controllers</li>
-
-    <li>Backup infrastructure</li>
-
-    <li>Cloud administration systems</li>
-
-    <li>Production workloads</li>
-
-    <li>Identity providers</li>
-
-  </ul>
-
-  <p>
-    This immediately helps analysts focus on systems that create actual business risk.
-  </p>
-
-  <h2>
-    Step 3: Suppress Known Benign Activity
-  </h2>
-
-  <p>
-    Security teams waste enormous amounts of time investigating activity
-    they already understand.
-  </p>
-
-  <p>
-    Examples include:
-  </p>
-
-  <ul>
-
-    <li>Patch management platforms</li>
-
-    <li>Internal scanners</li>
-
-    <li>Approved admin scripts</li>
-
-    <li>Monitoring systems</li>
-
-    <li>Backup jobs</li>
-
-  </ul>
-
-  <p>
-    If activity is expected, documented, and approved,
-    it should not continuously create high-priority incidents.
-  </p>
-
-  <h2>
-    Step 4: Build Better Triage Workflows
-  </h2>
-
-  <p>
-    Many SOC teams lack standardized triage procedures.
-  </p>
-
-  <p>
-    Analysts should know:
-  </p>
-
-  <ul>
-
-    <li>What to investigate first</li>
-
-    <li>What tools to check</li>
-
-    <li>How to escalate incidents</li>
-
-    <li>How to document findings</li>
-
-  </ul>
-
-  <p>
-    Strong playbooks reduce response time and improve consistency.
-  </p>
-
-  <h2>
-    Final Thoughts
-  </h2>
-
-  <p>
-    SIEM tuning is not about removing visibility.
-    It is about improving signal quality.
-  </p>
-
-  <p>
-    The fastest way to reduce SIEM noise is by prioritizing meaningful alerts,
-    suppressing known activity, improving workflows,
-    and helping analysts focus on threats that matter most.
-  </p>
-
-</main>
-
-<footer class="footer">
-
-  <nav class="footer-nav">
-
-    <a href="/services.html">Services</a>
-
-    <a href="/about.html">About</a>
-
-    <a href="/blog.html">Blog</a>
-
-    <a href="/client-portal.html">Client Portal</a>
-
-    <a href="/consultant-portal.html">Consultant Portal</a>
-
+<header class="header">
+  <a class="logo" href="/">
+    <span class="logo-icon">⬢</span>
+    CyberBench
+  </a>
+
+  <nav class="nav">
+    <a href="/platform">Platform</a>
+    <a href="/solutions">Solutions⌄</a>
+    <a href="/resources">Resources⌄</a>
+    <a href="/company">Company⌄</a>
+    <a href="/pricing">Pricing</a>
   </nav>
 
-  <div class="footer-bottom">
-    © 2026 CyberBench. All rights reserved.
+  <div class="actions">
+    <a class="btn" href="/client-portal">Log in</a>
+    <a class="btn primary" href="/contact">Request a Demo</a>
   </div>
+</header>
 
-</footer>
+<main class="page">
+
+  <section class="hero">
+    <div>
+      <span class="badge">SIEM</span>
+
+      <h1>The fastest way to reduce SIEM alert noise in week one</h1>
+
+      <p>
+        Security teams do not usually fail because they lack alerts.
+        They fail because they have too many. Here’s how to quickly reduce
+        low-value detections and surface the threats that matter.
+      </p>
+
+      <div class="meta">
+        <span>📅 May 2026</span>
+        <span>|</span>
+        <span>⏱ 6 min read</span>
+        <span>|</span>
+        <span>📁 Playbook</span>
+      </div>
+    </div>
+
+    <div class="hero-art">
+      <div class="funnel"></div>
+    </div>
+  </section>
+
+  <section class="content-grid">
+
+    <article class="article">
+
+      <div class="share">
+        <span>Share this article:</span>
+        <a class="share-btn" href="#">in</a>
+        <a class="share-btn" href="#">𝕏</a>
+        <a class="share-btn" href="#">f</a>
+        <a class="share-btn" href="#">🔗</a>
+      </div>
+
+      <p>
+        Security teams do not usually fail because they lack alerts.
+        They fail because they have too many.
+      </p>
+
+      <p>
+        Most organizations deploy a SIEM expecting centralized visibility,
+        faster incident response, and better detection capability. Instead,
+        many teams are immediately overwhelmed with thousands of low-value
+        alerts, duplicate detections, and endless false positives.
+      </p>
+
+      <p>
+        The result is alert fatigue. Analysts become overwhelmed, critical
+        threats become buried, and security operations begin operating
+        reactively instead of strategically.
+      </p>
+
+      <div class="callout">
+        <div class="callout-icon">〽️</div>
+        <strong>
+          Reducing SIEM noise is not about silencing alerts.
+          It’s about surfacing the ones that matter.
+        </strong>
+      </div>
+
+      <h2>Why SIEM Noise Happens</h2>
+
+      <p>
+        Most SIEM environments begin with default rulesets, broad log ingestion,
+        and very little environment-specific tuning.
+      </p>
+
+      <p>This creates a situation where:</p>
+
+      <div class="noise-list">
+        <div class="noise-item">
+          <div class="noise-icon">👤</div>
+          <div>
+            <strong>Normal administrator activity triggers alerts</strong>
+            <p>Routine actions like logins, privilege use, and configuration changes generate unnecessary noise.</p>
+          </div>
+        </div>
+
+        <div class="noise-item">
+          <div class="noise-icon">🎯</div>
+          <div>
+            <strong>Vulnerability scanners create detection storms</strong>
+            <p>Scans generate thousands of events that drown out real threats.</p>
+          </div>
+        </div>
+
+        <div class="noise-item">
+          <div class="noise-icon">🛡️</div>
+          <div>
+            <strong>Authentication retries flood dashboards</strong>
+            <p>Failed logins, brute force attempts, and noisy endpoints dominate alert queues.</p>
+          </div>
+        </div>
+
+        <div class="noise-item">
+          <div class="noise-icon">📄</div>
+          <div>
+            <strong>Lack of context increases false positives</strong>
+            <p>Without asset criticality, user behavior baselines, and threat context, alerts lose accuracy.</p>
+          </div>
+        </div>
+      </div>
+
+      <h2>The fastest path to less noise</h2>
+
+      <p>
+        Start by identifying the alerts that repeatedly trigger without producing
+        meaningful security outcomes. Group them by source, rule, asset, and
+        business impact.
+      </p>
+
+      <p>
+        Then tune alert thresholds, suppress known-good behavior, enrich alerts
+        with asset context, and convert repeatable investigations into playbooks.
+      </p>
+
+      <h2>How CyberBench helps</h2>
+
+      <p>
+        CyberBench helps teams reduce SIEM noise by combining alert management,
+        ticketing, remediation workflows, playbooks, asset context, and executive
+        reporting into one operational platform.
+      </p>
+
+    </article>
+
+    <aside class="sidebar">
+
+      <div class="side-card">
+        <h3>Table of contents</h3>
+        <ul class="toc">
+          <li><span>01</span> Why SIEM Noise Happens</li>
+          <li><span>02</span> The Impact of Alert Noise</li>
+          <li><span>03</span> The Fastest Path to Less Noise</li>
+          <li><span>04</span> Week One: What You Can Fix Fast</li>
+          <li><span>05</span> Best Practices That Reduce Noise</li>
+          <li><span>06</span> How CyberBench Helps</li>
+        </ul>
+      </div>
+
+      <div class="side-card">
+        <h3>Key takeaways</h3>
+        <ul class="takeaway">
+          <li><span class="check">✓</span> Alert noise hides the threats that matter.</li>
+          <li><span class="check">✓</span> Most noise comes from default rules, scanners, and lack of context.</li>
+          <li><span class="check">✓</span> You can reduce noise significantly in your first week.</li>
+          <li><span class="check">✓</span> Better signal leads to faster response and stronger outcomes.</li>
+          <li><span class="check">✓</span> CyberBench helps teams focus on what matters.</li>
+        </ul>
+      </div>
+
+      <div class="side-card cta">
+        <div class="cta-icon">🛡️</div>
+        <h3>Transform your SIEM into a high-signal engine.</h3>
+        <p>
+          See how CyberBench reduces alert noise and improves detection workflows.
+        </p>
+        <a class="btn primary full" href="/contact">Request a Demo →</a>
+      </div>
+
+    </aside>
+
+  </section>
+
+</main>
 
 </body>
 </html>
