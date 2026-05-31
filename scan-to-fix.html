@@ -1,484 +1,133 @@
 <!doctype html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
-  <title>Scan to Fix | CyberBench</title>
-
-  <link rel="icon" type="image/png" href="/favicon.png">
-
-  <link rel="stylesheet" href="/styles.css" />
-
-  <style>
-
-    body{
-      background:
-        radial-gradient(circle at top left, rgba(45,85,255,.16), transparent 30%),
-        #050816;
-
-      color:#f3f6ff;
-    }
-
-    .blog-wrap{
-      width:min(900px,92%);
-      margin:0 auto;
-      padding:80px 0;
-    }
-
-    .blog-tag{
-      display:inline-flex;
-      align-items:center;
-
-      height:34px;
-      padding:0 14px;
-
-      border-radius:999px;
-
-      background:rgba(77,124,255,.12);
-
-      border:1px solid rgba(77,124,255,.28);
-
-      color:#7da2ff;
-
-      font-size:12px;
-      font-weight:700;
-      letter-spacing:.08em;
-
-      margin-bottom:24px;
-    }
-
-    .blog-title{
-      font-size:56px;
-      line-height:1.05;
-      font-weight:800;
-      letter-spacing:-2px;
-
-      max-width:14ch;
-
-      margin:0 0 24px;
-    }
-
-    .blog-meta{
-      color:rgba(255,255,255,.55);
-
-      font-size:15px;
-
-      margin-bottom:40px;
-    }
-
-    .blog-intro{
-      font-size:22px;
-      line-height:1.7;
-
-      color:rgba(255,255,255,.88);
-
-      margin-bottom:40px;
-    }
-
-    .blog-wrap p{
-      color:rgba(255,255,255,.74);
-
-      line-height:1.9;
-
-      font-size:18px;
-
-      margin-bottom:28px;
-    }
-
-    .blog-wrap h2{
-      font-size:34px;
-      line-height:1.2;
-
-      margin-top:70px;
-      margin-bottom:20px;
-
-      letter-spacing:-1px;
-    }
-
-    .blog-wrap ul{
-      padding-left:22px;
-      margin-bottom:34px;
-    }
-
-    .blog-wrap li{
-      margin-bottom:14px;
-
-      color:rgba(255,255,255,.74);
-
-      line-height:1.8;
-      font-size:18px;
-    }
-
-    .article-callout{
-      background:rgba(255,255,255,.03);
-
-      border:1px solid rgba(255,255,255,.06);
-
-      border-left:4px solid #4d7cff;
-
-      padding:28px;
-
-      border-radius:20px;
-
-      margin:40px 0;
-
-      line-height:1.8;
-    }
-
-    .footer{
-      border-top:1px solid rgba(255,255,255,.06);
-
-      margin-top:80px;
-      padding:40px 0;
-
-      text-align:center;
-    }
-
-    .footer-nav{
-      display:flex;
-      justify-content:center;
-      gap:24px;
-      flex-wrap:wrap;
-
-      margin-bottom:20px;
-    }
-
-    .footer-nav a{
-      color:#fff;
-      text-decoration:none;
-    }
-
-    .footer-bottom{
-      color:rgba(255,255,255,.55);
-    }
-
-    @media(max-width:900px){
-
-      .blog-title{
-        font-size:42px;
-      }
-
-      .blog-intro{
-        font-size:19px;
-      }
-
-    }
-
-  </style>
-
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Scan to Fix | CyberBench</title>
+<link rel="icon" type="image/png" href="/favicon.png" />
+<link rel="stylesheet" href="/styles.css" />
+<style>
+*{box-sizing:border-box;margin:0;padding:0;font-family:Inter,Arial,sans-serif}
+html{scroll-behavior:smooth}
+body{background:#030814;color:#f5f7fb;line-height:1.7}
+a{color:inherit;text-decoration:none}
+.nav{height:72px;border-bottom:1px solid rgba(255,255,255,.08);background:rgba(3,8,20,.94);backdrop-filter:blur(14px);position:sticky;top:0;z-index:100}
+.container{width:min(1180px,92%);margin:0 auto}
+.nav_row{height:72px;display:flex;align-items:center;justify-content:space-between;gap:28px}
+.brand{display:flex;align-items:center;gap:10px;color:#fff;text-decoration:none;font-size:23px;font-weight:900;white-space:nowrap}
+.logo{width:30px;height:30px;border-radius:9px;background:linear-gradient(135deg,#246bff,#7b5cff);display:grid;place-items:center;box-shadow:0 0 24px rgba(123,92,255,.45);color:white;font-weight:900;font-size:14px}
+.nav_links{display:flex;align-items:center;gap:28px;font-size:14px;font-weight:800;color:#e7edf8}
+.nav_links a{opacity:.92;transition:.2s ease}.nav_links a:hover{opacity:1;color:#7db8ff}.nav-active{color:#7db8ff!important}
+.btn{display:inline-flex;align-items:center;justify-content:center;padding:13px 20px;border-radius:12px;border:1px solid #23344f;background:#07111f;color:white;font-weight:900;cursor:pointer;transition:.2s ease}.btn:hover{transform:translateY(-1px)}.btn-primary{border:0;background:linear-gradient(135deg,#246bff,#7b5cff);box-shadow:0 12px 32px rgba(36,107,255,.22)}
+.page{max-width:1180px;margin:0 auto;padding:54px 28px 80px}.hero{display:grid;grid-template-columns:1fr 520px;gap:54px;align-items:center;padding-bottom:40px;border-bottom:1px solid #121c2f}.blog-tag{display:inline-block;padding:7px 14px;border-radius:999px;background:rgba(36,107,255,.12);border:1px solid rgba(36,107,255,.45);color:#7db8ff;font-size:13px;font-weight:900;letter-spacing:.05em;margin-bottom:22px}.blog-title{font-size:58px;line-height:1.08;letter-spacing:-2px;margin-bottom:24px;max-width:13ch}.blog-intro{color:#b8c4d8;font-size:20px;max-width:650px;margin-bottom:0}.blog-meta{display:flex;gap:16px;color:#a9b5c8;margin-top:26px;font-size:15px}.hero-art{min-height:330px;border-radius:18px;border:1px solid #172b52;background:radial-gradient(circle at 70% 30%,rgba(123,92,255,.42),transparent 24%),radial-gradient(circle at 55% 70%,rgba(36,107,255,.38),transparent 28%),linear-gradient(135deg,#07111f,#0b1530);display:grid;place-items:center;overflow:hidden;box-shadow:0 30px 90px rgba(0,0,0,.45);position:relative}.scan-graphic{width:250px;height:250px;position:relative}.scan-graphic:before{content:"";position:absolute;inset:40px;border-radius:22px;border:2px solid rgba(125,184,255,.45);background:linear-gradient(135deg,rgba(36,107,255,.18),rgba(123,92,255,.16));box-shadow:0 0 50px rgba(36,107,255,.28)}.scan-graphic:after{content:"✓";position:absolute;left:88px;top:80px;width:76px;height:76px;border-radius:50%;display:grid;place-items:center;background:linear-gradient(135deg,#18b96f,#246bff);font-size:44px;font-weight:900;box-shadow:0 0 60px rgba(24,185,111,.45)}.scan-line{position:absolute;left:40px;right:40px;height:4px;top:70px;background:linear-gradient(90deg,transparent,#7db8ff,transparent);box-shadow:0 0 24px #246bff;animation:scan 3s infinite}@keyframes scan{0%{top:58px}50%{top:184px}100%{top:58px}}
+.content-grid{display:grid;grid-template-columns:minmax(0,1fr) 360px;gap:58px;margin-top:34px}.article{max-width:720px}.share{display:flex;align-items:center;gap:14px;margin-bottom:28px;color:#b8c4d8}.share-btn{width:42px;height:42px;border-radius:50%;background:#081422;border:1px solid #1b3048;display:grid;place-items:center;font-weight:900}.article p{color:#d6deeb;font-size:18px;margin-bottom:24px}.article h2{font-size:34px;line-height:1.2;margin:54px 0 18px;letter-spacing:-.6px;scroll-margin-top:100px}.article h3{font-size:24px;margin:30px 0 12px}.article ul{padding-left:22px;margin:0 0 28px}.article li{color:#d6deeb;font-size:18px;margin-bottom:12px}.callout{display:flex;gap:20px;align-items:center;padding:24px;border-radius:16px;border:1px solid #2d63ff;background:linear-gradient(135deg,rgba(36,107,255,.18),rgba(123,92,255,.12));margin:34px 0}.callout-icon{width:62px;height:62px;border-radius:16px;background:linear-gradient(135deg,#246bff,#7b5cff);display:grid;place-items:center;font-size:28px;flex:none}.callout strong{font-size:22px;line-height:1.35}.workflow-list{border:1px solid #1b3048;border-radius:16px;overflow:hidden;margin:22px 0 34px;background:#081422}.workflow-item{display:grid;grid-template-columns:64px 1fr;gap:18px;padding:18px;border-bottom:1px solid #17283c}.workflow-item:last-child{border-bottom:0}.workflow-icon{width:48px;height:48px;border-radius:14px;background:rgba(123,92,255,.18);display:grid;place-items:center;font-size:24px}.workflow-item strong{font-size:18px}.workflow-item p{font-size:15px;color:#aeb9c8;margin:4px 0 0}.sidebar{display:flex;flex-direction:column;gap:24px}.side-card{background:rgba(8,20,34,.88);border:1px solid #1b3048;border-radius:18px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.25)}.sticky{position:sticky;top:96px}.side-card h3{font-size:24px;margin-bottom:18px}.toc li{list-style:none;padding:8px 0}.toc a{display:grid;grid-template-columns:38px 1fr;gap:10px;color:#d7e0ee}.toc a:hover{color:#58a6ff}.toc span{color:#58a6ff;font-weight:900}.takeaway li{list-style:none;display:flex;gap:12px;padding:11px 0;color:#d7e0ee}.check{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#246bff,#7b5cff);display:grid;place-items:center;flex:none;font-size:13px}.cta{background:linear-gradient(180deg,rgba(36,107,255,.16),rgba(8,20,34,.9))}.cta-icon{width:58px;height:58px;border-radius:16px;background:rgba(123,92,255,.22);display:grid;place-items:center;font-size:28px;margin-bottom:18px}.cta p{color:#aeb9c8;margin:10px 0 20px}.full{width:100%}.footer{border-top:1px solid rgba(255,255,255,.06);margin-top:80px;padding:40px 0;text-align:center}.footer-nav{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin-bottom:20px}.footer-nav a{color:#fff}.footer-bottom{color:rgba(255,255,255,.55)}
+@media(max-width:1000px){.hero,.content-grid{grid-template-columns:1fr}.hero-art{min-height:260px}.blog-title{font-size:44px}.nav_links{display:none}.article{max-width:100%}.sticky{position:static}}
+@media(max-width:600px){.nav{height:auto}.nav_row{height:auto;padding:14px 0}.page{padding:34px 18px}.blog-title{font-size:36px}.blog-intro,.article p,.article li{font-size:16px}.hero{gap:28px}.actions{display:none}}
+</style>
 </head>
-
 <body>
-
 <header class="nav">
   <div class="container nav_row">
-    <a class="brand" href="/index.html">
-      <span class="logo">X</span>
-      <span>CyberBench</span>
-    </a>
-
+    <a class="brand" href="/index.html"><span class="logo">X</span><span>CyberBench</span></a>
     <nav class="nav_links">
       <a href="/services.html">Services</a>
       <a href="/about.html">About</a>
       <a href="/blog.html" class="nav-active">Blog</a>
       <a href="/client-portal.html">Client Portal</a>
       <a href="/consultant-portal.html">Consultant Portal</a>
-
-      <a class="btn btn-primary" href="/submit-ticket.html">
-        Deploy Security Now
-      </a>
+      <a class="btn btn-primary" href="/submit-ticket.html">Deploy Security Now</a>
     </nav>
   </div>
 </header>
-
-<main class="blog-wrap">
-
-  <div class="blog-tag">
-    VULNERABILITY
-  </div>
-
-  <h1 class="blog-title">
-    “Scan → fix” is broken. Here’s the workflow that works.
-  </h1>
-
-  <div class="blog-meta">
-    7 min read · Framework
-  </div>
-
-  <p class="blog-intro">
-    Most organizations are not failing vulnerability management because they cannot scan.
-    They are failing because scanning alone does not reduce risk.
-  </p>
-
-  <p>
-    Security teams generate thousands of findings every month.
-    Critical CVEs flood dashboards, tickets get assigned,
-    spreadsheets get exported, and remediation timelines are created.
-    Yet despite all of this activity, many organizations still experience ransomware,
-    breaches, exposed systems, and unresolved critical risk.
-  </p>
-
-  <p>
-    The problem is not visibility.
-    The problem is execution.
-  </p>
-
-  <h2>
-    Why Traditional Vulnerability Management Fails
-  </h2>
-
-  <p>
-    Most vulnerability programs operate in a repetitive cycle:
-  </p>
-
-  <ul>
-
-    <li>Run scans</li>
-
-    <li>Export findings</li>
-
-    <li>Create tickets</li>
-
-    <li>Assign remediation</li>
-
-    <li>Repeat next month</li>
-
-  </ul>
-
-  <p>
-    On paper, the process appears mature.
-    In reality, organizations often accumulate technical debt faster than they reduce it.
-  </p>
-
-  <div class="article-callout">
-
-    Vulnerability scanning alone does not reduce exposure.
-    Operational ownership and remediation discipline do.
-
-  </div>
-
-  <h2>
-    The Real Problems Behind Vulnerability Backlogs
-  </h2>
-
-  <p>
-    Most organizations struggle with:
-  </p>
-
-  <ul>
-
-    <li>No ownership clarity</li>
-
-    <li>Poor prioritization</li>
-
-    <li>Excessive false urgency</li>
-
-    <li>Limited remediation tracking</li>
-
-    <li>No validation after fixes</li>
-
-    <li>Disconnected IT and security teams</li>
-
-  </ul>
-
-  <p>
-    As findings grow month after month,
-    teams begin treating vulnerability management as a reporting exercise instead of a risk-reduction program.
-  </p>
-
-  <h2>
-    CVSS Alone Is Not Enough
-  </h2>
-
-  <p>
-    Many organizations rely entirely on CVSS scores to determine priority.
-  </p>
-
-  <p>
-    But a vulnerability with a lower score on an internet-facing identity server
-    may create more operational risk than a critical finding on an isolated lab device.
-  </p>
-
-  <p>
-    Mature remediation programs prioritize based on:
-  </p>
-
-  <ul>
-
-    <li>Exploit availability</li>
-
-    <li>Internet exposure</li>
-
-    <li>Business impact</li>
-
-    <li>Known ransomware usage</li>
-
-    <li>Asset criticality</li>
-
-    <li>Privilege exposure</li>
-
-  </ul>
-
-  <h2>
-    The Workflow That Actually Works
-  </h2>
-
-  <h3>
-    1. Identify Critical Assets First
-  </h3>
-
-  <p>
-    Not every system matters equally.
-  </p>
-
-  <p>
-    Prioritize:
-  </p>
-
-  <ul>
-
-    <li>Domain controllers</li>
-
-    <li>Cloud admin systems</li>
-
-    <li>Production workloads</li>
-
-    <li>Backup infrastructure</li>
-
-    <li>Internet-facing applications</li>
-
-  </ul>
-
-  <h3>
-    2. Prioritize Based on Real Exposure
-  </h3>
-
-  <p>
-    Focus on vulnerabilities that attackers are actively exploiting or can realistically abuse inside your environment.
-  </p>
-
-  <h3>
-    3. Assign Clear Ownership
-  </h3>
-
-  <p>
-    Findings without owners become permanent risk.
-  </p>
-
-  <p>
-    Every critical vulnerability should have:
-  </p>
-
-  <ul>
-
-    <li>System ownership</li>
-
-    <li>Remediation deadlines</li>
-
-    <li>Validation requirements</li>
-
-    <li>Risk acceptance procedures</li>
-
-  </ul>
-
-  <h3>
-    4. Validate Remediation
-  </h3>
-
-  <p>
-    Applying a patch does not automatically eliminate exposure.
-  </p>
-
-  <p>
-    Systems should be rescanned and validated to ensure:
-  </p>
-
-  <ul>
-
-    <li>Patches succeeded</li>
-
-    <li>Applications still function</li>
-
-    <li>Exposure is removed</li>
-
-    <li>Configuration drift did not occur</li>
-
-  </ul>
-
-  <h2>
-    Visibility Without Execution Creates False Confidence
-  </h2>
-
-  <p>
-    Many organizations believe they are secure because they can see their vulnerabilities.
-  </p>
-
-  <p>
-    But visibility without accountability creates operational blind spots.
-  </p>
-
-  <p>
-    The organizations reducing risk fastest are the ones that operationalize remediation,
-    not the ones generating the largest reports.
-  </p>
-
-  <h2>
-    Final Thoughts
-  </h2>
-
-  <p>
-    Vulnerability management should not be treated as a monthly compliance exercise.
-    It should function as a continuous operational workflow focused on reducing exposure.
-  </p>
-
-  <p>
-    Scanning is important.
-    But scanning alone does not improve security posture.
-  </p>
-
-  <p>
-    Real maturity happens when organizations:
-  </p>
-
-  <ul>
-
-    <li>Prioritize correctly</li>
-
-    <li>Assign ownership</li>
-
-    <li>Validate fixes</li>
-
-    <li>Measure remediation effectiveness</li>
-
-    <li>Continuously reduce operational risk</li>
-
-  </ul>
-
+<main class="page">
+  <section class="hero">
+    <div>
+      <span class="blog-tag">VULNERABILITY MANAGEMENT</span>
+      <h1 class="blog-title">“Scan → fix” is broken. Here’s the workflow that works.</h1>
+      <p class="blog-intro">Most organizations are not failing vulnerability management because they cannot scan. They are failing because scanning alone does not reduce risk.</p>
+      <div class="blog-meta"><span>📅 May 2026</span><span>|</span><span>⏱ 7 min read</span><span>|</span><span>📁 Framework</span></div>
+    </div>
+    <div class="hero-art"><div class="scan-graphic"><div class="scan-line"></div></div></div>
+  </section>
+  <section class="content-grid">
+    <article class="article">
+      <div class="share"><span>Share this article:</span><a class="share-btn" href="#">in</a><a class="share-btn" href="#">𝕏</a><a class="share-btn" href="#">f</a><a class="share-btn" href="#">🔗</a></div>
+      <p>Security teams generate thousands of findings every month. Critical CVEs flood dashboards, tickets get assigned, spreadsheets get exported, and remediation timelines are created. Yet despite all of this activity, many organizations still experience ransomware, breaches, exposed systems, and unresolved critical risk.</p>
+      <p>The problem is not visibility. The problem is execution.</p>
+      <div class="callout"><div class="callout-icon">🛡️</div><strong>Vulnerability scanning alone does not reduce exposure. Operational ownership and remediation discipline do.</strong></div>
+      <h2 id="why-traditional-vulnerability-management-fails">01. Why Traditional Vulnerability Management Fails</h2>
+      <p>Most vulnerability programs operate in a repetitive cycle: scan, export, assign, and repeat. On paper, that process looks mature. In practice, organizations often accumulate technical debt faster than they reduce it.</p>
+      <p>The issue is that findings are treated like reports instead of operational work. A scanner may identify a weakness, but it does not confirm business impact, validate ownership, coordinate remediation, or verify that the fix actually worked.</p>
+      <div class="workflow-list">
+        <div class="workflow-item"><div class="workflow-icon">🔎</div><div><strong>Run scans</strong><p>Tools identify findings, but the output is often too broad to act on quickly.</p></div></div>
+        <div class="workflow-item"><div class="workflow-icon">📄</div><div><strong>Export findings</strong><p>Teams move results into spreadsheets, reports, or disconnected systems.</p></div></div>
+        <div class="workflow-item"><div class="workflow-icon">🎫</div><div><strong>Create tickets</strong><p>Tickets are opened, but ownership, priority, and validation are often unclear.</p></div></div>
+        <div class="workflow-item"><div class="workflow-icon">🔁</div><div><strong>Repeat next month</strong><p>Backlogs grow because the workflow does not reliably close risk.</p></div></div>
+      </div>
+      <h2 id="real-problems-behind-backlogs">02. The Real Problems Behind Vulnerability Backlogs</h2>
+      <p>Backlogs are rarely caused by a lack of scanner data. They are caused by unclear ownership, weak prioritization, disconnected teams, and limited follow-through after findings are assigned.</p>
+      <p>Many teams also struggle with excessive false urgency. Everything looks critical, so nothing is truly prioritized. When every vulnerability is treated as an emergency, teams burn time on the wrong risks while the most exploitable systems remain exposed.</p>
+      <ul><li>No ownership clarity</li><li>Poor prioritization</li><li>Limited remediation tracking</li><li>No validation after fixes</li><li>Disconnected IT and security teams</li></ul>
+      <h2 id="cvss-alone-is-not-enough">03. Why CVSS Alone Is Not Enough</h2>
+      <p>CVSS is useful, but it should not be the only factor used to decide what gets fixed first. A lower-scored vulnerability on an internet-facing identity system may create more risk than a critical finding on an isolated lab device.</p>
+      <p>Mature remediation programs combine technical severity with business context. They consider exploit availability, asset criticality, internet exposure, known ransomware usage, privilege exposure, and operational impact.</p>
+      <div class="workflow-list">
+        <div class="workflow-item"><div class="workflow-icon">🌐</div><div><strong>Internet exposure</strong><p>Externally reachable systems usually deserve faster remediation.</p></div></div>
+        <div class="workflow-item"><div class="workflow-icon">💼</div><div><strong>Business impact</strong><p>Production, identity, financial, and customer-facing systems carry higher risk.</p></div></div>
+        <div class="workflow-item"><div class="workflow-icon">🔥</div><div><strong>Exploitability</strong><p>Known exploited vulnerabilities should move to the top of the queue.</p></div></div>
+      </div>
+      <h2 id="workflow-that-works">04. The Workflow That Actually Works</h2>
+      <p>The workflow that works starts with asset importance and ends with validation. Each finding should move through a clear lifecycle: identify, prioritize, assign, remediate, validate, document, and report.</p>
+      <h3>Identify critical assets first</h3>
+      <p>Not every system matters equally. Prioritize domain controllers, cloud admin systems, production workloads, backup infrastructure, and internet-facing applications.</p>
+      <h3>Prioritize based on real exposure</h3>
+      <p>Focus on vulnerabilities that attackers are actively exploiting or can realistically abuse inside your environment.</p>
+      <h3>Assign clear ownership</h3>
+      <p>Findings without owners become permanent risk. Every critical vulnerability should have a system owner, deadline, validation requirement, and risk acceptance path.</p>
+      <h3>Validate remediation</h3>
+      <p>Applying a patch does not automatically eliminate exposure. Systems should be rescanned and validated to ensure the fix worked and the business application still functions.</p>
+      <h2 id="visibility-without-execution">05. Visibility Without Execution Creates False Confidence</h2>
+      <p>Many organizations believe they are secure because they can see their vulnerabilities. But visibility without accountability creates operational blind spots.</p>
+      <p>The organizations reducing risk fastest are the ones that operationalize remediation, not the ones generating the largest reports. Reports show the problem. Execution reduces the risk.</p>
+      <h2 id="how-cyberbench-helps">06. How CyberBench Helps</h2>
+      <p>CyberBench helps turn vulnerability findings into managed remediation workflows. Instead of leaving teams with scanner exports, CyberBench organizes findings into tickets, tasks, ownership, due dates, progress tracking, validation, and executive reporting.</p>
+      <p>With CyberBench, scanning becomes the starting point, not the end state. The platform helps teams prioritize what matters, assign accountable owners, track progress, validate closure, and show measurable risk reduction over time.</p>
+      <div class="callout"><div class="callout-icon">✅</div><strong>CyberBench helps move security teams from “we found the risk” to “we fixed and verified the risk.”</strong></div>
+    </article>
+    <aside class="sidebar">
+      <div class="side-card sticky">
+        <h3>Table of contents</h3>
+        <ul class="toc">
+          <li><a href="#why-traditional-vulnerability-management-fails"><span>01</span> Why Traditional Vulnerability Management Fails</a></li>
+          <li><a href="#real-problems-behind-backlogs"><span>02</span> The Real Problems Behind Vulnerability Backlogs</a></li>
+          <li><a href="#cvss-alone-is-not-enough"><span>03</span> Why CVSS Alone Is Not Enough</a></li>
+          <li><a href="#workflow-that-works"><span>04</span> The Workflow That Actually Works</a></li>
+          <li><a href="#visibility-without-execution"><span>05</span> Visibility Without Execution Creates False Confidence</a></li>
+          <li><a href="#how-cyberbench-helps"><span>06</span> How CyberBench Helps</a></li>
+        </ul>
+      </div>
+      <div class="side-card">
+        <h3>Key takeaways</h3>
+        <ul class="takeaway">
+          <li><span class="check">✓</span> Scanning does not equal risk reduction.</li>
+          <li><span class="check">✓</span> Ownership drives remediation.</li>
+          <li><span class="check">✓</span> CVSS is only one factor.</li>
+          <li><span class="check">✓</span> Validation is critical.</li>
+          <li><span class="check">✓</span> Continuous remediation reduces risk.</li>
+        </ul>
+      </div>
+      <div class="side-card cta">
+        <div class="cta-icon">🛡️</div>
+        <h3>Transform vulnerability findings into action.</h3>
+        <p>CyberBench combines remediation tracking, ticketing, ownership, validation, and reporting into one workflow.</p>
+        <a class="btn btn-primary full" href="/contact.html">Request a Demo →</a>
+      </div>
+    </aside>
+  </section>
 </main>
-
 <footer class="footer">
-
-  <nav class="footer-nav">
-
-    <a href="/services.html">Services</a>
-
-    <a href="/about.html">About</a>
-
-    <a href="/blog.html">Blog</a>
-
-    <a href="/client-portal.html">Client Portal</a>
-
-    <a href="/consultant-portal.html">Consultant Portal</a>
-
-  </nav>
-
-  <div class="footer-bottom">
-    © 2026 CyberBench. All rights reserved.
-  </div>
-
+  <nav class="footer-nav"><a href="/services.html">Services</a><a href="/about.html">About</a><a href="/blog.html">Blog</a><a href="/client-portal.html">Client Portal</a><a href="/consultant-portal.html">Consultant Portal</a></nav>
+  <div class="footer-bottom">© 2026 CyberBench. All rights reserved.</div>
 </footer>
-
 </body>
 </html>
