@@ -1,531 +1,196 @@
 <!doctype html>
 <html lang="en">
-
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Backup Validation | CyberBench</title>
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="stylesheet" href="/styles.css" />
+<style>
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:#050816;color:#f3f6ff;font-family:Inter,Arial,sans-serif;line-height:1.7}
+a{color:inherit;text-decoration:none}
 
-  <title>Backup Validation | CyberBench</title>
+/* Keep current CyberBench header format */
+.nav{position:sticky;top:0;z-index:50;background:rgba(5,8,22,.92);backdrop-filter:blur(14px);border-bottom:1px solid rgba(255,255,255,.08)}
+.container{width:min(1180px,92%);margin:0 auto}
+.nav_row{display:flex;align-items:center;justify-content:space-between;height:72px}
+.brand{display:flex;align-items:center;gap:10px;color:#fff;font-weight:900;font-size:22px;text-decoration:none}
+.logo{width:30px;height:30px;border-radius:10px;background:linear-gradient(135deg,#4d7cff,#7c5cff);display:grid;place-items:center;color:#fff;font-size:14px;box-shadow:0 0 22px rgba(94,92,255,.55)}
+.nav_links{display:flex;align-items:center;gap:28px}
+.nav_links a{color:#f5f7fb;font-size:14px;font-weight:700;text-decoration:none;opacity:.9}
+.nav_links a:hover,.nav_links .nav-active{color:#fff;opacity:1}
+.btn{display:inline-flex;align-items:center;justify-content:center;border-radius:14px;padding:13px 20px;border:1px solid rgba(255,255,255,.12);background:#0b1426;color:#fff;font-weight:800;text-decoration:none;cursor:pointer}
+.btn-primary{border:0;background:linear-gradient(135deg,#4d7cff,#7c5cff);box-shadow:0 16px 40px rgba(77,124,255,.24)}
 
-  <link rel="icon" type="image/png" href="/favicon.png">
+.page{width:min(1180px,92%);margin:0 auto;padding:64px 0 90px}
+.hero{display:grid;grid-template-columns:minmax(0,1fr) 470px;gap:56px;align-items:center;padding-bottom:46px;border-bottom:1px solid rgba(255,255,255,.08)}
+.blog-tag{display:inline-flex;align-items:center;height:34px;padding:0 14px;border-radius:999px;background:rgba(77,124,255,.12);border:1px solid rgba(77,124,255,.32);color:#7da2ff;font-size:12px;font-weight:900;letter-spacing:.08em;margin-bottom:24px}
+.blog-title{font-size:58px;line-height:1.05;font-weight:900;letter-spacing:-2.4px;max-width:14ch;margin:0 0 24px;color:#f7f9ff}
+.hero-copy{font-size:20px;color:#b8c4d8;max-width:680px;margin:0 0 26px;line-height:1.65}
+.blog-meta{display:flex;gap:14px;align-items:center;flex-wrap:wrap;color:rgba(255,255,255,.62);font-size:15px}
+.hero-art{min-height:330px;border-radius:22px;border:1px solid rgba(77,124,255,.28);background:radial-gradient(circle at 62% 35%,rgba(88,150,255,.38),transparent 28%),radial-gradient(circle at 45% 70%,rgba(124,92,255,.36),transparent 32%),linear-gradient(135deg,#07111f,#0b1530);display:grid;place-items:center;box-shadow:0 30px 90px rgba(0,0,0,.45);overflow:hidden;position:relative}
+.hero-art:before{content:"";position:absolute;inset:0;background:linear-gradient(90deg,rgba(255,255,255,.04) 1px,transparent 1px),linear-gradient(rgba(255,255,255,.04) 1px,transparent 1px);background-size:38px 38px;mask-image:radial-gradient(circle at center,#000,transparent 72%)}
+.backup-icon{width:190px;height:190px;border-radius:34px;background:linear-gradient(135deg,rgba(77,124,255,.22),rgba(124,92,255,.18));border:1px solid rgba(125,162,255,.32);display:grid;place-items:center;position:relative;z-index:1;box-shadow:0 0 70px rgba(77,124,255,.32)}
+.backup-icon svg{width:104px;height:104px;filter:drop-shadow(0 0 25px rgba(77,124,255,.7))}
 
-  <link rel="stylesheet" href="/styles.css" />
+.content-grid{display:grid;grid-template-columns:minmax(0,720px) 360px;gap:72px;align-items:start;margin-top:38px}
+.article{width:100%;max-width:720px}
+.share{display:flex;align-items:center;gap:14px;margin-bottom:30px;color:#b8c4d8}
+.share-btn{width:42px;height:42px;border-radius:50%;background:#081422;border:1px solid #1b3048;display:grid;place-items:center;font-weight:900;color:#fff}
+.article p{color:rgba(255,255,255,.76);font-size:18px;line-height:1.9;margin:0 0 26px}
+.article h2{font-size:34px;line-height:1.2;margin:62px 0 18px;letter-spacing:-1px;color:#f7f9ff;scroll-margin-top:110px}
+.article h3{font-size:24px;margin:34px 0 12px;color:#fff}
+.article ul{padding-left:22px;margin:0 0 34px}
+.article li{margin-bottom:12px;color:rgba(255,255,255,.76);font-size:18px;line-height:1.8}
+.article-callout{display:flex;gap:18px;align-items:center;background:linear-gradient(135deg,rgba(77,124,255,.17),rgba(124,92,255,.11));border:1px solid rgba(77,124,255,.42);border-left:4px solid #4d7cff;padding:26px;border-radius:20px;margin:40px 0;color:#fff;font-size:20px;font-weight:800;line-height:1.5}
+.callout-icon{width:58px;height:58px;border-radius:16px;background:linear-gradient(135deg,#4d7cff,#7c5cff);display:grid;place-items:center;flex:none;font-size:28px}
+.info-list{border:1px solid #1b3048;border-radius:18px;overflow:hidden;background:#081422;margin:24px 0 38px}
+.info-item{display:grid;grid-template-columns:64px 1fr;gap:18px;padding:18px;border-bottom:1px solid #17283c}
+.info-item:last-child{border-bottom:0}
+.info-icon{width:48px;height:48px;border-radius:14px;background:rgba(124,92,255,.18);display:grid;place-items:center;font-size:24px}
+.info-item strong{display:block;font-size:18px;color:#fff;margin-bottom:4px}
+.info-item p{font-size:15px;line-height:1.6;color:#aeb9c8;margin:0}
+.week-card{background:#081422;border:1px solid #1b3048;border-radius:18px;padding:22px;margin:22px 0 36px}
+.week-card h3{margin-top:0}.week-card ul{margin-bottom:0}
 
-  <style>
+.sidebar{position:sticky;top:100px;align-self:start;height:max-content;display:flex;flex-direction:column;gap:24px;z-index:1}
+.side-card{background:rgba(8,20,34,.88);border:1px solid #1b3048;border-radius:18px;padding:24px;box-shadow:0 20px 60px rgba(0,0,0,.25)}
+.side-card h3{font-size:22px;margin:0 0 18px;color:#fff}.toc{margin:0;padding:0}.toc li{list-style:none;margin:0;padding:0}.toc a{display:grid;grid-template-columns:38px 1fr;gap:10px;color:#d7e0ee;text-decoration:none;padding:8px 0;font-weight:700;line-height:1.5}.toc a:hover{color:#7da2ff}.toc span{color:#58a6ff;font-weight:900}
+.takeaway{margin:0;padding:0}.takeaway li{list-style:none;display:flex;gap:12px;padding:10px 0;color:#d7e0ee;line-height:1.5}.check{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#4d7cff,#7c5cff);display:grid;place-items:center;flex:none;font-size:13px;color:#fff}
+.cta{background:linear-gradient(180deg,rgba(77,124,255,.17),rgba(8,20,34,.92))}.cta-icon{width:58px;height:58px;border-radius:16px;background:rgba(124,92,255,.22);display:grid;place-items:center;font-size:28px;margin-bottom:18px}.cta p{color:#aeb9c8;margin:10px 0 20px;line-height:1.7}.full{width:100%}
 
-    body{
-      background:
-        radial-gradient(circle at top left, rgba(45,85,255,.16), transparent 30%),
-        #050816;
+.footer{border-top:1px solid rgba(255,255,255,.06);margin-top:80px;padding:40px 0;text-align:center}.footer-nav{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin-bottom:20px}.footer-nav a{color:#fff;text-decoration:none}.footer-bottom{color:rgba(255,255,255,.55)}
 
-      color:#f3f6ff;
-    }
-
-    .blog-wrap{
-      width:min(900px,92%);
-      margin:0 auto;
-      padding:80px 0;
-    }
-
-    .blog-tag{
-      display:inline-flex;
-      align-items:center;
-
-      height:34px;
-      padding:0 14px;
-
-      border-radius:999px;
-
-      background:rgba(77,124,255,.12);
-
-      border:1px solid rgba(77,124,255,.28);
-
-      color:#7da2ff;
-
-      font-size:12px;
-      font-weight:700;
-      letter-spacing:.08em;
-
-      margin-bottom:24px;
-    }
-
-    .blog-title{
-      font-size:56px;
-      line-height:1.05;
-      font-weight:800;
-      letter-spacing:-2px;
-
-      max-width:14ch;
-
-      margin:0 0 24px;
-    }
-
-    .blog-meta{
-      color:rgba(255,255,255,.55);
-
-      font-size:15px;
-
-      margin-bottom:40px;
-    }
-
-    .blog-intro{
-      font-size:22px;
-      line-height:1.7;
-
-      color:rgba(255,255,255,.88);
-
-      margin-bottom:40px;
-    }
-
-    .blog-wrap p{
-      color:rgba(255,255,255,.74);
-
-      line-height:1.9;
-
-      font-size:18px;
-
-      margin-bottom:28px;
-    }
-
-    .blog-wrap h2{
-      font-size:34px;
-      line-height:1.2;
-
-      margin-top:70px;
-      margin-bottom:20px;
-
-      letter-spacing:-1px;
-    }
-
-    .blog-wrap ul{
-      padding-left:22px;
-      margin-bottom:34px;
-    }
-
-    .blog-wrap li{
-      margin-bottom:14px;
-
-      color:rgba(255,255,255,.74);
-
-      line-height:1.8;
-      font-size:18px;
-    }
-
-    .article-callout{
-      background:rgba(255,255,255,.03);
-
-      border:1px solid rgba(255,255,255,.06);
-
-      border-left:4px solid #4d7cff;
-
-      padding:28px;
-
-      border-radius:20px;
-
-      margin:40px 0;
-
-      line-height:1.8;
-    }
-
-    .footer{
-      border-top:1px solid rgba(255,255,255,.06);
-
-      margin-top:80px;
-      padding:40px 0;
-
-      text-align:center;
-    }
-
-    .footer-nav{
-      display:flex;
-      justify-content:center;
-      gap:24px;
-      flex-wrap:wrap;
-
-      margin-bottom:20px;
-    }
-
-    .footer-nav a{
-      color:#fff;
-      text-decoration:none;
-    }
-
-    .footer-bottom{
-      color:rgba(255,255,255,.55);
-    }
-
-    @media(max-width:900px){
-
-      .blog-title{
-        font-size:42px;
-      }
-
-      .blog-intro{
-        font-size:19px;
-      }
-
-    }
-
-  </style>
-
+@media(max-width:1000px){.hero,.content-grid{grid-template-columns:1fr}.sidebar{position:static}.hero-art{min-height:260px}.blog-title{font-size:44px}.nav_links{gap:16px}.article{max-width:100%}}
+@media(max-width:700px){.nav_row{height:auto;padding:16px 0;align-items:flex-start;gap:16px;flex-direction:column}.nav_links{flex-wrap:wrap}.page{padding:38px 0}.blog-title{font-size:38px}.hero-copy,.article p,.article li{font-size:16px}.article h2{font-size:28px}.hero{gap:30px}.article-callout{align-items:flex-start;font-size:17px}.content-grid{gap:34px}.hero-art{display:none}}
+</style>
 </head>
-
 <body>
-
 <header class="nav">
-
   <div class="container nav_row">
-
-    <a class="brand" href="/index.html">
-      <span class="logo">X</span>
-      <span>CyberBench</span>
-    </a>
-
+    <a class="brand" href="/index.html"><span class="logo">X</span><span>CyberBench</span></a>
     <nav class="nav_links">
-
       <a href="/services.html">Services</a>
-
       <a href="/about.html">About</a>
-
       <a href="/blog.html" class="nav-active">Blog</a>
-
       <a href="/client-portal.html">Client Portal</a>
-
       <a href="/consultant-portal.html">Consultant Portal</a>
-
-      <a class="btn btn-primary" href="/submit-ticket.html">
-        Deploy Security Now
-      </a>
-
+      <a class="btn btn-primary" href="/submit-ticket.html">Deploy Security Now</a>
     </nav>
-
   </div>
-
 </header>
 
-<main class="blog-wrap">
-
-  <div class="blog-tag">
-    RECOVERY
-  </div>
-
-  <h1 class="blog-title">
-    Backups that actually restore:
-    a 30-day validation plan
-  </h1>
-
-  <div class="blog-meta">
-    5 min read · Checklist
-  </div>
-
-  <p class="blog-intro">
-    Backup ownership is not recovery readiness.
-    Many organizations believe they are protected because backups exist.
-    But ransomware events continue proving the same reality:
-    backups that are never tested cannot be trusted.
-  </p>
-
-  <p>
-    Modern recovery failures rarely happen because backups do not exist.
-    They happen because organizations discover too late that:
-  </p>
-
-  <ul>
-
-    <li>Backups were corrupted</li>
-
-    <li>Retention policies failed</li>
-
-    <li>Immutable copies did not exist</li>
-
-    <li>Recovery procedures were undocumented</li>
-
-    <li>Critical systems were excluded</li>
-
-    <li>Restore times exceeded operational requirements</li>
-
-  </ul>
-
-  <p>
-    Recovery readiness is not about successful backup jobs.
-    It is about whether the business can actually recover under pressure.
-  </p>
-
-  <div class="article-callout">
-
-    A backup is only valuable if it can restore successfully when the organization needs it most.
-
-  </div>
-
-  <h2>
-    Week 1: Inventory Critical Systems
-  </h2>
-
-  <p>
-    Organizations must first identify what actually needs protection.
-  </p>
-
-  <p>
-    Many environments focus heavily on backup coverage while lacking visibility into business-critical dependencies.
-  </p>
-
-  <p>
-    Prioritize:
-  </p>
-
-  <ul>
-
-    <li>Domain controllers</li>
-
-    <li>Production servers</li>
-
-    <li>Cloud workloads</li>
-
-    <li>Databases</li>
-
-    <li>File shares</li>
-
-    <li>Virtual machines</li>
-
-    <li>Identity infrastructure</li>
-
-    <li>Backup management systems</li>
-
-  </ul>
-
-  <p>
-    Critical applications should also be mapped to:
-  </p>
-
-  <ul>
-
-    <li>Dependencies</li>
-
-    <li>Recovery time objectives (RTO)</li>
-
-    <li>Recovery point objectives (RPO)</li>
-
-    <li>Operational owners</li>
-
-  </ul>
-
-  <h2>
-    Week 2: Validate Backup Integrity
-  </h2>
-
-  <p>
-    A backup job reporting “successful” does not guarantee recoverability.
-  </p>
-
-  <p>
-    Organizations should validate:
-  </p>
-
-  <ul>
-
-    <li>Backup completion success</li>
-
-    <li>Retention policy functionality</li>
-
-    <li>Replication health</li>
-
-    <li>Immutable storage configuration</li>
-
-    <li>Offsite backup availability</li>
-
-    <li>Encryption validation</li>
-
-  </ul>
-
-  <p>
-    Security teams should also confirm backup systems themselves are protected.
-  </p>
-
-  <p>
-    Attackers increasingly target:
-  </p>
-
-  <ul>
-
-    <li>Backup consoles</li>
-
-    <li>Storage repositories</li>
-
-    <li>Administrative credentials</li>
-
-    <li>Replication infrastructure</li>
-
-  </ul>
-
-  <h2>
-    Week 3: Perform Real Restore Testing
-  </h2>
-
-  <p>
-    This is where many organizations fail.
-  </p>
-
-  <p>
-    Recovery plans often exist only on paper.
-    Real-world testing reveals operational gaps quickly.
-  </p>
-
-  <p>
-    Organizations should perform:
-  </p>
-
-  <ul>
-
-    <li>Virtual machine restores</li>
-
-    <li>Database recovery tests</li>
-
-    <li>File-level recovery validation</li>
-
-    <li>Cloud workload recovery</li>
-
-    <li>Application functionality testing</li>
-
-  </ul>
-
-  <p>
-    During testing, measure:
-  </p>
-
-  <ul>
-
-    <li>Recovery duration</li>
-
-    <li>Operational impact</li>
-
-    <li>Application dependencies</li>
-
-    <li>Authentication functionality</li>
-
-    <li>Network connectivity</li>
-
-  </ul>
-
-  <h2>
-    Week 4: Build Operational Recovery Procedures
-  </h2>
-
-  <p>
-    Recovery operations should never depend on tribal knowledge.
-  </p>
-
-  <p>
-    Build documented procedures for:
-  </p>
-
-  <ul>
-
-    <li>Mass ransomware recovery</li>
-
-    <li>Domain recovery</li>
-
-    <li>Cloud outage response</li>
-
-    <li>Backup compromise response</li>
-
-    <li>Business continuity coordination</li>
-
-  </ul>
-
-  <p>
-    Recovery procedures should clearly define:
-  </p>
-
-  <ul>
-
-    <li>Roles and responsibilities</li>
-
-    <li>Escalation procedures</li>
-
-    <li>Recovery sequencing</li>
-
-    <li>Communication workflows</li>
-
-    <li>Validation checkpoints</li>
-
-  </ul>
-
-  <h2>
-    Why Recovery Discipline Matters
-  </h2>
-
-  <p>
-    Organizations often spend heavily on backup infrastructure while spending very little time validating recovery operations.
-  </p>
-
-  <p>
-    The result is false confidence.
-  </p>
-
-  <p>
-    Mature recovery programs continuously validate:
-  </p>
-
-  <ul>
-
-    <li>Backup integrity</li>
-
-    <li>Recovery speed</li>
-
-    <li>Operational readiness</li>
-
-    <li>Disaster recovery workflows</li>
-
-    <li>Business continuity coordination</li>
-
-  </ul>
-
-  <h2>
-    Final Thoughts
-  </h2>
-
-  <p>
-    Backups alone do not create resilience.
-    Recovery discipline does.
-  </p>
-
-  <p>
-    Organizations should treat recovery validation as an operational process,
-    not a yearly compliance exercise.
-  </p>
-
-  <p>
-    Because during a real ransomware event,
-    nobody cares whether backups existed.
-  </p>
-
-  <p>
-    They care whether the business can recover.
-  </p>
-
+<main class="page">
+  <section class="hero">
+    <div>
+      <span class="blog-tag">RECOVERY</span>
+      <h1 class="blog-title">Backups that actually restore: a 30-day validation plan</h1>
+      <p class="hero-copy">Backup ownership is not recovery readiness. Many organizations believe they are protected because backups exist, but backups that are never tested cannot be trusted.</p>
+      <div class="blog-meta"><span>📅 May 2026</span><span>|</span><span>⏱ 5 min read</span><span>|</span><span>📁 Checklist</span></div>
+    </div>
+    <div class="hero-art" aria-label="Backup recovery illustration">
+      <div class="backup-icon">
+        <svg viewBox="0 0 120 120" fill="none" xmlns="http://www.w3.org/2000/svg">
+          <path d="M60 10L98 26V55C98 82 82 101 60 110C38 101 22 82 22 55V26L60 10Z" fill="url(#g)" stroke="#7da2ff" stroke-width="3"/>
+          <path d="M40 66C40 54 49 45 60 45C69 45 77 51 80 59" stroke="white" stroke-width="6" stroke-linecap="round"/>
+          <path d="M80 45V60H65" stroke="white" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+          <path d="M80 66C80 78 71 87 60 87C51 87 43 81 40 73" stroke="white" stroke-width="6" stroke-linecap="round"/>
+          <path d="M40 87V72H55" stroke="white" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+          <defs><linearGradient id="g" x1="22" y1="10" x2="98" y2="110"><stop stop-color="#4d7cff"/><stop offset="1" stop-color="#7c5cff"/></linearGradient></defs>
+        </svg>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-grid">
+    <article class="article">
+      <div class="share"><span>Share this article:</span><a class="share-btn" href="#">in</a><a class="share-btn" href="#">𝕏</a><a class="share-btn" href="#">f</a><a class="share-btn" href="#">🔗</a></div>
+
+      <p class="blog-intro">Modern recovery failures rarely happen because backups do not exist. They happen because organizations discover too late that backups were corrupted, incomplete, untested, undocumented, or unable to meet operational recovery requirements.</p>
+
+      <div class="article-callout"><div class="callout-icon">↻</div><div>A backup is only valuable if it can restore successfully when the organization needs it most.</div></div>
+
+      <h2 id="why-backup-validation-matters">01. Why Backup Validation Matters</h2>
+      <p>Recovery readiness is not about successful backup jobs. It is about whether the business can actually recover under pressure. A green checkmark from a backup platform does not prove that applications can be restored, dependencies still work, authentication is functional, or recovery time meets business requirements.</p>
+      <p>During ransomware and outage events, organizations often learn that critical systems were excluded, restore procedures were unclear, retention policies failed, or backups were not isolated from attackers. Backup validation closes that gap by proving recoverability before a crisis.</p>
+      <div class="info-list">
+        <div class="info-item"><div class="info-icon">🧩</div><div><strong>Coverage gaps</strong><p>Critical systems, cloud workloads, databases, or identity infrastructure may not be protected.</p></div></div>
+        <div class="info-item"><div class="info-icon">⏱️</div><div><strong>RTO/RPO mismatch</strong><p>Restore speed and data loss windows may not match actual business requirements.</p></div></div>
+        <div class="info-item"><div class="info-icon">🔒</div><div><strong>Backup compromise risk</strong><p>Attackers increasingly target backup consoles, storage repositories, and admin credentials.</p></div></div>
+      </div>
+
+      <h2 id="week-1-inventory-critical-systems">02. Week 1: Inventory Critical Systems</h2>
+      <p>Organizations must first identify what actually needs protection. Many environments focus heavily on backup coverage while lacking visibility into business-critical dependencies.</p>
+      <div class="week-card">
+        <h3>Prioritize these systems first</h3>
+        <ul><li>Domain controllers and identity infrastructure</li><li>Production servers and virtual machines</li><li>Cloud workloads and databases</li><li>File shares and business-critical applications</li><li>Backup management systems and storage repositories</li></ul>
+      </div>
+      <p>Critical applications should also be mapped to dependencies, recovery time objectives, recovery point objectives, operational owners, and escalation contacts.</p>
+
+      <h2 id="week-2-validate-backup-integrity">03. Week 2: Validate Backup Integrity</h2>
+      <p>A backup job reporting “successful” does not guarantee recoverability. Security and IT teams should verify backup completion, retention policy functionality, replication health, immutable storage configuration, offsite backup availability, and encryption status.</p>
+      <p>Backup systems themselves should also be protected. Administrative access, backup console exposure, repository permissions, MFA, logging, and privileged accounts should be reviewed because attackers frequently attempt to delete or encrypt backups before launching ransomware.</p>
+
+      <h2 id="week-3-perform-real-restore-testing">04. Week 3: Perform Real Restore Testing</h2>
+      <p>This is where many organizations fail. Recovery plans often exist only on paper, but real-world testing reveals operational gaps quickly.</p>
+      <div class="info-list">
+        <div class="info-item"><div class="info-icon">🖥️</div><div><strong>Virtual machine restores</strong><p>Validate that critical VMs can boot, authenticate, and connect to required services.</p></div></div>
+        <div class="info-item"><div class="info-icon">🗄️</div><div><strong>Database recovery tests</strong><p>Confirm that databases restore cleanly and applications can reconnect successfully.</p></div></div>
+        <div class="info-item"><div class="info-icon">☁️</div><div><strong>Cloud workload recovery</strong><p>Test cloud recovery paths, permissions, network access, and application dependencies.</p></div></div>
+      </div>
+      <p>During testing, measure recovery duration, operational impact, application dependencies, authentication functionality, network connectivity, and user acceptance checkpoints.</p>
+
+      <h2 id="week-4-build-recovery-procedures">05. Week 4: Build Recovery Procedures</h2>
+      <p>Recovery operations should never depend on tribal knowledge. Build documented procedures for ransomware recovery, domain recovery, cloud outage response, backup compromise response, and business continuity coordination.</p>
+      <p>Procedures should clearly define roles and responsibilities, escalation paths, recovery sequencing, communication workflows, validation checkpoints, and executive reporting requirements. The goal is to make recovery repeatable, measurable, and executable under pressure.</p>
+
+      <h2 id="how-cyberbench-helps">06. How CyberBench Helps</h2>
+      <p>CyberBench helps organizations move beyond backup success reports and focus on recovery readiness. Through backup validation, restore testing, recovery documentation, remediation tracking, and executive reporting, CyberBench helps ensure systems can actually recover during a ransomware event or operational outage.</p>
+      <p>Rather than relying on assumptions, CyberBench provides visibility into recovery performance, recovery gaps, backup health, and operational readiness so organizations can reduce risk and improve resilience.</p>
+    </article>
+
+    <aside class="sidebar">
+      <div class="side-card">
+        <h3>Table of contents</h3>
+        <ul class="toc">
+          <li><a href="#why-backup-validation-matters"><span>01</span> Why Backup Validation Matters</a></li>
+          <li><a href="#week-1-inventory-critical-systems"><span>02</span> Week 1: Inventory Critical Systems</a></li>
+          <li><a href="#week-2-validate-backup-integrity"><span>03</span> Week 2: Validate Backup Integrity</a></li>
+          <li><a href="#week-3-perform-real-restore-testing"><span>04</span> Week 3: Perform Real Restore Testing</a></li>
+          <li><a href="#week-4-build-recovery-procedures"><span>05</span> Week 4: Build Recovery Procedures</a></li>
+          <li><a href="#how-cyberbench-helps"><span>06</span> How CyberBench Helps</a></li>
+        </ul>
+      </div>
+
+      <div class="side-card">
+        <h3>Key takeaways</h3>
+        <ul class="takeaway">
+          <li><span class="check">✓</span> Backups are not recovery.</li>
+          <li><span class="check">✓</span> Recovery testing reveals hidden failures.</li>
+          <li><span class="check">✓</span> RTO and RPO must be validated.</li>
+          <li><span class="check">✓</span> Immutable backups matter.</li>
+          <li><span class="check">✓</span> Restore testing should be continuous.</li>
+          <li><span class="check">✓</span> Recovery readiness reduces ransomware impact.</li>
+        </ul>
+      </div>
+
+      <div class="side-card cta">
+        <div class="cta-icon">🛡️</div>
+        <h3>Transform backups into recovery readiness.</h3>
+        <p>CyberBench helps validate backups, track restore testing, document recovery gaps, and reduce ransomware risk.</p>
+        <a class="btn btn-primary full" href="/submit-ticket.html">Deploy Security Now →</a>
+      </div>
+    </aside>
+  </section>
 </main>
 
 <footer class="footer">
-
   <nav class="footer-nav">
-
-    <a href="/services.html">Services</a>
-
-    <a href="/about.html">About</a>
-
-    <a href="/blog.html">Blog</a>
-
-    <a href="/client-portal.html">Client Portal</a>
-
-    <a href="/consultant-portal.html">Consultant Portal</a>
-
+    <a href="/services.html">Services</a><a href="/about.html">About</a><a href="/blog.html">Blog</a><a href="/client-portal.html">Client Portal</a><a href="/consultant-portal.html">Consultant Portal</a>
   </nav>
-
-  <div class="footer-bottom">
-    © 2026 CyberBench. All rights reserved.
-  </div>
-
+  <div class="footer-bottom">© 2026 CyberBench. All rights reserved.</div>
 </footer>
-
 </body>
 </html>
