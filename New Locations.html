@@ -1,0 +1,504 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Opening a New Office? Cybersecurity Checklist | CyberBench</title>
+<link rel="icon" type="image/png" href="/favicon.png">
+<link rel="stylesheet" href="/styles.css">
+
+<style>
+body{
+  background:
+    radial-gradient(circle at top left, rgba(45,85,255,.16), transparent 30%),
+    #050816;
+  color:#f3f6ff;
+}
+
+.blog-page{
+  width:min(1180px,92%);
+  margin:0 auto;
+  padding:70px 0 90px;
+}
+
+.hero{
+  display:grid;
+  grid-template-columns:1fr 460px;
+  gap:54px;
+  align-items:center;
+  padding-bottom:44px;
+  border-bottom:1px solid rgba(255,255,255,.08);
+}
+
+.blog-tag{
+  display:inline-flex;
+  padding:8px 14px;
+  border-radius:999px;
+  background:rgba(77,124,255,.12);
+  border:1px solid rgba(77,124,255,.28);
+  color:#7da2ff;
+  font-size:12px;
+  font-weight:800;
+  letter-spacing:.08em;
+  margin-bottom:24px;
+}
+
+.hero h1{
+  font-size:clamp(42px,6vw,64px);
+  line-height:1.05;
+  letter-spacing:-2px;
+  margin:0 0 22px;
+}
+
+.hero p{
+  color:rgba(255,255,255,.76);
+  font-size:20px;
+  line-height:1.7;
+  max-width:680px;
+}
+
+.blog-meta{
+  display:flex;
+  gap:14px;
+  flex-wrap:wrap;
+  margin-top:24px;
+  color:rgba(255,255,255,.58);
+  font-size:14px;
+}
+
+.hero-visual{
+  min-height:320px;
+  border-radius:24px;
+  border:1px solid rgba(77,124,255,.25);
+  background:
+    radial-gradient(circle at 70% 30%, rgba(77,124,255,.35), transparent 30%),
+    linear-gradient(145deg,#081426,#101a38);
+  display:grid;
+  place-items:center;
+  box-shadow:0 24px 70px rgba(0,0,0,.35);
+}
+
+.visual-card{
+  width:78%;
+  padding:28px;
+  border-radius:20px;
+  background:rgba(5,8,22,.72);
+  border:1px solid rgba(255,255,255,.08);
+}
+
+.visual-card h3{
+  font-size:22px;
+  margin-bottom:18px;
+}
+
+.visual-row{
+  display:flex;
+  gap:12px;
+  align-items:center;
+  padding:12px 0;
+  border-bottom:1px solid rgba(255,255,255,.08);
+  color:#cfd8ea;
+}
+
+.visual-row:last-child{
+  border-bottom:0;
+}
+
+.content-grid{
+  display:grid;
+  grid-template-columns:minmax(0,720px) 360px;
+  gap:70px;
+  align-items:start;
+  margin-top:44px;
+}
+
+.article p{
+  color:rgba(255,255,255,.76);
+  font-size:18px;
+  line-height:1.9;
+  margin-bottom:26px;
+}
+
+.article h2{
+  font-size:34px;
+  line-height:1.2;
+  margin:58px 0 18px;
+  letter-spacing:-1px;
+}
+
+.article ul{
+  padding-left:22px;
+  margin:18px 0 34px;
+}
+
+.article li{
+  color:rgba(255,255,255,.76);
+  font-size:18px;
+  line-height:1.8;
+  margin-bottom:10px;
+}
+
+.article-callout{
+  margin:40px 0;
+  padding:28px;
+  border-radius:20px;
+  background:rgba(77,124,255,.10);
+  border:1px solid rgba(77,124,255,.25);
+  border-left:4px solid #4d7cff;
+  color:#fff;
+  font-size:19px;
+  line-height:1.7;
+  font-weight:800;
+}
+
+.sidebar{
+  position:sticky;
+  top:100px;
+  align-self:start;
+  height:max-content;
+  display:flex;
+  flex-direction:column;
+  gap:22px;
+}
+
+.side-card{
+  background:rgba(8,20,34,.88);
+  border:1px solid #1b3048;
+  border-radius:18px;
+  padding:24px;
+  box-shadow:0 20px 60px rgba(0,0,0,.25);
+}
+
+.side-card h3{
+  font-size:22px;
+  margin-bottom:18px;
+}
+
+.toc li{
+  list-style:none;
+  display:grid;
+  grid-template-columns:38px 1fr;
+  gap:10px;
+  padding:9px 0;
+  color:#d7e0ee;
+  line-height:1.5;
+}
+
+.toc span{
+  color:#58a6ff;
+  font-weight:900;
+}
+
+.takeaway li{
+  list-style:none;
+  display:flex;
+  gap:12px;
+  padding:10px 0;
+  color:#d7e0ee;
+  line-height:1.5;
+}
+
+.check{
+  width:24px;
+  height:24px;
+  border-radius:50%;
+  background:linear-gradient(135deg,#246bff,#7b5cff);
+  display:grid;
+  place-items:center;
+  flex:none;
+  font-size:13px;
+}
+
+.cta{
+  background:linear-gradient(180deg,rgba(36,107,255,.16),rgba(8,20,34,.9));
+}
+
+.cta p{
+  color:#aeb9c8;
+  margin:10px 0 20px;
+  line-height:1.7;
+}
+
+.cta .btn{
+  width:100%;
+  justify-content:center;
+}
+
+.footer{
+  border-top:1px solid rgba(255,255,255,.06);
+  padding:40px 0;
+  text-align:center;
+}
+
+.footer-nav{
+  display:flex;
+  justify-content:center;
+  gap:24px;
+  flex-wrap:wrap;
+  margin-bottom:20px;
+}
+
+.footer-nav a{
+  color:#fff;
+  text-decoration:none;
+}
+
+.footer-bottom{
+  color:rgba(255,255,255,.55);
+  font-size:14px;
+}
+
+@media(max-width:1000px){
+  .hero,
+  .content-grid{
+    grid-template-columns:1fr;
+  }
+
+  .sidebar{
+    position:static;
+  }
+}
+</style>
+</head>
+
+<body>
+
+<header class="nav">
+  <div class="container nav_row">
+    <a class="brand" href="/index.html">
+      <span class="logo" aria-hidden="true">X</span>
+      <span>CyberBench</span>
+    </a>
+
+    <nav class="nav_links">
+      <a href="/services.html">Services</a>
+      <a href="/about.html">About</a>
+      <a href="/blog.html" class="nav-active">Blog</a>
+      <a href="/client-portal.html">Client Portal</a>
+      <a href="/consultant-portal.html">Consultant Portal</a>
+      <a class="btn btn-primary" href="/submit-ticket.html">Deploy Security Now</a>
+    </nav>
+  </div>
+</header>
+
+<main class="blog-page">
+
+<section class="hero">
+  <div>
+    <div class="blog-tag">NEW LOCATIONS</div>
+
+    <h1>Opening a New Office? Here's the Cybersecurity Checklist Most Businesses Miss</h1>
+
+    <p>
+      A practical guide for securing your network, Wi-Fi, users, devices,
+      backups, monitoring, and physical access before opening a new location.
+    </p>
+
+    <div class="blog-meta">
+      <span>CyberBench Team</span>
+      <span>May 2026</span>
+      <span>7 min read</span>
+      <span>Guide</span>
+    </div>
+  </div>
+
+  <div class="hero-visual">
+    <div class="visual-card">
+      <h3>New Office Security Checklist</h3>
+      <div class="visual-row">✅ Secure Network & Firewall</div>
+      <div class="visual-row">✅ Wi-Fi Segmentation</div>
+      <div class="visual-row">✅ Access Control</div>
+      <div class="visual-row">✅ Backups & Recovery</div>
+      <div class="visual-row">✅ Monitoring & Alerting</div>
+    </div>
+  </div>
+</section>
+
+<section class="content-grid">
+
+<article class="article">
+
+<p>
+Opening a new office is exciting. New employees, new customers, and new
+opportunities often take center stage during expansion planning.
+</p>
+
+<p>
+Unfortunately, cybersecurity is frequently treated as an afterthought.
+Businesses often focus on internet service, furniture, phones, and office
+equipment while overlooking the controls that protect operations from
+ransomware, data loss, downtime, and compliance issues.
+</p>
+
+<div class="article-callout">
+The best time to build security into a new location is before the first employee logs in.
+</div>
+
+<h2 id="planning">01. Planning Security Before Opening Day</h2>
+
+<p>
+Cybersecurity planning should begin alongside facility, internet, and network
+planning. A new location should not go live without a clear understanding of
+users, systems, applications, and business risks.
+</p>
+
+<ul>
+  <li>Identify business-critical systems</li>
+  <li>Define user access requirements</li>
+  <li>Document internet and cloud application needs</li>
+  <li>Inventory endpoints, printers, cameras, and IoT devices</li>
+  <li>Define backup and recovery expectations</li>
+  <li>Review compliance or data protection requirements</li>
+</ul>
+
+<h2 id="network">02. Network & Internet Connectivity</h2>
+
+<p>
+The network becomes the foundation for everything else. Poor network planning
+creates long-term security and operational problems.
+</p>
+
+<ul>
+  <li>Deploy business-grade internet connectivity</li>
+  <li>Use an enterprise firewall instead of consumer-grade equipment</li>
+  <li>Plan VPN or secure remote access</li>
+  <li>Document IP addressing and VLANs</li>
+  <li>Consider redundant circuits for critical locations</li>
+  <li>Enable centralized management and monitoring</li>
+</ul>
+
+<h2 id="wifi">03. Wi-Fi & Network Segmentation</h2>
+
+<p>
+One of the most common mistakes businesses make is putting everything on one
+flat network. Corporate users, guests, cameras, printers, and payment systems
+should not all share the same access.
+</p>
+
+<ul>
+  <li>Separate corporate Wi-Fi from guest Wi-Fi</li>
+  <li>Segment cameras, printers, VoIP phones, and IoT devices</li>
+  <li>Restrict access between sensitive systems</li>
+  <li>Use strong authentication for wireless access</li>
+  <li>Monitor rogue devices and unknown endpoints</li>
+</ul>
+
+<h2 id="physical">04. Physical Security & Access Control</h2>
+
+<p>
+Cybersecurity is not only digital. Physical access to network closets,
+servers, cameras, and access control systems can create major risk.
+</p>
+
+<ul>
+  <li>Secure network closets and server rooms</li>
+  <li>Deploy cameras in critical areas</li>
+  <li>Use controlled badge or key access</li>
+  <li>Document visitor procedures</li>
+  <li>Limit access to infrastructure equipment</li>
+  <li>Protect firewall, switch, and backup hardware</li>
+</ul>
+
+<h2 id="monitoring">05. Monitoring, Backups & Recovery</h2>
+
+<p>
+A new location should launch with visibility from day one. Waiting until after
+an incident to deploy monitoring or backups creates unnecessary business risk.
+</p>
+
+<ul>
+  <li>Deploy endpoint protection</li>
+  <li>Collect security logs</li>
+  <li>Monitor firewall and endpoint alerts</li>
+  <li>Validate backup jobs</li>
+  <li>Test restores before production use</li>
+  <li>Create a simple incident response workflow</li>
+</ul>
+
+<h2 id="cyberbench">06. How CyberBench Helps</h2>
+
+<p>
+CyberBench helps organizations open new locations with security built in from
+day one. Rather than treating cybersecurity as an afterthought, businesses can
+deploy secure networking, monitoring, backup validation, vulnerability
+management, and operational playbooks before employees ever log in.
+</p>
+
+<p>
+By combining visibility, execution, and ongoing support, CyberBench helps
+growing organizations standardize security across every location while reducing
+operational risk and downtime.
+</p>
+
+<h2>Final Thoughts</h2>
+
+<p>
+Opening a new office creates an opportunity to build security correctly from
+the beginning. Secure networking, monitoring, backup validation, access control,
+and recovery readiness should be part of every expansion plan.
+</p>
+
+<p>
+The most successful businesses do not just open new locations. They open secure
+locations.
+</p>
+
+</article>
+
+<aside class="sidebar">
+
+<div class="side-card">
+  <h3>Table of contents</h3>
+  <ul class="toc">
+    <li><span>01</span><a href="#planning">Planning Security Before Opening Day</a></li>
+    <li><span>02</span><a href="#network">Network & Internet Connectivity</a></li>
+    <li><span>03</span><a href="#wifi">Wi-Fi & Network Segmentation</a></li>
+    <li><span>04</span><a href="#physical">Physical Security & Access Control</a></li>
+    <li><span>05</span><a href="#monitoring">Monitoring, Backups & Recovery</a></li>
+    <li><span>06</span><a href="#cyberbench">How CyberBench Helps</a></li>
+  </ul>
+</div>
+
+<div class="side-card">
+  <h3>Key takeaways</h3>
+  <ul class="takeaway">
+    <li><span class="check">✓</span> Secure infrastructure before employees arrive.</li>
+    <li><span class="check">✓</span> Separate guest and business networks.</li>
+    <li><span class="check">✓</span> Deploy monitoring from day one.</li>
+    <li><span class="check">✓</span> Validate backups before production use.</li>
+    <li><span class="check">✓</span> Control physical access to systems.</li>
+    <li><span class="check">✓</span> Standardize security across locations.</li>
+  </ul>
+</div>
+
+<div class="side-card cta">
+  <h3>Launch New Locations Securely</h3>
+  <p>
+    CyberBench helps businesses deploy secure networks, monitoring, backups,
+    and operational security controls before opening day.
+  </p>
+  <a class="btn btn-primary" href="/submit-ticket.html">Request a Demo</a>
+</div>
+
+</aside>
+
+</section>
+
+</main>
+
+<footer class="footer">
+  <nav class="footer-nav">
+    <a href="/services.html">Services</a>
+    <a href="/about.html">About</a>
+    <a href="/blog.html">Blog</a>
+    <a href="/client-portal.html">Client Portal</a>
+    <a href="/consultant-portal.html">Consultant Portal</a>
+  </nav>
+
+  <div class="footer-bottom">
+    © 2026 CyberBench. All rights reserved.
+  </div>
+</footer>
+
+</body>
+</html>
