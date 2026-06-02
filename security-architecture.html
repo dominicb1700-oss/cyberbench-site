@@ -1,6 +1,5 @@
 <!doctype html>
 <html lang="en">
-
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -8,533 +7,472 @@
   <title>Security Architecture | CyberBench</title>
 
   <link rel="icon" type="image/png" href="/favicon.png">
-
   <link rel="stylesheet" href="/styles.css" />
 
   <style>
+    html{scroll-behavior:smooth}
 
     body{
       background:
         radial-gradient(circle at top left, rgba(45,85,255,.16), transparent 30%),
+        radial-gradient(circle at top right, rgba(120,70,255,.12), transparent 32%),
         #050816;
-
       color:#f3f6ff;
     }
 
-    .blog-wrap{
-      width:min(900px,92%);
+    .article-page{
+      width:min(1180px,92%);
       margin:0 auto;
-      padding:80px 0;
+      padding:72px 0 90px;
+    }
+
+    .article-hero{
+      display:grid;
+      grid-template-columns:minmax(0,1fr) 430px;
+      gap:48px;
+      align-items:center;
+      padding-bottom:46px;
+      border-bottom:1px solid rgba(255,255,255,.08);
     }
 
     .blog-tag{
       display:inline-flex;
       align-items:center;
-
       height:34px;
       padding:0 14px;
-
       border-radius:999px;
-
       background:rgba(77,124,255,.12);
-
       border:1px solid rgba(77,124,255,.28);
-
       color:#7da2ff;
-
       font-size:12px;
-      font-weight:700;
+      font-weight:800;
       letter-spacing:.08em;
-
       margin-bottom:24px;
     }
 
     .blog-title{
-      font-size:56px;
-      line-height:1.05;
-      font-weight:800;
+      font-size:58px;
+      line-height:1.04;
+      font-weight:900;
       letter-spacing:-2px;
-
-      max-width:14ch;
-
+      max-width:820px;
       margin:0 0 24px;
     }
 
-    .blog-meta{
-      color:rgba(255,255,255,.55);
-
-      font-size:15px;
-
-      margin-bottom:40px;
-    }
-
     .blog-intro{
-      font-size:22px;
+      font-size:21px;
       line-height:1.7;
-
-      color:rgba(255,255,255,.88);
-
-      margin-bottom:40px;
+      color:rgba(255,255,255,.82);
+      max-width:720px;
+      margin-bottom:26px;
     }
 
-    .blog-wrap p{
+    .blog-meta{
+      display:flex;
+      gap:14px;
+      flex-wrap:wrap;
+      color:rgba(255,255,255,.55);
+      font-size:15px;
+    }
+
+    .hero-visual{
+      min-height:320px;
+      border-radius:26px;
+      border:1px solid rgba(125,162,255,.22);
+      background:
+        radial-gradient(circle at 72% 22%, rgba(124,92,255,.42), transparent 22%),
+        radial-gradient(circle at 25% 75%, rgba(36,107,255,.30), transparent 26%),
+        linear-gradient(135deg, rgba(8,20,38,.96), rgba(11,18,45,.9));
+      box-shadow:0 30px 90px rgba(0,0,0,.45);
+      display:grid;
+      place-items:center;
+      overflow:hidden;
+      position:relative;
+    }
+
+    .architecture-graphic{
+      width:260px;
+      height:230px;
+      position:relative;
+    }
+
+    .node{
+      position:absolute;
+      width:68px;
+      height:68px;
+      border-radius:20px;
+      display:grid;
+      place-items:center;
+      background:rgba(8,20,34,.88);
+      border:1px solid rgba(125,162,255,.32);
+      box-shadow:0 0 34px rgba(77,124,255,.22);
+      font-size:28px;
+    }
+
+    .node.center{
+      left:96px;
+      top:76px;
+      background:linear-gradient(135deg,#246bff,#7b5cff);
+      box-shadow:0 0 55px rgba(77,124,255,.55);
+    }
+
+    .node.n1{left:0;top:0}
+    .node.n2{right:0;top:0}
+    .node.n3{left:0;bottom:0}
+    .node.n4{right:0;bottom:0}
+
+    .architecture-graphic:before,
+    .architecture-graphic:after{
+      content:"";
+      position:absolute;
+      inset:34px 42px;
+      border:1px solid rgba(125,162,255,.26);
+      border-radius:28px;
+      transform:rotate(24deg);
+    }
+
+    .architecture-graphic:after{
+      transform:rotate(-24deg);
+      border-color:rgba(124,92,255,.24);
+    }
+
+    .content-grid{
+      display:grid;
+      grid-template-columns:minmax(0,720px) 360px;
+      gap:72px;
+      align-items:start;
+      margin-top:42px;
+    }
+
+    .article-content{
+      width:100%;
+      max-width:720px;
+    }
+
+    .share-row{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      margin-bottom:28px;
+      color:rgba(255,255,255,.62);
+      font-size:15px;
+    }
+
+    .share-btn{
+      width:42px;
+      height:42px;
+      border-radius:50%;
+      display:grid;
+      place-items:center;
+      background:rgba(255,255,255,.035);
+      border:1px solid rgba(255,255,255,.08);
+      color:#fff;
+      font-weight:900;
+    }
+
+    .article-content p{
       color:rgba(255,255,255,.74);
-
       line-height:1.9;
-
       font-size:18px;
-
       margin-bottom:28px;
     }
 
-    .blog-wrap h2{
-      font-size:34px;
-      line-height:1.2;
-
-      margin-top:70px;
+    .article-content h2{
+      font-size:36px;
+      line-height:1.15;
+      margin-top:72px;
       margin-bottom:20px;
-
       letter-spacing:-1px;
+      scroll-margin-top:110px;
     }
 
-    .blog-wrap h3{
-      font-size:26px;
-
-      margin-top:42px;
-      margin-bottom:16px;
-
-      letter-spacing:-.5px;
+    .article-content ul{
+      padding-left:0;
+      margin:20px 0 34px;
+      list-style:none;
+      display:grid;
+      gap:12px;
     }
 
-    .blog-wrap ul{
-      padding-left:22px;
-      margin-bottom:34px;
+    .article-content li{
+      color:rgba(255,255,255,.76);
+      line-height:1.75;
+      font-size:17px;
+      padding:14px 16px;
+      border-radius:14px;
+      background:rgba(255,255,255,.035);
+      border:1px solid rgba(255,255,255,.065);
     }
 
-    .blog-wrap li{
-      margin-bottom:14px;
-
-      color:rgba(255,255,255,.74);
-
-      line-height:1.8;
-      font-size:18px;
+    .article-content li:before{
+      content:"✓";
+      display:inline-grid;
+      place-items:center;
+      width:22px;
+      height:22px;
+      margin-right:10px;
+      border-radius:999px;
+      background:linear-gradient(135deg,#246bff,#7b5cff);
+      color:#fff;
+      font-size:12px;
+      font-weight:900;
     }
 
     .article-callout{
-      background:rgba(255,255,255,.03);
-
-      border:1px solid rgba(255,255,255,.06);
-
-      border-left:4px solid #4d7cff;
-
-      padding:28px;
-
-      border-radius:20px;
-
-      margin:40px 0;
-
-      line-height:1.8;
-    }
-
-    .footer{
-      border-top:1px solid rgba(255,255,255,.06);
-
-      margin-top:80px;
-      padding:40px 0;
-
-      text-align:center;
-    }
-
-    .footer-nav{
       display:flex;
-      justify-content:center;
+      gap:18px;
+      align-items:flex-start;
+      background:linear-gradient(135deg,rgba(77,124,255,.16),rgba(123,92,255,.10));
+      border:1px solid rgba(77,124,255,.28);
+      padding:28px;
+      border-radius:22px;
+      margin:42px 0;
+      line-height:1.8;
+      color:rgba(255,255,255,.86);
+      font-size:19px;
+      font-weight:700;
+    }
+
+    .callout-icon{
+      width:52px;
+      height:52px;
+      border-radius:16px;
+      flex:none;
+      display:grid;
+      place-items:center;
+      background:linear-gradient(135deg,#246bff,#7b5cff);
+      box-shadow:0 0 36px rgba(77,124,255,.35);
+      font-size:24px;
+    }
+
+    .section-card{
+      background:rgba(255,255,255,.028);
+      border:1px solid rgba(255,255,255,.07);
+      border-radius:22px;
+      padding:26px;
+      margin:28px 0;
+    }
+
+    .right-sidebar{
+      position:sticky;
+      top:110px;
+      align-self:start;
+      height:max-content;
+      display:flex;
+      flex-direction:column;
       gap:24px;
-      flex-wrap:wrap;
-
-      margin-bottom:20px;
+      z-index:1;
     }
 
-    .footer-nav a{
-      color:#fff;
+    .side-card{
+      background:rgba(8,20,34,.88);
+      border:1px solid rgba(255,255,255,.08);
+      border-radius:20px;
+      padding:24px;
+      box-shadow:0 20px 60px rgba(0,0,0,.25);
+    }
+
+    .side-card h3{
+      font-size:22px;
+      margin-bottom:18px;
+      letter-spacing:-.5px;
+    }
+
+    .toc{
+      list-style:none;
+      display:grid;
+      gap:8px;
+    }
+
+    .toc a{
+      display:grid;
+      grid-template-columns:38px 1fr;
+      gap:10px;
+      color:rgba(255,255,255,.76);
       text-decoration:none;
+      padding:8px 0;
+      line-height:1.4;
     }
 
-    .footer-bottom{
-      color:rgba(255,255,255,.55);
+    .toc a:hover{color:#7da2ff}
+    .toc span{color:#58a6ff;font-weight:900}
+
+    .takeaway{list-style:none;display:grid;gap:12px}
+    .takeaway li{display:flex;gap:12px;color:rgba(255,255,255,.76);line-height:1.55}
+    .check{width:24px;height:24px;border-radius:50%;background:linear-gradient(135deg,#246bff,#7b5cff);display:grid;place-items:center;flex:none;font-size:13px;font-weight:900}
+
+    .cta-card{
+      background:
+        radial-gradient(circle at top right, rgba(123,92,255,.22), transparent 38%),
+        linear-gradient(180deg,rgba(36,107,255,.16),rgba(8,20,34,.9));
     }
 
-    @media(max-width:900px){
+    .cta-icon{width:58px;height:58px;border-radius:16px;background:rgba(123,92,255,.22);display:grid;place-items:center;font-size:28px;margin-bottom:18px}
+    .cta-card p{color:rgba(255,255,255,.68);line-height:1.7;margin:10px 0 20px}
+    .full{width:100%;text-align:center;display:inline-block}
 
-      .blog-title{
-        font-size:42px;
-      }
+    .footer{border-top:1px solid rgba(255,255,255,.06);margin-top:80px;padding:40px 0;text-align:center}
+    .footer-nav{display:flex;justify-content:center;gap:24px;flex-wrap:wrap;margin-bottom:20px}
+    .footer-nav a{color:#fff;text-decoration:none}
+    .footer-bottom{color:rgba(255,255,255,.55)}
 
-      .blog-intro{
-        font-size:19px;
-      }
-
+    @media(max-width:1050px){
+      .article-hero,.content-grid{grid-template-columns:1fr}
+      .hero-visual{min-height:260px}
+      .right-sidebar{position:static}
+      .blog-title{font-size:44px}
     }
 
+    @media(max-width:650px){
+      .article-page{padding:44px 0 70px}
+      .blog-title{font-size:38px}
+      .blog-intro{font-size:18px}
+      .article-content p{font-size:16px}
+      .article-content h2{font-size:30px}
+      .share-row{flex-wrap:wrap}
+    }
   </style>
-
 </head>
 
 <body>
 
 <header class="nav">
-
   <div class="container nav_row">
-
     <a class="brand" href="/index.html">
       <span class="logo">X</span>
       <span>CyberBench</span>
     </a>
 
     <nav class="nav_links">
-
       <a href="/services.html">Services</a>
-
       <a href="/about.html">About</a>
-
       <a href="/blog.html" class="nav-active">Blog</a>
-
       <a href="/client-portal.html">Client Portal</a>
-
       <a href="/consultant-portal.html">Consultant Portal</a>
-
-      <a class="btn btn-primary" href="/submit-ticket.html">
-        Deploy Security Now
-      </a>
-
+      <a class="btn btn-primary" href="/submit-ticket.html">Deploy Security Now</a>
     </nav>
-
   </div>
-
 </header>
 
-<main class="blog-wrap">
-
-  <div class="blog-tag">
-    ARCHITECTURE
-  </div>
-
-  <h1 class="blog-title">
-    Security architecture should reduce decisions,
-    not create more of them
-  </h1>
-
-  <div class="blog-meta">
-    6 min read · Strategy
-  </div>
-
-  <p class="blog-intro">
-    Good security architecture reduces ambiguity,
-    standardizes decision-making,
-    and creates safer operational outcomes at scale.
-  </p>
-
-  <p>
-    Many organizations overcomplicate security architecture.
-    Environments become collections of disconnected tools,
-    overlapping controls,
-    inconsistent workflows,
-    and manual decision points that create operational friction instead of reducing risk.
-  </p>
-
-  <p>
-    Mature architecture does the opposite.
-    It simplifies decisions,
-    automates consistency,
-    and reduces the number of opportunities for human error.
-  </p>
-
-  <div class="article-callout">
-
-    Strong security architecture is not measured by how many technologies exist.
-    It is measured by how effectively risk can be reduced operationally.
-
-  </div>
-
-  <h2>
-    Complexity Is the Enemy of Security
-  </h2>
-
-  <p>
-    One of the largest security risks inside modern environments is operational complexity.
-  </p>
-
-  <p>
-    As organizations grow,
-    they often deploy:
-  </p>
-
-  <ul>
-
-    <li>Multiple overlapping security tools</li>
-
-    <li>Inconsistent access models</li>
-
-    <li>Disconnected monitoring platforms</li>
-
-    <li>Manual approval workflows</li>
-
-    <li>Conflicting operational procedures</li>
-
-  </ul>
-
-  <p>
-    Every additional decision point creates another opportunity for:
-  </p>
-
-  <ul>
-
-    <li>Human error</li>
-
-    <li>Configuration drift</li>
-
-    <li>Operational delays</li>
-
-    <li>Visibility gaps</li>
-
-    <li>Security inconsistencies</li>
-
-  </ul>
-
-  <h2>
-    Good Architecture Creates Predictability
-  </h2>
-
-  <p>
-    Mature environments prioritize operational consistency.
-  </p>
-
-  <p>
-    Strong architecture standardizes:
-  </p>
-
-  <ul>
-
-    <li>Identity workflows</li>
-
-    <li>Access control models</li>
-
-    <li>Segmentation strategies</li>
-
-    <li>Logging standards</li>
-
-    <li>Incident response procedures</li>
-
-    <li>Cloud deployment patterns</li>
-
-  </ul>
-
-  <p>
-    Standardization allows organizations to scale securely without continuously reinventing operational processes.
-  </p>
-
-  <h2>
-    Security Teams Should Not Be Forced to Guess
-  </h2>
-
-  <p>
-    Analysts and engineers should not spend time trying to determine:
-  </p>
-
-  <ul>
-
-    <li>Which logs matter</li>
-
-    <li>Which alerts take priority</li>
-
-    <li>Which systems are authoritative</li>
-
-    <li>Which controls apply to specific environments</li>
-
-    <li>Who owns operational decisions</li>
-
-  </ul>
-
-  <p>
-    Mature architecture eliminates ambiguity through clearly defined operational models.
-  </p>
-
-  <h2>
-    Architecture Must Support Operations
-  </h2>
-
-  <p>
-    One of the most common mistakes organizations make
-    is designing architecture diagrams that look impressive but fail operationally.
-  </p>
-
-  <p>
-    Security architecture should improve:
-  </p>
-
-  <ul>
-
-    <li>Response speed</li>
-
-    <li>Visibility</li>
-
-    <li>Access governance</li>
-
-    <li>Operational resilience</li>
-
-    <li>Recovery readiness</li>
-
-    <li>Scalability</li>
-
-  </ul>
-
-  <p>
-    If operations become slower,
-    more confusing,
-    or more fragile after implementation,
-    the architecture likely increased complexity instead of reducing risk.
-  </p>
-
-  <h2>
-    Zero Trust Reduces Decision Overload
-  </h2>
-
-  <p>
-    Modern Zero Trust architecture helps organizations reduce unnecessary trust relationships.
-  </p>
-
-  <p>
-    Instead of relying on broad network trust,
-    organizations validate:
-  </p>
-
-  <ul>
-
-    <li>User identity</li>
-
-    <li>Device posture</li>
-
-    <li>Session risk</li>
-
-    <li>Access entitlement</li>
-
-    <li>Behavioral anomalies</li>
-
-  </ul>
-
-  <p>
-    This creates more consistent and predictable access decisions across the environment.
-  </p>
-
-  <h2>
-    Visibility Should Be Centralized
-  </h2>
-
-  <p>
-    Security teams cannot operate effectively across fragmented visibility platforms.
-  </p>
-
-  <p>
-    Strong architecture centralizes:
-  </p>
-
-  <ul>
-
-    <li>SIEM telemetry</li>
-
-    <li>Cloud logging</li>
-
-    <li>Identity monitoring</li>
-
-    <li>Endpoint visibility</li>
-
-    <li>Threat intelligence</li>
-
-    <li>Operational dashboards</li>
-
-  </ul>
-
-  <p>
-    Centralization improves triage speed,
-    reduces operational confusion,
-    and helps teams make decisions faster during incidents.
-  </p>
-
-  <h2>
-    Common Architecture Mistakes
-  </h2>
-
-  <p>
-    Organizations frequently:
-  </p>
-
-  <ul>
-
-    <li>Deploy too many disconnected tools</li>
-
-    <li>Operate without standardization</li>
-
-    <li>Ignore operational workflows</li>
-
-    <li>Overcomplicate segmentation</li>
-
-    <li>Create excessive administrative overhead</li>
-
-    <li>Build architectures without visibility alignment</li>
-
-  </ul>
-
-  <p>
-    Over time,
-    these problems create operational inefficiency,
-    alert fatigue,
-    delayed incident response,
-    and inconsistent security enforcement.
-  </p>
-
-  <h2>
-    Final Thoughts
-  </h2>
-
-  <p>
-    Good security architecture should reduce friction,
-    improve operational consistency,
-    and simplify security decisions across the environment.
-  </p>
-
-  <p>
-    The goal is not deploying the largest number of tools.
-    The goal is creating an environment where security operations become predictable,
-    scalable,
-    and resilient under pressure.
-  </p>
-
-  <p>
-    Strong architecture reduces ambiguity.
-    And reducing ambiguity is one of the fastest ways to improve security maturity at scale.
-  </p>
-
+<main class="article-page">
+
+  <section class="article-hero">
+    <div>
+      <div class="blog-tag">ARCHITECTURE</div>
+
+      <h1 class="blog-title">Security architecture should reduce decisions, not create more of them</h1>
+
+      <p class="blog-intro">Good security architecture reduces ambiguity, standardizes decision-making, and creates safer operational outcomes at scale.</p>
+
+      <div class="blog-meta">
+        <span>6 min read</span><span>·</span><span>Strategy</span><span>·</span><span>CyberBench Architecture</span>
+      </div>
+    </div>
+
+    <div class="hero-visual" aria-hidden="true">
+      <div class="architecture-graphic">
+        <div class="node n1">🔐</div>
+        <div class="node n2">☁️</div>
+        <div class="node center">🛡️</div>
+        <div class="node n3">📊</div>
+        <div class="node n4">⚙️</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="content-grid">
+    <article class="article-content">
+      <div class="share-row">
+        <span>Share this article:</span>
+        <a class="share-btn" href="#">in</a>
+        <a class="share-btn" href="#">𝕏</a>
+        <a class="share-btn" href="#">f</a>
+        <a class="share-btn" href="#">🔗</a>
+      </div>
+
+      <p>Many organizations overcomplicate security architecture. Environments become collections of disconnected tools, overlapping controls, inconsistent workflows, and manual decision points that create operational friction instead of reducing risk.</p>
+      <p>Mature architecture does the opposite. It simplifies decisions, automates consistency, and reduces the number of opportunities for human error.</p>
+
+      <div class="article-callout"><div class="callout-icon">🧭</div><div>Strong security architecture is not measured by how many technologies exist. It is measured by how effectively risk can be reduced operationally.</div></div>
+
+      <h2 id="complexity">01. Complexity Is the Enemy of Security</h2>
+      <p>One of the largest security risks inside modern environments is operational complexity. As organizations grow, they often deploy multiple overlapping technologies and processes that increase decision fatigue.</p>
+      <div class="section-card">
+        <p>Complexity introduces more places where controls can fail, processes can be misunderstood, and ownership can become unclear. Every additional decision point increases the chance of inconsistent enforcement.</p>
+        <ul><li>Multiple overlapping security tools</li><li>Inconsistent access models</li><li>Disconnected monitoring platforms</li><li>Manual approval workflows</li><li>Conflicting operational procedures</li></ul>
+      </div>
+
+      <h2 id="predictability">02. Good Architecture Creates Predictability</h2>
+      <p>Mature environments prioritize operational consistency. Good architecture defines how systems should behave, how access should be granted, how alerts should be handled, and how teams should respond under pressure.</p>
+      <ul><li>Identity workflows</li><li>Access control models</li><li>Segmentation strategies</li><li>Logging standards</li><li>Incident response procedures</li><li>Cloud deployment patterns</li></ul>
+
+      <h2 id="no-guessing">03. Security Teams Should Not Be Forced to Guess</h2>
+      <p>Analysts and engineers should not spend time trying to determine which logs matter, which systems are authoritative, who owns operational decisions, or which controls apply to specific environments.</p>
+      <p>Mature architecture eliminates ambiguity through clearly defined operational models, ownership structures, and standardized response paths.</p>
+
+      <h2 id="operations">04. Architecture Must Support Operations</h2>
+      <p>One of the most common mistakes organizations make is designing architecture diagrams that look impressive but fail operationally. Architecture must improve response speed, visibility, resilience, and scalability.</p>
+      <ul><li>Response speed</li><li>Visibility</li><li>Access governance</li><li>Operational resilience</li><li>Recovery readiness</li><li>Scalability</li></ul>
+
+      <h2 id="zero-trust">05. Zero Trust Reduces Decision Overload</h2>
+      <p>Modern Zero Trust architecture helps organizations reduce unnecessary trust relationships. Instead of relying on broad network trust, organizations validate identity, device posture, session risk, entitlement, and behavior.</p>
+      <p>This creates more consistent and predictable access decisions across the environment.</p>
+
+      <h2 id="cyberbench">06. How CyberBench Helps</h2>
+      <p>CyberBench helps organizations operationalize security architecture by connecting visibility, ticketing, playbooks, remediation tracking, asset context, and executive reporting into one workflow.</p>
+      <p>Instead of adding more disconnected tools, CyberBench helps teams reduce ambiguity, centralize security operations, and create repeatable workflows that make architecture easier to execute.</p>
+
+      <div class="article-callout"><div class="callout-icon">🛡️</div><div>The best architecture is not the most complex. It is the architecture your team can operate consistently.</div></div>
+
+      <h2>Final Thoughts</h2>
+      <p>Good security architecture should reduce friction, improve operational consistency, and simplify security decisions across the environment.</p>
+      <p>The goal is not deploying the largest number of tools. The goal is creating an environment where security operations become predictable, scalable, and resilient under pressure.</p>
+      <p>Strong architecture reduces ambiguity. And reducing ambiguity is one of the fastest ways to improve security maturity at scale.</p>
+    </article>
+
+    <aside class="right-sidebar">
+      <div class="side-card">
+        <h3>Table of contents</h3>
+        <ul class="toc">
+          <li><a href="#complexity"><span>01</span> Complexity Is the Enemy of Security</a></li>
+          <li><a href="#predictability"><span>02</span> Good Architecture Creates Predictability</a></li>
+          <li><a href="#no-guessing"><span>03</span> Security Teams Should Not Be Forced to Guess</a></li>
+          <li><a href="#operations"><span>04</span> Architecture Must Support Operations</a></li>
+          <li><a href="#zero-trust"><span>05</span> Zero Trust Reduces Decision Overload</a></li>
+          <li><a href="#cyberbench"><span>06</span> How CyberBench Helps</a></li>
+        </ul>
+      </div>
+
+      <div class="side-card">
+        <h3>Key takeaways</h3>
+        <ul class="takeaway">
+          <li><span class="check">✓</span> Complexity creates operational risk.</li>
+          <li><span class="check">✓</span> Architecture should reduce decision fatigue.</li>
+          <li><span class="check">✓</span> Standardization improves security consistency.</li>
+          <li><span class="check">✓</span> Zero Trust reduces unnecessary trust assumptions.</li>
+          <li><span class="check">✓</span> CyberBench helps operationalize security architecture.</li>
+        </ul>
+      </div>
+
+      <div class="side-card cta-card">
+        <div class="cta-icon">🛡️</div>
+        <h3>Turn architecture into repeatable security operations.</h3>
+        <p>CyberBench helps connect alerts, assets, tickets, playbooks, remediation, and reporting into one operational workflow.</p>
+        <a class="btn btn-primary full" href="/submit-ticket.html">Deploy Security Now →</a>
+      </div>
+    </aside>
+  </section>
 </main>
 
 <footer class="footer">
-
   <nav class="footer-nav">
-
     <a href="/services.html">Services</a>
-
     <a href="/about.html">About</a>
-
     <a href="/blog.html">Blog</a>
-
     <a href="/client-portal.html">Client Portal</a>
-
     <a href="/consultant-portal.html">Consultant Portal</a>
-
   </nav>
-
-  <div class="footer-bottom">
-    © 2026 CyberBench. All rights reserved.
-  </div>
-
+  <div class="footer-bottom">© 2026 CyberBench. All rights reserved.</div>
 </footer>
 
 </body>
