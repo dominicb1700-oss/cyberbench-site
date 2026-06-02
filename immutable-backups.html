@@ -4,144 +4,354 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <title>Immutable Backups | CyberBench</title>
-
   <link rel="icon" type="image/png" href="/favicon.png">
-
   <link rel="stylesheet" href="/styles.css" />
 
   <style>
+    *{box-sizing:border-box}
+
+    html{
+      scroll-behavior:smooth;
+    }
 
     body{
       background:
-        radial-gradient(circle at top left, rgba(45,85,255,.16), transparent 30%),
+        radial-gradient(circle at top left, rgba(45,85,255,.18), transparent 30%),
+        radial-gradient(circle at top right, rgba(123,92,255,.14), transparent 28%),
         #050816;
-
       color:#f3f6ff;
     }
 
-    .blog-wrap{
-      width:min(900px,92%);
+    .article-page{
+      width:min(1180px,92%);
       margin:0 auto;
-      padding:80px 0;
+      padding:72px 0 90px;
+    }
+
+    .article-hero{
+      display:grid;
+      grid-template-columns:minmax(0,1fr) 480px;
+      gap:56px;
+      align-items:center;
+      padding-bottom:56px;
+      border-bottom:1px solid rgba(255,255,255,.08);
     }
 
     .blog-tag{
       display:inline-flex;
       align-items:center;
-
       height:34px;
       padding:0 14px;
-
       border-radius:999px;
-
       background:rgba(77,124,255,.12);
-
       border:1px solid rgba(77,124,255,.28);
-
       color:#7da2ff;
-
       font-size:12px;
-      font-weight:700;
+      font-weight:800;
       letter-spacing:.08em;
-
       margin-bottom:24px;
     }
 
     .blog-title{
-      font-size:56px;
+      font-size:58px;
       line-height:1.05;
-      font-weight:800;
+      font-weight:900;
       letter-spacing:-2px;
-
-      max-width:14ch;
-
+      max-width:13ch;
       margin:0 0 24px;
     }
 
     .blog-meta{
-      color:rgba(255,255,255,.55);
-
+      color:rgba(255,255,255,.58);
       font-size:15px;
-
-      margin-bottom:40px;
-    }
-
-    .blog-intro{
-      font-size:22px;
-      line-height:1.7;
-
-      color:rgba(255,255,255,.88);
-
-      margin-bottom:40px;
-    }
-
-    .blog-wrap p{
-      color:rgba(255,255,255,.74);
-
-      line-height:1.9;
-
-      font-size:18px;
-
       margin-bottom:28px;
     }
 
-    .blog-wrap h2{
-      font-size:34px;
-      line-height:1.2;
-
-      margin-top:70px;
-      margin-bottom:20px;
-
-      letter-spacing:-1px;
+    .blog-intro{
+      font-size:21px;
+      line-height:1.75;
+      color:rgba(255,255,255,.86);
+      max-width:720px;
+      margin:0;
     }
 
-    .blog-wrap h3{
-      font-size:26px;
+    .hero-art{
+      min-height:330px;
+      border-radius:24px;
+      border:1px solid rgba(77,124,255,.28);
+      background:
+        radial-gradient(circle at 65% 25%, rgba(123,92,255,.45), transparent 28%),
+        radial-gradient(circle at 35% 70%, rgba(77,124,255,.38), transparent 30%),
+        linear-gradient(135deg,#07111f,#0b1530);
+      display:grid;
+      place-items:center;
+      overflow:hidden;
+      box-shadow:0 30px 90px rgba(0,0,0,.45);
+      position:relative;
+    }
 
+    .hero-art::before{
+      content:"";
+      position:absolute;
+      width:240px;
+      height:240px;
+      border-radius:50%;
+      border:1px solid rgba(255,255,255,.08);
+      box-shadow:0 0 80px rgba(77,124,255,.28);
+    }
+
+    .backup-icon{
+      width:190px;
+      height:190px;
+      border-radius:38px;
+      background:linear-gradient(135deg,rgba(77,124,255,.25),rgba(123,92,255,.18));
+      border:1px solid rgba(255,255,255,.12);
+      display:grid;
+      place-items:center;
+      font-size:84px;
+      z-index:2;
+      box-shadow:inset 0 1px 0 rgba(255,255,255,.06),0 30px 80px rgba(0,0,0,.35);
+    }
+
+    .content-grid{
+      display:grid;
+      grid-template-columns:minmax(0,720px) 360px;
+      gap:70px;
+      align-items:start;
       margin-top:42px;
-      margin-bottom:16px;
+    }
 
+    .article{
+      max-width:720px;
+      width:100%;
+    }
+
+    .share{
+      display:flex;
+      align-items:center;
+      gap:14px;
+      margin-bottom:34px;
+      color:rgba(255,255,255,.62);
+      font-size:14px;
+    }
+
+    .share-btn{
+      width:42px;
+      height:42px;
+      border-radius:50%;
+      background:#081422;
+      border:1px solid #1b3048;
+      color:#fff;
+      display:grid;
+      place-items:center;
+      font-weight:900;
+      text-decoration:none;
+    }
+
+    .article p{
+      color:rgba(255,255,255,.76);
+      line-height:1.9;
+      font-size:18px;
+      margin-bottom:26px;
+    }
+
+    .article h2{
+      font-size:34px;
+      line-height:1.22;
+      margin-top:62px;
+      margin-bottom:20px;
+      letter-spacing:-1px;
+      scroll-margin-top:120px;
+    }
+
+    .article h3{
+      font-size:24px;
+      margin-top:36px;
+      margin-bottom:14px;
       letter-spacing:-.5px;
     }
 
-    .blog-wrap ul{
-      padding-left:22px;
-      margin-bottom:34px;
+    .article ul{
+      padding-left:0;
+      margin:24px 0 34px;
+      display:grid;
+      gap:12px;
     }
 
-    .blog-wrap li{
-      margin-bottom:14px;
+    .article li{
+      list-style:none;
+      color:rgba(255,255,255,.76);
+      line-height:1.75;
+      font-size:17px;
+      padding:14px 16px;
+      border:1px solid rgba(255,255,255,.07);
+      background:rgba(255,255,255,.03);
+      border-radius:14px;
+    }
 
-      color:rgba(255,255,255,.74);
-
-      line-height:1.8;
-      font-size:18px;
+    .article li::before{
+      content:"✓";
+      color:#7da2ff;
+      font-weight:900;
+      margin-right:10px;
     }
 
     .article-callout{
-      background:rgba(255,255,255,.03);
-
-      border:1px solid rgba(255,255,255,.06);
-
+      display:flex;
+      gap:18px;
+      align-items:flex-start;
+      background:linear-gradient(135deg,rgba(77,124,255,.16),rgba(123,92,255,.10));
+      border:1px solid rgba(77,124,255,.32);
       border-left:4px solid #4d7cff;
-
       padding:28px;
-
       border-radius:20px;
-
       margin:40px 0;
+      color:#fff;
+      line-height:1.75;
+      font-size:19px;
+      font-weight:700;
+    }
 
-      line-height:1.8;
+    .callout-icon{
+      width:50px;
+      height:50px;
+      border-radius:14px;
+      flex:none;
+      background:linear-gradient(135deg,#246bff,#7b5cff);
+      display:grid;
+      place-items:center;
+      font-size:24px;
+    }
+
+    .topic-card{
+      border:1px solid rgba(255,255,255,.08);
+      background:rgba(255,255,255,.03);
+      border-radius:20px;
+      padding:24px;
+      margin:28px 0;
+    }
+
+    .topic-card p:last-child{
+      margin-bottom:0;
+    }
+
+    .sidebar{
+      position:sticky;
+      top:100px;
+      align-self:start;
+      height:max-content;
+      display:flex;
+      flex-direction:column;
+      gap:24px;
+    }
+
+    .side-card{
+      background:rgba(8,20,34,.88);
+      border:1px solid #1b3048;
+      border-radius:20px;
+      padding:24px;
+      box-shadow:0 20px 60px rgba(0,0,0,.25);
+      width:100%;
+    }
+
+    .side-card h3{
+      font-size:23px;
+      margin:0 0 18px;
+      letter-spacing:-.4px;
+    }
+
+    .toc{
+      display:grid;
+      gap:6px;
+      padding:0;
+      margin:0;
+    }
+
+    .toc li{
+      list-style:none;
+    }
+
+    .toc a{
+      display:grid;
+      grid-template-columns:38px 1fr;
+      gap:10px;
+      align-items:start;
+      color:#d7e0ee;
+      text-decoration:none;
+      line-height:1.45;
+      padding:9px 0;
+      transition:.2s ease;
+    }
+
+    .toc a:hover{
+      color:#7da2ff;
+      transform:translateX(3px);
+    }
+
+    .toc span{
+      color:#58a6ff;
+      font-weight:900;
+    }
+
+    .takeaway{
+      padding:0;
+      margin:0;
+      display:grid;
+      gap:12px;
+    }
+
+    .takeaway li{
+      list-style:none;
+      display:flex;
+      gap:12px;
+      color:#d7e0ee;
+      line-height:1.55;
+    }
+
+    .check{
+      width:24px;
+      height:24px;
+      border-radius:50%;
+      background:linear-gradient(135deg,#246bff,#7b5cff);
+      display:grid;
+      place-items:center;
+      flex:none;
+      font-size:13px;
+      font-weight:900;
+    }
+
+    .cta{
+      background:linear-gradient(180deg,rgba(36,107,255,.18),rgba(8,20,34,.92));
+    }
+
+    .cta-icon{
+      width:58px;
+      height:58px;
+      border-radius:16px;
+      background:rgba(123,92,255,.22);
+      display:grid;
+      place-items:center;
+      font-size:28px;
+      margin-bottom:18px;
+    }
+
+    .cta p{
+      color:#aeb9c8;
+      margin:10px 0 20px;
+      line-height:1.7;
+    }
+
+    .full{
+      width:100%;
+      display:inline-flex;
+      justify-content:center;
     }
 
     .footer{
       border-top:1px solid rgba(255,255,255,.06);
-
       margin-top:80px;
       padding:40px 0;
-
       text-align:center;
     }
 
@@ -150,7 +360,6 @@
       justify-content:center;
       gap:24px;
       flex-wrap:wrap;
-
       margin-bottom:20px;
     }
 
@@ -163,392 +372,255 @@
       color:rgba(255,255,255,.55);
     }
 
-    @media(max-width:900px){
-
-      .blog-title{
-        font-size:42px;
+    @media(max-width:1050px){
+      .article-hero,
+      .content-grid{
+        grid-template-columns:1fr;
       }
 
-      .blog-intro{
-        font-size:19px;
+      .hero-art{
+        min-height:260px;
       }
 
+      .sidebar{
+        position:static;
+      }
+
+      .article{
+        max-width:100%;
+      }
     }
 
-  </style>
+    @media(max-width:700px){
+      .article-page{
+        padding:44px 0 70px;
+      }
 
+      .blog-title{
+        font-size:40px;
+      }
+
+      .blog-intro,
+      .article p{
+        font-size:16px;
+      }
+
+      .article h2{
+        font-size:28px;
+      }
+
+      .share{
+        flex-wrap:wrap;
+      }
+    }
+  </style>
 </head>
 
 <body>
 
 <header class="nav">
-
   <div class="container nav_row">
-
     <a class="brand" href="/index.html">
       <span class="logo">X</span>
       <span>CyberBench</span>
     </a>
 
     <nav class="nav_links">
-
       <a href="/services.html">Services</a>
-
       <a href="/about.html">About</a>
-
       <a href="/blog.html" class="nav-active">Blog</a>
-
       <a href="/client-portal.html">Client Portal</a>
-
       <a href="/consultant-portal.html">Consultant Portal</a>
-
-      <a class="btn btn-primary" href="/submit-ticket.html">
-        Deploy Security Now
-      </a>
-
+      <a class="btn btn-primary" href="/submit-ticket.html">Deploy Security Now</a>
     </nav>
-
   </div>
-
 </header>
 
-<main class="blog-wrap">
-
-  <div class="blog-tag">
-    BACKUPS
-  </div>
-
-  <h1 class="blog-title">
-    Immutable backups are great.
-    Restore discipline is what makes them real.
-  </h1>
-
-  <div class="blog-meta">
-    5 min read · Checklist
-  </div>
-
-  <p class="blog-intro">
-    Immutability matters,
-    but backup immutability alone does not guarantee recovery success.
-    Organizations continue learning the hard way that restore discipline —
-    not backup marketing —
-    is what determines whether business operations survive ransomware events.
-  </p>
-
-  <p>
-    Modern backup platforms heavily promote immutable storage,
-    ransomware protection,
-    and air-gapped recovery features.
-    These capabilities are important,
-    but many organizations still fail during recovery operations because they never validated whether restoration procedures actually work under pressure.
-  </p>
-
-  <p>
-    Recovery readiness is operational.
-    It requires testing,
-    documentation,
-    ownership,
-    and continuous validation.
-  </p>
-
-  <div class="article-callout">
-
-    A backup platform is only part of the solution.
-    Recovery maturity is built through operational discipline and continuous restore validation.
-
-  </div>
-
-  <h2>
-    Why Immutable Backups Matter
-  </h2>
-
-  <p>
-    Attackers increasingly target backup infrastructure during ransomware operations.
-  </p>
-
-  <p>
-    Their objective is simple:
-    eliminate recovery capability before encryption begins.
-  </p>
-
-  <p>
-    Immutable backups help reduce this risk by preventing:
-  </p>
-
-  <ul>
-
-    <li>Backup deletion</li>
-
-    <li>Unauthorized modification</li>
-
-    <li>Retention manipulation</li>
-
-    <li>Repository tampering</li>
-
-    <li>Mass encryption of backup copies</li>
-
-  </ul>
-
-  <p>
-    Immutability provides an important layer of resilience,
-    especially against destructive ransomware campaigns.
-  </p>
-
-  <h2>
-    Immutability Alone Does Not Equal Recovery
-  </h2>
-
-  <p>
-    Many organizations mistakenly believe immutable storage automatically guarantees successful recovery.
-  </p>
-
-  <p>
-    In reality,
-    major recovery failures still happen because:
-  </p>
-
-  <ul>
-
-    <li>Restores were never tested</li>
-
-    <li>Recovery procedures were undocumented</li>
-
-    <li>Critical dependencies were missed</li>
-
-    <li>Authentication systems failed during restore</li>
-
-    <li>Recovery sequencing was unclear</li>
-
-    <li>Recovery times exceeded business tolerance</li>
-
-  </ul>
-
-  <p>
-    During real incidents,
-    operational gaps become visible immediately.
-  </p>
-
-  <h2>
-    Restore Testing Is the Real Measure of Readiness
-  </h2>
-
-  <p>
-    Backup success metrics often create false confidence.
-  </p>
-
-  <p>
-    Mature recovery programs continuously validate:
-  </p>
-
-  <ul>
-
-    <li>Virtual machine restores</li>
-
-    <li>Database recovery</li>
-
-    <li>Application functionality</li>
-
-    <li>Cloud workload recovery</li>
-
-    <li>Identity infrastructure restoration</li>
-
-  </ul>
-
-  <p>
-    Testing should measure:
-  </p>
-
-  <ul>
-
-    <li>Recovery speed</li>
-
-    <li>Operational impact</li>
-
-    <li>System dependencies</li>
-
-    <li>Authentication functionality</li>
-
-    <li>Network connectivity</li>
-
-  </ul>
-
-  <h2>
-    Recovery Sequencing Matters
-  </h2>
-
-  <p>
-    One of the biggest mistakes organizations make during recovery
-    is restoring systems in the wrong order.
-  </p>
-
-  <p>
-    Critical infrastructure usually depends on:
-  </p>
-
-  <ul>
-
-    <li>Identity services</li>
-
-    <li>DNS availability</li>
-
-    <li>Database connectivity</li>
-
-    <li>Cloud authentication</li>
-
-    <li>Network segmentation</li>
-
-  </ul>
-
-  <p>
-    Without clearly documented sequencing,
-    organizations often create additional downtime during recovery operations.
-  </p>
-
-  <h2>
-    Backup Infrastructure Must Also Be Protected
-  </h2>
-
-  <p>
-    Attackers increasingly target:
-  </p>
-
-  <ul>
-
-    <li>Backup consoles</li>
-
-    <li>Storage repositories</li>
-
-    <li>Backup administrative accounts</li>
-
-    <li>Replication systems</li>
-
-    <li>Management interfaces</li>
-
-  </ul>
-
-  <p>
-    Organizations should:
-  </p>
-
-  <ul>
-
-    <li>Enable MFA for backup administration</li>
-
-    <li>Restrict privileged access</li>
-
-    <li>Segment backup infrastructure</li>
-
-    <li>Centralize monitoring</li>
-
-    <li>Validate backup logging</li>
-
-  </ul>
-
-  <h2>
-    Recovery Is a Business Problem — Not Only an IT Problem
-  </h2>
-
-  <p>
-    Recovery operations affect the entire organization.
-  </p>
-
-  <p>
-    Mature recovery planning includes:
-  </p>
-
-  <ul>
-
-    <li>Business continuity coordination</li>
-
-    <li>Executive communication workflows</li>
-
-    <li>Operational ownership</li>
-
-    <li>Vendor coordination</li>
-
-    <li>Legal and regulatory considerations</li>
-
-  </ul>
-
-  <p>
-    Technical recovery alone does not restore business operations.
-  </p>
-
-  <h2>
-    Common Backup Recovery Mistakes
-  </h2>
-
-  <p>
-    Organizations frequently:
-  </p>
-
-  <ul>
-
-    <li>Rely on backup success notifications alone</li>
-
-    <li>Never perform restore validation</li>
-
-    <li>Ignore recovery sequencing</li>
-
-    <li>Fail to document operational workflows</li>
-
-    <li>Operate without recovery ownership</li>
-
-    <li>Assume immutability solves every problem</li>
-
-  </ul>
-
-  <p>
-    These gaps create major operational risk during ransomware events and disaster recovery situations.
-  </p>
-
-  <h2>
-    Final Thoughts
-  </h2>
-
-  <p>
-    Immutable backups are extremely valuable,
-    but immutability alone does not create resilience.
-  </p>
-
-  <p>
-    Organizations become truly resilient when they continuously validate restores,
-    protect backup infrastructure,
-    document operational recovery workflows,
-    and prepare teams to recover under pressure.
-  </p>
-
-  <p>
-    Because during a real incident,
-    the question is not whether backups existed.
-  </p>
-
-  <p>
-    The question is whether recovery actually works.
-  </p>
-
+<main class="article-page">
+
+  <section class="article-hero">
+    <div>
+      <div class="blog-tag">BACKUPS</div>
+
+      <h1 class="blog-title">
+        Immutable backups are great. Restore discipline is what makes them real.
+      </h1>
+
+      <div class="blog-meta">5 min read · Checklist</div>
+
+      <p class="blog-intro">
+        Immutability matters, but backup immutability alone does not guarantee recovery success. Organizations continue learning the hard way that restore discipline — not backup marketing — is what determines whether business operations survive ransomware events.
+      </p>
+    </div>
+
+    <div class="hero-art">
+      <div class="backup-icon">🔒</div>
+    </div>
+  </section>
+
+  <section class="content-grid">
+
+    <article class="article">
+      <div class="share">
+        <span>Share this article:</span>
+        <a class="share-btn" href="#">in</a>
+        <a class="share-btn" href="#">𝕏</a>
+        <a class="share-btn" href="#">f</a>
+        <a class="share-btn" href="#">🔗</a>
+      </div>
+
+      <p>
+        Modern backup platforms heavily promote immutable storage, ransomware protection, and air-gapped recovery features. These capabilities are important, but many organizations still fail during recovery operations because they never validated whether restoration procedures actually work under pressure.
+      </p>
+
+      <p>
+        Recovery readiness is operational. It requires testing, documentation, ownership, and continuous validation.
+      </p>
+
+      <div class="article-callout">
+        <div class="callout-icon">🛡️</div>
+        <div>
+          A backup platform is only part of the solution. Recovery maturity is built through operational discipline and continuous restore validation.
+        </div>
+      </div>
+
+      <h2 id="why-immutable-backups-matter">01. Why Immutable Backups Matter</h2>
+      <div class="topic-card">
+        <p>
+          Attackers increasingly target backup infrastructure during ransomware operations. Their objective is simple: eliminate recovery capability before encryption begins.
+        </p>
+        <p>
+          Immutable backups help reduce this risk by preventing backup deletion, unauthorized modification, retention manipulation, repository tampering, and mass encryption of backup copies.
+        </p>
+      </div>
+
+      <ul>
+        <li>Backup deletion</li>
+        <li>Unauthorized modification</li>
+        <li>Retention manipulation</li>
+        <li>Repository tampering</li>
+        <li>Mass encryption of backup copies</li>
+      </ul>
+
+      <h2 id="immutability-alone-does-not-equal-recovery">02. Immutability Alone Does Not Equal Recovery</h2>
+      <p>
+        Many organizations mistakenly believe immutable storage automatically guarantees successful recovery. In reality, major recovery failures still happen because restore procedures are undocumented, critical dependencies are missed, authentication systems fail, recovery sequencing is unclear, and recovery times exceed business tolerance.
+      </p>
+
+      <ul>
+        <li>Restores were never tested</li>
+        <li>Recovery procedures were undocumented</li>
+        <li>Critical dependencies were missed</li>
+        <li>Authentication systems failed during restore</li>
+        <li>Recovery sequencing was unclear</li>
+        <li>Recovery times exceeded business tolerance</li>
+      </ul>
+
+      <h2 id="restore-testing-is-readiness">03. Restore Testing Is the Real Measure of Readiness</h2>
+      <p>
+        Backup success metrics often create false confidence. Mature recovery programs continuously validate whether systems can actually be restored, applications still function, and recovery objectives can be met during a real outage or ransomware event.
+      </p>
+
+      <ul>
+        <li>Virtual machine restores</li>
+        <li>Database recovery</li>
+        <li>Application functionality</li>
+        <li>Cloud workload recovery</li>
+        <li>Identity infrastructure restoration</li>
+        <li>Recovery speed and operational impact</li>
+      </ul>
+
+      <h2 id="recovery-sequencing-matters">04. Recovery Sequencing Matters</h2>
+      <p>
+        One of the biggest mistakes organizations make during recovery is restoring systems in the wrong order. Critical infrastructure usually depends on identity services, DNS, databases, cloud authentication, and network segmentation.
+      </p>
+
+      <p>
+        Without clearly documented sequencing, organizations often create additional downtime during recovery operations.
+      </p>
+
+      <h2 id="protecting-backup-infrastructure">05. Protecting Backup Infrastructure</h2>
+      <p>
+        Backup systems are high-value targets. Attackers increasingly target backup consoles, storage repositories, administrative accounts, replication systems, and management interfaces.
+      </p>
+
+      <ul>
+        <li>Enable MFA for backup administration</li>
+        <li>Restrict privileged access</li>
+        <li>Segment backup infrastructure</li>
+        <li>Centralize monitoring</li>
+        <li>Validate backup logging</li>
+      </ul>
+
+      <h2 id="how-cyberbench-helps">06. How CyberBench Helps</h2>
+      <p>
+        CyberBench helps organizations move beyond backup status reports and focus on recovery readiness. Through backup validation, restore testing, recovery documentation, operational playbooks, and executive reporting, CyberBench helps ensure recovery plans work when they are needed most.
+      </p>
+
+      <p>
+        Rather than relying on assumptions, CyberBench provides visibility into backup health, restore success rates, recovery timelines, and operational readiness so organizations can confidently recover from ransomware and major outages.
+      </p>
+
+      <h2>Final Thoughts</h2>
+      <p>
+        Immutable backups are extremely valuable, but immutability alone does not create resilience. Organizations become truly resilient when they continuously validate restores, protect backup infrastructure, document operational recovery workflows, and prepare teams to recover under pressure.
+      </p>
+
+      <p>
+        Because during a real incident, the question is not whether backups existed. The question is whether recovery actually works.
+      </p>
+    </article>
+
+    <aside class="sidebar">
+      <div class="side-card">
+        <h3>Table of contents</h3>
+        <ul class="toc">
+          <li><a href="#why-immutable-backups-matter"><span>01</span> Why Immutable Backups Matter</a></li>
+          <li><a href="#immutability-alone-does-not-equal-recovery"><span>02</span> Immutability Alone Does Not Equal Recovery</a></li>
+          <li><a href="#restore-testing-is-readiness"><span>03</span> Restore Testing Is Readiness</a></li>
+          <li><a href="#recovery-sequencing-matters"><span>04</span> Recovery Sequencing Matters</a></li>
+          <li><a href="#protecting-backup-infrastructure"><span>05</span> Protecting Backup Infrastructure</a></li>
+          <li><a href="#how-cyberbench-helps"><span>06</span> How CyberBench Helps</a></li>
+        </ul>
+      </div>
+
+      <div class="side-card">
+        <h3>Key takeaways</h3>
+        <ul class="takeaway">
+          <li><span class="check">✓</span> Immutable backups protect against ransomware tampering.</li>
+          <li><span class="check">✓</span> Backup success does not equal recovery success.</li>
+          <li><span class="check">✓</span> Restore testing validates real readiness.</li>
+          <li><span class="check">✓</span> Recovery sequencing reduces downtime.</li>
+          <li><span class="check">✓</span> Backup systems require protection too.</li>
+          <li><span class="check">✓</span> Recovery is a business process, not just IT.</li>
+        </ul>
+      </div>
+
+      <div class="side-card cta">
+        <div class="cta-icon">🔒</div>
+        <h3>Transform Backups Into Recovery Readiness</h3>
+        <p>
+          CyberBench helps organizations validate restores, track recovery readiness, protect backup infrastructure, and reduce ransomware recovery risk.
+        </p>
+        <a class="btn btn-primary full" href="/submit-ticket.html">Request a Demo →</a>
+      </div>
+    </aside>
+
+  </section>
 </main>
 
 <footer class="footer">
-
   <nav class="footer-nav">
-
     <a href="/services.html">Services</a>
-
     <a href="/about.html">About</a>
-
     <a href="/blog.html">Blog</a>
-
     <a href="/client-portal.html">Client Portal</a>
-
     <a href="/consultant-portal.html">Consultant Portal</a>
-
   </nav>
 
   <div class="footer-bottom">
     © 2026 CyberBench. All rights reserved.
   </div>
-
 </footer>
 
 </body>
