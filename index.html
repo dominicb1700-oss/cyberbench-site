@@ -4,9 +4,419 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CyberBench</title>
-  <link rel="stylesheet" href="/styles.css" />
+
+  <style>
+    * { box-sizing: border-box; }
+
+    body {
+      margin: 0;
+      font-family: Arial, sans-serif;
+      background: #070b18;
+      color: #fff;
+    }
+
+    body.menu-open {
+      overflow: hidden;
+    }
+
+    a { color: inherit; text-decoration: none; }
+
+    .container {
+      width: min(1180px, calc(100% - 32px));
+      margin: 0 auto;
+    }
+
+    .nav {
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      background: #070b18;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+
+    .nav_row {
+      height: 76px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+    }
+
+    .logo {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background: #6966ff;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-weight: 900;
+    }
+
+    .nav_links {
+      display: flex;
+      align-items: center;
+      gap: 28px;
+      font-weight: 700;
+      font-size: 14px;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 16px;
+      padding: 15px 22px;
+      font-weight: 800;
+      border: 1px solid rgba(255,255,255,.12);
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, #6c63ff, #8b5cf6);
+      color: #fff;
+      border: 0;
+    }
+
+    .btn-ghost {
+      background: #10162a;
+      color: #fff;
+    }
+
+    .menu-toggle {
+      display: none;
+      background: none;
+      border: 0;
+      color: #fff;
+      font-size: 30px;
+      cursor: pointer;
+    }
+
+    .mobile-overlay {
+      display: none;
+    }
+
+    .hero {
+      padding: 70px 0 80px;
+    }
+
+    .hero_grid {
+      display: grid;
+      grid-template-columns: 1.15fr .85fr;
+      gap: 40px;
+      align-items: center;
+    }
+
+    .kicker {
+      color: #7d98ff;
+      text-transform: uppercase;
+      letter-spacing: 3px;
+      font-size: 12px;
+      font-weight: 900;
+      margin-bottom: 14px;
+    }
+
+    .h1 {
+      font-size: clamp(42px, 7vw, 78px);
+      line-height: .95;
+      margin: 0 0 22px;
+    }
+
+    .hero-description {
+      color: #b8bfd3;
+      font-size: 18px;
+      line-height: 1.7;
+      margin: 0;
+      max-width: 680px;
+    }
+
+    .hero_cta-group {
+      display: flex;
+      gap: 14px;
+      margin-top: 28px;
+    }
+
+    .hero_badges {
+      list-style: none;
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      padding: 0;
+      margin: 26px 0 0;
+    }
+
+    .badge {
+      padding: 8px 12px;
+      border-radius: 999px;
+      background: #111a31;
+      color: #cbd5e1;
+      border: 1px solid rgba(255,255,255,.08);
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .panel-card,
+    .card {
+      background: #101626;
+      border: 1px solid rgba(255,255,255,.08);
+      border-radius: 24px;
+      padding: 24px;
+      box-shadow: 0 24px 80px rgba(0,0,0,.35);
+    }
+
+    .panel-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-bottom: 20px;
+      font-weight: 800;
+    }
+
+    .panel-dot {
+      width: 10px;
+      height: 10px;
+      background: #6966ff;
+      border-radius: 50%;
+    }
+
+    .panel-rows {
+      display: grid;
+      gap: 14px;
+    }
+
+    .panel-row {
+      display: flex;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 14px;
+      border-radius: 16px;
+      background: #0b1020;
+      color: #cbd5e1;
+    }
+
+    .pill {
+      padding: 4px 9px;
+      border-radius: 999px;
+      font-size: 12px;
+      font-weight: 800;
+      background: #1e293b;
+    }
+
+    .panel-actions {
+      margin-top: 20px;
+    }
+
+    .feature_grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 18px;
+      padding-bottom: 80px;
+    }
+
+    .card h3 {
+      margin: 16px 0 10px;
+    }
+
+    .card p {
+      color: #b8bfd3;
+      line-height: 1.6;
+    }
+
+    .footer {
+      border-top: 1px solid rgba(255,255,255,.08);
+      padding: 34px 0;
+      color: #b8bfd3;
+    }
+
+    .footer-nav {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 18px;
+      margin: 20px 0;
+    }
+
+    .cb-chat-fab {
+      position: fixed;
+      right: 22px;
+      bottom: 82px;
+      width: 58px;
+      height: 58px;
+      border: 0;
+      border-radius: 50%;
+      background: #6966ff;
+      color: #fff;
+      font-weight: 900;
+      z-index: 900;
+      cursor: pointer;
+    }
+
+    .cb-chat {
+      position: fixed;
+      right: 22px;
+      bottom: 154px;
+      width: min(360px, calc(100% - 32px));
+      height: 460px;
+      background: #101626;
+      border: 1px solid rgba(255,255,255,.1);
+      border-radius: 22px;
+      display: none;
+      flex-direction: column;
+      z-index: 901;
+      overflow: hidden;
+    }
+
+    .cb-chat-header,
+    .cb-chat-form {
+      padding: 14px;
+      border-bottom: 1px solid rgba(255,255,255,.08);
+    }
+
+    .cb-chat-body {
+      flex: 1;
+      padding: 14px;
+      overflow: auto;
+    }
+
+    .cb-chat-close {
+      float: right;
+      background: none;
+      border: 0;
+      color: #fff;
+      font-size: 18px;
+      cursor: pointer;
+    }
+
+    .cb-chat-input {
+      width: 100%;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid rgba(255,255,255,.1);
+      background: #070b18;
+      color: #fff;
+    }
+
+    .cb-chat-send {
+      margin-top: 10px;
+      width: 100%;
+      padding: 12px;
+      border-radius: 12px;
+      border: 0;
+      background: #6966ff;
+      color: #fff;
+      font-weight: 800;
+    }
+
+    .cb-chat-row {
+      margin-bottom: 10px;
+    }
+
+    .cb-chat-bubble {
+      padding: 10px 12px;
+      border-radius: 14px;
+      background: #1e293b;
+      color: #fff;
+      line-height: 1.5;
+    }
+
+    .is-user .cb-chat-bubble {
+      background: #6966ff;
+    }
+
+    .cb-chat-footnote {
+      padding: 10px 14px;
+      color: #8b95aa;
+      font-size: 12px;
+    }
+
+    @media (max-width: 900px) {
+      .menu-toggle {
+        display: block;
+      }
+
+      .nav_links {
+        position: fixed;
+        top: 0;
+        right: -100%;
+        width: 82%;
+        max-width: 340px;
+        height: 100vh;
+        background: #101626;
+        z-index: 3000;
+        padding: 92px 24px 24px;
+        display: flex;
+        flex-direction: column;
+        align-items: stretch;
+        gap: 24px;
+        transition: right .25s ease;
+        box-shadow: -14px 0 40px rgba(0,0,0,.55);
+      }
+
+      .nav_links.active {
+        right: 0;
+      }
+
+      .nav_links a {
+        text-align: center;
+        font-size: 16px;
+      }
+
+      .mobile-overlay.active {
+        display: block;
+        position: fixed;
+        inset: 0;
+        background: rgba(0,0,0,.7);
+        z-index: 2500;
+      }
+
+      .hero {
+        padding: 42px 0 70px;
+        text-align: center;
+      }
+
+      .hero_grid {
+        grid-template-columns: 1fr;
+      }
+
+      .hero-description {
+        font-size: 15px;
+        line-height: 1.65;
+      }
+
+      .hero_cta-group {
+        flex-direction: column;
+      }
+
+      .hero_cta-group .btn {
+        width: 100%;
+      }
+
+      .hero_badges {
+        justify-content: center;
+      }
+
+      .panel-card {
+        display: none;
+      }
+
+      .feature_grid {
+        grid-template-columns: 1fr;
+      }
+
+      .cb-chat-fab {
+        right: 18px;
+        bottom: 82px;
+      }
+    }
+  </style>
 </head>
+
 <body>
+  <div class="mobile-overlay" id="mobileOverlay"></div>
 
   <header class="nav">
     <div class="container nav_row">
@@ -14,6 +424,8 @@
         <span class="logo" aria-hidden="true">X</span>
         <span class="brand-text">CyberBench</span>
       </a>
+
+      <button class="menu-toggle" id="menuToggle" aria-label="Open menu">☰</button>
 
       <nav class="nav_links" id="nav_links" aria-label="Main Navigation">
         <a href="/services.html">Services</a>
@@ -27,25 +439,19 @@
   </header>
 
   <main class="container">
-
     <section class="hero">
       <div class="hero_grid">
-
         <div class="hero_content">
-          <div class="kicker">
-            <span class="dot"></span>
-            Enterprise standards. Startup agility.
-          </div>
+          <div class="kicker">Enterprise standards. Startup agility.</div>
 
           <h1 class="h1">Execution-driven security.<br>Operationally delivered.</h1>
 
-          <p class="sub">
           <p class="hero-description">
-            CyberBench is a cybersecurity platform that executes security work for you — not just advises. 
-            Cyber doesn’t have time to wait for traditional consulting. When threats move fast, response must move faster. 
-            Through a ticket-first model powered by our internal cyber team and a bench of vetted specialists, you submit a request, get matched fast, and receive documented outcomes. 
-            You get continuity, accountability, and executive-ready reporting—with near real-time visibility across your entire environment, centralized in a single platform.
-          </p>
+            CyberBench is a cybersecurity platform that executes security work for you — not just advises.
+            Cyber doesn’t have time to wait for traditional consulting. When threats move fast, response must move faster.
+            Through a ticket-first model powered by our internal cyber team and a bench of vetted specialists, you submit a request,
+            get matched fast, and receive documented outcomes. You get continuity, accountability, and executive-ready reporting—with
+            near real-time visibility across your entire environment, centralized in a single platform.
           </p>
 
           <div class="hero_cta-group">
@@ -54,7 +460,7 @@
           </div>
 
           <ul class="hero_badges">
-          <li class="badge">Rapid response delivery</li>
+            <li class="badge">Rapid response delivery</li>
             <li class="badge">Ticket-first execution</li>
             <li class="badge">KPI reporting</li>
             <li class="badge">SMB-friendly pricing</li>
@@ -71,20 +477,20 @@
 
           <div class="panel-rows">
             <div class="panel-row">
-              <span class="row-left">Active Engagement</span>
-              <span class="pill pill-green">Operational</span>
+              <span>Active Engagement</span>
+              <span class="pill">Operational</span>
             </div>
             <div class="panel-row">
-              <span class="row-left">Modern Security Standards</span>
-              <span class="pill pill-blue">Compliant</span>
+              <span>Modern Security Standards</span>
+              <span class="pill">Compliant</span>
             </div>
             <div class="panel-row">
-              <span class="row-left">Threat Monitoring</span>
-              <span class="pill pill-amber">Monitoring</span>
+              <span>Threat Monitoring</span>
+              <span class="pill">Monitoring</span>
             </div>
             <div class="panel-row">
-              <span class="row-left">Incident Response SLA</span>
-              <span class="pill pill-slate">&lt;4 hr</span>
+              <span>Incident Response SLA</span>
+              <span class="pill">&lt;4 hr</span>
             </div>
           </div>
 
@@ -92,11 +498,6 @@
             <a class="btn btn-ghost" href="/client-portal.html">View Platform</a>
           </div>
         </aside>
-
-        <div class="panel-visual" aria-hidden="true">
-          <div class="grid-glow"></div>
-        </div>
-
       </div>
     </section>
 
@@ -119,106 +520,52 @@
         <p>Specialists assigned by skill fit—not whoever is available.</p>
       </article>
 
-<article class="card">
-  <span class="badge">SOC</span>
-  <h3>Continuous Monitoring (SIEM)</h3>
-  <p>24/7 threat detection, log ingestion, alert tuning, and real-time triage to identify and respond to threats before they impact operations.</p>
-</article>
-
       <article class="card">
-        <span class="badge">Operational Discipline</span>
-        <h3>KPI-driven accountability</h3>
-        <p>Response cadence, SLA targets, executive summaries, and measurable outcomes.</p>
-      </article>
-
-      <article class="card">
-        <span class="badge">Pricing Advantage</span>
-        <h3>Execution-grade capability, fraction of the cost</h3>
-        <p>Get enterprise-grade execution without enterprise consulting overhead.</p>
-      </article>
-
-      <article class="card">
-        <span class="badge">RAPID RESPONSE</span>
-        <h3>Critical incidents? Experts deployed in minutes</h3>
-        <p>24/7 on-call specialists ready for ransomware, breaches, and zero-days. Skip the procurement process when seconds count.</p>
-      </article>
-
-      <article class="card">
-        <span class="badge">Continuity</span>
-        <h3>Consistent security delivery</h3>
-        <p>Structured oversight and aligned execution across every engagement — maintaining operational consistency as your environment evolves.</p>
+        <span class="badge">SOC</span>
+        <h3>Continuous Monitoring</h3>
+        <p>24/7 threat detection, log ingestion, alert tuning, and real-time triage.</p>
       </article>
     </section>
-
   </main>
 
   <footer class="footer">
     <div class="container">
-      <a href="/index.html" class="footer-logo" aria-label="CyberBench homepage">
-        <span class="logo" aria-hidden="true"></span>
+      <a href="/index.html" class="brand">
+        <span class="logo">X</span>
         <span>CyberBench</span>
       </a>
 
-  <nav class="footer-nav">
-    <a href="/services.html">Services</a>
-    <a href="/about.html">About</a>
-    <a href="/blog.html">Blog</a>
-    <a href="/client-portal.html">Client Portal</a>
-    <a href="/consultant-portal.html">Consultant Portal</a>
-  </nav>
+      <nav class="footer-nav">
+        <a href="/services.html">Services</a>
+        <a href="/about.html">About</a>
+        <a href="/blog.html">Blog</a>
+        <a href="/client-portal.html">Client Portal</a>
+        <a href="/consultant-portal.html">Consultant Portal</a>
+      </nav>
 
-  <div class="footer-contact">
-    <span>Support</span>
-    <a href="mailto:support@cyberbench.io">support@cyberbench.io</a>
-  </div>
+      <div class="footer-contact">
+        Support: <a href="mailto:support@cyberbench.io">support@cyberbench.io</a>
+      </div>
 
-  <div class="footer-bottom">
-    © <span id="year"></span> CyberBench. All rights reserved.
-  </div>
-</footer>
+      <div class="footer-bottom">
+        © <span id="year"></span> CyberBench. All rights reserved.
+      </div>
+    </div>
+  </footer>
 
-  <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
-
-    (function () {
-      const nav = document.querySelector(".nav_links");
-      if (!nav) return;
-
-      const links = nav.querySelectorAll("a[href^='/']");
-      const path = window.location.pathname.replace(/\/$/, "") || "/";
-
-      links.forEach(a => {
-        const href = (a.getAttribute("href") || "").replace(/\/$/, "") || "/";
-        if (href === path) a.classList.add("nav-active");
-        else a.classList.remove("nav-active");
-      });
-    })();
-  </script>
-
-  <button class="cb-chat-fab" id="cbChatFab" aria-label="Open CyberBench AI chat">AI</button>
+  <button class="cb-chat-fab" id="cbChatFab">AI</button>
 
   <div class="cb-chat" id="cbChat" aria-hidden="true">
     <div class="cb-chat-header">
-      <div class="cb-chat-title">
-        <div class="cb-chat-dot"></div>
-        <div>
-          <div class="cb-chat-name">CyberBench AI</div>
-          <div class="cb-chat-sub">Fast triage • How-to • Guidance</div>
-        </div>
-      </div>
-      <button class="cb-chat-close" id="cbChatClose" aria-label="Close chat">✕</button>
+      <button class="cb-chat-close" id="cbChatClose">✕</button>
+      <strong>CyberBench AI</strong><br />
+      <small>Fast triage • How-to • Guidance</small>
     </div>
 
     <div class="cb-chat-body" id="cbChatBody"></div>
 
     <form class="cb-chat-form" id="cbChatForm">
-      <input
-        class="cb-chat-input"
-        id="cbChatInput"
-        placeholder="Ask about tickets, KPIs, services, or next steps…"
-        autocomplete="off"
-        required
-      />
+      <input class="cb-chat-input" id="cbChatInput" placeholder="Ask about tickets, KPIs, services, or next steps…" required />
       <button class="cb-chat-send" type="submit">Send</button>
     </form>
 
@@ -226,77 +573,75 @@
   </div>
 
   <script>
-    (function () {
-      const fab = document.getElementById("cbChatFab");
-      const box = document.getElementById("cbChat");
-      const close = document.getElementById("cbChatClose");
-      const body = document.getElementById("cbChatBody");
-      const form = document.getElementById("cbChatForm");
-      const input = document.getElementById("cbChatInput");
+    document.getElementById("year").textContent = new Date().getFullYear();
 
-      const escapeHtml = (s) =>
-        String(s).replace(/[&<>"']/g, (m) => ({
-          "&": "&amp;",
-          "<": "&lt;",
-          ">": "&gt;",
-          '"': "&quot;",
-          "'": "&#39;"
-        }[m]));
+    const menuToggle = document.getElementById("menuToggle");
+    const navLinks = document.getElementById("nav_links");
+    const mobileOverlay = document.getElementById("mobileOverlay");
 
-      function addMsg(role, text) {
-        const row = document.createElement("div");
-        row.className = "cb-chat-row " + (role === "user" ? "is-user" : "is-ai");
-        row.innerHTML = `<div class="cb-chat-bubble">${escapeHtml(text)}</div>`;
-        body.appendChild(row);
-        body.scrollTop = body.scrollHeight;
+    function openMenu() {
+      navLinks.classList.add("active");
+      mobileOverlay.classList.add("active");
+      document.body.classList.add("menu-open");
+      menuToggle.textContent = "×";
+    }
+
+    function closeMenu() {
+      navLinks.classList.remove("active");
+      mobileOverlay.classList.remove("active");
+      document.body.classList.remove("menu-open");
+      menuToggle.textContent = "☰";
+    }
+
+    menuToggle.addEventListener("click", () => {
+      navLinks.classList.contains("active") ? closeMenu() : openMenu();
+    });
+
+    mobileOverlay.addEventListener("click", closeMenu);
+
+    navLinks.querySelectorAll("a").forEach(link => {
+      link.addEventListener("click", closeMenu);
+    });
+
+    const fab = document.getElementById("cbChatFab");
+    const box = document.getElementById("cbChat");
+    const close = document.getElementById("cbChatClose");
+    const body = document.getElementById("cbChatBody");
+    const form = document.getElementById("cbChatForm");
+    const input = document.getElementById("cbChatInput");
+
+    function addMsg(role, text) {
+      const row = document.createElement("div");
+      row.className = "cb-chat-row " + (role === "user" ? "is-user" : "is-ai");
+      row.innerHTML = `<div class="cb-chat-bubble"></div>`;
+      row.querySelector(".cb-chat-bubble").textContent = text;
+      body.appendChild(row);
+      body.scrollTop = body.scrollHeight;
+    }
+
+    function setChatOpen(isOpen) {
+      box.style.display = isOpen ? "flex" : "none";
+      box.setAttribute("aria-hidden", isOpen ? "false" : "true");
+      if (isOpen && !body.dataset.greeted) {
+        addMsg("ai", "Hi — I’m CyberBench AI. Tell me what you need help with.");
+        body.dataset.greeted = "1";
       }
+    }
 
-      function setOpen(isOpen) {
-        box.style.display = isOpen ? "flex" : "none";
-        box.setAttribute("aria-hidden", isOpen ? "false" : "true");
-        if (isOpen) input.focus();
-      }
+    fab.addEventListener("click", () => setChatOpen(true));
+    close.addEventListener("click", () => setChatOpen(false));
 
-      fab.addEventListener("click", () => {
-        setOpen(true);
-        if (!body.dataset.greeted) {
-          addMsg("ai", "Hi — I’m CyberBench AI. Tell me what you need help with (ticket submission, KPIs, services, or triage).");
-          body.dataset.greeted = "1";
-        }
-      });
+    form.addEventListener("submit", async (e) => {
+      e.preventDefault();
+      const text = input.value.trim();
+      if (!text) return;
 
-      close.addEventListener("click", () => setOpen(false));
+      addMsg("user", text);
+      input.value = "";
+      addMsg("ai", "Chat service is offline. Start your server and try again.");
+    });
 
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
-        const text = input.value.trim();
-        if (!text) return;
-
-        addMsg("user", text);
-        input.value = "";
-
-        addMsg("ai", "Typing…");
-        const loadingNode = body.lastElementChild;
-
-        try {
-          const r = await fetch("/api/chat", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ message: text })
-          });
-
-          const data = await r.json();
-          const reply = data.reply || "No response.";
-          loadingNode.querySelector(".cb-chat-bubble").textContent = reply;
-        } catch (err) {
-          loadingNode.querySelector(".cb-chat-bubble").textContent =
-            "Chat service is offline. Start your server and try again.";
-        }
-      });
-
-      setOpen(false);
-    })();
+    setChatOpen(false);
   </script>
-
 </body>
 </html>
