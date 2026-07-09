@@ -3332,3 +3332,53 @@ rgba(77,124,255,.28);
   overflow: auto;
   padding-top: 12px;
 }
+@media (max-width: 768px) {
+  .mobile-menu {
+    position: fixed;
+    top: 0;
+    right: 0;
+    width: 78%;
+    height: 100vh;
+    background: #111827;
+    z-index: 9999;
+    padding: 80px 24px 24px;
+    display: none;
+    flex-direction: column;
+    gap: 26px;
+    box-shadow: -8px 0 30px rgba(0,0,0,.45);
+  }
+
+  .mobile-menu.active {
+    display: flex;
+  }
+
+  body.menu-open {
+    overflow: hidden;
+  }
+
+  .mobile-menu a,
+  .mobile-menu button {
+    width: 100%;
+    text-align: center;
+  }
+
+  .hero {
+    padding-top: 110px;
+  }
+
+  .hero h1 {
+    font-size: 34px;
+    line-height: 1.05;
+  }
+
+  .hero p {
+    font-size: 15px;
+    line-height: 1.6;
+  }
+
+  .floating-ai {
+    bottom: 80px;
+    right: 18px;
+    z-index: 50;
+  }
+}
