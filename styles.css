@@ -2971,3 +2971,253 @@ rgba(77,124,255,.28);
 .side-card{
   width:100%;
 }
+/* =========================
+   MOBILE FIXES (480px and below)
+   ========================= */
+@media (max-width: 480px) {
+  /* Container breathing room */
+  .container {
+    padding: 0 14px;
+  }
+
+  /* Hero section */
+  .hero {
+    padding: 2rem 0 2rem;
+  }
+
+  .h1 {
+    font-size: 1.85rem;
+    line-height: 1.1;
+  }
+
+  .h2 {
+    font-size: 1.4rem;
+  }
+
+  .sub {
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* Buttons stack full width */
+  .hero_cta-group,
+  .cta_row {
+    flex-direction: column;
+    width: 100%;
+  }
+
+  .hero_cta-group .btn,
+  .cta_row .btn {
+    width: 100%;
+    justify-content: center;
+  }
+
+  .btn {
+    min-height: 48px;
+    font-size: 14px;
+    padding: 0 20px;
+  }
+
+  .btn-primary {
+    min-width: unset;
+    width: 100%;
+  }
+
+  /* Hero panel */
+  .hero-panel {
+    min-height: 280px;
+    border-radius: 14px;
+  }
+
+  /* Cards */
+  .card {
+    padding: 1.25rem;
+    border-radius: 14px;
+  }
+
+  .card h3 {
+    font-size: 1.05rem;
+  }
+
+  .card p {
+    font-size: 0.875rem;
+  }
+
+  /* Panels */
+  .panel-card {
+    padding: 1.25rem 1rem;
+  }
+
+  .panel-row {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 6px;
+    padding: 0.65rem 0.75rem;
+  }
+
+  /* Badges */
+  .hero_badges {
+    gap: 0.5rem;
+  }
+
+  .badge {
+    font-size: 0.7rem;
+    padding: 0.3rem 0.7rem;
+  }
+
+  .pills {
+    gap: 6px;
+  }
+
+  .pill {
+    font-size: 11px;
+    padding: 5px 8px;
+  }
+
+  /* KPIs */
+  .kpi_card,
+  .kpi-card {
+    padding: 12px 14px;
+  }
+
+  .kpi_value,
+  .metric_value {
+    font-size: 24px;
+  }
+
+  .kpi_label,
+  .kpi-title,
+  .metric_label {
+    font-size: 11px;
+  }
+
+  /* CTA section */
+  .cta {
+    padding: 2rem 1rem;
+    border-radius: 16px;
+  }
+
+  .cta h2 {
+    font-size: 1.5rem;
+  }
+
+  .cta p {
+    font-size: 14px;
+  }
+
+  /* Sections */
+  .section {
+    padding: 2rem 0 2.5rem;
+  }
+
+  /* Footer */
+  .footer {
+    padding: 2rem 0;
+  }
+
+  .footer-nav {
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .footer-nav a {
+    font-size: 0.85rem;
+  }
+
+  /* Forms */
+  .ticket-panel,
+  .ticket-form-panel,
+  .st-card {
+    padding: 18px 14px;
+    border-radius: 16px;
+  }
+
+  .ticket-grid input,
+  .ticket-grid select,
+  .ticket-grid textarea,
+  .st-input {
+    padding: 10px 12px;
+    font-size: 14px;
+  }
+
+  /* Portal */
+  .cbp-hero,
+  .cbcs-hero,
+  .cbp-card,
+  .cbcs-card {
+    padding: 18px 14px;
+    border-radius: 16px;
+  }
+
+  .cbp-h1,
+  .cbcs-h1 {
+    font-size: 1.6rem;
+  }
+
+  .cbp-kpi-grid,
+  .cbcs-kpi-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .cbp-kpi-value,
+  .cbcs-kpi-value {
+    font-size: 26px;
+  }
+
+  .cbp-feature-grid,
+  .cbcs-feature-grid {
+    gap: 10px;
+  }
+
+  .cbp-feature,
+  .cbcs-feature {
+    padding: 12px;
+  }
+
+  /* Chat widget */
+  .cb-chat-fab {
+    width: 56px;
+    height: 56px;
+    bottom: 20px;
+    right: 20px;
+  }
+}
+
+/* =========================
+   VERY SMALL SCREENS (360px and below)
+   ========================= */
+@media (max-width: 360px) {
+  .container {
+    padding: 0 12px;
+  }
+
+  .h1 {
+    font-size: 1.6rem;
+  }
+
+  .h2 {
+    font-size: 1.25rem;
+  }
+
+  .nav_row {
+    min-height: 60px;
+  }
+
+  .brand-text {
+    font-size: 0.95rem;
+  }
+
+  .btn {
+    min-height: 44px;
+    font-size: 13px;
+  }
+
+  .card {
+    padding: 1rem;
+  }
+
+  .cbp-h1,
+  .cbcs-h1 {
+    font-size: 1.4rem;
+  }
+}
