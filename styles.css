@@ -3280,3 +3280,55 @@ rgba(77,124,255,.28);
   overflow: auto;
   padding-top: 12px;
 }
+/* Backdrop behind the drawer */
+.drawer-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,.6);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity .25s ease, visibility .25s;
+  z-index: 999;
+}
+.drawer-backdrop.open {
+  opacity: 1;
+  visibility: visible;
+}
+
+/* Right-side drawer (the Services panel) */
+.drawer {
+  position: fixed;
+  top: 0;
+  right: 0;
+  height: 100vh;
+  width: min(86vw, 420px);      /* responsive width, max 420px */
+  max-width: 420px;
+  background: rgba(11,15,23,.95);
+  color: var(--text);
+  border-left: 1px solid rgba(255,255,255,.08);
+  box-shadow: -20px 0 50px rgba(0,0,0,.5);
+  transform: translateX(100%);
+  transition: transform .25s ease;
+  z-index: 1000;
+  display: flex;
+  flex-direction: column;
+  padding: 16px;
+  padding-top: calc(16px + env(safe-area-inset-top)); /* iOS safe area */
+  border-top-left-radius: var(--radius);
+  border-bottom-left-radius: var(--radius);
+}
+.drawer.open {
+  transform: translateX(0);
+}
+.drawer-header {
+  display:flex;
+  align-items:center;
+  justify-content: space-between;
+  padding-bottom: 12px;
+  border-bottom: 1px solid rgba(255,255,255,.08);
+}
+.drawer-content {
+  flex: 1;
+  overflow: auto;
+  padding-top: 12px;
+}
