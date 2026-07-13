@@ -211,12 +211,14 @@
 
       function closeMenu() {
         nav.classList.remove("nav_open");
+        document.body.classList.remove("menu-open");
         toggle.setAttribute("aria-expanded", "false");
         toggle.setAttribute("aria-label", "Open navigation menu");
       }
 
       function openMenu() {
         nav.classList.add("nav_open");
+        document.body.classList.add("menu-open");
         toggle.setAttribute("aria-expanded", "true");
         toggle.setAttribute("aria-label", "Close navigation menu");
       }
