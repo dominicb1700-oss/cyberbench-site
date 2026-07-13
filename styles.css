@@ -2464,3 +2464,428 @@ section{
   cursor:pointer;
   box-shadow:0 0 25px rgba(77,124,255,.28);
 }
+
+/* =========================================================
+   CYBERBENCH MOBILE MOCKUP STYLE
+   Mobile-only overrides. Desktop remains unchanged.
+   Keep this block at the VERY END of styles.css.
+   ========================================================= */
+@media (max-width: 768px){
+
+  :root{
+    --nav-h: 70px;
+  }
+
+  html{
+    scroll-padding-top: 82px;
+  }
+
+  body{
+    padding-top: 70px !important;
+    background:
+      radial-gradient(700px 420px at 25% 0%, rgba(45,100,255,.18), transparent 58%),
+      radial-gradient(650px 420px at 90% 18%, rgba(25,70,190,.12), transparent 55%),
+      #050816 !important;
+  }
+
+  main{
+    background: transparent !important;
+  }
+
+  .container{
+    width: 100%;
+    padding-left: 24px;
+    padding-right: 24px;
+  }
+
+  /* ---------- MOBILE HEADER ---------- */
+  .nav{
+    position: fixed !important;
+    inset: 0 0 auto 0;
+    height: 70px;
+    z-index: 10000 !important;
+    background: rgba(5,8,22,.96) !important;
+    border-bottom: 1px solid rgba(255,255,255,.05);
+    box-shadow: 0 10px 35px rgba(0,0,0,.30);
+    backdrop-filter: blur(18px);
+    -webkit-backdrop-filter: blur(18px);
+  }
+
+  .nav .container{
+    padding-left: 24px;
+    padding-right: 18px;
+  }
+
+  .nav_row{
+    min-height: 70px;
+    height: 70px;
+    padding: 0 !important;
+    gap: 14px;
+  }
+
+  .brand{
+    gap: 10px;
+    position: relative;
+    z-index: 10002;
+  }
+
+  .logo{
+    width: 30px;
+    height: 30px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 1000;
+    line-height: 1;
+    background:
+      radial-gradient(circle at 32% 28%, #76a7ff 0%, #386dff 35%, #183aa6 100%);
+    box-shadow:
+      0 0 0 1px rgba(255,255,255,.08),
+      0 0 22px rgba(59,130,246,.52);
+  }
+
+  .brand-text{
+    font-size: 17px;
+    font-weight: 900;
+    letter-spacing: -.01em;
+  }
+
+  .nav_menu{
+    display: flex;
+    align-items: center;
+  }
+
+  .nav_toggle{
+    display: inline-flex !important;
+    width: 46px;
+    height: 46px;
+    padding: 0;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 12px;
+    background: transparent !important;
+    z-index: 10003;
+  }
+
+  .hamburger,
+  .hamburger::before,
+  .hamburger::after{
+    width: 26px;
+    height: 2px;
+    border-radius: 999px;
+    background: #f4f7ff;
+  }
+
+  .hamburger::before{ top: -8px; }
+  .hamburger::after{ top: 8px; }
+
+  /* ---------- FULL MOBILE MENU ---------- */
+  .nav_links{
+    position: fixed !important;
+    top: 70px !important;
+    left: 0 !important;
+    right: 0 !important;
+    bottom: 0 !important;
+    width: 100% !important;
+    max-width: none !important;
+    display: none;
+    flex-direction: column !important;
+    align-items: stretch !important;
+    justify-content: flex-start;
+    gap: 0 !important;
+    padding: 30px 24px 36px !important;
+    overflow-y: auto;
+    background:
+      radial-gradient(640px 420px at 30% 0%, rgba(42,92,225,.15), transparent 58%),
+      linear-gradient(180deg, #081124 0%, #050816 100%) !important;
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    z-index: 10001 !important;
+  }
+
+  .nav_links.nav_open{
+    display: flex !important;
+  }
+
+  .nav_links a{
+    display: flex !important;
+    align-items: center;
+    min-height: 70px;
+    width: 100% !important;
+    margin: 0;
+    padding: 0 4px !important;
+    text-align: left !important;
+    color: rgba(245,248,255,.94) !important;
+    font-size: 17px !important;
+    font-weight: 800 !important;
+    letter-spacing: -.01em;
+    border: 0 !important;
+    border-bottom: 1px solid rgba(255,255,255,.07) !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+  }
+
+  .nav_links a:hover,
+  .nav_links a.nav-active{
+    color: #79a8ff !important;
+    background: transparent !important;
+    border-color: rgba(255,255,255,.07) !important;
+  }
+
+  .nav_links a::after{
+    display: none !important;
+  }
+
+  .nav_links .btn,
+  .nav_links .btn-primary,
+  .nav_links .btn-nav{
+    display: flex !important;
+    justify-content: center;
+    min-height: 56px;
+    margin-top: 28px !important;
+    padding: 0 20px !important;
+    border: 0 !important;
+    border-radius: 14px !important;
+    color: #fff !important;
+    background: linear-gradient(135deg,#4779ff 0%,#6267ff 100%) !important;
+    box-shadow: 0 14px 34px rgba(75,106,255,.30) !important;
+  }
+
+  /* ---------- MOBILE HERO ---------- */
+  .hero{
+    padding: 46px 0 30px !important;
+  }
+
+  .hero_grid{
+    display: grid;
+    grid-template-columns: 1fr !important;
+    gap: 28px !important;
+    text-align: left !important;
+  }
+
+  .hero_content{
+    width: 100%;
+  }
+
+  .kicker{
+    gap: 9px;
+    font-size: 11px;
+    line-height: 1.4;
+    letter-spacing: .13em;
+    color: #4f94ff;
+  }
+
+  .dot{
+    width: 7px;
+    height: 7px;
+  }
+
+  .h1{
+    margin: 16px 0 14px;
+    font-size: clamp(38px, 10.8vw, 52px) !important;
+    line-height: 1.02 !important;
+    letter-spacing: -.045em !important;
+    font-weight: 1000;
+  }
+
+  .hero-description,
+  .hero .sub{
+    margin: 0;
+    max-width: none;
+    color: rgba(235,240,250,.78);
+    font-size: 15px;
+    line-height: 1.65;
+  }
+
+  .hero_cta-group{
+    display: grid !important;
+    grid-template-columns: 1fr;
+    gap: 10px !important;
+    width: 100%;
+    margin-top: 24px;
+  }
+
+  .hero_cta-group .btn{
+    width: 100%;
+    min-height: 52px;
+    border-radius: 13px;
+    font-size: 15px;
+  }
+
+  .hero_cta-group .btn-primary{
+    background: linear-gradient(135deg,#4479ff,#6468ff);
+    box-shadow: 0 12px 30px rgba(68,121,255,.28);
+  }
+
+  .hero_cta-group .btn-ghost{
+    background: rgba(5,8,22,.42);
+    border-color: rgba(75,122,255,.55);
+  }
+
+  .hero_badges{
+    display: grid;
+    grid-template-columns: repeat(2,minmax(0,1fr));
+    gap: 8px;
+    margin-top: 18px;
+  }
+
+  .hero_badges .badge{
+    min-width: 0;
+    justify-content: flex-start;
+    padding: 8px 10px;
+    font-size: 10px;
+    letter-spacing: 0;
+    text-transform: none;
+    white-space: normal;
+    background: rgba(255,255,255,.035);
+    border-color: rgba(255,255,255,.07);
+    color: rgba(240,244,255,.88);
+  }
+
+  /* ---------- PLATFORM CARD ---------- */
+  .panel-card{
+    margin-top: 0 !important;
+    padding: 20px;
+    border-radius: 17px;
+    background:
+      linear-gradient(180deg,rgba(12,19,34,.92),rgba(8,13,25,.96));
+    border-color: rgba(73,126,255,.24);
+    box-shadow: 0 22px 55px rgba(0,0,0,.38);
+  }
+
+  .panel-header{
+    margin-bottom: 14px;
+    font-size: 11px;
+  }
+
+  .panel-row{
+    padding: 12px 0;
+    border: 0;
+    border-bottom: 1px solid rgba(255,255,255,.06);
+    border-radius: 0;
+    background: transparent;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .panel-row:last-child{
+    border-bottom: 0;
+  }
+
+  .row-left{
+    font-size: 13px;
+  }
+
+  .pill{
+    font-size: 10px;
+  }
+
+  .panel-actions{
+    margin-top: 16px;
+  }
+
+  .panel-actions .btn{
+    width: 100%;
+  }
+
+  .panel-visual{
+    display: none;
+  }
+
+  /* ---------- MOBILE FEATURE CARDS ---------- */
+  .feature_grid{
+    grid-template-columns: 1fr !important;
+    gap: 14px !important;
+    margin-bottom: 44px;
+  }
+
+  .card{
+    min-height: 0;
+    padding: 20px;
+    border-radius: 16px;
+    background:
+      linear-gradient(180deg,rgba(14,21,37,.92),rgba(8,13,24,.95));
+    border-color: rgba(255,255,255,.07);
+    box-shadow: 0 15px 40px rgba(0,0,0,.24);
+  }
+
+  .card h3{
+    margin-top: 12px;
+    font-size: 18px;
+  }
+
+  .card p{
+    font-size: 14px;
+    line-height: 1.6;
+  }
+
+  /* ---------- FOOTER ---------- */
+  .footer{
+    padding: 34px 0 40px;
+  }
+
+  .footer-nav{
+    gap: 14px 18px;
+  }
+
+  /* Keep floating chat button clear of mobile browser controls */
+  .cb-chat-fab{
+    width: 56px;
+    height: 56px;
+    right: 18px;
+    bottom: 22px;
+  }
+}
+
+@media (max-width: 420px){
+  .container{
+    padding-left: 20px;
+    padding-right: 20px;
+  }
+
+  .nav .container{
+    padding-left: 20px;
+    padding-right: 14px;
+  }
+
+  .h1{
+    font-size: 39px !important;
+  }
+
+  .hero_badges{
+    grid-template-columns: 1fr 1fr;
+  }
+
+  .nav_links{
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+}
+
+@media (max-width: 360px){
+  body{
+    padding-top: 64px !important;
+  }
+
+  .nav,
+  .nav_row{
+    height: 64px;
+    min-height: 64px;
+  }
+
+  .nav_links{
+    top: 64px !important;
+  }
+
+  .brand-text{
+    font-size: 16px;
+  }
+
+  .h1{
+    font-size: 34px !important;
+  }
+}
