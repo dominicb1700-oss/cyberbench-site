@@ -15,14 +15,27 @@
         <span class="brand-text">CyberBench</span>
       </a>
 
-      <nav class="nav_links" id="nav_links" aria-label="Main Navigation">
-        <a href="/services.html">Services</a>
-        <a href="/about.html">About</a>
-        <a href="/blog.html">Blog</a>
-        <a href="/client-portal.html">Client Portal</a>
-        <a href="/consultant-portal.html">Consultant Portal</a>
-        <a class="btn btn-primary" href="/submit-ticket.html">Deploy Security Now</a>
-      </nav>
+      <div class="nav_menu">
+        <button
+          class="nav_toggle"
+          type="button"
+          aria-label="Open navigation menu"
+          aria-expanded="false"
+          aria-controls="nav_links"
+        >
+          <span class="hamburger"></span>
+          <span class="sr-only">Menu</span>
+        </button>
+
+        <nav class="nav_links" id="nav_links" aria-label="Main Navigation">
+          <a href="/services.html">Services</a>
+          <a href="/about.html">About</a>
+          <a href="/blog.html">Blog</a>
+          <a href="/client-portal.html">Client Portal</a>
+          <a href="/consultant-portal.html">Consultant Portal</a>
+          <a class="btn btn-primary" href="/submit-ticket.html">Deploy Security Now</a>
+        </nav>
+      </div>
     </div>
   </header>
 
@@ -182,15 +195,62 @@
 
     (function () {
       const nav = document.querySelector(".nav_links");
+      const toggle = document.querySelector(".nav_toggle");
+
       if (!nav) return;
 
       const links = nav.querySelectorAll("a[href^='/']");
       const path = window.location.pathname.replace(/\/$/, "") || "/";
 
-      links.forEach(a => {
-        const href = (a.getAttribute("href") || "").replace(/\/$/, "") || "/";
-        if (href === path) a.classList.add("nav-active");
-        else a.classList.remove("nav-active");
+      links.forEach((link) => {
+        const href = (link.getAttribute("href") || "").replace(/\/$/, "") || "/";
+        link.classList.toggle("nav-active", href === path);
+      });
+
+      if (!toggle) return;
+
+      function closeMenu() {
+        nav.classList.remove("nav_open");
+        toggle.setAttribute("aria-expanded", "false");
+        toggle.setAttribute("aria-label", "Open navigation menu");
+      }
+
+      function openMenu() {
+        nav.classList.add("nav_open");
+        toggle.setAttribute("aria-expanded", "true");
+        toggle.setAttribute("aria-label", "Close navigation menu");
+      }
+
+      toggle.addEventListener("click", function (event) {
+        event.stopPropagation();
+
+        if (nav.classList.contains("nav_open")) {
+          closeMenu();
+        } else {
+          openMenu();
+        }
+      });
+
+      nav.querySelectorAll("a").forEach((link) => {
+        link.addEventListener("click", closeMenu);
+      });
+
+      document.addEventListener("click", function (event) {
+        if (!nav.contains(event.target) && !toggle.contains(event.target)) {
+          closeMenu();
+        }
+      });
+
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") {
+          closeMenu();
+        }
+      });
+
+      window.addEventListener("resize", function () {
+        if (window.innerWidth > 768) {
+          closeMenu();
+        }
       });
     })();
   </script>
