@@ -2889,3 +2889,235 @@ section{
     font-size: 34px !important;
   }
 }
+
+/* =========================================================
+   MOBILE MENU VIEWPORT HOTFIX
+   Fixes Safari containing-block behavior caused by blur.
+   Keep this block at the absolute end of styles.css.
+   ========================================================= */
+@media (max-width: 768px){
+
+  body.menu-open{
+    overflow: hidden !important;
+    touch-action: none;
+  }
+
+  .nav{
+    overflow: visible !important;
+  }
+
+  .nav_menu{
+    position: static !important;
+  }
+
+  .nav_links{
+    position: absolute !important;
+    top: 70px !important;
+    left: 0 !important;
+    right: auto !important;
+    bottom: auto !important;
+
+    width: 100vw !important;
+    max-width: 100vw !important;
+    height: calc(100dvh - 70px) !important;
+    min-height: calc(100vh - 70px) !important;
+
+    margin: 0 !important;
+    padding: 22px 24px 38px !important;
+
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+    overscroll-behavior: contain;
+
+    flex-direction: column !important;
+    flex-wrap: nowrap !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    gap: 0 !important;
+
+    background:
+      radial-gradient(620px 420px at 25% 0%, rgba(46,91,220,.16), transparent 58%),
+      linear-gradient(180deg,#081124 0%,#050816 100%) !important;
+
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    z-index: 10001 !important;
+  }
+
+  .nav_links.nav_open{
+    display: flex !important;
+  }
+
+  .nav_links > a{
+    position: relative !important;
+    flex: 0 0 auto !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+
+    width: 100% !important;
+    min-width: 0 !important;
+    min-height: 64px !important;
+
+    margin: 0 !important;
+    padding: 0 4px !important;
+
+    white-space: normal !important;
+    text-align: left !important;
+    font-size: 17px !important;
+    line-height: 1.25 !important;
+
+    border: 0 !important;
+    border-bottom: 1px solid rgba(255,255,255,.075) !important;
+    border-radius: 0 !important;
+    background: transparent !important;
+    transform: none !important;
+  }
+
+  .nav_links > a:last-of-type{
+    border-bottom: 0 !important;
+  }
+
+  .nav_links > .btn,
+  .nav_links > .btn-primary,
+  .nav_links > .btn-nav{
+    flex: 0 0 auto !important;
+    justify-content: center !important;
+    width: 100% !important;
+    min-height: 56px !important;
+    margin-top: 24px !important;
+    padding: 0 18px !important;
+    border: 0 !important;
+    border-radius: 14px !important;
+    background: linear-gradient(135deg,#4779ff,#6267ff) !important;
+  }
+
+  body.menu-open .cb-chat-fab,
+  body.menu-open .cb-chat{
+    display: none !important;
+  }
+
+  /* Keep homepage content fully below the fixed header. */
+  .hero{
+    padding-top: 38px !important;
+  }
+
+  .hero-description{
+    overflow-wrap: anywhere;
+  }
+}
+
+@media (max-width: 360px){
+  .nav_links{
+    top: 64px !important;
+    height: calc(100dvh - 64px) !important;
+    min-height: calc(100vh - 64px) !important;
+    padding-left: 20px !important;
+    padding-right: 20px !important;
+  }
+}
+
+/* =========================================================
+   FINAL MOBILE DROPDOWN CORRECTION
+   Must remain the last CSS block in this file.
+   ========================================================= */
+@media screen and (max-width: 768px){
+
+  header.nav{
+    overflow: visible !important;
+  }
+
+  header.nav .nav_menu{
+    position: static !important;
+  }
+
+  header.nav nav#nav_links.nav_links{
+    position: fixed !important;
+    inset: 70px 0 0 0 !important;
+    width: 100vw !important;
+    max-width: 100vw !important;
+    height: calc(100dvh - 70px) !important;
+    min-height: calc(100vh - 70px) !important;
+
+    margin: 0 !important;
+    padding: 18px 22px 36px !important;
+
+    display: none !important;
+    flex-direction: column !important;
+    flex-wrap: nowrap !important;
+    align-items: stretch !important;
+    justify-content: flex-start !important;
+    gap: 0 !important;
+
+    overflow-x: hidden !important;
+    overflow-y: auto !important;
+
+    background:
+      radial-gradient(650px 420px at 20% 0%, rgba(46,91,220,.18), transparent 58%),
+      linear-gradient(180deg,#081124 0%,#050816 100%) !important;
+
+    border: 0 !important;
+    border-radius: 0 !important;
+    box-shadow: none !important;
+    z-index: 99999 !important;
+  }
+
+  header.nav nav#nav_links.nav_links.nav_open{
+    display: flex !important;
+  }
+
+  header.nav nav#nav_links.nav_links > a{
+    display: flex !important;
+    flex: 0 0 auto !important;
+    align-items: center !important;
+    justify-content: flex-start !important;
+
+    width: 100% !important;
+    max-width: 100% !important;
+    min-height: 62px !important;
+
+    margin: 0 !important;
+    padding: 0 2px !important;
+
+    white-space: normal !important;
+    text-align: left !important;
+    font-size: 17px !important;
+    line-height: 1.25 !important;
+    font-weight: 800 !important;
+
+    color: rgba(245,248,255,.95) !important;
+    background: transparent !important;
+    border: 0 !important;
+    border-bottom: 1px solid rgba(255,255,255,.075) !important;
+    border-radius: 0 !important;
+  }
+
+  header.nav nav#nav_links.nav_links > a.btn{
+    justify-content: center !important;
+    min-height: 56px !important;
+    margin-top: 22px !important;
+    padding: 0 18px !important;
+    color: #fff !important;
+    background: linear-gradient(135deg,#4779ff,#6267ff) !important;
+    border: 0 !important;
+    border-radius: 14px !important;
+  }
+
+  body.menu-open{
+    overflow: hidden !important;
+  }
+
+  body.menu-open .cb-chat-fab,
+  body.menu-open .cb-chat{
+    display: none !important;
+  }
+}
+
+@media screen and (max-width: 360px){
+  header.nav nav#nav_links.nav_links{
+    inset: 64px 0 0 0 !important;
+    height: calc(100dvh - 64px) !important;
+    min-height: calc(100vh - 64px) !important;
+  }
+}
