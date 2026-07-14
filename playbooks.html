@@ -78,17 +78,252 @@ canvas{width:100%!important;max-height:220px}
 .toast{position:fixed;right:24px;bottom:24px;background:#0f8cff;color:white;padding:14px 18px;border-radius:10px;font-weight:700;z-index:99999}
 @media(max-width:1300px){.cards,.layout-grid{grid-template-columns:1fr}.sidebar{display:none}.main{margin-left:0;width:100%}}
 
-/* ===== PLAYBOOKS MOBILE MENU ONLY =====
-.mobile-playbooks-header{display:none}.mobile-menu-toggle{display:none;align-items:center;justify-content:center;width:46px;height:46px;border:1px solid #1f334d;border-radius:10px;background:#0b1828;cursor:pointer}.mobile-menu-icon,.mobile-menu-icon:before,.mobile-menu-icon:after{display:block;position:relative;width:24px;height:2px;background:#fff;border-radius:999px;content:"";transition:.25s}.mobile-menu-icon:before{position:absolute;top:-7px}.mobile-menu-icon:after{position:absolute;top:7px}.mobile-menu-toggle[aria-expanded="true"] .mobile-menu-icon{background:transparent}.mobile-menu-toggle[aria-expanded="true"] .mobile-menu-icon:before{top:0;transform:rotate(45deg)}.mobile-menu-toggle[aria-expanded="true"] .mobile-menu-icon:after{top:0;transform:rotate(-45deg)}.playbooks-overlay{display:none}
-@media(max-width:1300px){body{padding-top:72px}body.playbooks-menu-open{overflow:hidden}.mobile-playbooks-header{position:fixed;top:0;left:0;right:0;height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;background:rgba(5,13,24,.98);border-bottom:1px solid #132235;z-index:10002}.mobile-playbooks-brand{color:#fff;text-decoration:none;font-weight:800;font-size:20px}.mobile-playbooks-brand span{color:#1e9bff}.mobile-menu-toggle{display:flex}.sidebar{display:block;width:min(320px,86vw);transform:translateX(-105%);transition:.25s;z-index:10001}.sidebar.mobile-open{transform:translateX(0)}.playbooks-overlay{position:fixed;inset:72px 0 0;background:rgba(0,0,0,.58);display:none;z-index:10000}.playbooks-overlay.show{display:block}.main{margin-left:0;width:100%}}
-@media(max-width:700px){.main{padding:18px 14px}.topbar,.page-head,.page-actions,.filters{flex-direction:column;align-items:stretch}.search-top,.filters input,.filters select,.filters button,.page-actions .btn{width:100%;min-width:0;margin-left:0}.cards,.layout-grid{grid-template-columns:1fr}.playbooks-panel{overflow:auto}table{min-width:1100px}.modal-box{width:100%;max-width:100%;max-height:calc(100dvh - 24px)}}
+/* ===== PLAYBOOKS MOBILE MENU ONLY ===== */
+
+.mobile-playbooks-header {
+  display: none;
+}
+
+.mobile-menu-toggle {
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 46px;
+  height: 46px;
+  padding: 0;
+  border: 1px solid #1f334d;
+  border-radius: 10px;
+  background: #0b1828;
+  cursor: pointer;
+}
+
+.mobile-menu-icon {
+  position: relative;
+  display: block;
+  width: 24px;
+  height: 2px;
+  border-radius: 999px;
+  background: #fff;
+  transition: .25s ease;
+}
+
+.mobile-menu-icon::before,
+.mobile-menu-icon::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  width: 24px;
+  height: 2px;
+  border-radius: 999px;
+  background: #fff;
+  transition: .25s ease;
+}
+
+.mobile-menu-icon::before {
+  top: -7px;
+}
+
+.mobile-menu-icon::after {
+  top: 7px;
+}
+
+.mobile-menu-toggle[aria-expanded="true"] .mobile-menu-icon {
+  background: transparent;
+}
+
+.mobile-menu-toggle[aria-expanded="true"] .mobile-menu-icon::before {
+  top: 0;
+  transform: rotate(45deg);
+}
+
+.mobile-menu-toggle[aria-expanded="true"] .mobile-menu-icon::after {
+  top: 0;
+  transform: rotate(-45deg);
+}
+
+.mobile-menu-label {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+.playbooks-overlay {
+  display: none;
+}
+
+@media (max-width: 1300px) {
+  body {
+    padding-top: 72px;
+  }
+
+  body.playbooks-menu-open {
+    overflow: hidden;
+  }
+
+  .mobile-playbooks-header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 10002;
+    height: 72px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 18px;
+    background: rgba(5, 13, 24, .98);
+    border-bottom: 1px solid #132235;
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+  }
+
+  .mobile-playbooks-brand {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: #fff;
+    text-decoration: none;
+    font-size: 20px;
+    font-weight: 800;
+  }
+
+  .mobile-playbooks-brand span {
+    color: #1e9bff;
+  }
+
+  .mobile-menu-toggle {
+    display: inline-flex;
+  }
+
+  .sidebar {
+    display: block;
+    width: min(320px, 86vw);
+    z-index: 10001;
+    transform: translateX(-105%);
+    transition: transform .25s ease;
+    box-shadow: 18px 0 45px rgba(0, 0, 0, .45);
+  }
+
+  .sidebar.mobile-open {
+    transform: translateX(0);
+  }
+
+  .playbooks-overlay {
+    position: fixed;
+    inset: 72px 0 0 0;
+    z-index: 10000;
+    display: none;
+    background: rgba(0, 0, 0, .58);
+    backdrop-filter: blur(2px);
+    -webkit-backdrop-filter: blur(2px);
+  }
+
+  .playbooks-overlay.show {
+    display: block;
+  }
+
+  .main {
+    margin-left: 0;
+    width: 100%;
+  }
+}
+
+@media (max-width: 700px) {
+  .main {
+    padding: 18px 14px 28px;
+  }
+
+  .topbar,
+  .page-head,
+  .page-actions,
+  .filters {
+    flex-direction: column;
+    align-items: stretch;
+  }
+
+  .topbar,
+  .page-head {
+    gap: 14px;
+  }
+
+  .search-top,
+  .filters input,
+  .filters select,
+  .filters button,
+  .page-actions .btn {
+    width: 100%;
+    min-width: 0;
+    margin-left: 0;
+  }
+
+  .userbar {
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+  }
+
+  .page-title h1 {
+    font-size: 28px;
+  }
+
+  .cards,
+  .layout-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .playbooks-panel {
+    overflow-x: auto;
+  }
+
+  table {
+    min-width: 1100px;
+  }
+
+  .pagination {
+    min-width: 760px;
+  }
+
+  .modal {
+    padding: 12px;
+  }
+
+  .modal-box {
+    width: 100%;
+    max-width: 100%;
+    max-height: calc(100dvh - 24px);
+  }
+}
 
 </style>
 </head>
 
 <body>
 
-<header class="mobile-playbooks-header"><a class="mobile-playbooks-brand" href="/playbooks">🛡️ Cyber<span>Bench</span></a><button id="playbooksMenuToggle" class="mobile-menu-toggle" aria-expanded="false"><span class="mobile-menu-icon"></span></button></header><div id="playbooksOverlay" class="playbooks-overlay"></div>
+<header class="mobile-playbooks-header">
+  <a class="mobile-playbooks-brand" href="/playbooks" aria-label="CyberBench playbooks">
+    🛡️ Cyber<span>Bench</span>
+  </a>
+
+  <button
+    id="playbooksMenuToggle"
+    class="mobile-menu-toggle"
+    type="button"
+    aria-label="Open playbooks menu"
+    aria-expanded="false"
+    aria-controls="playbooksSidebar"
+  >
+    <span class="mobile-menu-icon"></span>
+    <span class="mobile-menu-label">Menu</span>
+  </button>
+</header>
+
+<div id="playbooksOverlay" class="playbooks-overlay"></div>
 
 <div class="app">
 <aside class="sidebar" id="playbooksSidebar">
@@ -203,7 +438,55 @@ canvas{width:100%!important;max-height:220px}
 
 
 <script>
-document.addEventListener("DOMContentLoaded",()=>{const s=document.getElementById("playbooksSidebar"),t=document.getElementById("playbooksMenuToggle"),o=document.getElementById("playbooksOverlay");if(!s)return;const c=()=>{s.classList.remove("mobile-open");o.classList.remove("show");document.body.classList.remove("playbooks-menu-open");t.setAttribute("aria-expanded","false")};t.onclick=()=>{let open=s.classList.toggle("mobile-open");o.classList.toggle("show",open);document.body.classList.toggle("playbooks-menu-open",open);t.setAttribute("aria-expanded",open)};o.onclick=c;s.querySelectorAll("a,button").forEach(e=>e.onclick=c);window.addEventListener("resize",()=>{if(innerWidth>1300)c()})});
+document.addEventListener("DOMContentLoaded", function () {
+  const sidebar = document.getElementById("playbooksSidebar");
+  const toggle = document.getElementById("playbooksMenuToggle");
+  const overlay = document.getElementById("playbooksOverlay");
+
+  if (!sidebar || !toggle || !overlay) return;
+
+  function openPlaybooksMenu() {
+    sidebar.classList.add("mobile-open");
+    overlay.classList.add("show");
+    document.body.classList.add("playbooks-menu-open");
+    toggle.setAttribute("aria-expanded", "true");
+    toggle.setAttribute("aria-label", "Close playbooks menu");
+  }
+
+  function closePlaybooksMenu() {
+    sidebar.classList.remove("mobile-open");
+    overlay.classList.remove("show");
+    document.body.classList.remove("playbooks-menu-open");
+    toggle.setAttribute("aria-expanded", "false");
+    toggle.setAttribute("aria-label", "Open playbooks menu");
+  }
+
+  toggle.addEventListener("click", function () {
+    if (sidebar.classList.contains("mobile-open")) {
+      closePlaybooksMenu();
+    } else {
+      openPlaybooksMenu();
+    }
+  });
+
+  overlay.addEventListener("click", closePlaybooksMenu);
+
+  sidebar.querySelectorAll("a, button").forEach(function (item) {
+    item.addEventListener("click", closePlaybooksMenu);
+  });
+
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape") {
+      closePlaybooksMenu();
+    }
+  });
+
+  window.addEventListener("resize", function () {
+    if (window.innerWidth > 1300) {
+      closePlaybooksMenu();
+    }
+  });
+});
 </script>
 
 <script>
