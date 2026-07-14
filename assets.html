@@ -416,12 +416,294 @@
       .sidebar { display: none; }
       .main { margin-left: 0; width: 100%; }
     }
+
+
+    /* ===== ASSETS MOBILE MENU ONLY ===== */
+
+    .mobile-assets-header {
+      display: none;
+    }
+
+    .mobile-menu-toggle {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 46px;
+      height: 46px;
+      padding: 0;
+      border: 1px solid #1f334d;
+      border-radius: 10px;
+      background: #0b1828;
+      cursor: pointer;
+    }
+
+    .mobile-menu-icon {
+      position: relative;
+      display: block;
+      width: 24px;
+      height: 2px;
+      border-radius: 999px;
+      background: #fff;
+      transition: .25s ease;
+    }
+
+    .mobile-menu-icon::before,
+    .mobile-menu-icon::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      width: 24px;
+      height: 2px;
+      border-radius: 999px;
+      background: #fff;
+      transition: .25s ease;
+    }
+
+    .mobile-menu-icon::before {
+      top: -7px;
+    }
+
+    .mobile-menu-icon::after {
+      top: 7px;
+    }
+
+    .mobile-menu-toggle[aria-expanded="true"] .mobile-menu-icon {
+      background: transparent;
+    }
+
+    .mobile-menu-toggle[aria-expanded="true"] .mobile-menu-icon::before {
+      top: 0;
+      transform: rotate(45deg);
+    }
+
+    .mobile-menu-toggle[aria-expanded="true"] .mobile-menu-icon::after {
+      top: 0;
+      transform: rotate(-45deg);
+    }
+
+    .mobile-menu-label {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .assets-overlay {
+      display: none;
+    }
+
+    @media(max-width: 1300px) {
+      body {
+        padding-top: 72px;
+      }
+
+      body.assets-menu-open {
+        overflow: hidden;
+      }
+
+      .mobile-assets-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 10002;
+        height: 72px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 18px;
+        background: rgba(5, 13, 24, .98);
+        border-bottom: 1px solid #132235;
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+      }
+
+      .mobile-assets-brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #fff;
+        text-decoration: none;
+        font-size: 20px;
+        font-weight: 800;
+      }
+
+      .mobile-assets-brand span {
+        color: #1e9bff;
+      }
+
+      .mobile-menu-toggle {
+        display: inline-flex;
+      }
+
+      .sidebar {
+        display: block;
+        width: min(320px, 86vw);
+        z-index: 10001;
+        transform: translateX(-105%);
+        transition: transform .25s ease;
+        box-shadow: 18px 0 45px rgba(0, 0, 0, .45);
+      }
+
+      .sidebar.mobile-open {
+        transform: translateX(0);
+      }
+
+      .assets-overlay {
+        position: fixed;
+        inset: 72px 0 0 0;
+        z-index: 10000;
+        display: none;
+        background: rgba(0, 0, 0, .58);
+        backdrop-filter: blur(2px);
+        -webkit-backdrop-filter: blur(2px);
+      }
+
+      .assets-overlay.show {
+        display: block;
+      }
+
+      .main {
+        margin-left: 0;
+        width: 100%;
+      }
+    }
+
+    @media(max-width: 700px) {
+      .main {
+        padding: 18px 14px 28px;
+      }
+
+      .topbar {
+        flex-direction: column;
+        align-items: stretch;
+        gap: 14px;
+      }
+
+      .search-top {
+        width: 100%;
+      }
+
+      .userbar {
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .page-head {
+        flex-direction: column;
+        gap: 16px;
+      }
+
+      .page-actions {
+        width: 100%;
+        flex-direction: column;
+      }
+
+      .page-actions .btn {
+        width: 100%;
+      }
+
+      .page-title h1 {
+        font-size: 28px;
+      }
+
+      .cards,
+      .layout-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .filters {
+        flex-direction: column;
+      }
+
+      .filters input,
+      .filters select,
+      .filters button {
+        width: 100%;
+      }
+
+      .assets-panel {
+        overflow-x: auto;
+      }
+
+      table {
+        min-width: 1060px;
+      }
+
+      .pagination {
+        min-width: 760px;
+      }
+
+      .modal {
+        padding: 12px;
+      }
+
+      .modal-box,
+      .asset-detail-modal {
+        width: 100%;
+        max-width: 100%;
+        max-height: calc(100dvh - 24px);
+        overflow-y: auto;
+      }
+
+      .asset-detail-header,
+      .asset-detail-body {
+        padding: 18px;
+      }
+
+      .asset-detail-title {
+        align-items: flex-start;
+      }
+
+      .asset-detail-header h2 {
+        font-size: 23px;
+      }
+
+      .asset-summary-grid,
+      .asset-detail-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .asset-info-row,
+      .detail-row {
+        grid-template-columns: 1fr;
+        gap: 5px;
+      }
+    }
+
   </style>
 </head>
 
 <body>
+
+  <header class="mobile-assets-header">
+    <a class="mobile-assets-brand" href="/assets" aria-label="CyberBench assets">
+      🛡️ Cyber<span>Bench</span>
+    </a>
+
+    <button
+      class="mobile-menu-toggle"
+      id="assetsMenuToggle"
+      type="button"
+      aria-label="Open assets menu"
+      aria-expanded="false"
+      aria-controls="assetsSidebar"
+    >
+      <span class="mobile-menu-icon"></span>
+      <span class="mobile-menu-label">Menu</span>
+    </button>
+  </header>
+
+  <div class="assets-overlay" id="assetsOverlay"></div>
+
 <div class="app">
-  <aside class="sidebar">
+  <aside class="sidebar" id="assetsSidebar">
     <a href="/dashboard" class="brand">🛡️ Cyber<span>Bench</span></a>
 
     <nav class="nav">
@@ -786,6 +1068,59 @@
     </div>
   </div>
 </div>
+
+
+<script>
+document.addEventListener("DOMContentLoaded", function () {
+  const sidebar = document.getElementById("assetsSidebar");
+  const toggle = document.getElementById("assetsMenuToggle");
+  const overlay = document.getElementById("assetsOverlay");
+
+  if (!sidebar || !toggle || !overlay) return;
+
+  function openAssetsMenu() {
+    sidebar.classList.add("mobile-open");
+    overlay.classList.add("show");
+    document.body.classList.add("assets-menu-open");
+    toggle.setAttribute("aria-expanded", "true");
+    toggle.setAttribute("aria-label", "Close assets menu");
+  }
+
+  function closeAssetsMenu() {
+    sidebar.classList.remove("mobile-open");
+    overlay.classList.remove("show");
+    document.body.classList.remove("assets-menu-open");
+    toggle.setAttribute("aria-expanded", "false");
+    toggle.setAttribute("aria-label", "Open assets menu");
+  }
+
+  toggle.addEventListener("click", function () {
+    if (sidebar.classList.contains("mobile-open")) {
+      closeAssetsMenu();
+    } else {
+      openAssetsMenu();
+    }
+  });
+
+  overlay.addEventListener("click", closeAssetsMenu);
+
+  sidebar.querySelectorAll("a").forEach(function (link) {
+    link.addEventListener("click", closeAssetsMenu);
+  });
+
+  document.addEventListener("keydown", function (event) {
+    if (event.key === "Escape") {
+      closeAssetsMenu();
+    }
+  });
+
+  window.addEventListener("resize", function () {
+    if (window.innerWidth > 1300) {
+      closeAssetsMenu();
+    }
+  });
+});
+</script>
 
 <script>
 let assets = [
