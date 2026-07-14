@@ -77,12 +77,21 @@ canvas{width:100%!important;max-height:220px}
 .form-input{width:100%;margin-bottom:12px;padding:14px;background:#081422;border:1px solid #1b3048;color:white;border-radius:8px}
 .toast{position:fixed;right:24px;bottom:24px;background:#0f8cff;color:white;padding:14px 18px;border-radius:10px;font-weight:700;z-index:99999}
 @media(max-width:1300px){.cards,.layout-grid{grid-template-columns:1fr}.sidebar{display:none}.main{margin-left:0;width:100%}}
+
+/* ===== PLAYBOOKS MOBILE MENU ONLY =====
+.mobile-playbooks-header{display:none}.mobile-menu-toggle{display:none;align-items:center;justify-content:center;width:46px;height:46px;border:1px solid #1f334d;border-radius:10px;background:#0b1828;cursor:pointer}.mobile-menu-icon,.mobile-menu-icon:before,.mobile-menu-icon:after{display:block;position:relative;width:24px;height:2px;background:#fff;border-radius:999px;content:"";transition:.25s}.mobile-menu-icon:before{position:absolute;top:-7px}.mobile-menu-icon:after{position:absolute;top:7px}.mobile-menu-toggle[aria-expanded="true"] .mobile-menu-icon{background:transparent}.mobile-menu-toggle[aria-expanded="true"] .mobile-menu-icon:before{top:0;transform:rotate(45deg)}.mobile-menu-toggle[aria-expanded="true"] .mobile-menu-icon:after{top:0;transform:rotate(-45deg)}.playbooks-overlay{display:none}
+@media(max-width:1300px){body{padding-top:72px}body.playbooks-menu-open{overflow:hidden}.mobile-playbooks-header{position:fixed;top:0;left:0;right:0;height:72px;display:flex;align-items:center;justify-content:space-between;padding:0 18px;background:rgba(5,13,24,.98);border-bottom:1px solid #132235;z-index:10002}.mobile-playbooks-brand{color:#fff;text-decoration:none;font-weight:800;font-size:20px}.mobile-playbooks-brand span{color:#1e9bff}.mobile-menu-toggle{display:flex}.sidebar{display:block;width:min(320px,86vw);transform:translateX(-105%);transition:.25s;z-index:10001}.sidebar.mobile-open{transform:translateX(0)}.playbooks-overlay{position:fixed;inset:72px 0 0;background:rgba(0,0,0,.58);display:none;z-index:10000}.playbooks-overlay.show{display:block}.main{margin-left:0;width:100%}}
+@media(max-width:700px){.main{padding:18px 14px}.topbar,.page-head,.page-actions,.filters{flex-direction:column;align-items:stretch}.search-top,.filters input,.filters select,.filters button,.page-actions .btn{width:100%;min-width:0;margin-left:0}.cards,.layout-grid{grid-template-columns:1fr}.playbooks-panel{overflow:auto}table{min-width:1100px}.modal-box{width:100%;max-width:100%;max-height:calc(100dvh - 24px)}}
+
 </style>
 </head>
 
 <body>
+
+<header class="mobile-playbooks-header"><a class="mobile-playbooks-brand" href="/playbooks">🛡️ Cyber<span>Bench</span></a><button id="playbooksMenuToggle" class="mobile-menu-toggle" aria-expanded="false"><span class="mobile-menu-icon"></span></button></header><div id="playbooksOverlay" class="playbooks-overlay"></div>
+
 <div class="app">
-<aside class="sidebar">
+<aside class="sidebar" id="playbooksSidebar">
 <a class="brand" href="/dashboard">🛡️ Cyber<span>Bench</span></a>
 <nav class="nav">
 <a href="/dashboard">🏠 Dashboard</a>
@@ -191,6 +200,11 @@ canvas{width:100%!important;max-height:220px}
 <button class="btn primary" onclick="createPlaybook()">Create Playbook</button>
 </div>
 </div>
+
+
+<script>
+document.addEventListener("DOMContentLoaded",()=>{const s=document.getElementById("playbooksSidebar"),t=document.getElementById("playbooksMenuToggle"),o=document.getElementById("playbooksOverlay");if(!s)return;const c=()=>{s.classList.remove("mobile-open");o.classList.remove("show");document.body.classList.remove("playbooks-menu-open");t.setAttribute("aria-expanded","false")};t.onclick=()=>{let open=s.classList.toggle("mobile-open");o.classList.toggle("show",open);document.body.classList.toggle("playbooks-menu-open",open);t.setAttribute("aria-expanded",open)};o.onclick=c;s.querySelectorAll("a,button").forEach(e=>e.onclick=c);window.addEventListener("resize",()=>{if(innerWidth>1300)c()})});
+</script>
 
 <script>
 let playbooks=[
