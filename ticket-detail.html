@@ -74,12 +74,263 @@ h1{font-size:28px;margin:10px 0}
 .timer-row{display:grid;grid-template-columns:70px 70px 1fr;gap:10px}
 .toast{position:fixed;right:24px;bottom:24px;background:#0f8cff;color:white;padding:15px 20px;border-radius:12px;font-weight:800;z-index:999}
 @media(max-width:1200px){.sidebar{display:none}.main{margin-left:0;width:100%}.grid,.detail-grid,.data-grid,.score-grid{grid-template-columns:1fr}.info-list{border-right:0}}
+
+
+/* ===== ENTERPRISE MOBILE TICKET DETAIL — MOBILE ONLY ===== */
+.mobile-ticket-header,
+.ticket-menu-overlay{display:none}
+
+.mobile-ticket-menu{
+  display:none;
+  align-items:center;
+  justify-content:center;
+  width:44px;
+  height:44px;
+  border:1px solid #20354d;
+  border-radius:12px;
+  background:linear-gradient(180deg,#0d1b2c,#091524);
+  color:#fff;
+  cursor:pointer;
+  box-shadow:inset 0 1px 0 rgba(255,255,255,.04);
+}
+.mobile-ticket-menu span,
+.mobile-ticket-menu span:before,
+.mobile-ticket-menu span:after{
+  display:block;
+  width:21px;
+  height:2px;
+  border-radius:99px;
+  background:#dce8f6;
+  transition:.22s ease;
+}
+.mobile-ticket-menu span{position:relative}
+.mobile-ticket-menu span:before,
+.mobile-ticket-menu span:after{content:"";position:absolute;left:0}
+.mobile-ticket-menu span:before{top:-7px}
+.mobile-ticket-menu span:after{top:7px}
+.mobile-ticket-menu[aria-expanded="true"] span{background:transparent}
+.mobile-ticket-menu[aria-expanded="true"] span:before{top:0;transform:rotate(45deg)}
+.mobile-ticket-menu[aria-expanded="true"] span:after{top:0;transform:rotate(-45deg)}
+
+@media(max-width:1200px){
+  body{padding-top:74px;background:#050d18}
+  body.ticket-menu-open{overflow:hidden}
+
+  .mobile-ticket-header{
+    position:fixed;
+    inset:0 0 auto 0;
+    z-index:10002;
+    height:74px;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:0 18px;
+    background:rgba(5,13,24,.96);
+    border-bottom:1px solid #17283c;
+    backdrop-filter:blur(16px);
+    -webkit-backdrop-filter:blur(16px);
+    box-shadow:0 10px 30px rgba(0,0,0,.22);
+  }
+  .mobile-ticket-brand{
+    display:flex;
+    align-items:center;
+    gap:9px;
+    color:#fff;
+    text-decoration:none;
+    font-size:20px;
+    font-weight:900;
+    letter-spacing:-.02em;
+  }
+  .mobile-ticket-brand span{color:#269cff}
+  .mobile-ticket-menu{display:inline-flex}
+
+  .sidebar{
+    display:block;
+    width:min(320px,86vw);
+    z-index:10001;
+    transform:translateX(-105%);
+    transition:transform .25s ease;
+    box-shadow:20px 0 55px rgba(0,0,0,.55);
+  }
+  .sidebar.mobile-open{transform:translateX(0)}
+  .ticket-menu-overlay{
+    position:fixed;
+    inset:74px 0 0;
+    z-index:10000;
+    background:rgba(0,0,0,.62);
+    backdrop-filter:blur(3px);
+    -webkit-backdrop-filter:blur(3px);
+  }
+  .ticket-menu-overlay.show{display:block}
+
+  .main{margin-left:0;width:100%;padding:22px 20px 36px}
+  .grid{grid-template-columns:minmax(0,1fr) 340px;gap:18px}
+  .detail-grid{grid-template-columns:220px minmax(0,1fr)}
+  .data-grid{grid-template-columns:repeat(2,minmax(0,1fr))}
+  .score-grid{grid-template-columns:1fr}
+}
+
+@media(max-width:820px){
+  .main{padding:18px 14px 30px}
+
+  .topbar{
+    display:grid;
+    grid-template-columns:1fr auto;
+    gap:12px;
+    margin-bottom:18px;
+    padding:12px;
+    border:1px solid #172a40;
+    border-radius:14px;
+    background:linear-gradient(180deg,rgba(13,27,44,.94),rgba(8,20,34,.94));
+    box-shadow:0 14px 34px rgba(0,0,0,.2);
+  }
+  .search{width:100%;min-width:0;padding:12px 14px;border-radius:10px}
+  .userbar{gap:10px}
+  .userbar>span{display:none}
+  .avatar{width:38px;height:38px;font-size:13px}
+
+  .back{
+    margin:2px 0 14px;
+    padding:8px 11px;
+    border:1px solid #1b3048;
+    border-radius:9px;
+    background:#081422;
+    width:max-content;
+    font-size:13px;
+  }
+
+  .header{
+    display:grid;
+    grid-template-columns:minmax(0,1fr) auto;
+    gap:12px;
+    align-items:start;
+    padding:18px;
+    margin-bottom:16px;
+    background:linear-gradient(180deg,#0d1a2b,#091525);
+    border:1px solid #192b40;
+    border-radius:16px;
+    box-shadow:0 16px 42px rgba(0,0,0,.24);
+  }
+  .header h1{font-size:23px;line-height:1.18;margin:12px 0}
+  .meta{gap:8px;font-size:12px}
+  .meta span{
+    display:inline-flex;
+    align-items:center;
+    padding:7px 9px;
+    border-radius:8px;
+    background:#081422;
+    border:1px solid #1b3048;
+  }
+  .header>.btn{padding:10px 12px;font-size:12px}
+
+  .grid{grid-template-columns:1fr;gap:16px}
+  .panel{border-radius:15px}
+
+  .tabs{
+    gap:22px;
+    overflow-x:auto;
+    padding:0 16px;
+    scrollbar-width:none;
+    -webkit-overflow-scrolling:touch;
+  }
+  .tabs::-webkit-scrollbar{display:none}
+  .tabs button{flex:0 0 auto;padding:16px 0;font-size:13px}
+  .section{padding:16px}
+
+  .detail-grid{grid-template-columns:1fr;gap:18px}
+  .info-list{
+    border-right:0;
+    border-bottom:1px solid #17283c;
+    padding:0 0 14px;
+    display:grid;
+    grid-template-columns:repeat(2,minmax(0,1fr));
+    gap:0 14px;
+  }
+  .info-list h3{grid-column:1/-1;margin-bottom:4px}
+  .info-list div{
+    min-width:0;
+    padding:10px;
+    margin-top:8px;
+    border:1px solid #182c43;
+    border-radius:10px;
+    background:#081422;
+    font-size:12px;
+  }
+  .info-list strong{overflow-wrap:anywhere;font-size:13px}
+  .desc{font-size:14px}
+
+  .data-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+  .data-card{padding:13px;min-width:0}
+  .data-card strong{overflow-wrap:anywhere;font-size:13px}
+
+  .file{gap:12px;padding:12px;font-size:13px}
+  .file span:first-child{min-width:0;overflow-wrap:anywhere}
+  .file span:last-child{white-space:nowrap;color:#8fa1b8}
+
+  .timeline{padding:16px!important}
+  .timeline-item{grid-template-columns:18px minmax(0,1fr) 62px;gap:10px;font-size:12px}
+  .timeline-item p{font-size:12px;line-height:1.45}
+
+  .side{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:14px}
+  .side>.panel{padding:16px}
+  .side>.panel:nth-child(2),
+  .side>.panel:nth-child(3){grid-column:1/-1}
+  .big-red{font-size:24px}
+  .score-grid{grid-template-columns:1fr 116px}
+  .confidence{width:86px;height:86px}
+  .resolution .btn.success{min-height:46px}
+}
+
+@media(max-width:560px){
+  .mobile-ticket-header{height:68px;padding:0 14px}
+  body{padding-top:68px}
+  .ticket-menu-overlay{inset:68px 0 0}
+  .mobile-ticket-brand{font-size:18px}
+  .mobile-ticket-menu{width:42px;height:42px}
+
+  .main{padding:14px 10px 26px}
+  .topbar{grid-template-columns:1fr auto;padding:10px}
+  .header{grid-template-columns:1fr;padding:15px}
+  .header>.btn{width:100%}
+  .header h1{font-size:21px}
+  .pill{font-size:11px;padding:5px 9px}
+
+  .section{padding:13px}
+  .info-list{grid-template-columns:1fr}
+  .data-grid{grid-template-columns:1fr 1fr}
+  .data-card{padding:11px}
+  .data-card span{font-size:11px}
+
+  .side{grid-template-columns:1fr}
+  .side>.panel:nth-child(2),
+  .side>.panel:nth-child(3){grid-column:auto}
+  .score-grid{grid-template-columns:1fr}
+  .score-box{text-align:left}
+  .confidence{margin:10px auto 0}
+
+  .timer-row{grid-template-columns:62px 62px minmax(0,1fr);gap:8px}
+  .timer-row .btn{padding:10px 8px;font-size:12px}
+
+  .toast{left:12px;right:12px;bottom:16px;text-align:center}
+}
+
+@media(max-width:380px){
+  .data-grid{grid-template-columns:1fr}
+  .meta{display:grid;grid-template-columns:1fr}
+  .meta span{width:100%}
+}
+
 </style>
 </head>
 
 <body>
+<header class="mobile-ticket-header">
+  <a class="mobile-ticket-brand" href="/tickets" aria-label="CyberBench tickets">🛡️ Cyber<span>Bench</span></a>
+  <button class="mobile-ticket-menu" id="ticketMenuToggle" type="button" aria-label="Open navigation menu" aria-expanded="false" aria-controls="ticketSidebar"><span></span></button>
+</header>
+<div class="ticket-menu-overlay" id="ticketMenuOverlay"></div>
 <div class="app">
-<aside class="sidebar">
+<aside class="sidebar" id="ticketSidebar">
 <a href="/dashboard" class="brand">🛡️ Cyber<span>Bench</span></a>
 <nav class="nav">
 <a href="/dashboard">🏠 Dashboard</a>
@@ -305,5 +556,28 @@ setTimeout(()=>t.remove(),2500);
 }
 renderOverview();
 </script>
+
+<script>
+document.addEventListener("DOMContentLoaded",function(){
+  const sidebar=document.getElementById("ticketSidebar");
+  const toggle=document.getElementById("ticketMenuToggle");
+  const overlay=document.getElementById("ticketMenuOverlay");
+  if(!sidebar||!toggle||!overlay)return;
+
+  function setMenu(open){
+    sidebar.classList.toggle("mobile-open",open);
+    overlay.classList.toggle("show",open);
+    document.body.classList.toggle("ticket-menu-open",open);
+    toggle.setAttribute("aria-expanded",String(open));
+    toggle.setAttribute("aria-label",open?"Close navigation menu":"Open navigation menu");
+  }
+  toggle.addEventListener("click",()=>setMenu(!sidebar.classList.contains("mobile-open")));
+  overlay.addEventListener("click",()=>setMenu(false));
+  sidebar.querySelectorAll("a,button").forEach(el=>el.addEventListener("click",()=>setMenu(false)));
+  document.addEventListener("keydown",e=>{if(e.key==="Escape")setMenu(false)});
+  window.addEventListener("resize",()=>{if(window.innerWidth>1200)setMenu(false)});
+});
+</script>
+
 </body>
 </html>
