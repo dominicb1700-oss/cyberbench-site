@@ -46,7 +46,7 @@
     }
 
     /* ══════════════════════════════════════
-       LOGO COMPONENT (consistent site-wide)
+       LOGO COMPONENT
     ══════════════════════════════════════ */
     .cb-logo {
       display: inline-flex;
@@ -112,10 +112,11 @@
       color: var(--text-muted);
       border-radius: var(--radius-sm);
       transition: color 0.2s, background 0.2s;
+      white-space: nowrap;
     }
     .nav__links a:hover { color: #fff; background: rgba(255,255,255,0.06); }
     .nav__links a.active { color: var(--primary); }
-    .nav__actions { display: flex; align-items: center; gap: 10px; }
+    .nav__actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
 
     .btn {
       display: inline-flex;
@@ -128,6 +129,7 @@
       border: none;
       transition: all 0.2s;
       cursor: pointer;
+      white-space: nowrap;
     }
     .btn-ghost {
       background: transparent;
@@ -197,21 +199,6 @@
     main { padding-top: var(--nav-h); }
     .section { padding: 80px 24px; }
     .container { max-width: 1200px; margin: 0 auto; }
-
-    /* ── Breadcrumb ── */
-    .breadcrumb {
-      padding: 16px 24px;
-      max-width: 1200px;
-      margin: 0 auto;
-      display: flex;
-      align-items: center;
-      gap: 8px;
-      font-size: 0.8rem;
-      color: var(--text-dim);
-    }
-    .breadcrumb a { color: var(--text-muted); transition: color 0.2s; }
-    .breadcrumb a:hover { color: var(--primary); }
-    .breadcrumb span { color: var(--text-dim); }
 
     /* ── Hero ── */
     .hero {
@@ -874,11 +861,13 @@
       </span>
     </a>
 
+    <!-- ✅ Added Consultant Portal link -->
     <ul class="nav__links" role="list">
       <li><a href="/services.html">Services</a></li>
       <li><a href="/about.html" class="active">About</a></li>
       <li><a href="/blog.html">Blog</a></li>
       <li><a href="/client-portal.html">Client Portal</a></li>
+      <li><a href="/consultant-portal.html">Consultant Portal</a></li>
     </ul>
 
     <div class="nav__actions">
@@ -893,12 +882,13 @@
   </div>
 </nav>
 
-<!-- Mobile Nav -->
+<!-- Mobile Nav — ✅ includes Consultant Portal -->
 <div class="nav__mobile" id="mobileNav" role="navigation" aria-label="Mobile navigation">
   <a href="/services.html">Services</a>
   <a href="/about.html">About</a>
   <a href="/blog.html">Blog</a>
   <a href="/client-portal.html">Client Portal</a>
+  <a href="/consultant-portal.html">Consultant Portal</a>
   <div class="mobile-actions">
     <a href="/login.html" class="btn btn-ghost">Log In</a>
     <a href="/submit-ticket.html" class="btn btn-primary">Submit Ticket</a>
@@ -907,14 +897,8 @@
 
 <main>
 
-  <!-- ══════════════ BREADCRUMB ══════════════ -->
-  <nav class="breadcrumb" aria-label="Breadcrumb">
-    <a href="/index.html">Home</a>
-    <span aria-hidden="true">›</span>
-    <span aria-current="page">About</span>
-  </nav>
-
   <!-- ══════════════ HERO ══════════════ -->
+  <!-- ✅ Breadcrumb removed — hero starts immediately after nav -->
   <section class="hero" aria-labelledby="about-heading">
     <div class="hero__eyebrow">Our Mission</div>
     <h1 class="hero__h1" id="about-heading">
@@ -1310,8 +1294,8 @@ const KB = [
     response: `📊 **KPI Reporting & Visibility:**\n\n• Real-time dashboard in the **Client Portal**\n• Metrics: MTTR, MTTD, SLA compliance, threat volume\n• Weekly operational summaries\n• Monthly **executive-ready reports**\n• Trend analysis showing posture improvement over time\n• Exportable PDF and CSV formats`
   },
   {
-    patterns: ['consultant','specialist','expert','team','who','staff','analyst','engineer'],
-    response: `👥 **The CyberBench Team:**\n\n• All consultants are **vetted and background-checked**\n• Matched by **skill fit** — not just availability\n• Specializations: SOC, IR, pen testing, compliance, cloud security\n• Continuity model — consistent specialists across engagements\n• Backed by an internal cyber team for quality assurance\n• All work is **documented and accountable**`
+    patterns: ['consultant','specialist','expert','team','who','staff','analyst','engineer','consultant portal'],
+    response: `👥 **The CyberBench Consultant Team:**\n\n• All consultants are **vetted and background-checked**\n• Matched by **skill fit** — not just availability\n• Specializations: SOC, IR, pen testing, compliance, cloud security\n• Continuity model — consistent specialists across engagements\n• Backed by an internal cyber team for quality assurance\n• All work is **documented and accountable**\n\nConsultants manage their work via the **Consultant Portal** at /consultant-portal.html`
   },
   {
     patterns: ['portal','dashboard','login','account','client','access'],
@@ -1319,7 +1303,7 @@ const KB = [
   },
   {
     patterns: ['about','company','who are','cyberbench','mission','founded','background'],
-    response: `🏢 **About CyberBench:**\n\nCyberBench is a cybersecurity execution platform built for SMBs who need enterprise-grade security without enterprise overhead.\n\n• **Mission:** Execute security work — not just advise\n• **Model:** Ticket-first, specialist-matched, outcome-documented\n• **Coverage:** 24/7 SOC, IR, compliance, backups, reporting\n• **Differentiator:** Continuity + accountability + executive visibility\n\nLearn more at **/about.html**`
+    response: `🏢 **About CyberBench:**\n\nCyberBench is a cybersecurity execution platform built for SMBs who need enterprise-grade security without enterprise overhead.\n\n• **Mission:** Execute security work — not just advise\n• **Model:** Ticket-first, specialist-matched, outcome-documented\n• **Coverage:** 24/7 SOC, IR, compliance, backups, reporting\n• **Differentiator:** Continuity + accountability + executive visibility`
   },
   {
     patterns: ['training','ai training','cyber training','awareness','educate','learn'],
