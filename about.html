@@ -3,805 +3,395 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-
   <title>About | CyberBench</title>
-
-  <link rel="icon" type="image/png" href="/favicon.png">
-
   <link rel="stylesheet" href="/styles.css" />
-
-  <style>
-
-    /* ===== NAVBAR FIX ===== */
-
-    .nav{
-      position:sticky !important;
-      top:0 !important;
-      z-index:9999 !important;
-
-      background:rgba(5,8,22,.96) !important;
-
-      backdrop-filter:blur(14px);
-      -webkit-backdrop-filter:blur(14px);
-
-      border-bottom:1px solid rgba(255,255,255,.08);
-    }
-
-    .nav_row{
-      min-height:72px;
-
-      display:flex;
-      align-items:center;
-      justify-content:space-between;
-    }
-
-    .nav_menu{
-      display:flex;
-      align-items:center;
-    }
-
-    .nav_links{
-      display:flex;
-      align-items:center;
-      gap:24px;
-    }
-
-    .nav_links a{
-      color:rgba(255,255,255,.78);
-      text-decoration:none;
-      font-size:14px;
-
-      transition:.2s ease;
-
-      white-space:nowrap;
-    }
-
-    .nav_links a:hover{
-      color:#7c97ff;
-    }
-
-    .nav_links a.nav-active{
-      color:#6f8cff !important;
-
-      border-bottom:1px solid #4d7cff;
-
-      padding-bottom:10px;
-    }
-
-    .nav_links a.btn,
-    .nav_links a.btn.nav-active{
-      border-bottom:none !important;
-      padding-bottom:0 !important;
-      color:#fff !important;
-    }
-
-    .nav_links .btn{
-      margin-left:8px;
-    }
-
-    /* Hide mobile button on desktop */
-
-    .nav_toggle{
-      display:none;
-      align-items:center;
-      justify-content:center;
-
-      width:46px;
-      height:46px;
-
-      padding:0;
-
-      border:0;
-      border-radius:12px;
-
-      background:transparent;
-
-      cursor:pointer;
-    }
-
-    .hamburger{
-      position:relative;
-
-      display:block;
-
-      width:26px;
-      height:2px;
-
-      border-radius:999px;
-
-      background:#fff;
-
-      transition:.25s ease;
-    }
-
-    .hamburger::before,
-    .hamburger::after{
-      content:"";
-
-      position:absolute;
-      left:0;
-
-      width:26px;
-      height:2px;
-
-      border-radius:999px;
-
-      background:#fff;
-
-      transition:.25s ease;
-    }
-
-    .hamburger::before{
-      top:-8px;
-    }
-
-    .hamburger::after{
-      top:8px;
-    }
-
-    .nav_toggle[aria-expanded="true"] .hamburger{
-      background:transparent;
-    }
-
-    .nav_toggle[aria-expanded="true"] .hamburger::before{
-      top:0;
-      transform:rotate(45deg);
-    }
-
-    .nav_toggle[aria-expanded="true"] .hamburger::after{
-      top:0;
-      transform:rotate(-45deg);
-    }
-
-    .sr-only{
-      position:absolute;
-
-      width:1px;
-      height:1px;
-
-      padding:0;
-      margin:-1px;
-
-      overflow:hidden;
-
-      clip:rect(0,0,0,0);
-
-      white-space:nowrap;
-
-      border:0;
-    }
-
-    @media(max-width:900px) and (min-width:769px){
-
-      .nav_row{
-        flex-direction:column;
-        gap:18px;
-        padding:18px 0;
-      }
-
-      .nav_links{
-        flex-wrap:wrap;
-        justify-content:center;
-      }
-
-    }
-
-    /* ===== MOBILE MENU ===== */
-
-    @media(max-width:768px){
-
-      body{
-        padding-top:72px;
-      }
-
-      body.menu-open{
-        overflow:hidden;
-      }
-
-      .nav{
-        position:fixed !important;
-
-        top:0 !important;
-        left:0 !important;
-        right:0 !important;
-
-        width:100%;
-        height:72px;
-
-        z-index:99999 !important;
-      }
-
-      .nav_row{
-        min-height:72px;
-        height:72px;
-
-        flex-direction:row !important;
-
-        padding:0 18px !important;
-
-        gap:14px;
-      }
-
-      .brand{
-        position:relative;
-
-        z-index:100002;
-
-        display:flex;
-        align-items:center;
-        gap:10px;
-      }
-
-      .brand .logo{
-        width:34px;
-        height:34px;
-
-        display:flex;
-        align-items:center;
-        justify-content:center;
-      }
-
-      .brand span:last-child{
-        font-size:18px;
-        font-weight:800;
-      }
-
-      .nav_menu{
-        position:static;
-
-        display:flex;
-        align-items:center;
-      }
-
-      .nav_toggle{
-        position:relative;
-
-        display:flex !important;
-
-        z-index:100003;
-      }
-
-      .nav_links{
-        position:fixed !important;
-
-        top:72px !important;
-        left:0 !important;
-        right:0 !important;
-        bottom:0 !important;
-
-        width:100vw !important;
-        max-width:100vw !important;
-        height:calc(100dvh - 72px) !important;
-
-        display:none !important;
-
-        flex-direction:column !important;
-        flex-wrap:nowrap !important;
-        align-items:stretch !important;
-        justify-content:flex-start !important;
-
-        gap:0 !important;
-
-        margin:0 !important;
-        padding:20px 22px 36px !important;
-
-        overflow-x:hidden !important;
-        overflow-y:auto !important;
-
-        background:
-          radial-gradient(
-            650px 420px at 20% 0%,
-            rgba(46,91,220,.18),
-            transparent 58%
-          ),
-          linear-gradient(
-            180deg,
-            #081124 0%,
-            #050816 100%
-          ) !important;
-
-        border:0 !important;
-        border-radius:0 !important;
-
-        box-shadow:none !important;
-
-        z-index:100001 !important;
-      }
-
-      .nav_links.nav_open{
-        display:flex !important;
-      }
-
-      .nav_links > a{
-        display:flex !important;
-
-        align-items:center !important;
-        justify-content:flex-start !important;
-
-        flex:0 0 auto !important;
-
-        width:100% !important;
-        min-height:64px !important;
-
-        margin:0 !important;
-        padding:0 4px !important;
-
-        color:rgba(245,248,255,.95) !important;
-
-        font-size:17px !important;
-        font-weight:800 !important;
-        line-height:1.25 !important;
-
-        text-align:left !important;
-        white-space:normal !important;
-
-        background:transparent !important;
-
-        border:0 !important;
-        border-bottom:1px solid rgba(255,255,255,.08) !important;
-        border-radius:0 !important;
-      }
-
-      .nav_links > a:hover,
-      .nav_links > a.nav-active{
-        color:#7c97ff !important;
-
-        background:transparent !important;
-
-        padding-bottom:0 !important;
-      }
-
-      .nav_links > a.btn,
-      .nav_links > a.btn.nav-active{
-        display:flex !important;
-
-        justify-content:center !important;
-
-        min-height:56px !important;
-
-        margin-top:24px !important;
-        margin-left:0 !important;
-
-        padding:0 18px !important;
-
-        color:#fff !important;
-
-        background:
-          linear-gradient(
-            135deg,
-            #4779ff,
-            #6267ff
-          ) !important;
-
-        border:0 !important;
-        border-radius:14px !important;
-
-        box-shadow:
-          0 14px 34px rgba(75,106,255,.30) !important;
-      }
-
-      .nav_links a::after{
-        display:none !important;
-      }
-
-      body.menu-open .cb-chat-fab,
-      body.menu-open .cb-chat{
-        display:none !important;
-      }
-
-    }
-
-    @media(max-width:480px){
-
-      .nav_row{
-        padding:0 14px !important;
-      }
-
-      .nav_links{
-        padding-left:18px !important;
-        padding-right:18px !important;
-      }
-
-      .brand span:last-child{
-        font-size:17px;
-      }
-
-    }
-
-  </style>
-
 </head>
-
 <body>
 
-<header class="nav">
+  <!-- ============================================================
+       HEADER / NAV
+  ============================================================ -->
+  <header class="nav">
+    <div class="container nav_row">
+      <a class="brand" href="/index.html" aria-label="CyberBench homepage">
+        <span class="logo" aria-hidden="true">X</span>
+        <span class="brand-text">CyberBench</span>
+      </a>
 
-  <div class="container nav_row">
-
-    <a class="brand" href="/index.html">
-      <span class="logo" aria-hidden="true">X</span>
-      <span>CyberBench</span>
-    </a>
-
-    <div class="nav_menu">
-
-      <button
-        class="nav_toggle"
-        type="button"
-        aria-label="Open navigation menu"
-        aria-expanded="false"
-        aria-controls="nav_links"
-      >
-        <span class="hamburger"></span>
-        <span class="sr-only">Menu</span>
-      </button>
-
-      <nav
-        class="nav_links"
-        id="nav_links"
-        aria-label="Main Navigation"
-      >
-
-        <a href="/services.html">Services</a>
-
-        <a href="/about.html">About</a>
-
-        <a href="/blog.html">Blog</a>
-
-        <a href="/client-portal.html">Client Portal</a>
-
-        <a href="/consultant-portal.html">
-          Consultant Portal
-        </a>
-
-        <a
-          class="btn btn-primary"
-          href="/submit-ticket.html"
+      <div class="nav_menu">
+        <button
+          class="nav_toggle"
+          type="button"
+          aria-label="Open navigation menu"
+          aria-expanded="false"
+          aria-controls="nav_links"
         >
-          Deploy Security Now
-        </a>
+          <span class="hamburger"></span>
+          <span class="sr-only">Menu</span>
+        </button>
 
+        <nav class="nav_links" id="nav_links" aria-label="Main Navigation">
+          <a href="/services.html">Services</a>
+          <a href="/about.html">About</a>
+          <a href="/blog.html">Blog</a>
+          <a href="/client-portal.html">Client Portal</a>
+          <a href="/consultant-portal.html">Consultant Portal</a>
+          <a class="btn btn-primary" href="/submit-ticket.html">Deploy Security Now</a>
+        </nav>
+      </div>
+    </div>
+  </header>
+
+  <!-- ============================================================
+       MAIN CONTENT
+  ============================================================ -->
+  <main class="container">
+
+    <!-- Hero / Intro -->
+    <section class="about-hero">
+      <div class="kicker">
+        <span class="dot"></span>
+        About CyberBench
+      </div>
+
+      <h1 class="h1">
+        Security doesn't fail from lack of talent —<br>it fails from delay.
+      </h1>
+
+      <p class="hero-description">
+        Security issues don't wait—and neither should your response.
+        Without visibility into your network, you're already behind.
+        CyberBench gives you that visibility while executing the work that matters.
+        Whether it's a threat, remediation, backup and recovery, or compliance,
+        you submit a ticket, get matched instantly, and the work gets done with
+        measurable outcomes—all delivered with near real-time visibility in one
+        centralized platform.
+      </p>
+
+      <ul class="hero_badges">
+        <li class="badge">Ticket-first execution</li>
+        <li class="badge">Vetted specialists</li>
+        <li class="badge">KPI reporting</li>
+        <li class="badge">Execution-grade capability, fraction of the cost</li>
+      </ul>
+    </section>
+
+    <!-- Differentiators Grid -->
+    <section class="feature_grid" aria-labelledby="diff-heading">
+      <h2 id="diff-heading" class="section-heading">How we&rsquo;re different</h2>
+
+      <article class="card">
+        <span class="badge">Speed</span>
+        <h3>Fast triage</h3>
+        <p>Ticket-first intake and routing so you move from uncertainty to action quickly.</p>
+      </article>
+
+      <article class="card">
+        <span class="badge">AI</span>
+        <h3>AI-powered SOC</h3>
+        <p>
+          AI-driven analysis monitors alerts, prioritizes risk,
+          and assists specialists in triaging security events faster.
+        </p>
+      </article>
+
+      <article class="card">
+        <span class="badge">Monitoring</span>
+        <h3>Continuous monitoring</h3>
+        <p>
+          Security events and system activity are continuously monitored
+          to detect threats and respond quickly.
+        </p>
+      </article>
+
+      <article class="card">
+        <span class="badge">Response</span>
+        <h3>Rapid incident response</h3>
+        <p>
+          When threats occur, specialists investigate,
+          contain, and coordinate remediation to minimize impact.
+        </p>
+      </article>
+
+      <article class="card">
+        <span class="badge">Match</span>
+        <h3>Right expert, right issue</h3>
+        <p>
+          Specialists are paired based on real issue type,
+          environment, and risk profile.
+        </p>
+      </article>
+
+      <article class="card">
+        <span class="badge">Outcomes</span>
+        <h3>KPI-driven transparency</h3>
+        <p>
+          Clear reporting and measurable outcomes —
+          not vague status updates.
+        </p>
+      </article>
+
+      <article class="card">
+        <span class="badge">Continuity</span>
+        <h3>Bench of specialists</h3>
+        <p>
+          Continuity through a flexible bench —
+          support evolves as your needs evolve.
+        </p>
+      </article>
+
+      <article class="card">
+        <span class="badge">Training</span>
+        <h3>Cyber &amp; AI training</h3>
+        <p>
+          Equip teams with the knowledge to defend against cyber threats
+          and safely leverage AI in modern environments.
+        </p>
+      </article>
+
+      <article class="card">
+        <span class="badge">Compliance</span>
+        <h3>Compliance readiness</h3>
+        <p>
+          Assess security posture, close control gaps,
+          and prepare for audits with clear,
+          actionable improvements and documented evidence.
+        </p>
+      </article>
+
+    </section>
+
+  </main>
+
+  <!-- ============================================================
+       FOOTER
+  ============================================================ -->
+  <footer class="footer">
+    <div class="container">
+      <a href="/index.html" class="footer-logo" aria-label="CyberBench homepage">
+        <span class="logo" aria-hidden="true">X</span>
+        <span>CyberBench</span>
+      </a>
+
+      <nav class="footer-nav" aria-label="Footer Navigation">
+        <a href="/services.html">Services</a>
+        <a href="/about.html">About</a>
+        <a href="/blog.html">Blog</a>
+        <a href="/client-portal.html">Client Portal</a>
+        <a href="/consultant-portal.html">Consultant Portal</a>
       </nav>
 
+      <div class="footer-contact">
+        <span>Support</span>
+        <a href="mailto:support@cyberbench.io">support@cyberbench.io</a>
+      </div>
+
+      <div class="footer-bottom">
+        &copy; <span id="year"></span> CyberBench. All rights reserved.
+      </div>
     </div>
-
-  </div>
-
-</header>
-
-<main class="container">
-
-  <section class="hero" style="padding-top:46px;">
-
-    <div class="kicker">
-      <span class="dot"></span>
-      About CyberBench
-    </div>
-
-    <h1 class="h1" style="max-width:18ch;">
-      Security doesn’t fail from lack of talent — it fails from delay.
-    </h1>
-
-    <p class="sub" style="max-width:85ch;">
-      Security issues don’t wait—and neither should your response.
-      Without visibility into your network, you’re already behind.
-      CyberBench gives you that visibility while executing the work that matters.
-      Whether it’s a threat, remediation, backup and recovery, or compliance,
-      you submit a ticket, get matched instantly, and the work gets done with
-      measurable outcomes—all delivered with near real-time visibility in one centralized platform.
-    </p>
-
-    <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:16px;">
-
-      <span class="badge">Ticket-first execution</span>
-
-      <span class="badge">Vetted specialists</span>
-
-      <span class="badge">KPI reporting</span>
-
-      <span class="badge">
-        Execution-grade capability, fraction of the cost
-      </span>
-
-    </div>
-
-  </section>
-
-  <p class="section_title" style="margin:0 0 14px;">
-    How we’re different
-  </p>
-
-  <div class="feature_grid" style="grid-template-columns: repeat(3, 1fr);">
-
-    <div class="card">
-      <span class="badge">Speed</span>
-      <h3>Fast triage</h3>
-      <p>
-        Ticket-first intake and routing so you move from uncertainty to action quickly.
-      </p>
-    </div>
-
-    <div class="card">
-      <span class="badge">AI</span>
-      <h3>AI-powered SOC</h3>
-      <p>
-        AI-driven analysis monitors alerts, prioritizes risk,
-        and assists specialists in triaging security events faster.
-      </p>
-    </div>
-
-    <div class="card">
-      <span class="badge">MONITORING</span>
-      <h3>Continuous monitoring</h3>
-      <p>
-        Security events and system activity are continuously monitored
-        to detect threats and respond quickly.
-      </p>
-    </div>
-
-    <div class="card">
-      <span class="badge">RESPONSE</span>
-      <h3>Rapid incident response</h3>
-      <p>
-        When threats occur, specialists investigate,
-        contain, and coordinate remediation to minimize impact.
-      </p>
-    </div>
-
-    <div class="card">
-      <span class="badge">Match</span>
-      <h3>Right expert, right issue</h3>
-      <p>
-        Specialists are paired based on real issue type,
-        environment, and risk profile.
-      </p>
-    </div>
-
-    <div class="card">
-      <span class="badge">Outcomes</span>
-      <h3>KPI-driven transparency</h3>
-      <p>
-        Clear reporting and measurable outcomes —
-        not vague status updates.
-      </p>
-    </div>
-
-    <div class="card">
-      <span class="badge">Continuity</span>
-      <h3>Bench of specialists</h3>
-      <p>
-        Continuity through a flexible bench —
-        support evolves as your needs evolve.
-      </p>
-    </div>
-
-    <div class="card">
-      <span class="badge">TRAINING</span>
-      <h3>Cyber & AI training</h3>
-      <p>
-        Equip teams with the knowledge to defend against cyber threats
-        and safely leverage AI in modern environments.
-      </p>
-    </div>
-
-    <div class="card">
-
-      <span class="badge">COMPLIANCE</span>
-
-      <h3>Compliance readiness</h3>
-
-      <p>
-        Assess security posture, close control gaps,
-        and prepare for audits with clear,
-        actionable improvements and documented evidence.
-      </p>
-
-    </div>
-
-  </div>
-
-</main>
-
-<footer class="footer">
-
-  <div class="container">
-
-    <a
-      href="/index.html"
-      class="footer-logo"
-      aria-label="CyberBench homepage"
-    >
-      <span class="logo" aria-hidden="true"></span>
-      <span>CyberBench</span>
-    </a>
-
-    <nav class="footer-nav">
-
-      <a href="/services.html">Services</a>
-
-      <a href="/about.html">About</a>
-
-      <a href="/blog.html">Blog</a>
-
-      <a href="/client-portal.html">Client Portal</a>
-
-      <a href="/consultant-portal.html">
-        Consultant Portal
-      </a>
-
-    </nav>
-
-    <div class="footer-contact">
-
-      <span>Support</span>
-
-      <a href="mailto:support@cyberbench.io">
-        support@cyberbench.io
-      </a>
-
-    </div>
-
-    <div class="footer-bottom">
-      © <span id="year"></span> CyberBench. All rights reserved.
-    </div>
-
-  </div>
-
-</footer>
-
-<script>
-
-  document.getElementById("year").textContent =
-    new Date().getFullYear();
-
-  document.addEventListener("DOMContentLoaded", function () {
-
-    const currentPage =
-      window.location.pathname.split("/").pop() || "index.html";
-
-    const nav =
-      document.getElementById("nav_links");
-
-    const toggle =
-      document.querySelector(".nav_toggle");
-
-    const navLinks =
-      document.querySelectorAll(".nav_links a");
-
-    navLinks.forEach(function (link) {
-
-      const href =
-        link.getAttribute("href") || "";
-
-      const linkPage =
-        href.split("/").pop();
-
-      if (
-        linkPage === currentPage &&
-        !link.classList.contains("btn")
-      ) {
-
-        link.classList.add("nav-active");
-
-      } else {
-
-        link.classList.remove("nav-active");
-
-      }
-
-    });
-
-    if (!nav || !toggle) {
-      return;
-    }
-
-    function openMenu() {
-
-      nav.classList.add("nav_open");
-
-      document.body.classList.add("menu-open");
-
-      toggle.setAttribute(
-        "aria-expanded",
-        "true"
-      );
-
-      toggle.setAttribute(
-        "aria-label",
-        "Close navigation menu"
-      );
-
-    }
-
-    function closeMenu() {
-
-      nav.classList.remove("nav_open");
-
-      document.body.classList.remove("menu-open");
-
-      toggle.setAttribute(
-        "aria-expanded",
-        "false"
-      );
-
-      toggle.setAttribute(
-        "aria-label",
-        "Open navigation menu"
-      );
-
-    }
-
-    toggle.addEventListener("click", function (event) {
-
-      event.stopPropagation();
-
-      const menuIsOpen =
-        nav.classList.contains("nav_open");
-
-      if (menuIsOpen) {
-
-        closeMenu();
-
-      } else {
-
-        openMenu();
-
-      }
-
-    });
-
-    nav.querySelectorAll("a").forEach(function (link) {
-
-      link.addEventListener("click", function () {
-
-        closeMenu();
-
+  </footer>
+
+  <!-- ============================================================
+       SCRIPTS
+  ============================================================ -->
+
+  <!-- Year stamp -->
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+  </script>
+
+  <!-- Mobile navigation -->
+  <script>
+    (function () {
+      const nav    = document.getElementById("nav_links");
+      const toggle = document.querySelector(".nav_toggle");
+
+      if (!nav || !toggle) return;
+
+      /* Active link highlight */
+      const path = window.location.pathname.replace(/\/$/, "") || "/";
+      nav.querySelectorAll("a[href^='/']").forEach(function (link) {
+        const href = (link.getAttribute("href") || "").replace(/\/$/, "") || "/";
+        link.classList.toggle("nav-active", href === path);
       });
 
-    });
-
-    document.addEventListener("click", function (event) {
-
-      const clickedInsideMenu =
-        nav.contains(event.target);
-
-      const clickedToggle =
-        toggle.contains(event.target);
-
-      if (
-        !clickedInsideMenu &&
-        !clickedToggle
-      ) {
-
-        closeMenu();
-
+      function closeMenu() {
+        nav.classList.remove("nav_open");
+        document.body.classList.remove("menu-open");
+        toggle.setAttribute("aria-expanded", "false");
+        toggle.setAttribute("aria-label", "Open navigation menu");
       }
 
-    });
-
-    document.addEventListener("keydown", function (event) {
-
-      if (event.key === "Escape") {
-
-        closeMenu();
-
+      function openMenu() {
+        nav.classList.add("nav_open");
+        document.body.classList.add("menu-open");
+        toggle.setAttribute("aria-expanded", "true");
+        toggle.setAttribute("aria-label", "Close navigation menu");
       }
 
-    });
+      toggle.addEventListener("click", function (e) {
+        e.stopPropagation();
+        nav.classList.contains("nav_open") ? closeMenu() : openMenu();
+      });
 
-    window.addEventListener("resize", function () {
+      nav.querySelectorAll("a").forEach(function (link) {
+        link.addEventListener("click", closeMenu);
+      });
 
-      if (window.innerWidth > 768) {
+      document.addEventListener("click", function (e) {
+        if (!nav.contains(e.target) && !toggle.contains(e.target)) {
+          closeMenu();
+        }
+      });
 
-        closeMenu();
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape") closeMenu();
+      });
 
+      window.addEventListener("resize", function () {
+        if (window.innerWidth > 768) closeMenu();
+      });
+    })();
+  </script>
+
+  <!-- ============================================================
+       AI CHAT WIDGET
+  ============================================================ -->
+  <button
+    class="cb-chat-fab"
+    id="cbChatFab"
+    type="button"
+    aria-label="Open CyberBench AI chat"
+    aria-expanded="false"
+    aria-controls="cbChat"
+  >AI</button>
+
+  <div
+    class="cb-chat"
+    id="cbChat"
+    role="dialog"
+    aria-modal="true"
+    aria-label="CyberBench AI chat"
+    aria-hidden="true"
+  >
+    <div class="cb-chat-header">
+      <div class="cb-chat-title">
+        <div class="cb-chat-dot"></div>
+        <div>
+          <div class="cb-chat-name">CyberBench AI</div>
+          <div class="cb-chat-sub">Fast triage &bull; How-to &bull; Guidance</div>
+        </div>
+      </div>
+      <button
+        class="cb-chat-close"
+        id="cbChatClose"
+        type="button"
+        aria-label="Close CyberBench AI chat"
+      >&#x2715;</button>
+    </div>
+
+    <div class="cb-chat-body" id="cbChatBody" aria-live="polite"></div>
+
+    <form class="cb-chat-form" id="cbChatForm" novalidate>
+      <input
+        class="cb-chat-input"
+        id="cbChatInput"
+        type="text"
+        placeholder="Ask about tickets, KPIs, services, or next steps…"
+        autocomplete="off"
+        aria-label="Chat message"
+        required
+      />
+      <button class="cb-chat-send" type="submit">Send</button>
+    </form>
+
+    <div class="cb-chat-footnote">Demo widget. Don&rsquo;t paste secrets.</div>
+  </div>
+
+  <script>
+    (function () {
+      const fab   = document.getElementById("cbChatFab");
+      const chat  = document.getElementById("cbChat");
+      const close = document.getElementById("cbChatClose");
+      const form  = document.getElementById("cbChatForm");
+      const input = document.getElementById("cbChatInput");
+      const body  = document.getElementById("cbChatBody");
+
+      if (!fab || !chat || !close || !form || !input || !body) return;
+
+      var responses = {
+        ticket:   "To submit a ticket, click 'Deploy Security Now' in the navigation or visit /submit-ticket.html.",
+        kpi:      "CyberBench tracks response cadence, SLA targets, and executive-ready KPI summaries inside your client dashboard.",
+        pricing:  "CyberBench offers SMB-friendly pricing with enterprise-grade execution. Visit the Services page for full details.",
+        sla:      "Our incident response SLA is under 4 hours for critical issues. 24/7 on-call specialists are always available.",
+        soc:      "Our SOC provides 24/7 threat detection, log ingestion, alert tuning, and real-time triage via SIEM.",
+        incident: "For active incidents contact support@cyberbench.io immediately or submit an emergency ticket.",
+        about:    "CyberBench is a ticket-first cybersecurity platform that pairs you with vetted specialists for fast, measurable security outcomes.",
+        default:  "I'm the CyberBench demo assistant. I can help with tickets, KPIs, services, SLAs, and pricing. What do you need?"
+      };
+
+      function getResponse(text) {
+        var t = text.toLowerCase();
+        if (t.includes("ticket"))                                          return responses.ticket;
+        if (t.includes("kpi") || t.includes("report"))                    return responses.kpi;
+        if (t.includes("price") || t.includes("pricing") || t.includes("cost")) return responses.pricing;
+        if (t.includes("sla") || t.includes("response time"))             return responses.sla;
+        if (t.includes("soc") || t.includes("monitor"))                   return responses.soc;
+        if (t.includes("incident") || t.includes("breach") || t.includes("ransomware")) return responses.incident;
+        if (t.includes("about") || t.includes("who") || t.includes("what is")) return responses.about;
+        return responses.default;
       }
 
-    });
+      function appendMessage(text, role) {
+        var msg = document.createElement("div");
+        msg.className = "cb-chat-msg cb-chat-msg--" + role;
+        msg.textContent = text;
+        body.appendChild(msg);
+        body.scrollTop = body.scrollHeight;
+      }
 
-  });
+      function openChat() {
+        chat.setAttribute("aria-hidden", "false");
+        chat.classList.add("cb-chat--open");
+        fab.setAttribute("aria-expanded", "true");
+        input.focus();
+        if (body.children.length === 0) {
+          appendMessage("Hi! I'm the CyberBench AI assistant. Ask me about tickets, KPIs, services, or next steps.", "bot");
+        }
+      }
 
-</script>
+      function closeChat() {
+        chat.setAttribute("aria-hidden", "true");
+        chat.classList.remove("cb-chat--open");
+        fab.setAttribute("aria-expanded", "false");
+        fab.focus();
+      }
+
+      fab.addEventListener("click", function () {
+        chat.getAttribute("aria-hidden") === "false" ? closeChat() : openChat();
+      });
+
+      close.addEventListener("click", closeChat);
+
+      document.addEventListener("keydown", function (e) {
+        if (e.key === "Escape" && chat.getAttribute("aria-hidden") === "false") {
+          closeChat();
+        }
+      });
+
+      form.addEventListener("submit", function (e) {
+        e.preventDefault();
+        var text = input.value.trim();
+        if (!text) return;
+        appendMessage(text, "user");
+        input.value = "";
+        setTimeout(function () {
+          appendMessage(getResponse(text), "bot");
+        }, 400);
+      });
+    })();
+  </script>
 
 </body>
 </html>
