@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="CyberBench — Execution-driven cybersecurity. Operationally delivered for SMBs." />
+  <meta name="description" content="CyberBench — Execution-driven cybersecurity platform. Ticket-first model, vetted specialists, and documented outcomes for modern SMBs." />
   <title>CyberBench | Execution-Driven Security</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
@@ -23,30 +23,33 @@
     img { max-width: 100%; display: block; }
     button { cursor: pointer; font-family: inherit; }
 
-    /* ── CSS Variables ── */
+    /* ── Variables ── */
     :root {
-      --primary: #3b82f6;
+      --primary:      #3b82f6;
       --primary-dark: #2563eb;
       --primary-glow: rgba(59,130,246,0.25);
-      --accent: #06b6d4;
-      --surface: #111827;
-      --surface-2: #1f2937;
-      --surface-3: #374151;
-      --border: rgba(255,255,255,0.08);
-      --text-muted: #9ca3af;
-      --text-dim: #6b7280;
-      --success: #10b981;
-      --warning: #f59e0b;
-      --danger: #ef4444;
-      --radius: 12px;
-      --radius-sm: 8px;
-      --shadow: 0 4px 24px rgba(0,0,0,0.4);
-      --shadow-lg: 0 8px 48px rgba(0,0,0,0.6);
-      --nav-h: 68px;
+      --accent:       #06b6d4;
+      --accent-glow:  rgba(6,182,212,0.2);
+      --purple:       #8b5cf6;
+      --purple-glow:  rgba(139,92,246,0.25);
+      --success:      #10b981;
+      --warning:      #f59e0b;
+      --danger:       #ef4444;
+      --surface:      #111827;
+      --surface-2:    #1f2937;
+      --surface-3:    #374151;
+      --border:       rgba(255,255,255,0.08);
+      --text-muted:   #9ca3af;
+      --text-dim:     #6b7280;
+      --radius:       14px;
+      --radius-sm:    8px;
+      --shadow:       0 4px 24px rgba(0,0,0,0.4);
+      --shadow-lg:    0 8px 48px rgba(0,0,0,0.6);
+      --nav-h:        68px;
     }
 
     /* ══════════════════════════════════════
-       LOGO COMPONENT (consistent site-wide)
+       LOGO
     ══════════════════════════════════════ */
     .cb-logo {
       display: inline-flex;
@@ -55,22 +58,9 @@
       text-decoration: none;
       user-select: none;
     }
-    .cb-logo__mark {
-      position: relative;
-      width: 38px;
-      height: 38px;
-      flex-shrink: 0;
-    }
-    .cb-logo__mark svg {
-      width: 38px;
-      height: 38px;
-      display: block;
-    }
-    .cb-logo__text {
-      display: flex;
-      flex-direction: column;
-      line-height: 1;
-    }
+    .cb-logo__mark { position: relative; width: 38px; height: 38px; flex-shrink: 0; }
+    .cb-logo__mark svg { width: 38px; height: 38px; display: block; }
+    .cb-logo__text { display: flex; flex-direction: column; line-height: 1; }
     .cb-logo__name {
       font-size: 1.15rem;
       font-weight: 800;
@@ -89,17 +79,14 @@
       margin-top: 2px;
       -webkit-text-fill-color: var(--accent);
     }
-    /* Size variants */
-    .cb-logo--lg .cb-logo__mark { width: 52px; height: 52px; }
-    .cb-logo--lg .cb-logo__mark svg { width: 52px; height: 52px; }
-    .cb-logo--lg .cb-logo__name { font-size: 1.6rem; }
-    .cb-logo--lg .cb-logo__tagline { font-size: 0.65rem; }
     .cb-logo--sm .cb-logo__mark { width: 28px; height: 28px; }
     .cb-logo--sm .cb-logo__mark svg { width: 28px; height: 28px; }
     .cb-logo--sm .cb-logo__name { font-size: 0.95rem; }
     .cb-logo--sm .cb-logo__tagline { display: none; }
 
-    /* ── Navigation ── */
+    /* ══════════════════════════════════════
+       NAVIGATION
+    ══════════════════════════════════════ */
     .nav {
       position: fixed;
       top: 0; left: 0; right: 0;
@@ -122,11 +109,7 @@
       justify-content: space-between;
       gap: 24px;
     }
-    .nav__links {
-      display: flex;
-      align-items: center;
-      gap: 4px;
-    }
+    .nav__links { display: flex; align-items: center; gap: 4px; }
     .nav__links a {
       padding: 8px 14px;
       font-size: 0.875rem;
@@ -134,24 +117,44 @@
       color: var(--text-muted);
       border-radius: var(--radius-sm);
       transition: color 0.2s, background 0.2s;
+      white-space: nowrap;
     }
     .nav__links a:hover { color: #fff; background: rgba(255,255,255,0.06); }
     .nav__links a.active { color: var(--primary); }
-    .nav__actions {
-      display: flex;
+
+    .nav__actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+
+    .btn {
+      display: inline-flex;
       align-items: center;
-      gap: 10px;
+      gap: 6px;
+      padding: 9px 18px;
+      border-radius: var(--radius-sm);
+      font-size: 0.875rem;
+      font-weight: 600;
+      border: none;
+      transition: all 0.2s;
+      cursor: pointer;
+      white-space: nowrap;
+      text-decoration: none;
     }
-    .btn { display: inline-flex; align-items: center; gap: 6px; padding: 9px 18px; border-radius: var(--radius-sm); font-size: 0.875rem; font-weight: 600; border: none; transition: all 0.2s; }
-    .btn-ghost { background: transparent; color: var(--text-muted); border: 1px solid var(--border); }
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
     .btn-ghost:hover { color: #fff; border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.06); }
     .btn-primary { background: var(--primary); color: #fff; }
     .btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); box-shadow: 0 4px 16px var(--primary-glow); }
-    .btn-accent { background: linear-gradient(135deg, var(--primary), var(--accent)); color: #fff; }
-    .btn-accent:hover { opacity: 0.9; transform: translateY(-1px); box-shadow: 0 4px 20px var(--primary-glow); }
+    .btn-accent { background: var(--accent); color: #fff; }
+    .btn-accent:hover { background: #0891b2; transform: translateY(-1px); box-shadow: 0 4px 16px var(--accent-glow); }
+    .btn-outline {
+      background: transparent;
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.25);
+    }
+    .btn-outline:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.4); }
     .btn-lg { padding: 14px 28px; font-size: 1rem; border-radius: var(--radius); }
-    .btn-outline { background: transparent; color: #fff; border: 1px solid rgba(255,255,255,0.25); }
-    .btn-outline:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.4); }
 
     /* Hamburger */
     .nav__hamburger {
@@ -165,8 +168,7 @@
     }
     .nav__hamburger span {
       display: block;
-      width: 22px;
-      height: 2px;
+      width: 22px; height: 2px;
       background: #fff;
       border-radius: 2px;
       transition: all 0.3s;
@@ -175,12 +177,11 @@
     .nav__hamburger.open span:nth-child(2) { opacity: 0; }
     .nav__hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
 
-    /* Mobile menu */
+    /* Mobile nav */
     .nav__mobile {
       display: none;
       position: fixed;
-      top: var(--nav-h);
-      left: 0; right: 0;
+      top: var(--nav-h); left: 0; right: 0;
       background: rgba(10,15,30,0.98);
       backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--border);
@@ -202,245 +203,520 @@
     .nav__mobile .mobile-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
     .nav__mobile .mobile-actions .btn { justify-content: center; }
 
-    /* ── Page Sections ── */
-    main { padding-top: var(--nav-h); }
-    .section { padding: 80px 24px; }
-    .container { max-width: 1200px; margin: 0 auto; }
-
-    /* ── Hero ── */
+    /* ══════════════════════════════════════
+       HERO
+    ══════════════════════════════════════ */
     .hero {
-      min-height: calc(100vh - var(--nav-h));
+      position: relative;
+      min-height: 100vh;
       display: flex;
       align-items: center;
-      background: radial-gradient(ellipse 80% 60% at 50% 0%, rgba(59,130,246,0.12) 0%, transparent 70%),
-                  radial-gradient(ellipse 40% 40% at 80% 50%, rgba(6,182,212,0.07) 0%, transparent 60%),
-                  #0a0f1e;
-      padding: 60px 24px;
-      position: relative;
+      padding: calc(var(--nav-h) + 60px) 24px 80px;
       overflow: hidden;
     }
-    .hero::before {
-      content: '';
+    .hero__bg {
       position: absolute;
       inset: 0;
-      background-image: radial-gradient(circle, rgba(255,255,255,0.03) 1px, transparent 1px);
+      background:
+        radial-gradient(ellipse 80% 60% at 50% 0%,   rgba(59,130,246,0.13) 0%, transparent 65%),
+        radial-gradient(ellipse 45% 45% at 10% 70%,  rgba(139,92,246,0.08) 0%, transparent 60%),
+        radial-gradient(ellipse 45% 45% at 90% 70%,  rgba(6,182,212,0.07)  0%, transparent 60%),
+        #0a0f1e;
+      pointer-events: none;
+    }
+    .hero__grid {
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.025) 1px, transparent 1px);
       background-size: 40px 40px;
       pointer-events: none;
     }
+    /* Animated orbs */
+    .hero__orb {
+      position: absolute;
+      border-radius: 50%;
+      filter: blur(80px);
+      pointer-events: none;
+      animation: orbFloat 8s ease-in-out infinite;
+    }
+    .hero__orb--1 {
+      width: 400px; height: 400px;
+      background: rgba(59,130,246,0.07);
+      top: 10%; left: -10%;
+      animation-delay: 0s;
+    }
+    .hero__orb--2 {
+      width: 300px; height: 300px;
+      background: rgba(6,182,212,0.06);
+      top: 20%; right: -5%;
+      animation-delay: -3s;
+    }
+    .hero__orb--3 {
+      width: 250px; height: 250px;
+      background: rgba(139,92,246,0.05);
+      bottom: 20%; left: 30%;
+      animation-delay: -5s;
+    }
+    @keyframes orbFloat {
+      0%,100% { transform: translateY(0) scale(1); }
+      50%      { transform: translateY(-30px) scale(1.05); }
+    }
     .hero__inner {
+      position: relative;
+      z-index: 1;
       max-width: 1200px;
       margin: 0 auto;
       width: 100%;
       display: grid;
       grid-template-columns: 1fr 420px;
-      gap: 60px;
+      gap: 80px;
       align-items: center;
     }
+    .hero__content {}
     .hero__eyebrow {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: rgba(59,130,246,0.12);
+      background: rgba(59,130,246,0.1);
       border: 1px solid rgba(59,130,246,0.3);
       border-radius: 100px;
-      padding: 6px 14px;
-      font-size: 0.78rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
+      padding: 6px 16px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--accent);
+      color: var(--primary);
+      margin-bottom: 28px;
+    }
+    .hero__eyebrow::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--primary);
+      animation: blink 2s infinite;
+    }
+    @keyframes blink {
+      0%,100% { opacity:1; transform:scale(1); }
+      50%      { opacity:0.4; transform:scale(1.5); }
+    }
+    .hero h1 {
+      font-size: clamp(2.2rem, 5vw, 3.8rem);
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.04em;
+      line-height: 1.1;
       margin-bottom: 24px;
     }
-    .hero__eyebrow::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--accent); animation: pulse 2s infinite; }
-    @keyframes pulse { 0%,100%{opacity:1;transform:scale(1)} 50%{opacity:0.5;transform:scale(1.3)} }
-    .hero__h1 {
-      font-size: clamp(2.2rem, 5vw, 3.6rem);
-      font-weight: 800;
-      line-height: 1.1;
-      letter-spacing: -0.03em;
-      margin-bottom: 20px;
-    }
-    .hero__h1 .grad {
-      background: linear-gradient(135deg, #fff 0%, #93c5fd 50%, var(--accent) 100%);
+    .hero h1 .highlight {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
     }
-    .hero__desc {
-      font-size: 1.05rem;
+    .hero__sub {
+      font-size: clamp(0.95rem, 2vw, 1.1rem);
       color: var(--text-muted);
-      max-width: 580px;
-      margin-bottom: 32px;
       line-height: 1.75;
+      max-width: 580px;
+      margin-bottom: 40px;
     }
-    .hero__cta { display: flex; gap: 12px; flex-wrap: wrap; margin-bottom: 48px; }
-    .hero__pills {
+    .hero__actions {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      flex-wrap: wrap;
+      margin-bottom: 48px;
+    }
+    .hero__chips {
       display: flex;
       flex-wrap: wrap;
       gap: 8px;
     }
-    .pill {
+    .hero__chip {
       display: inline-flex;
       align-items: center;
       gap: 6px;
-      background: rgba(255,255,255,0.05);
+      background: rgba(255,255,255,0.04);
       border: 1px solid var(--border);
       border-radius: 100px;
       padding: 5px 12px;
-      font-size: 0.78rem;
+      font-size: 0.75rem;
       font-weight: 500;
       color: var(--text-muted);
     }
-    .pill::before { content: '✓'; color: var(--success); font-weight: 700; }
+    .hero__chip::before {
+      content: '✓';
+      color: var(--success);
+      font-weight: 700;
+      font-size: 0.7rem;
+    }
 
-    /* Platform Card */
-    .platform-card {
+    /* Hero right — terminal card */
+    .hero__card {
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 20px;
-      padding: 28px;
-      box-shadow: var(--shadow-lg);
-      position: relative;
       overflow: hidden;
+      box-shadow: var(--shadow-lg);
     }
-    .platform-card::before {
-      content: '';
-      position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, var(--primary), var(--accent));
-    }
-    .platform-card__header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-bottom: 20px;
-    }
-    .platform-card__title { font-size: 0.8rem; font-weight: 600; color: var(--text-muted); letter-spacing: 0.08em; text-transform: uppercase; }
-    .status-live {
+    .hero__card-bar {
       display: flex;
       align-items: center;
       gap: 6px;
-      font-size: 0.72rem;
-      font-weight: 600;
-      color: var(--success);
-    }
-    .status-live::before { content: ''; width: 6px; height: 6px; border-radius: 50%; background: var(--success); animation: pulse 2s infinite; }
-    .platform-card__stats { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; margin-bottom: 20px; }
-    .stat-block {
+      padding: 14px 18px;
       background: var(--surface-2);
-      border-radius: var(--radius-sm);
-      padding: 14px;
-      border: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
     }
-    .stat-block__val { font-size: 1.5rem; font-weight: 800; color: #fff; }
-    .stat-block__val.green { color: var(--success); }
-    .stat-block__val.blue { color: var(--primary); }
-    .stat-block__val.cyan { color: var(--accent); }
-    .stat-block__label { font-size: 0.72rem; color: var(--text-muted); margin-top: 2px; }
-    .platform-card__activity { display: flex; flex-direction: column; gap: 8px; }
-    .activity-item {
+    .hero__card-dot {
+      width: 10px; height: 10px;
+      border-radius: 50%;
+    }
+    .hero__card-dot--r { background: #ef4444; }
+    .hero__card-dot--y { background: #f59e0b; }
+    .hero__card-dot--g { background: #10b981; }
+    .hero__card-title {
+      margin-left: 8px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--text-dim);
+      letter-spacing: 0.04em;
+    }
+    .hero__card-body { padding: 24px; display: flex; flex-direction: column; gap: 14px; }
+    .ticket-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 14px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      transition: border-color 0.2s;
+    }
+    .ticket-item:hover { border-color: rgba(255,255,255,0.14); }
+    .ticket-item__icon {
+      width: 36px; height: 36px;
+      border-radius: 8px;
       display: flex;
       align-items: center;
-      gap: 10px;
-      padding: 10px 12px;
-      background: var(--surface-2);
-      border-radius: var(--radius-sm);
-      border: 1px solid var(--border);
+      justify-content: center;
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+    .ticket-item__info { flex: 1; min-width: 0; }
+    .ticket-item__title {
       font-size: 0.8rem;
+      font-weight: 600;
+      color: #fff;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
-    .activity-dot { width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0; }
-    .activity-dot.green { background: var(--success); }
-    .activity-dot.blue { background: var(--primary); }
-    .activity-dot.yellow { background: var(--warning); }
-    .activity-item__text { flex: 1; color: #e2e8f0; }
-    .activity-item__time { color: var(--text-dim); font-size: 0.72rem; }
-
-    /* ── Features Grid ── */
-    .features { background: var(--surface); }
-    .section-header { text-align: center; margin-bottom: 56px; }
-    .section-eyebrow {
-      display: inline-block;
-      font-size: 0.75rem;
+    .ticket-item__meta {
+      font-size: 0.7rem;
+      color: var(--text-dim);
+      margin-top: 2px;
+    }
+    .ticket-item__badge {
+      font-size: 0.65rem;
       font-weight: 700;
-      letter-spacing: 0.15em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 12px;
+      padding: 2px 8px;
+      border-radius: 100px;
+      flex-shrink: 0;
+      align-self: flex-start;
     }
-    .section-title { font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 800; letter-spacing: -0.02em; color: #fff; margin-bottom: 14px; }
-    .section-desc { font-size: 1rem; color: var(--text-muted); max-width: 560px; margin: 0 auto; }
-    .features-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 24px; }
-    .feature-card {
+    .badge-red    { background: rgba(239,68,68,0.15);   color: #ef4444; }
+    .badge-yellow { background: rgba(245,158,11,0.15);  color: #f59e0b; }
+    .badge-green  { background: rgba(16,185,129,0.15);  color: #10b981; }
+    .badge-blue   { background: rgba(59,130,246,0.15);  color: #3b82f6; }
+    .hero__card-footer {
+      padding: 16px 24px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .hero__card-stat { text-align: center; }
+    .hero__card-stat-val { font-size: 1.1rem; font-weight: 800; color: #fff; }
+    .hero__card-stat-lbl { font-size: 0.65rem; color: var(--text-dim); margin-top: 2px; }
+
+    /* ══════════════════════════════════════
+       SECTION SHELL
+    ══════════════════════════════════════ */
+    .section { padding: 96px 24px; }
+    .section--alt { background: var(--surface); }
+    .section__inner { max-width: 1200px; margin: 0 auto; }
+    .section__header { text-align: center; max-width: 680px; margin: 0 auto 64px; }
+    .section__eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 16px;
+    }
+    .section__eyebrow span { width: 20px; height: 1px; background: var(--text-dim); display: inline-block; }
+    .section__title {
+      font-size: clamp(1.6rem, 3vw, 2.3rem);
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      margin-bottom: 14px;
+    }
+    .section__sub { font-size: 0.95rem; color: var(--text-muted); line-height: 1.7; }
+
+    /* ══════════════════════════════════════
+       TRUST BAR
+    ══════════════════════════════════════ */
+    .trust-bar {
+      padding: 28px 24px;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      border-bottom: 1px solid var(--border);
+    }
+    .trust-bar__inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 48px;
+      flex-wrap: wrap;
+    }
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: var(--text-dim);
+    }
+    .trust-item__icon { font-size: 1.1rem; }
+
+    /* ══════════════════════════════════════
+       PILLARS GRID
+    ══════════════════════════════════════ */
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .pillar-card {
       background: var(--surface-2);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      padding: 28px;
-      transition: border-color 0.2s, transform 0.2s, box-shadow 0.2s;
+      padding: 32px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
       position: relative;
       overflow: hidden;
+      transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
     }
-    .feature-card:hover { border-color: rgba(59,130,246,0.4); transform: translateY(-3px); box-shadow: 0 8px 32px rgba(59,130,246,0.12); }
-    .feature-card__icon {
-      width: 48px;
-      height: 48px;
+    .pillar-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+    .pillar-card:hover { border-color: rgba(255,255,255,0.14); transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+    .pillar-card:hover::before { opacity: 1; }
+    .pillar-card--blue::before   { background: linear-gradient(90deg, var(--primary), var(--accent)); }
+    .pillar-card--blue:hover     { border-color: rgba(59,130,246,0.3); }
+    .pillar-card--purple::before { background: linear-gradient(90deg, var(--purple), var(--primary)); }
+    .pillar-card--purple:hover   { border-color: rgba(139,92,246,0.3); }
+    .pillar-card--cyan::before   { background: linear-gradient(90deg, var(--accent), #22d3ee); }
+    .pillar-card--cyan:hover     { border-color: rgba(6,182,212,0.3); }
+    .pillar-card--green::before  { background: linear-gradient(90deg, var(--success), #34d399); }
+    .pillar-card--green:hover    { border-color: rgba(16,185,129,0.3); }
+    .pillar-card--yellow::before { background: linear-gradient(90deg, var(--warning), #fbbf24); }
+    .pillar-card--yellow:hover   { border-color: rgba(245,158,11,0.3); }
+    .pillar-card--red::before    { background: linear-gradient(90deg, var(--danger), #f97316); }
+    .pillar-card--red:hover      { border-color: rgba(239,68,68,0.3); }
+    .pillar-card__icon {
+      width: 52px; height: 52px;
       border-radius: 12px;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 1.4rem;
-      margin-bottom: 18px;
-      background: rgba(59,130,246,0.12);
+      font-size: 1.5rem;
+    }
+    .icon-bg--blue   { background: rgba(59,130,246,0.12); border: 1px solid rgba(59,130,246,0.2); }
+    .icon-bg--purple { background: rgba(139,92,246,0.12); border: 1px solid rgba(139,92,246,0.2); }
+    .icon-bg--cyan   { background: rgba(6,182,212,0.12);  border: 1px solid rgba(6,182,212,0.2);  }
+    .icon-bg--green  { background: rgba(16,185,129,0.1);  border: 1px solid rgba(16,185,129,0.15);}
+    .icon-bg--yellow { background: rgba(245,158,11,0.1);  border: 1px solid rgba(245,158,11,0.15);}
+    .icon-bg--red    { background: rgba(239,68,68,0.1);   border: 1px solid rgba(239,68,68,0.15); }
+    .pillar-card__label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+    .pillar-card h3 {
+      font-size: 1.05rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.02em;
+      line-height: 1.3;
+    }
+    .pillar-card p {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      flex: 1;
+    }
+
+    /* ══════════════════════════════════════
+       PROCESS STEPS
+    ══════════════════════════════════════ */
+    .process-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      position: relative;
+    }
+    .process-strip::before {
+      content: '';
+      position: absolute;
+      top: 28px; left: 10%; right: 10%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border) 20%, var(--border) 80%, transparent);
+      z-index: 0;
+    }
+    .process-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 0 20px;
+      position: relative;
+      z-index: 1;
+    }
+    .process-step__num {
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 20px;
+      position: relative;
+    }
+    .process-step__num::after {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
       border: 1px solid rgba(59,130,246,0.2);
     }
-    .feature-card__badge {
-      position: absolute;
-      top: 20px;
-      right: 20px;
-      font-size: 0.65rem;
+    .process-step__title { font-size: 0.95rem; font-weight: 700; color: #fff; margin-bottom: 8px; }
+    .process-step__desc  { font-size: 0.8rem; color: var(--text-muted); line-height: 1.6; }
+
+    /* ══════════════════════════════════════
+       SERVICES STRIP
+    ══════════════════════════════════════ */
+    .services-strip {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+    .service-item {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 28px;
+      display: flex;
+      gap: 18px;
+      align-items: flex-start;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .service-item:hover { border-color: rgba(255,255,255,0.14); transform: translateY(-2px); }
+    .service-item__icon {
+      width: 46px; height: 46px;
+      border-radius: 10px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.2rem;
+      flex-shrink: 0;
+    }
+    .service-item__body {}
+    .service-item__label {
+      font-size: 0.68rem;
       font-weight: 700;
       letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: var(--accent);
-      background: rgba(6,182,212,0.1);
-      border: 1px solid rgba(6,182,212,0.25);
-      border-radius: 100px;
-      padding: 3px 8px;
+      color: var(--text-dim);
+      margin-bottom: 4px;
     }
-    .feature-card h3 { font-size: 1.05rem; font-weight: 700; color: #fff; margin-bottom: 8px; }
-    .feature-card p { font-size: 0.875rem; color: var(--text-muted); line-height: 1.65; }
+    .service-item h3 { font-size: 1rem; font-weight: 700; color: #fff; margin-bottom: 8px; }
+    .service-item p  { font-size: 0.85rem; color: var(--text-muted); line-height: 1.65; }
 
-    /* ── CTA Banner ── */
-    .cta-banner {
-      background: linear-gradient(135deg, rgba(59,130,246,0.15) 0%, rgba(6,182,212,0.08) 100%);
-      border: 1px solid rgba(59,130,246,0.2);
-      border-radius: 20px;
-      padding: 60px 48px;
-      text-align: center;
+    /* ══════════════════════════════════════
+       CTA SECTION
+    ══════════════════════════════════════ */
+    .cta-section {
+      padding: 96px 24px;
       position: relative;
       overflow: hidden;
+      text-align: center;
     }
-    .cta-banner::before {
-      content: '';
+    .cta-section__bg {
       position: absolute;
-      top: 0; left: 0; right: 0;
-      height: 2px;
-      background: linear-gradient(90deg, transparent, var(--primary), var(--accent), transparent);
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 70% at 50% 50%, rgba(59,130,246,0.1) 0%, transparent 65%),
+        var(--surface);
+      pointer-events: none;
     }
-    .cta-banner h2 { font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 800; color: #fff; margin-bottom: 12px; }
-    .cta-banner p { color: var(--text-muted); font-size: 1rem; margin-bottom: 28px; max-width: 500px; margin-left: auto; margin-right: auto; }
-    .cta-banner .btn-row { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+    .cta-section__inner { position: relative; z-index: 1; max-width: 680px; margin: 0 auto; }
+    .cta-section h2 {
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.04em;
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+    .cta-section p { font-size: 1rem; color: var(--text-muted); line-height: 1.7; margin-bottom: 36px; }
+    .cta-section__actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .cta-trust {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-top: 36px;
+    }
+    .cta-trust-item { display: flex; align-items: center; gap: 7px; font-size: 0.8rem; color: var(--text-dim); }
+    .cta-trust-item span { font-size: 1rem; }
 
-    /* ── Footer ── */
+    /* ══════════════════════════════════════
+       FOOTER
+    ══════════════════════════════════════ */
     .footer {
       background: var(--surface);
       border-top: 1px solid var(--border);
       padding: 60px 24px 32px;
     }
-    .footer__inner {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
+    .footer__inner { max-width: 1200px; margin: 0 auto; }
     .footer__top {
       display: grid;
       grid-template-columns: 1.5fr 1fr 1fr 1fr;
@@ -454,7 +730,14 @@
       line-height: 1.65;
       max-width: 260px;
     }
-    .footer__col h4 { font-size: 0.8rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: #fff; margin-bottom: 16px; }
+    .footer__col h4 {
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #fff;
+      margin-bottom: 16px;
+    }
     .footer__col ul { display: flex; flex-direction: column; gap: 10px; }
     .footer__col ul li a { font-size: 0.875rem; color: var(--text-muted); transition: color 0.2s; }
     .footer__col ul li a:hover { color: var(--primary); }
@@ -477,10 +760,8 @@
     ══════════════════════════════════════ */
     .chat-toggle {
       position: fixed;
-      bottom: 28px;
-      right: 28px;
-      width: 56px;
-      height: 56px;
+      bottom: 28px; right: 28px;
+      width: 56px; height: 56px;
       border-radius: 50%;
       background: linear-gradient(135deg, var(--primary), var(--accent));
       border: none;
@@ -496,10 +777,8 @@
     .chat-toggle:hover { transform: scale(1.08); box-shadow: 0 6px 32px rgba(59,130,246,0.65); }
     .chat-toggle__badge {
       position: absolute;
-      top: -4px;
-      right: -4px;
-      width: 18px;
-      height: 18px;
+      top: -4px; right: -4px;
+      width: 18px; height: 18px;
       background: var(--success);
       border-radius: 50%;
       border: 2px solid #0a0f1e;
@@ -509,11 +788,9 @@
       align-items: center;
       justify-content: center;
     }
-
     .chat-widget {
       position: fixed;
-      bottom: 96px;
-      right: 28px;
+      bottom: 96px; right: 28px;
       width: 380px;
       max-width: calc(100vw - 32px);
       max-height: calc(100vh - 120px);
@@ -530,11 +807,7 @@
       pointer-events: none;
       transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), opacity 0.2s;
     }
-    .chat-widget.open {
-      transform: scale(1) translateY(0);
-      opacity: 1;
-      pointer-events: all;
-    }
+    .chat-widget.open { transform: scale(1) translateY(0); opacity: 1; pointer-events: all; }
     .chat-widget__header {
       display: flex;
       align-items: center;
@@ -545,8 +818,7 @@
       flex-shrink: 0;
     }
     .chat-widget__avatar {
-      width: 40px;
-      height: 40px;
+      width: 40px; height: 40px;
       border-radius: 50%;
       background: linear-gradient(135deg, var(--primary), var(--accent));
       display: flex;
@@ -564,10 +836,14 @@
       align-items: center;
       gap: 4px;
     }
-    .chat-widget__status::before { content: ''; width: 5px; height: 5px; border-radius: 50%; background: var(--success); }
+    .chat-widget__status::before {
+      content: '';
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--success);
+    }
     .chat-widget__close {
-      background: none;
-      border: none;
+      background: none; border: none;
       color: var(--text-muted);
       font-size: 1.1rem;
       padding: 4px 8px;
@@ -575,7 +851,6 @@
       transition: color 0.2s, background 0.2s;
     }
     .chat-widget__close:hover { color: #fff; background: rgba(255,255,255,0.08); }
-
     .chat-widget__messages {
       flex: 1;
       overflow-y: auto;
@@ -590,18 +865,12 @@
     .chat-widget__messages::-webkit-scrollbar { width: 4px; }
     .chat-widget__messages::-webkit-scrollbar-track { background: transparent; }
     .chat-widget__messages::-webkit-scrollbar-thumb { background: var(--surface-3); border-radius: 4px; }
-
-    .msg {
-      display: flex;
-      gap: 8px;
-      animation: msgIn 0.22s ease;
-    }
-    @keyframes msgIn { from { opacity: 0; transform: translateY(8px); } to { opacity: 1; transform: translateY(0); } }
-    .msg--bot { align-self: flex-start; }
+    .msg { display: flex; gap: 8px; animation: msgIn 0.22s ease; }
+    @keyframes msgIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+    .msg--bot  { align-self: flex-start; }
     .msg--user { align-self: flex-end; flex-direction: row-reverse; }
     .msg__avatar {
-      width: 28px;
-      height: 28px;
+      width: 28px; height: 28px;
       border-radius: 50%;
       background: linear-gradient(135deg, var(--primary), var(--accent));
       display: flex;
@@ -631,8 +900,6 @@
     }
     .msg__time { font-size: 0.65rem; color: var(--text-dim); margin-top: 4px; display: block; }
     .msg--user .msg__time { text-align: right; }
-
-    /* Typing indicator */
     .typing-indicator {
       display: flex;
       gap: 4px;
@@ -644,17 +911,17 @@
       width: fit-content;
     }
     .typing-indicator span {
-      width: 6px;
-      height: 6px;
+      width: 6px; height: 6px;
       border-radius: 50%;
       background: var(--text-dim);
       animation: typing 1.2s infinite;
     }
     .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
     .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
-    @keyframes typing { 0%,60%,100%{transform:translateY(0);opacity:0.4} 30%{transform:translateY(-5px);opacity:1} }
-
-    /* Quick replies */
+    @keyframes typing {
+      0%,60%,100% { transform:translateY(0); opacity:0.4; }
+      30% { transform:translateY(-5px); opacity:1; }
+    }
     .quick-replies {
       display: flex;
       flex-wrap: wrap;
@@ -674,7 +941,6 @@
       white-space: nowrap;
     }
     .quick-reply:hover { background: rgba(59,130,246,0.2); border-color: var(--primary); color: #fff; }
-
     .chat-widget__input {
       padding: 14px 16px;
       border-top: 1px solid var(--border);
@@ -701,8 +967,7 @@
     .chat-widget__input textarea:focus { outline: none; border-color: var(--primary); }
     .chat-widget__input textarea::placeholder { color: var(--text-dim); }
     .chat-send {
-      width: 40px;
-      height: 40px;
+      width: 40px; height: 40px;
       border-radius: 10px;
       background: var(--primary);
       border: none;
@@ -724,25 +989,35 @@
       flex-shrink: 0;
     }
 
-    /* ── Responsive ── */
+    /* ══════════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════════ */
     @media (max-width: 1024px) {
-      .footer__top { grid-template-columns: 1fr 1fr; }
+      .hero__inner { grid-template-columns: 1fr; gap: 48px; }
+      .hero__card  { max-width: 480px; }
+      .pillars-grid { grid-template-columns: repeat(2, 1fr); }
+      .footer__top  { grid-template-columns: 1fr 1fr; }
     }
     @media (max-width: 768px) {
-      .hero__inner { grid-template-columns: 1fr; gap: 40px; }
-      .platform-card { display: none; }
       .nav__links, .nav__actions { display: none; }
       .nav__hamburger { display: flex; }
-      .features-grid { grid-template-columns: 1fr; }
-      .footer__top { grid-template-columns: 1fr 1fr; gap: 32px; }
-      .cta-banner { padding: 40px 24px; }
+      .services-strip { grid-template-columns: 1fr; }
+      .process-strip  { grid-template-columns: repeat(2, 1fr); gap: 32px; }
+      .process-strip::before { display: none; }
+      .trust-bar__inner { gap: 24px; }
       .chat-widget { bottom: 88px; right: 16px; width: calc(100vw - 32px); }
-      .chat-toggle { bottom: 20px; right: 20px; }
+      .chat-toggle  { bottom: 20px; right: 20px; }
     }
-    @media (max-width: 480px) {
-      .footer__top { grid-template-columns: 1fr; }
-      .hero__cta { flex-direction: column; }
-      .hero__cta .btn { justify-content: center; }
+    @media (max-width: 640px) {
+      .pillars-grid { grid-template-columns: 1fr; }
+      .process-strip { grid-template-columns: 1fr; }
+      .footer__top   { grid-template-columns: 1fr; gap: 32px; }
+      .hero { padding: calc(var(--nav-h) + 40px) 20px 60px; min-height: auto; }
+      .section { padding: 64px 20px; }
+      .hero__actions { flex-direction: column; }
+      .hero__actions .btn { width: 100%; justify-content: center; }
+      .cta-section__actions { flex-direction: column; }
+      .cta-section__actions .btn { width: 100%; justify-content: center; }
     }
   </style>
 </head>
@@ -752,29 +1027,25 @@
 <nav class="nav" role="navigation" aria-label="Main navigation">
   <div class="nav__inner">
 
-    <!-- LOGO -->
     <a href="/index.html" class="cb-logo" aria-label="CyberBench home">
       <span class="cb-logo__mark">
         <svg viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <defs>
-            <linearGradient id="shield-grad" x1="0" y1="0" x2="38" y2="38" gradientUnits="userSpaceOnUse">
+            <linearGradient id="sg-n" x1="0" y1="0" x2="38" y2="38" gradientUnits="userSpaceOnUse">
               <stop offset="0%" stop-color="#3b82f6"/>
               <stop offset="100%" stop-color="#06b6d4"/>
             </linearGradient>
-            <linearGradient id="inner-grad" x1="0" y1="0" x2="38" y2="38" gradientUnits="userSpaceOnUse">
+            <linearGradient id="ig-n" x1="0" y1="0" x2="38" y2="38" gradientUnits="userSpaceOnUse">
               <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9"/>
               <stop offset="100%" stop-color="#93c5fd" stop-opacity="0.9"/>
             </linearGradient>
           </defs>
-          <!-- Shield base -->
           <path d="M19 3L5 9v10c0 8.5 6 16 14 18 8-2 14-9.5 14-18V9L19 3z"
-                fill="url(#shield-grad)" opacity="0.15"/>
+                fill="url(#sg-n)" opacity="0.15"/>
           <path d="M19 3L5 9v10c0 8.5 6 16 14 18 8-2 14-9.5 14-18V9L19 3z"
-                stroke="url(#shield-grad)" stroke-width="1.5" fill="none"/>
-          <!-- CB lettermark -->
+                stroke="url(#sg-n)" stroke-width="1.5" fill="none"/>
           <text x="10" y="24" font-family="Inter,sans-serif" font-weight="800"
-                font-size="13" fill="url(#inner-grad)" letter-spacing="-1">CB</text>
-          <!-- Accent tick -->
+                font-size="13" fill="url(#ig-n)" letter-spacing="-1">CB</text>
           <path d="M13 20l3 3 6-6" stroke="#06b6d4" stroke-width="1.8"
                 stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
@@ -785,21 +1056,20 @@
       </span>
     </a>
 
-    <!-- Desktop Nav -->
     <ul class="nav__links" role="list">
       <li><a href="/services.html">Services</a></li>
       <li><a href="/about.html">About</a></li>
       <li><a href="/blog.html">Blog</a></li>
       <li><a href="/client-portal.html">Client Portal</a></li>
+      <li><a href="/consultant-portal.html">Consultant Portal</a></li>
     </ul>
 
     <div class="nav__actions">
-      <a href="/login.html" class="btn btn-ghost">Log In</a>
       <a href="/submit-ticket.html" class="btn btn-primary">Submit Ticket</a>
     </div>
 
-    <!-- Hamburger -->
-    <button class="nav__hamburger" id="hamburger" aria-label="Toggle mobile menu" aria-expanded="false">
+    <button class="nav__hamburger" id="hamburger"
+            aria-label="Toggle mobile menu" aria-expanded="false">
       <span></span><span></span><span></span>
     </button>
   </div>
@@ -811,151 +1081,188 @@
   <a href="/about.html">About</a>
   <a href="/blog.html">Blog</a>
   <a href="/client-portal.html">Client Portal</a>
+  <a href="/consultant-portal.html">Consultant Portal</a>
   <div class="mobile-actions">
-    <a href="/login.html" class="btn btn-ghost">Log In</a>
     <a href="/submit-ticket.html" class="btn btn-primary">Submit Ticket</a>
   </div>
 </div>
 
+<!-- ══════════════ MAIN ══════════════ -->
 <main>
 
-  <!-- ══════════════ HERO ══════════════ -->
+  <!-- ══════ HERO ══════ -->
   <section class="hero" aria-labelledby="hero-heading">
+    <div class="hero__bg"  aria-hidden="true"></div>
+    <div class="hero__grid" aria-hidden="true"></div>
+    <div class="hero__orb hero__orb--1" aria-hidden="true"></div>
+    <div class="hero__orb hero__orb--2" aria-hidden="true"></div>
+    <div class="hero__orb hero__orb--3" aria-hidden="true"></div>
+
     <div class="hero__inner">
+      <!-- Left copy -->
       <div class="hero__content">
         <div class="hero__eyebrow">Enterprise standards. Startup agility.</div>
-        <h1 class="hero__h1" id="hero-heading">
-          <span class="grad">Execution-driven</span><br>
-          security.<br>
-          Operationally delivered.
+
+        <h1 id="hero-heading">
+          Execution-driven security.<br>
+          <span class="highlight">Operationally delivered.</span>
         </h1>
-        <p class="hero__desc">
-          CyberBench is a cybersecurity platform that executes security work for you — not just advises.
-          When threats move fast, response must move faster. Through a ticket-first model powered by
-          vetted specialists, you submit a request, get matched fast, and receive documented outcomes.
+
+        <p class="hero__sub">
+          CyberBench executes security work for you — not just advises. Through a ticket-first
+          model powered by our internal cyber team and a bench of vetted specialists, you submit
+          a request, get matched fast, and receive documented outcomes. Continuity, accountability,
+          and executive-ready reporting — with near real-time visibility across your entire environment.
         </p>
-        <div class="hero__cta">
-          <a href="/submit-ticket.html" class="btn btn-accent btn-lg">🚀 Deploy Security Now</a>
-          <a href="/services.html" class="btn btn-outline btn-lg">View Capabilities</a>
+
+        <div class="hero__actions">
+          <a href="/submit-ticket.html" class="btn btn-primary btn-lg">
+            🚀 Deploy Security Now
+          </a>
+          <a href="/services.html" class="btn btn-outline btn-lg">
+            View Capabilities →
+          </a>
         </div>
-        <div class="hero__pills">
-          <span class="pill">Rapid response delivery</span>
-          <span class="pill">Ticket-first execution</span>
-          <span class="pill">KPI reporting</span>
-          <span class="pill">SMB-friendly pricing</span>
-          <span class="pill">Disaster recovery</span>
-          <span class="pill">Incident response</span>
+
+        <div class="hero__chips" role="list" aria-label="Key platform features">
+          <span class="hero__chip" role="listitem">Rapid response delivery</span>
+          <span class="hero__chip" role="listitem">Ticket-first execution</span>
+          <span class="hero__chip" role="listitem">KPI reporting</span>
+          <span class="hero__chip" role="listitem">SMB-friendly pricing</span>
+          <span class="hero__chip" role="listitem">Disaster recovery</span>
+          <span class="hero__chip" role="listitem">Incident response</span>
         </div>
       </div>
 
-      <!-- Platform Status Card -->
-      <div class="platform-card" aria-label="Platform status overview">
-        <div class="platform-card__header">
-          <span class="platform-card__title">Platform Status</span>
-          <span class="status-live">All Systems Live</span>
+      <!-- Right — live ticket feed card -->
+      <div class="hero__card" aria-label="CyberBench live ticket activity preview" role="region">
+        <div class="hero__card-bar" aria-hidden="true">
+          <span class="hero__card-dot hero__card-dot--r"></span>
+          <span class="hero__card-dot hero__card-dot--y"></span>
+          <span class="hero__card-dot hero__card-dot--g"></span>
+          <span class="hero__card-title">CyberBench Platform — Live Tickets</span>
         </div>
-        <div class="platform-card__stats">
-          <div class="stat-block">
-            <div class="stat-block__val green">99.9%</div>
-            <div class="stat-block__label">Uptime SLA</div>
+        <div class="hero__card-body">
+
+          <div class="ticket-item">
+            <div class="ticket-item__icon icon-bg--red" aria-hidden="true">🚨</div>
+            <div class="ticket-item__info">
+              <div class="ticket-item__title">Ransomware Containment — Finance</div>
+              <div class="ticket-item__meta">Assigned · 4 min ago · IR Specialist</div>
+            </div>
+            <span class="ticket-item__badge badge-red">Critical</span>
           </div>
-          <div class="stat-block">
-            <div class="stat-block__val blue">&lt;30min</div>
-            <div class="stat-block__label">Response Time</div>
+
+          <div class="ticket-item">
+            <div class="ticket-item__icon icon-bg--yellow" aria-hidden="true">📡</div>
+            <div class="ticket-item__info">
+              <div class="ticket-item__title">SIEM Alert Tuning — 847 rules reviewed</div>
+              <div class="ticket-item__meta">In Progress · 22 min ago · SOC Analyst</div>
+            </div>
+            <span class="ticket-item__badge badge-yellow">High</span>
           </div>
-          <div class="stat-block">
-            <div class="stat-block__val cyan">24/7</div>
-            <div class="stat-block__label">SOC Coverage</div>
+
+          <div class="ticket-item">
+            <div class="ticket-item__icon icon-bg--blue" aria-hidden="true">🔍</div>
+            <div class="ticket-item__info">
+              <div class="ticket-item__title">Vuln Scan — 3 Critical CVEs Found</div>
+              <div class="ticket-item__meta">Triage · 41 min ago · VM Engineer</div>
+            </div>
+            <span class="ticket-item__badge badge-blue">Medium</span>
           </div>
-          <div class="stat-block">
-            <div class="stat-block__val">500+</div>
-            <div class="stat-block__label">Threats Blocked</div>
+
+          <div class="ticket-item">
+            <div class="ticket-item__icon icon-bg--green" aria-hidden="true">✅</div>
+            <div class="ticket-item__info">
+              <div class="ticket-item__title">Backup Restore Validated — DR Test</div>
+              <div class="ticket-item__meta">Closed · 1 hr ago · Recovery Lead</div>
+            </div>
+            <span class="ticket-item__badge badge-green">Resolved</span>
           </div>
+
         </div>
-        <div class="platform-card__activity">
-          <div class="activity-item">
-            <span class="activity-dot green"></span>
-            <span class="activity-item__text">Threat neutralized — endpoint isolation</span>
-            <span class="activity-item__time">2m ago</span>
+        <div class="hero__card-footer" aria-label="Platform statistics">
+          <div class="hero__card-stat">
+            <div class="hero__card-stat-val">24/7</div>
+            <div class="hero__card-stat-lbl">Monitoring</div>
           </div>
-          <div class="activity-item">
-            <span class="activity-dot blue"></span>
-            <span class="activity-item__text">SIEM alert tuned — false positive cleared</span>
-            <span class="activity-item__time">11m ago</span>
+          <div class="hero__card-stat">
+            <div class="hero__card-stat-val">30 min</div>
+            <div class="hero__card-stat-lbl">IR SLA</div>
           </div>
-          <div class="activity-item">
-            <span class="activity-dot yellow"></span>
-            <span class="activity-item__text">Compliance scan complete — 94% pass rate</span>
-            <span class="activity-item__time">38m ago</span>
+          <div class="hero__card-stat">
+            <div class="hero__card-stat-val">100%</div>
+            <div class="hero__card-stat-lbl">Documented</div>
           </div>
         </div>
       </div>
     </div>
   </section>
 
-  <!-- ══════════════ FEATURES ══════════════ -->
-  <section class="section features" aria-labelledby="features-heading">
-    <div class="container">
-      <div class="section-header">
-        <span class="section-eyebrow">Platform Capabilities</span>
-        <h2 class="section-title" id="features-heading">Everything you need. Nothing you don't.</h2>
-        <p class="section-desc">Built for real environments. Mapped to frameworks. Executed by specialists.</p>
+  <!-- ══════ TRUST BAR ══════ -->
+  <div class="trust-bar" aria-label="Platform trust indicators">
+    <div class="trust-bar__inner">
+      <div class="trust-item"><span class="trust-item__icon">🔒</span> No lock-in contracts</div>
+      <div class="trust-item"><span class="trust-item__icon">⚡</span> 30-minute IR SLA</div>
+      <div class="trust-item"><span class="trust-item__icon">📋</span> Every action documented</div>
+      <div class="trust-item"><span class="trust-item__icon">👥</span> Vetted specialists only</div>
+      <div class="trust-item"><span class="trust-item__icon">📊</span> Executive-ready KPIs</div>
+    </div>
+  </div>
+
+  <!-- ══════ PILLARS ══════ -->
+  <section class="section" aria-labelledby="pillars-heading">
+    <div class="section__inner">
+      <div class="section__header">
+        <div class="section__eyebrow"><span></span> How We Operate <span></span></div>
+        <h2 class="section__title" id="pillars-heading">Built for real-world security operations</h2>
+        <p class="section__sub">
+          Three foundational pillars power every CyberBench engagement —
+          framework alignment, execution discipline, and verified expertise.
+        </p>
       </div>
-      <div class="features-grid">
 
-        <article class="feature-card">
-          <div class="feature-card__icon">🛡️</div>
-          <span class="feature-card__badge">NIST CSF</span>
-          <h3>Security Framework</h3>
-          <p>Structured security operations mapped to Identify, Protect, Detect, Respond, Recover — built for real environments.</p>
+      <div class="pillars-grid" role="list" aria-label="CyberBench operational pillars">
+
+        <article class="pillar-card pillar-card--blue" role="listitem">
+          <div class="pillar-card__icon icon-bg--blue" aria-hidden="true">🛡</div>
+          <div class="pillar-card__label">Security Framework</div>
+          <h3>Structured security operations</h3>
+          <p>Mapped to Identify, Protect, Detect, Respond, Recover — built for real environments, not checkbox compliance.</p>
         </article>
 
-        <article class="feature-card">
-          <div class="feature-card__icon">🎫</div>
-          <span class="feature-card__badge">Core</span>
-          <h3>Ticket-First Execution</h3>
-          <p>Clear intake → fast routing → tracked work → documented closure. No ambiguity, full accountability.</p>
+        <article class="pillar-card pillar-card--purple" role="listitem">
+          <div class="pillar-card__icon icon-bg--purple" aria-hidden="true">🎫</div>
+          <div class="pillar-card__label">Execution Model</div>
+          <h3>Ticket-first execution</h3>
+          <p>Clear intake → fast routing → tracked work → documented closure. Every engagement has a paper trail and an SLA.</p>
         </article>
 
-        <article class="feature-card">
-          <div class="feature-card__icon">👥</div>
-          <span class="feature-card__badge">Vetted</span>
-          <h3>Verified Expertise</h3>
-          <p>Specialists assigned by skill fit — not whoever is available. Every consultant is vetted and matched to your environment.</p>
+        <article class="pillar-card pillar-card--cyan" role="listitem">
+          <div class="pillar-card__icon icon-bg--cyan" aria-hidden="true">🧠</div>
+          <div class="pillar-card__label">Verified Expertise</div>
+          <h3>Vetted consultants, matched to your environment</h3>
+          <p>Specialists assigned by skill fit — not whoever is available. Right expert, right issue, every time.</p>
         </article>
 
-        <article class="feature-card">
-          <div class="feature-card__icon">📡</div>
-          <span class="feature-card__badge">24/7</span>
-          <h3>Continuous Monitoring (SIEM)</h3>
-          <p>24/7 threat detection, log ingestion, alert tuning, and real-time triage to identify and respond before threats impact operations.</p>
+        <article class="pillar-card pillar-card--green" role="listitem">
+          <div class="pillar-card__icon icon-bg--green" aria-hidden="true">📊</div>
+          <div class="pillar-card__label">Operational Discipline</div>
+          <h3>KPI-driven accountability</h3>
+          <p>Response cadence, SLA targets, executive summaries, and measurable outcomes — so you always know what you're getting.</p>
         </article>
 
-        <article class="feature-card">
-          <div class="feature-card__icon">📊</div>
-          <span class="feature-card__badge">Reporting</span>
-          <h3>KPI-Driven Accountability</h3>
-          <p>Response cadence, SLA targets, executive summaries, and measurable outcomes — not just activity reports.</p>
+        <article class="pillar-card pillar-card--yellow" role="listitem">
+          <div class="pillar-card__icon icon-bg--yellow" aria-hidden="true">💰</div>
+          <div class="pillar-card__label">Pricing Advantage</div>
+          <h3>Execution-grade capability, fraction of the cost</h3>
+          <p>Enterprise-grade execution without enterprise consulting overhead. Priced for modern SMBs who need results, not retainers.</p>
         </article>
 
-        <article class="feature-card">
-          <div class="feature-card__icon">💰</div>
-          <span class="feature-card__badge">SMB</span>
-          <h3>Execution-Grade. Fraction of the Cost.</h3>
-          <p>Enterprise-grade execution without enterprise consulting overhead. Built for SMBs who need results, not retainers.</p>
-        </article>
-
-        <article class="feature-card">
-          <div class="feature-card__icon">⚡</div>
-          <span class="feature-card__badge">Rapid</span>
-          <h3>Critical Incidents? Experts in Minutes.</h3>
-          <p>24/7 on-call specialists ready for ransomware, breaches, and zero-days. Skip procurement when seconds count.</p>
-        </article>
-
-        <article class="feature-card">
-          <div class="feature-card__icon">🔄</div>
-          <span class="feature-card__badge">Ongoing</span>
-          <h3>Consistent Security Delivery</h3>
+        <article class="pillar-card pillar-card--red" role="listitem">
+          <div class="pillar-card__icon icon-bg--red" aria-hidden="true">🔄</div>
+          <div class="pillar-card__label">Continuity</div>
+          <h3>Consistent security delivery</h3>
           <p>Structured oversight and aligned execution across every engagement — maintaining operational consistency as your environment evolves.</p>
         </article>
 
@@ -963,17 +1270,129 @@
     </div>
   </section>
 
-  <!-- ══════════════ CTA ══════════════ -->
-  <section class="section" aria-labelledby="cta-heading">
-    <div class="container">
-      <div class="cta-banner">
-        <h2 id="cta-heading">Ready to execute security at speed?</h2>
-        <p>Submit your first ticket today and get matched to a specialist within 30 minutes.</p>
-        <div class="btn-row">
-          <a href="/submit-ticket.html" class="btn btn-accent btn-lg">Submit a Ticket</a>
-          <a href="/about.html" class="btn btn-outline btn-lg">Learn More</a>
+  <!-- ══════ HOW IT WORKS ══════ -->
+  <section class="section section--alt" aria-labelledby="process-heading">
+    <div class="section__inner">
+      <div class="section__header">
+        <div class="section__eyebrow"><span></span> The Process <span></span></div>
+        <h2 class="section__title" id="process-heading">From ticket to outcome in four steps</h2>
+        <p class="section__sub">
+          No ambiguity, no scope creep — just clear intake, expert execution, and documented results.
+        </p>
+      </div>
+
+      <div class="process-strip" role="list" aria-label="CyberBench delivery process">
+        <div class="process-step" role="listitem">
+          <div class="process-step__num" aria-label="Step 1">1</div>
+          <div class="process-step__title">Submit a Ticket</div>
+          <p class="process-step__desc">Describe your security need — incident, project, or ongoing service.</p>
+        </div>
+        <div class="process-step" role="listitem">
+          <div class="process-step__num" aria-label="Step 2">2</div>
+          <div class="process-step__title">Specialist Matched</div>
+          <p class="process-step__desc">We route to the right expert based on skill, priority, and SLA.</p>
+        </div>
+        <div class="process-step" role="listitem">
+          <div class="process-step__num" aria-label="Step 3">3</div>
+          <div class="process-step__title">Work Executed</div>
+          <p class="process-step__desc">Triage, remediation, and delivery — tracked in real time.</p>
+        </div>
+        <div class="process-step" role="listitem">
+          <div class="process-step__num" aria-label="Step 4">4</div>
+          <div class="process-step__title">Outcome Documented</div>
+          <p class="process-step__desc">Full report, evidence, and follow-up actions logged for your records.</p>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- ══════ SERVICES ══════ -->
+  <section class="section" aria-labelledby="services-heading">
+    <div class="section__inner">
+      <div class="section__header">
+        <div class="section__eyebrow"><span></span> Core Capabilities <span></span></div>
+        <h2 class="section__title" id="services-heading">Everything you need, nothing you don't</h2>
+        <p class="section__sub">
+          From 24/7 SIEM monitoring to rapid incident response — all delivered through our
+          ticket-first platform by vetted specialists.
+        </p>
+      </div>
+
+      <div class="services-strip" role="list" aria-label="CyberBench core services">
+
+        <article class="service-item" role="listitem">
+          <div class="service-item__icon icon-bg--blue" aria-hidden="true">📡</div>
+          <div class="service-item__body">
+            <div class="service-item__label">SOC</div>
+            <h3>Continuous Monitoring (SIEM)</h3>
+            <p>24/7 threat detection, log ingestion, alert tuning, and real-time triage to identify and respond to threats before they impact operations.</p>
+          </div>
+        </article>
+
+        <article class="service-item" role="listitem">
+          <div class="service-item__icon icon-bg--red" aria-hidden="true">🚨</div>
+          <div class="service-item__body">
+            <div class="service-item__label">Rapid Response</div>
+            <h3>Critical incidents? Experts deployed in minutes</h3>
+            <p>24/7 on-call specialists ready for ransomware, breaches, and zero-days. Skip the procurement process when seconds count.</p>
+          </div>
+        </article>
+
+        <article class="service-item" role="listitem">
+          <div class="service-item__icon icon-bg--cyan" aria-hidden="true">🔍</div>
+          <div class="service-item__body">
+            <div class="service-item__label">Vulnerability</div>
+            <h3>Continuous vulnerability management</h3>
+            <p>Risk-based scanning, prioritized remediation plans, and patch tracking — with executive-ready reporting on your security posture.</p>
+          </div>
+        </article>
+
+        <article class="service-item" role="listitem">
+          <div class="service-item__icon icon-bg--green" aria-hidden="true">💾</div>
+          <div class="service-item__body">
+            <div class="service-item__label">Disaster Recovery</div>
+            <h3>Immutable backups & validated recovery</h3>
+            <p>Protect your data with resilient, ransomware-proof backups and tested recovery processes — ensuring fast restoration when it matters most.</p>
+          </div>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════ CTA ══════ -->
+  <section class="cta-section" aria-labelledby="cta-heading">
+    <div class="cta-section__bg" aria-hidden="true"></div>
+    <div class="cta-section__inner">
+
+      <div class="section__eyebrow" style="justify-content:center; margin-bottom:20px;">
+        <span></span> Get Started Today <span></span>
+      </div>
+
+      <h2 id="cta-heading">
+        Ready to deploy execution-driven<br>security operations?
+      </h2>
+      <p>
+        Submit your first ticket and get matched to the right specialist within minutes.
+        No long contracts, no bloated retainers — just execution.
+      </p>
+
+      <div class="cta-section__actions">
+        <a href="/submit-ticket.html" class="btn btn-primary btn-lg">
+          🚀 Submit Your First Ticket
+        </a>
+        <a href="/services.html" class="btn btn-outline btn-lg">
+          Explore Services
+        </a>
+      </div>
+
+      <div class="cta-trust">
+        <div class="cta-trust-item"><span>🔒</span> No lock-in contracts</div>
+        <div class="cta-trust-item"><span>⚡</span> 30-minute IR SLA</div>
+        <div class="cta-trust-item"><span>📋</span> Every action documented</div>
+        <div class="cta-trust-item"><span>👥</span> Vetted specialists only</div>
+      </div>
+
     </div>
   </section>
 
@@ -985,26 +1404,25 @@
     <div class="footer__top">
 
       <div class="footer__brand">
-        <!-- LOGO reused consistently -->
         <a href="/index.html" class="cb-logo cb-logo--sm" aria-label="CyberBench home">
           <span class="cb-logo__mark">
             <svg viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
               <defs>
-                <linearGradient id="shield-grad-f" x1="0" y1="0" x2="38" y2="38" gradientUnits="userSpaceOnUse">
+                <linearGradient id="sg-f" x1="0" y1="0" x2="38" y2="38" gradientUnits="userSpaceOnUse">
                   <stop offset="0%" stop-color="#3b82f6"/>
                   <stop offset="100%" stop-color="#06b6d4"/>
                 </linearGradient>
-                <linearGradient id="inner-grad-f" x1="0" y1="0" x2="38" y2="38" gradientUnits="userSpaceOnUse">
+                <linearGradient id="ig-f" x1="0" y1="0" x2="38" y2="38" gradientUnits="userSpaceOnUse">
                   <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9"/>
                   <stop offset="100%" stop-color="#93c5fd" stop-opacity="0.9"/>
                 </linearGradient>
               </defs>
               <path d="M19 3L5 9v10c0 8.5 6 16 14 18 8-2 14-9.5 14-18V9L19 3z"
-                    fill="url(#shield-grad-f)" opacity="0.15"/>
+                    fill="url(#sg-f)" opacity="0.15"/>
               <path d="M19 3L5 9v10c0 8.5 6 16 14 18 8-2 14-9.5 14-18V9L19 3z"
-                    stroke="url(#shield-grad-f)" stroke-width="1.5" fill="none"/>
+                    stroke="url(#sg-f)" stroke-width="1.5" fill="none"/>
               <text x="10" y="24" font-family="Inter,sans-serif" font-weight="800"
-                    font-size="13" fill="url(#inner-grad-f)" letter-spacing="-1">CB</text>
+                    font-size="13" fill="url(#ig-f)" letter-spacing="-1">CB</text>
               <path d="M13 20l3 3 6-6" stroke="#06b6d4" stroke-width="1.8"
                     stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
@@ -1019,10 +1437,10 @@
       <div class="footer__col">
         <h4>Services</h4>
         <ul>
-          <li><a href="/services.html#soc">SOC & SIEM</a></li>
-          <li><a href="/services.html#ir">Incident Response</a></li>
-          <li><a href="/services.html#compliance">Compliance</a></li>
-          <li><a href="/services.html#backup">Immutable Backups</a></li>
+          <li><a href="/services.html#siem">SOC &amp; SIEM</a></li>
+          <li><a href="/incident-response-30min.html">Incident Response</a></li>
+          <li><a href="/compliance-readiness.html">Compliance</a></li>
+          <li><a href="/immutable-backups.html">Immutable Backups</a></li>
         </ul>
       </div>
 
@@ -1040,7 +1458,6 @@
         <ul>
           <li><a href="/client-portal.html">Client Portal</a></li>
           <li><a href="/submit-ticket.html">Submit Ticket</a></li>
-          <li><a href="/login.html">Login</a></li>
           <li><a href="mailto:support@cyberbench.io">Support</a></li>
         </ul>
       </div>
@@ -1058,37 +1475,38 @@
 </footer>
 
 <!-- ══════════════ AI CHAT WIDGET ══════════════ -->
-<button class="chat-toggle" id="chatToggle" aria-label="Open CyberBench AI assistant" aria-expanded="false">
+<button class="chat-toggle" id="chatToggle"
+        aria-label="Open CyberBench AI assistant" aria-expanded="false">
   🤖
   <span class="chat-toggle__badge" aria-hidden="true">AI</span>
 </button>
 
-<div class="chat-widget" id="chatWidget" role="dialog" aria-label="CyberBench AI Assistant" aria-hidden="true">
+<div class="chat-widget" id="chatWidget"
+     role="dialog" aria-label="CyberBench AI Assistant" aria-hidden="true">
   <div class="chat-widget__header">
     <div class="chat-widget__avatar" aria-hidden="true">🤖</div>
     <div class="chat-widget__info">
       <div class="chat-widget__name">CyberBench AI</div>
-      <div class="chat-widget__status">Online — Avg reply &lt;5s</div>
+      <div class="chat-widget__status">Online — Platform Guide</div>
     </div>
     <button class="chat-widget__close" id="chatClose" aria-label="Close AI chat">✕</button>
   </div>
 
-  <div class="chat-widget__messages" id="chatMessages" role="log" aria-live="polite" aria-label="Chat messages">
-    <!-- Welcome message injected by JS -->
-  </div>
+  <div class="chat-widget__messages" id="chatMessages"
+       role="log" aria-live="polite" aria-label="Chat messages"></div>
 
   <div class="quick-replies" id="quickReplies" aria-label="Quick reply suggestions">
-    <button class="quick-reply" data-msg="What services does CyberBench offer?">Services</button>
-    <button class="quick-reply" data-msg="How does incident response work?">Incident Response</button>
-    <button class="quick-reply" data-msg="What is SIEM monitoring?">SIEM</button>
-    <button class="quick-reply" data-msg="How do I submit a ticket?">Submit Ticket</button>
-    <button class="quick-reply" data-msg="What is your pricing?">Pricing</button>
+    <button class="quick-reply" data-msg="How does CyberBench work?">How it works</button>
+    <button class="quick-reply" data-msg="What services do you offer?">Services</button>
+    <button class="quick-reply" data-msg="Tell me about incident response">Incident Response</button>
+    <button class="quick-reply" data-msg="How do I get started?">Get Started</button>
+    <button class="quick-reply" data-msg="What is the pricing model?">Pricing</button>
   </div>
 
   <div class="chat-widget__input">
     <textarea
       id="chatInput"
-      placeholder="Ask about security, services, tickets…"
+      placeholder="Ask about CyberBench…"
       rows="1"
       aria-label="Type your message"
       maxlength="500"
@@ -1108,18 +1526,10 @@ document.getElementById('year').textContent = new Date().getFullYear();
 /* ── Mobile Nav ── */
 const hamburger = document.getElementById('hamburger');
 const mobileNav = document.getElementById('mobileNav');
-
 hamburger.addEventListener('click', () => {
   const isOpen = mobileNav.classList.toggle('open');
   hamburger.classList.toggle('open', isOpen);
-  hamburger.setAttribute('aria-expanded', isOpen);
-});
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape' && mobileNav.classList.contains('open')) {
-    mobileNav.classList.remove('open');
-    hamburger.classList.remove('open');
-    hamburger.setAttribute('aria-expanded', 'false');
-  }
+  hamburger.setAttribute('aria-expanded', String(isOpen));
 });
 document.addEventListener('click', e => {
   if (!hamburger.contains(e.target) && !mobileNav.contains(e.target)) {
@@ -1130,104 +1540,91 @@ document.addEventListener('click', e => {
 });
 
 /* ══════════════════════════════════════
-   AI CHAT ENGINE
+   AI CHAT — Homepage KB
 ══════════════════════════════════════ */
-const chatToggle  = document.getElementById('chatToggle');
-const chatWidget  = document.getElementById('chatWidget');
-const chatClose   = document.getElementById('chatClose');
-const chatMessages= document.getElementById('chatMessages');
-const chatInput   = document.getElementById('chatInput');
-const chatSend    = document.getElementById('chatSend');
-const quickReplies= document.getElementById('quickReplies');
+const chatToggle   = document.getElementById('chatToggle');
+const chatWidget   = document.getElementById('chatWidget');
+const chatClose    = document.getElementById('chatClose');
+const chatMessages = document.getElementById('chatMessages');
+const chatInput    = document.getElementById('chatInput');
+const chatSend     = document.getElementById('chatSend');
+const quickReplies = document.getElementById('quickReplies');
 
-/* ── Knowledge Base ── */
 const KB = [
   {
-    patterns: ['service','offer','do you do','what can','capabilities','provide'],
-    response: `CyberBench delivers **6 core security services**:\n\n• 🛡️ **SOC & SIEM** — 24/7 threat monitoring & alert triage\n• ⚡ **Incident Response** — Specialists deployed in &lt;30 minutes\n• 📋 **Compliance Readiness** — NIST, SOC 2, HIPAA, ISO 27001\n• 💾 **Immutable Backups** — Ransomware-proof data protection\n• 📊 **KPI Reporting** — Executive-ready security dashboards\n• 🎫 **Ticket-First Execution** — Submit → Match → Resolve\n\nWant details on any specific service?`
+    patterns: ['how','work','model','what is','explain','overview','platform','about cyberbench'],
+    response: `🤖 **How CyberBench Works:**\n\nCyberBench is an **execution-driven cybersecurity platform** — not just advisory.\n\n1. **Submit a ticket** — describe your security need\n2. **Specialist matched** — right expert, right issue, fast\n3. **Work executed** — tracked in real time with SLA\n4. **Outcome documented** — full report, evidence, follow-up\n\nNo rotating consulting teams. No ambiguity. Just execution.`
   },
   {
-    patterns: ['incident response','breach','ransomware','attack','hacked','compromise','emergency','zero-day'],
-    response: `🚨 **Incident Response at CyberBench:**\n\n• **Response time:** Specialists engaged in &lt;30 minutes\n• **Coverage:** 24/7/365 — no waiting for business hours\n• **Scope:** Ransomware, breaches, zero-days, insider threats\n• **Process:** Contain → Investigate → Remediate → Report\n• **Deliverable:** Full incident report with root cause analysis\n\nFor active incidents, **submit a Priority 1 ticket immediately** at /submit-ticket.html`
+    patterns: ['service','capabilit','offer','siem','monitor','vuln','backup','incident','compliance','awareness'],
+    response: `🛡 **CyberBench Core Services:**\n\n• 📡 **SIEM Monitoring** — 24/7 threat detection & alert triage\n• 🚨 **Incident Response** — 30-min SLA, forensics, containment\n• 🔍 **Vulnerability Management** — scanning, risk scoring, remediation\n• 💾 **Immutable Backups** — ransomware-proof, validated recovery\n• 📋 **Compliance Readiness** — NIST, SOC 2, HIPAA, ISO 27001\n• 🛡 **Infrastructure Protection** — hardening, access controls, cloud\n• 👥 **Security Awareness** — phishing sims, training programs\n\n→ [View all services](/services.html)`
   },
   {
-    patterns: ['siem','log','monitoring','alert','detection','threat detect','24/7','continuous'],
-    response: `📡 **SIEM & Continuous Monitoring:**\n\n• Log ingestion from endpoints, firewalls, cloud, and apps\n• **AI-assisted** alert triage to reduce false positives by up to 80%\n• Real-time threat detection mapped to MITRE ATT&CK\n• Alert tuning to eliminate noise over time\n• Escalation to human analysts for confirmed threats\n• Monthly SIEM health reports included\n\nAll monitoring is staffed by vetted SOC analysts — not just automated rules.`
+    patterns: ['incident','response','ir','breach','ransomware','critical','emergency','attack','zero-day'],
+    response: `🚨 **Incident Response:**\n\n• **30-minute SLA** for critical incidents — 24/7\n• Rapid containment and isolation\n• Forensic analysis — root cause, attacker TTPs\n• Response coordination and stakeholder comms\n• Full documented recovery report\n\nDon't wait — [submit a ticket](/submit-ticket.html) now or call your IR hotline.`
   },
   {
-    patterns: ['ticket','submit','how do i','request','intake','start','get started','begin'],
-    response: `🎫 **How to Submit a Ticket:**\n\n1. Visit **/submit-ticket.html**\n2. Select your **service category** (SOC, IR, Compliance, etc.)\n3. Set **priority level** (P1 Critical → P4 Low)\n4. Describe the issue or request\n5. Submit — you'll receive a **confirmation within minutes**\n\n**Matching happens automatically** — a vetted specialist is assigned based on your environment and the ticket type.\n\nAverage first response: **&lt;30 minutes** for P1/P2.`
+    patterns: ['siem','monitoring','alert','detect','threat','triage','soc','noise'],
+    response: `📡 **SIEM & Continuous Monitoring:**\n\n• 24/7 threat detection across your environment\n• Log ingestion and correlation\n• Alert tuning — 90%+ noise reduction target\n• Real-time triage by trained analysts\n• Security dashboards and escalation workflows\n\n→ [SIEM details](/siem-alert-noise.html)`
   },
   {
-    patterns: ['price','pricing','cost','how much','affordable','smb','budget','fee','rate'],
-    response: `💰 **CyberBench Pricing Philosophy:**\n\nWe're built for **SMBs** — so pricing is:\n\n• **Execution-based** — pay for outcomes, not retainer hours\n• **Transparent** — no hidden fees or surprise overages\n• **Scalable** — start with what you need, expand as you grow\n• **Fraction of enterprise cost** — without sacrificing capability\n\nExact pricing depends on your environment size and service mix. **Contact us for a custom quote** at support@cyberbench.io`
+    patterns: ['backup','recover','immutable','disaster','restore','data loss','rto','rpo'],
+    response: `💾 **Immutable Backups & Recovery:**\n\n• Backups that can't be encrypted by ransomware\n• Continuous near-zero RPO for critical data\n• Regular tested restore drills\n• Rapid recovery to minimise downtime\n• Geographically redundant copies\n\n→ [Backup details](/immutable-backups.html)`
   },
   {
-    patterns: ['compliance','nist','soc 2','hipaa','iso','gdpr','regulation','audit','framework'],
-    response: `📋 **Compliance Readiness Services:**\n\n• **Frameworks supported:** NIST CSF, SOC 2, HIPAA, ISO 27001, GDPR\n• Gap assessments with prioritized remediation roadmaps\n• Policy and procedure documentation\n• Evidence collection for audits\n• Continuous compliance monitoring\n• Executive compliance dashboards\n\nMost clients achieve **audit-ready status in 60–90 days** with CyberBench support.`
+    patterns: ['compliance','nist','soc 2','hipaa','iso','audit','framework','gdpr','regulation'],
+    response: `📋 **Compliance Readiness:**\n\nWe support:\n• **NIST CSF** — gap assessment & roadmap\n• **SOC 2 Type I & II** — readiness & evidence\n• **HIPAA** — risk analysis & security rule\n• **ISO 27001** — ISMS design & audit prep\n\n→ [Compliance details](/compliance-readiness.html)`
   },
   {
-    patterns: ['backup','disaster recovery','ransomware proof','immutable','recovery','data loss','restore'],
-    response: `💾 **Immutable Backup & Disaster Recovery:**\n\n• **Immutable storage** — backups that cannot be encrypted or deleted by ransomware\n• Automated backup schedules with integrity verification\n• **RTO/RPO targets** defined per your business requirements\n• Tested restore procedures — not just theoretical\n• Offsite and air-gapped options available\n• Included in our DR planning and playbook service\n\nBest practice: 3-2-1 backup strategy with at least one immutable copy.`
+    patterns: ['price','cost','pricing','how much','plan','package','contract','retainer','affordable'],
+    response: `💳 **Pricing Model:**\n\nCyberBench uses a **ticket-driven model** — no bloated retainers or long lock-in contracts.\n\n• Services scoped per ticket or engagement\n• Pricing reflects actual work delivered\n• Flexible for one-off incidents or ongoing coverage\n• SMB-friendly — enterprise capability at a fraction of the cost\n\nContact **support@cyberbench.io** for a tailored quote.`
   },
   {
-    patterns: ['kpi','report','metric','dashboard','executive','visibility','tracking','performance'],
-    response: `📊 **KPI Reporting & Visibility:**\n\n• Real-time security dashboard in the **Client Portal**\n• Metrics tracked: MTTR, MTTD, SLA compliance, threat volume\n• Weekly operational summaries\n• Monthly **executive-ready reports** (board-presentable)\n• Trend analysis to show security posture improvement over time\n• Exportable PDF and CSV formats\n\nAll KPIs are tied to actual work done — not vanity metrics.`
+    patterns: ['start','get started','begin','first','submit','sign up','deploy','join','onboard'],
+    response: `🚀 **Getting Started:**\n\n1. **[Submit a ticket](/submit-ticket.html)** — describe your security need\n2. We match you to the right specialist within minutes\n3. Work is scoped, executed, and fully documented\n\nAlready a client? Log into the **[Client Portal](/client-portal.html)**.\n\nAre you a consultant? Join via the **[Consultant Portal](/consultant-portal.html)**.`
   },
   {
-    patterns: ['consultant','specialist','expert','team','who','staff','analyst','engineer'],
-    response: `👥 **The CyberBench Team:**\n\n• All consultants are **vetted and background-checked**\n• Matched by **skill fit** — not just availability\n• Specializations: SOC analysis, IR, penetration testing, compliance, cloud security\n• Continuity model — you work with consistent specialists\n• Backed by an internal cyber team for quality assurance\n• All work is **documented and accountable**`
+    patterns: ['client portal','portal','dashboard','kpi','report','ticket status'],
+    response: `🖥 **Client Portal:**\n\nYour centralised security operations hub:\n\n• Real-time ticket tracking\n• KPI dashboards — SLA compliance, threat metrics\n• Activity feed and audit trail\n• Executive-ready reports\n• Direct specialist communication\n\n→ [Access Client Portal](/client-portal.html)`
   },
   {
-    patterns: ['portal','dashboard','login','account','client','access'],
-    response: `🖥️ **Client Portal Access:**\n\n• Login at **/client-portal.html**\n• View all open and closed tickets\n• Real-time KPI dashboard\n• Download reports and compliance evidence\n• Communicate directly with your assigned specialist\n• Set notification preferences\n\nNew clients receive portal access within **24 hours** of onboarding.`
+    patterns: ['consultant','specialist','join','bench','apply','work with','partner'],
+    response: `👨‍💻 **Consultant Portal:**\n\nAre you a cybersecurity specialist? Join the CyberBench bench:\n\n• Get matched to engagements by skill fit\n• Work on high-impact client tickets\n• Flexible — choose your engagements\n• Vetted, professional, documented work\n\n→ [Consultant Portal](/consultant-portal.html)`
   },
   {
-    patterns: ['about','company','who are','cyberbench','mission','founded','background'],
-    response: `🏢 **About CyberBench:**\n\nCyberBench is a cybersecurity execution platform built for SMBs who need enterprise-grade security without enterprise overhead.\n\n• **Mission:** Execute security work — not just advise on it\n• **Model:** Ticket-first, specialist-matched, outcome-documented\n• **Coverage:** 24/7 SOC, IR, compliance, backups, and reporting\n• **Differentiator:** Continuity + accountability + executive visibility\n\nLearn more at **/about.html**`
+    patterns: ['hello','hi','hey','help','welcome','greetings','what can'],
+    response: `👋 **Welcome to CyberBench!**\n\nI can help you with:\n\n• 🤖 How the platform works\n• 🛡 Our service portfolio\n• 🚨 Incident response\n• 💳 Pricing & getting started\n• 🖥 Client & Consultant portals\n\nWhat are you looking to solve?`
   },
   {
-    patterns: ['hello','hi','hey','good morning','good afternoon','howdy','greetings'],
-    response: `👋 **Hey there!** Welcome to CyberBench AI.\n\nI can help you with:\n• 🛡️ Services & capabilities\n• 🎫 How to submit a ticket\n• ⚡ Incident response\n• 📡 SIEM & monitoring\n• 📋 Compliance\n• 💰 Pricing\n\nWhat would you like to know?`
-  },
-  {
-    patterns: ['thank','thanks','appreciate','helpful','great','awesome','perfect'],
-    response: `😊 You're welcome! If you have more questions or need to report a security issue, don't hesitate to ask.\n\nFor urgent matters, **submit a ticket at /submit-ticket.html** and our team will respond within 30 minutes.`
+    patterns: ['thank','thanks','great','helpful','awesome','perfect','appreciate'],
+    response: `😊 Happy to help! Ready to get started? **[Submit a ticket](/submit-ticket.html)** or email **support@cyberbench.io**.`
   }
 ];
 
-/* ── Match user input to KB ── */
 function getResponse(input) {
   const text = input.toLowerCase().trim();
   for (const entry of KB) {
-    if (entry.patterns.some(p => text.includes(p))) {
-      return entry.response;
-    }
+    if (entry.patterns.some(p => text.includes(p))) return entry.response;
   }
-  return `🤔 I don't have a specific answer for that, but here's what I can help with:\n\n• **Services** — What CyberBench offers\n• **Incident Response** — Emergency procedures\n• **SIEM** — Monitoring & detection\n• **Tickets** — How to submit a request\n• **Pricing** — Cost & packages\n• **Compliance** — Frameworks & audits\n\nOr reach us directly at **support@cyberbench.io**`;
+  return `🤔 I'm not sure about that specifically, but I can help with:\n\n• 🤖 How CyberBench works\n• 🛡 Services & capabilities\n• 🚨 Incident response\n• 💳 Pricing\n• 🚀 Getting started\n\nOr email **support@cyberbench.io** directly.`;
 }
 
-/* ── Render a message ── */
 function renderMessage(text, role) {
-  const wrap = document.createElement('div');
+  const wrap   = document.createElement('div');
   wrap.className = `msg msg--${role}`;
-
   const avatar = document.createElement('div');
   avatar.className = 'msg__avatar';
   avatar.setAttribute('aria-hidden', 'true');
   avatar.textContent = role === 'bot' ? '🤖' : '👤';
-
   const bubble = document.createElement('div');
   bubble.className = 'msg__bubble';
-  // Render simple markdown-ish: **bold**, line breaks
   bubble.innerHTML = text
     .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" style="color:var(--accent);text-decoration:underline;">$1</a>')
     .replace(/\n/g, '<br>');
-
   const time = document.createElement('span');
   time.className = 'msg__time';
-  time.textContent = new Date().toLocaleTimeString([], {hour:'2-digit', minute:'2-digit'});
-
+  time.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   bubble.appendChild(time);
   wrap.appendChild(avatar);
   wrap.appendChild(bubble);
@@ -1235,60 +1632,44 @@ function renderMessage(text, role) {
   chatMessages.scrollTop = chatMessages.scrollHeight;
 }
 
-/* ── Typing indicator ── */
 function showTyping() {
   const wrap = document.createElement('div');
   wrap.className = 'msg msg--bot';
   wrap.id = 'typingMsg';
-
   const avatar = document.createElement('div');
   avatar.className = 'msg__avatar';
   avatar.setAttribute('aria-hidden', 'true');
   avatar.textContent = '🤖';
-
-  const indicator = document.createElement('div');
-  indicator.className = 'typing-indicator';
-  indicator.innerHTML = '<span></span><span></span><span></span>';
-
+  const ind = document.createElement('div');
+  ind.className = 'typing-indicator';
+  ind.innerHTML = '<span></span><span></span><span></span>';
   wrap.appendChild(avatar);
-  wrap.appendChild(indicator);
+  wrap.appendChild(ind);
   chatMessages.appendChild(wrap);
   chatMessages.scrollTop = chatMessages.scrollHeight;
 }
-
 function hideTyping() {
   const el = document.getElementById('typingMsg');
   if (el) el.remove();
 }
 
-/* ── Send message flow ── */
 function sendMessage(text) {
-  text = text.trim();
+  text = (text || '').trim();
   if (!text) return;
-
   chatInput.value = '';
   chatInput.style.height = 'auto';
   chatSend.disabled = true;
-
   renderMessage(text, 'user');
-
-  // Hide quick replies after first interaction
   quickReplies.style.display = 'none';
-
   showTyping();
-
-  // Simulate thinking delay (600–1200ms)
-  const delay = 600 + Math.random() * 600;
   setTimeout(() => {
     hideTyping();
-    const response = getResponse(text);
-    renderMessage(response, 'bot');
+    renderMessage(getResponse(text), 'bot');
     chatSend.disabled = false;
     chatInput.focus();
-  }, delay);
+  }, 600 + Math.random() * 600);
 }
 
-/* ── Widget open/close ── */
 function openChat() {
   chatWidget.classList.add('open');
   chatWidget.setAttribute('aria-hidden', 'false');
@@ -1302,41 +1683,38 @@ function closeChat() {
   chatToggle.focus();
 }
 
-chatToggle.addEventListener('click', () => {
-  chatWidget.classList.contains('open') ? closeChat() : openChat();
-});
+chatToggle.addEventListener('click', () =>
+  chatWidget.classList.contains('open') ? closeChat() : openChat());
 chatClose.addEventListener('click', closeChat);
-document.addEventListener('keydown', e => {
-  if (e.key === 'Escape' && chatWidget.classList.contains('open')) closeChat();
-});
-
-/* ── Send on button / Enter ── */
 chatSend.addEventListener('click', () => sendMessage(chatInput.value));
 chatInput.addEventListener('keydown', e => {
-  if (e.key === 'Enter' && !e.shiftKey) {
-    e.preventDefault();
-    sendMessage(chatInput.value);
-  }
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(chatInput.value); }
 });
-
-/* ── Auto-resize textarea ── */
 chatInput.addEventListener('input', () => {
   chatInput.style.height = 'auto';
   chatInput.style.height = Math.min(chatInput.scrollHeight, 100) + 'px';
 });
+quickReplies.querySelectorAll('.quick-reply').forEach(btn =>
+  btn.addEventListener('click', () => sendMessage(btn.dataset.msg)));
 
-/* ── Quick replies ── */
-quickReplies.querySelectorAll('.quick-reply').forEach(btn => {
-  btn.addEventListener('click', () => sendMessage(btn.dataset.msg));
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    if (chatWidget.classList.contains('open')) closeChat();
+    if (mobileNav.classList.contains('open')) {
+      mobileNav.classList.remove('open');
+      hamburger.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', 'false');
+    }
+  }
 });
 
-/* ── Welcome message on load ── */
+/* Welcome message */
 setTimeout(() => {
   renderMessage(
-    `👋 Hi! I'm **CyberBench AI** — your security operations assistant.\n\nAsk me about services, incident response, SIEM monitoring, compliance, or how to submit a ticket. I'm here to help!`,
+    `👋 Welcome to **CyberBench**!\n\nI can walk you through the platform — how we work, our services, incident response, pricing, or how to get started. What are you looking to solve?`,
     'bot'
   );
-}, 300);
+}, 400);
 </script>
 
 </body>
