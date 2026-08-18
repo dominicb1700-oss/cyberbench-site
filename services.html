@@ -3,576 +3,1861 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="CyberBench delivers enterprise-grade cybersecurity services — SIEM monitoring, incident response, vulnerability management, compliance, and immutable backups — through a fast, ticket-driven model." />
   <title>Services | CyberBench</title>
-  <link rel="stylesheet" href="/styles.css" />
-
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
   <style>
-    /* ===== SERVICES MOBILE MENU ONLY ===== */
+    /* ── Reset & Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0a0f1e;
+      color: #e2e8f0;
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+    img { max-width: 100%; display: block; }
+    button { cursor: pointer; font-family: inherit; }
 
-    .nav_menu{
-      display:flex;
-      align-items:center;
+    /* ── Variables ── */
+    :root {
+      --primary:       #3b82f6;
+      --primary-dark:  #2563eb;
+      --primary-glow:  rgba(59,130,246,0.25);
+      --accent:        #06b6d4;
+      --accent-glow:   rgba(6,182,212,0.2);
+      --purple:        #8b5cf6;
+      --purple-glow:   rgba(139,92,246,0.25);
+      --success:       #10b981;
+      --warning:       #f59e0b;
+      --danger:        #ef4444;
+      --surface:       #111827;
+      --surface-2:     #1f2937;
+      --surface-3:     #374151;
+      --border:        rgba(255,255,255,0.08);
+      --text-muted:    #9ca3af;
+      --text-dim:      #6b7280;
+      --radius:        14px;
+      --radius-sm:     8px;
+      --shadow:        0 4px 24px rgba(0,0,0,0.4);
+      --shadow-lg:     0 8px 48px rgba(0,0,0,0.6);
+      --nav-h:         68px;
     }
 
-    .nav_toggle{
-      display:none;
-      align-items:center;
-      justify-content:center;
-      width:46px;
-      height:46px;
-      padding:0;
-      border:0;
-      border-radius:12px;
-      background:transparent;
-      cursor:pointer;
+    /* ══════════════════════════════════════
+       LOGO
+    ══════════════════════════════════════ */
+    .cb-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      user-select: none;
+    }
+    .cb-logo__mark { position: relative; width: 38px; height: 38px; flex-shrink: 0; }
+    .cb-logo__mark svg { width: 38px; height: 38px; display: block; }
+    .cb-logo__text { display: flex; flex-direction: column; line-height: 1; }
+    .cb-logo__name {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #ffffff 0%, #93c5fd 60%, #3b82f6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .cb-logo__tagline {
+      font-size: 0.58rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-top: 2px;
+      -webkit-text-fill-color: var(--accent);
+    }
+    .cb-logo--sm .cb-logo__mark { width: 28px; height: 28px; }
+    .cb-logo--sm .cb-logo__mark svg { width: 28px; height: 28px; }
+    .cb-logo--sm .cb-logo__name { font-size: 0.95rem; }
+    .cb-logo--sm .cb-logo__tagline { display: none; }
+
+    /* ══════════════════════════════════════
+       NAVIGATION
+    ══════════════════════════════════════ */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--nav-h);
+      background: rgba(10,15,30,0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+    }
+    .nav__inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .nav__links { display: flex; align-items: center; gap: 4px; }
+    .nav__links a {
+      padding: 8px 14px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      border-radius: var(--radius-sm);
+      transition: color 0.2s, background 0.2s;
+      white-space: nowrap;
+    }
+    .nav__links a:hover { color: #fff; background: rgba(255,255,255,0.06); }
+    .nav__links a.active { color: var(--primary); }
+
+    .nav__actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 18px;
+      border-radius: var(--radius-sm);
+      font-size: 0.875rem;
+      font-weight: 600;
+      border: none;
+      transition: all 0.2s;
+      cursor: pointer;
+      white-space: nowrap;
+      text-decoration: none;
+    }
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
+    .btn-ghost:hover { color: #fff; border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.06); }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); box-shadow: 0 4px 16px var(--primary-glow); }
+    .btn-accent { background: var(--accent); color: #fff; }
+    .btn-accent:hover { background: #0891b2; transform: translateY(-1px); box-shadow: 0 4px 16px var(--accent-glow); }
+    .btn-outline {
+      background: transparent;
+      color: #fff;
+      border: 1px solid rgba(255,255,255,0.25);
+    }
+    .btn-outline:hover { background: rgba(255,255,255,0.06); border-color: rgba(255,255,255,0.4); }
+    .btn-lg { padding: 14px 28px; font-size: 1rem; border-radius: var(--radius); }
+
+    /* Hamburger */
+    .nav__hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      padding: 6px;
+      border-radius: 6px;
+    }
+    .nav__hamburger span {
+      display: block;
+      width: 22px; height: 2px;
+      background: #fff;
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+    .nav__hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav__hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav__hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* Mobile nav */
+    .nav__mobile {
+      display: none;
+      position: fixed;
+      top: var(--nav-h); left: 0; right: 0;
+      background: rgba(10,15,30,0.98);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 24px 28px;
+      z-index: 999;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .nav__mobile.open { display: flex; }
+    .nav__mobile a {
+      padding: 12px 16px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      border-radius: var(--radius-sm);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav__mobile a:hover { color: #fff; background: rgba(255,255,255,0.05); }
+    .nav__mobile .mobile-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+    .nav__mobile .mobile-actions .btn { justify-content: center; }
+
+    /* ══════════════════════════════════════
+       HERO
+    ══════════════════════════════════════ */
+    .hero {
+      position: relative;
+      padding: calc(var(--nav-h) + 80px) 24px 100px;
+      text-align: center;
+      overflow: hidden;
+    }
+    .hero__bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 70% 55% at 50% 0%,  rgba(59,130,246,0.12) 0%, transparent 65%),
+        radial-gradient(ellipse 40% 40% at 15% 60%, rgba(139,92,246,0.07) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 40% at 85% 60%, rgba(6,182,212,0.06)  0%, transparent 60%),
+        #0a0f1e;
+      pointer-events: none;
+    }
+    .hero__grid {
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.025) 1px, transparent 1px);
+      background-size: 40px 40px;
+      pointer-events: none;
+    }
+    .hero__inner {
+      position: relative;
+      z-index: 1;
+      max-width: 860px;
+      margin: 0 auto;
+    }
+    .hero__eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(59,130,246,0.1);
+      border: 1px solid rgba(59,130,246,0.3);
+      border-radius: 100px;
+      padding: 6px 16px;
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--primary);
+      margin-bottom: 28px;
+    }
+    .hero__eyebrow::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--primary);
+      animation: blink 2s infinite;
+    }
+    @keyframes blink {
+      0%,100% { opacity:1; transform:scale(1); }
+      50%      { opacity:0.4; transform:scale(1.5); }
+    }
+    .hero h1 {
+      font-size: clamp(2rem, 5vw, 3.4rem);
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.04em;
+      line-height: 1.12;
+      margin-bottom: 22px;
+    }
+    .hero h1 .highlight {
+      background: linear-gradient(135deg, var(--primary) 0%, var(--accent) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .hero__sub {
+      font-size: clamp(0.95rem, 2vw, 1.1rem);
+      color: var(--text-muted);
+      line-height: 1.75;
+      max-width: 680px;
+      margin: 0 auto 40px;
+    }
+    .hero__actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .hero__stats {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 40px;
+      flex-wrap: wrap;
+      margin-top: 64px;
+      padding-top: 40px;
+      border-top: 1px solid var(--border);
+    }
+    .hero__stat { text-align: center; }
+    .hero__stat-value {
+      font-size: 1.8rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.04em;
+      display: block;
+    }
+    .hero__stat-label {
+      font-size: 0.78rem;
+      color: var(--text-dim);
+      margin-top: 4px;
+      font-weight: 500;
+    }
+    .hero__stat-divider {
+      width: 1px; height: 40px;
+      background: var(--border);
     }
 
-    .hamburger{
-      position:relative;
-      display:block;
-      width:26px;
-      height:2px;
-      border-radius:999px;
-      background:#fff;
-      transition:.25s ease;
+    /* ══════════════════════════════════════
+       SECTION SHELL
+    ══════════════════════════════════════ */
+    .section {
+      padding: 96px 24px;
+    }
+    .section--alt { background: var(--surface); }
+    .section__inner { max-width: 1200px; margin: 0 auto; }
+    .section__header { text-align: center; max-width: 680px; margin: 0 auto 64px; }
+    .section__eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 16px;
+    }
+    .section__eyebrow span {
+      width: 20px; height: 1px;
+      background: var(--text-dim);
+      display: inline-block;
+    }
+    .section__title {
+      font-size: clamp(1.6rem, 3vw, 2.3rem);
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      margin-bottom: 14px;
+    }
+    .section__sub {
+      font-size: 0.95rem;
+      color: var(--text-muted);
+      line-height: 1.7;
     }
 
-    .hamburger::before,
-    .hamburger::after{
-      content:"";
-      position:absolute;
-      left:0;
-      width:26px;
-      height:2px;
-      border-radius:999px;
-      background:#fff;
-      transition:.25s ease;
+    /* ══════════════════════════════════════
+       MODEL STRIP
+    ══════════════════════════════════════ */
+    .model-strip {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 2px;
+      background: var(--border);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 80px;
+    }
+    .model-item {
+      background: var(--surface-2);
+      padding: 32px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+      transition: background 0.2s;
+    }
+    .model-item:hover { background: var(--surface-3); }
+    .model-item__icon {
+      font-size: 1.8rem;
+      width: 52px; height: 52px;
+      background: rgba(59,130,246,0.1);
+      border: 1px solid rgba(59,130,246,0.2);
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .model-item__title {
+      font-size: 1rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .model-item__desc {
+      font-size: 0.85rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+    }
+    .model-item__tags { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+    .tag {
+      background: rgba(255,255,255,0.05);
+      border: 1px solid var(--border);
+      border-radius: 100px;
+      padding: 3px 10px;
+      font-size: 0.7rem;
+      font-weight: 600;
+      color: var(--text-muted);
     }
 
-    .hamburger::before{top:-8px;}
-    .hamburger::after{top:8px;}
+    /* ══════════════════════════════════════
+       SERVICE CARDS GRID
+    ══════════════════════════════════════ */
+    .services-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 20px;
+    }
+    .service-card {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 32px 28px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.25s, transform 0.25s, box-shadow 0.25s;
+    }
+    .service-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 3px;
+      border-radius: var(--radius) var(--radius) 0 0;
+      opacity: 0;
+      transition: opacity 0.25s;
+    }
+    .service-card:hover {
+      border-color: rgba(255,255,255,0.14);
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+    }
+    .service-card:hover::before { opacity: 1; }
 
-    .nav_toggle[aria-expanded="true"] .hamburger{
-      background:transparent;
+    /* Color themes per card */
+    .service-card--blue   { }
+    .service-card--blue::before   { background: linear-gradient(90deg, var(--primary), var(--accent)); }
+    .service-card--blue:hover     { border-color: rgba(59,130,246,0.3); }
+
+    .service-card--cyan   { }
+    .service-card--cyan::before   { background: linear-gradient(90deg, var(--accent), #22d3ee); }
+    .service-card--cyan:hover     { border-color: rgba(6,182,212,0.3); }
+
+    .service-card--purple { }
+    .service-card--purple::before { background: linear-gradient(90deg, var(--purple), var(--primary)); }
+    .service-card--purple:hover   { border-color: rgba(139,92,246,0.3); }
+
+    .service-card--red    { }
+    .service-card--red::before    { background: linear-gradient(90deg, var(--danger), #f97316); }
+    .service-card--red:hover      { border-color: rgba(239,68,68,0.3); }
+
+    .service-card--green  { }
+    .service-card--green::before  { background: linear-gradient(90deg, var(--success), #34d399); }
+    .service-card--green:hover    { border-color: rgba(16,185,129,0.3); }
+
+    .service-card--yellow { }
+    .service-card--yellow::before { background: linear-gradient(90deg, var(--warning), #fbbf24); }
+    .service-card--yellow:hover   { border-color: rgba(245,158,11,0.3); }
+
+    .service-card--orange { }
+    .service-card--orange::before { background: linear-gradient(90deg, #f97316, var(--warning)); }
+    .service-card--orange:hover   { border-color: rgba(249,115,22,0.3); }
+
+    .service-card__badge {
+      position: absolute;
+      top: 20px; right: 20px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 3px 10px;
+      border-radius: 100px;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+    }
+    .badge--blue   { background: rgba(59,130,246,0.12); color: var(--primary); border: 1px solid rgba(59,130,246,0.25); }
+    .badge--cyan   { background: rgba(6,182,212,0.12);  color: var(--accent);  border: 1px solid rgba(6,182,212,0.25); }
+    .badge--purple { background: rgba(139,92,246,0.12); color: var(--purple);  border: 1px solid rgba(139,92,246,0.25); }
+    .badge--red    { background: rgba(239,68,68,0.1);   color: var(--danger);  border: 1px solid rgba(239,68,68,0.2); }
+    .badge--green  { background: rgba(16,185,129,0.1);  color: var(--success); border: 1px solid rgba(16,185,129,0.2); }
+    .badge--yellow { background: rgba(245,158,11,0.1);  color: var(--warning); border: 1px solid rgba(245,158,11,0.2); }
+    .badge--orange { background: rgba(249,115,22,0.1);  color: #f97316;        border: 1px solid rgba(249,115,22,0.2); }
+
+    .service-card__icon {
+      width: 52px; height: 52px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.5rem;
+      flex-shrink: 0;
+    }
+    .icon--blue   { background: rgba(59,130,246,0.12); border: 1px solid rgba(59,130,246,0.2); }
+    .icon--cyan   { background: rgba(6,182,212,0.12);  border: 1px solid rgba(6,182,212,0.2);  }
+    .icon--purple { background: rgba(139,92,246,0.12); border: 1px solid rgba(139,92,246,0.2); }
+    .icon--red    { background: rgba(239,68,68,0.1);   border: 1px solid rgba(239,68,68,0.15); }
+    .icon--green  { background: rgba(16,185,129,0.1);  border: 1px solid rgba(16,185,129,0.15);}
+    .icon--yellow { background: rgba(245,158,11,0.1);  border: 1px solid rgba(245,158,11,0.15);}
+    .icon--orange { background: rgba(249,115,22,0.1);  border: 1px solid rgba(249,115,22,0.15);}
+
+    .service-card__category {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+    }
+    .service-card h3 {
+      font-size: 1.15rem;
+      font-weight: 700;
+      color: #fff;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+    }
+    .service-card p {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      flex: 1;
+    }
+    .service-card__tags { display: flex; flex-wrap: wrap; gap: 6px; }
+    .service-card__link {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: var(--primary);
+      transition: gap 0.2s, color 0.2s;
+      margin-top: 4px;
+      background: none;
+      border: none;
+      padding: 0;
+      text-decoration: none;
+    }
+    .service-card__link:hover { gap: 10px; color: var(--accent); }
+
+    /* Featured card — full width */
+    .service-card--featured {
+      grid-column: span 3;
+      flex-direction: row;
+      gap: 40px;
+      align-items: flex-start;
+      padding: 36px 40px;
+    }
+    .service-card--featured .service-card__body { flex: 1; }
+    .service-card--featured .service-card__aside {
+      flex-shrink: 0;
+      width: 260px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .aside-stat {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 16px;
+    }
+    .aside-stat__value {
+      font-size: 1.6rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.04em;
+    }
+    .aside-stat__label {
+      font-size: 0.72rem;
+      color: var(--text-dim);
+      margin-top: 2px;
     }
 
-    .nav_toggle[aria-expanded="true"] .hamburger::before{
-      top:0;
-      transform:rotate(45deg);
+    /* ══════════════════════════════════════
+       PROCESS STRIP
+    ══════════════════════════════════════ */
+    .process-strip {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 0;
+      position: relative;
+    }
+    .process-strip::before {
+      content: '';
+      position: absolute;
+      top: 28px; left: 10%; right: 10%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border) 20%, var(--border) 80%, transparent);
+      z-index: 0;
+    }
+    .process-step {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      text-align: center;
+      padding: 0 20px 0;
+      position: relative;
+      z-index: 1;
+    }
+    .process-step__num {
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      font-weight: 800;
+      color: var(--primary);
+      margin-bottom: 20px;
+      position: relative;
+    }
+    .process-step__num::after {
+      content: '';
+      position: absolute;
+      inset: -4px;
+      border-radius: 50%;
+      border: 1px solid rgba(59,130,246,0.2);
+    }
+    .process-step__title {
+      font-size: 0.95rem;
+      font-weight: 700;
+      color: #fff;
+      margin-bottom: 8px;
+    }
+    .process-step__desc {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      line-height: 1.6;
     }
 
-    .nav_toggle[aria-expanded="true"] .hamburger::after{
-      top:0;
-      transform:rotate(-45deg);
+    /* ══════════════════════════════════════
+       CTA SECTION
+    ══════════════════════════════════════ */
+    .cta-section {
+      padding: 96px 24px;
+      position: relative;
+      overflow: hidden;
+      text-align: center;
+    }
+    .cta-section__bg {
+      position: absolute;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 60% 70% at 50% 50%, rgba(59,130,246,0.1) 0%, transparent 65%),
+        var(--surface);
+      pointer-events: none;
+    }
+    .cta-section__inner {
+      position: relative;
+      z-index: 1;
+      max-width: 680px;
+      margin: 0 auto;
+    }
+    .cta-section h2 {
+      font-size: clamp(1.8rem, 3.5vw, 2.6rem);
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.04em;
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+    .cta-section p {
+      font-size: 1rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 36px;
+    }
+    .cta-section__actions {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      flex-wrap: wrap;
+    }
+    .cta-trust {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 24px;
+      flex-wrap: wrap;
+      margin-top: 36px;
+    }
+    .trust-item {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      font-size: 0.8rem;
+      color: var(--text-dim);
+    }
+    .trust-item span { font-size: 1rem; }
+
+    /* ══════════════════════════════════════
+       FOOTER
+    ══════════════════════════════════════ */
+    .footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 60px 24px 32px;
+    }
+    .footer__inner { max-width: 1200px; margin: 0 auto; }
+    .footer__top {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 48px;
+    }
+    .footer__brand p {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin-top: 14px;
+      line-height: 1.65;
+      max-width: 260px;
+    }
+    .footer__col h4 {
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #fff;
+      margin-bottom: 16px;
+    }
+    .footer__col ul { display: flex; flex-direction: column; gap: 10px; }
+    .footer__col ul li a {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      transition: color 0.2s;
+    }
+    .footer__col ul li a:hover { color: var(--primary); }
+    .footer__bottom {
+      border-top: 1px solid var(--border);
+      padding-top: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .footer__bottom p { font-size: 0.8rem; color: var(--text-dim); }
+    .footer__bottom-links { display: flex; gap: 20px; }
+    .footer__bottom-links a { font-size: 0.8rem; color: var(--text-dim); transition: color 0.2s; }
+    .footer__bottom-links a:hover { color: var(--text-muted); }
+
+    /* ══════════════════════════════════════
+       AI CHAT WIDGET
+    ══════════════════════════════════════ */
+    .chat-toggle {
+      position: fixed;
+      bottom: 28px; right: 28px;
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      border: none;
+      color: #fff;
+      font-size: 1.4rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 24px rgba(59,130,246,0.5);
+      z-index: 2000;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .chat-toggle:hover { transform: scale(1.08); box-shadow: 0 6px 32px rgba(59,130,246,0.65); }
+    .chat-toggle__badge {
+      position: absolute;
+      top: -4px; right: -4px;
+      width: 18px; height: 18px;
+      background: var(--success);
+      border-radius: 50%;
+      border: 2px solid #0a0f1e;
+      font-size: 0.6rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .chat-widget {
+      position: fixed;
+      bottom: 96px; right: 28px;
+      width: 380px;
+      max-width: calc(100vw - 32px);
+      max-height: calc(100vh - 120px);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      flex-direction: column;
+      z-index: 1999;
+      overflow: hidden;
+      transform: scale(0.92) translateY(16px);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), opacity 0.2s;
+    }
+    .chat-widget.open {
+      transform: scale(1) translateY(0);
+      opacity: 1;
+      pointer-events: all;
+    }
+    .chat-widget__header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 18px 20px;
+      background: linear-gradient(135deg, rgba(59,130,246,0.15), rgba(6,182,212,0.08));
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .chat-widget__avatar {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    .chat-widget__info { flex: 1; }
+    .chat-widget__name { font-size: 0.9rem; font-weight: 700; color: #fff; }
+    .chat-widget__status {
+      font-size: 0.72rem;
+      color: var(--success);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .chat-widget__status::before {
+      content: '';
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--success);
+    }
+    .chat-widget__close {
+      background: none; border: none;
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      padding: 4px 8px;
+      border-radius: 6px;
+      transition: color 0.2s, background 0.2s;
+    }
+    .chat-widget__close:hover { color: #fff; background: rgba(255,255,255,0.08); }
+    .chat-widget__messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      min-height: 260px;
+      max-height: 340px;
+      scroll-behavior: smooth;
+    }
+    .chat-widget__messages::-webkit-scrollbar { width: 4px; }
+    .chat-widget__messages::-webkit-scrollbar-track { background: transparent; }
+    .chat-widget__messages::-webkit-scrollbar-thumb { background: var(--surface-3); border-radius: 4px; }
+    .msg { display: flex; gap: 8px; animation: msgIn 0.22s ease; }
+    @keyframes msgIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+    .msg--bot  { align-self: flex-start; }
+    .msg--user { align-self: flex-end; flex-direction: row-reverse; }
+    .msg__avatar {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--primary), var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .msg__bubble {
+      max-width: 82%;
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-size: 0.83rem;
+      line-height: 1.55;
+    }
+    .msg--bot .msg__bubble {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: #e2e8f0;
+      border-bottom-left-radius: 4px;
+    }
+    .msg--user .msg__bubble {
+      background: var(--primary);
+      color: #fff;
+      border-bottom-right-radius: 4px;
+    }
+    .msg__time { font-size: 0.65rem; color: var(--text-dim); margin-top: 4px; display: block; }
+    .msg--user .msg__time { text-align: right; }
+    .typing-indicator {
+      display: flex;
+      gap: 4px;
+      padding: 10px 14px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      border-bottom-left-radius: 4px;
+      width: fit-content;
+    }
+    .typing-indicator span {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--text-dim);
+      animation: typing 1.2s infinite;
+    }
+    .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+    .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes typing {
+      0%,60%,100% { transform:translateY(0); opacity:0.4; }
+      30% { transform:translateY(-5px); opacity:1; }
+    }
+    .quick-replies {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding: 0 20px 12px;
+    }
+    .quick-reply {
+      background: rgba(59,130,246,0.1);
+      border: 1px solid rgba(59,130,246,0.25);
+      border-radius: 100px;
+      padding: 5px 12px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--primary);
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .quick-reply:hover { background: rgba(59,130,246,0.2); border-color: var(--primary); color: #fff; }
+    .chat-widget__input {
+      padding: 14px 16px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 8px;
+      align-items: flex-end;
+      flex-shrink: 0;
+    }
+    .chat-widget__input textarea {
+      flex: 1;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: #fff;
+      font-family: inherit;
+      font-size: 0.83rem;
+      padding: 10px 12px;
+      resize: none;
+      min-height: 40px;
+      max-height: 100px;
+      line-height: 1.5;
+      transition: border-color 0.2s;
+    }
+    .chat-widget__input textarea:focus { outline: none; border-color: var(--primary); }
+    .chat-widget__input textarea::placeholder { color: var(--text-dim); }
+    .chat-send {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      background: var(--primary);
+      border: none;
+      color: #fff;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, transform 0.15s;
+      flex-shrink: 0;
+    }
+    .chat-send:hover { background: var(--primary-dark); transform: scale(1.05); }
+    .chat-send:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .chat-widget__footer {
+      padding: 8px 16px 12px;
+      text-align: center;
+      font-size: 0.68rem;
+      color: var(--text-dim);
+      flex-shrink: 0;
     }
 
-    .sr-only{
-      position:absolute;
-      width:1px;
-      height:1px;
-      padding:0;
-      margin:-1px;
-      overflow:hidden;
-      clip:rect(0,0,0,0);
-      white-space:nowrap;
-      border:0;
+    /* ══════════════════════════════════════
+       TOAST
+    ══════════════════════════════════════ */
+    .toast-container {
+      position: fixed;
+      top: calc(var(--nav-h) + 16px);
+      right: 20px;
+      z-index: 3000;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
     }
+    .toast {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      min-width: 300px;
+      max-width: 380px;
+      box-shadow: var(--shadow-lg);
+      animation: toastIn 0.3s ease;
+    }
+    @keyframes toastIn {
+      from { opacity:0; transform:translateX(40px); }
+      to   { opacity:1; transform:translateX(0); }
+    }
+    .toast--success { border-left: 3px solid var(--success); }
+    .toast--info    { border-left: 3px solid var(--primary); }
+    .toast__icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+    .toast__body { flex: 1; }
+    .toast__title { font-size: 0.85rem; font-weight: 700; color: #fff; margin-bottom: 2px; }
+    .toast__msg   { font-size: 0.78rem; color: var(--text-muted); }
+    .toast__close {
+      background: none; border: none;
+      color: var(--text-dim);
+      font-size: 1rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      transition: color 0.2s;
+    }
+    .toast__close:hover { color: #fff; }
 
-    @media(max-width:768px){
-      body{
-        padding-top:72px;
-      }
-
-      body.menu-open{
-        overflow:hidden;
-      }
-
-      .nav{
-        position:fixed !important;
-        top:0 !important;
-        left:0 !important;
-        right:0 !important;
-        width:100%;
-        height:72px;
-        z-index:99999 !important;
-        background:rgba(5,8,22,.98) !important;
-        border-bottom:1px solid rgba(255,255,255,.08);
-        backdrop-filter:blur(14px);
-        -webkit-backdrop-filter:blur(14px);
-      }
-
-      .nav_row{
-        min-height:72px;
-        height:72px;
-        display:flex;
-        align-items:center;
-        justify-content:space-between;
-        padding:0 18px !important;
-      }
-
-      .brand{
-        position:relative;
-        z-index:100002;
-      }
-
-      .nav_menu{
-        position:static;
-      }
-
-      .nav_toggle{
-        position:relative;
-        display:flex !important;
-        z-index:100003;
-      }
-
-      .nav_links{
-        position:fixed !important;
-        top:72px !important;
-        left:0 !important;
-        right:0 !important;
-        bottom:0 !important;
-        width:100vw !important;
-        max-width:100vw !important;
-        height:calc(100dvh - 72px) !important;
-        display:none !important;
-        flex-direction:column !important;
-        flex-wrap:nowrap !important;
-        align-items:stretch !important;
-        justify-content:flex-start !important;
-        gap:0 !important;
-        margin:0 !important;
-        padding:20px 22px 36px !important;
-        overflow-x:hidden !important;
-        overflow-y:auto !important;
-        background:
-          radial-gradient(650px 420px at 20% 0%, rgba(46,91,220,.18), transparent 58%),
-          linear-gradient(180deg,#081124 0%,#050816 100%) !important;
-        border:0 !important;
-        border-radius:0 !important;
-        box-shadow:none !important;
-        z-index:100001 !important;
-      }
-
-      .nav_links.nav_open{
-        display:flex !important;
-      }
-
-      .nav_links > a{
-        display:flex !important;
-        flex:0 0 auto !important;
-        align-items:center !important;
-        justify-content:flex-start !important;
-        width:100% !important;
-        min-height:64px !important;
-        margin:0 !important;
-        padding:0 4px !important;
-        color:rgba(245,248,255,.95) !important;
-        font-size:17px !important;
-        font-weight:800 !important;
-        line-height:1.25 !important;
-        text-align:left !important;
-        white-space:normal !important;
-        background:transparent !important;
-        border:0 !important;
-        border-bottom:1px solid rgba(255,255,255,.08) !important;
-        border-radius:0 !important;
-      }
-
-      .nav_links > a:hover,
-      .nav_links > a.nav-active{
-        color:#7c97ff !important;
-        background:transparent !important;
-      }
-
-      .nav_links > a.btn,
-      .nav_links > a.btn.nav-active{
-        justify-content:center !important;
-        min-height:56px !important;
-        margin-top:24px !important;
-        margin-left:0 !important;
-        padding:0 18px !important;
-        color:#fff !important;
-        background:linear-gradient(135deg,#4779ff,#6267ff) !important;
-        border:0 !important;
-        border-radius:14px !important;
-        box-shadow:0 14px 34px rgba(75,106,255,.30) !important;
-      }
-
-      .nav_links a::after{
-        display:none !important;
-      }
-
-      body.menu-open .cb-chat-fab,
-      body.menu-open .cb-chat{
-        display:none !important;
-      }
+    /* ══════════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════════ */
+    @media (max-width: 1024px) {
+      .services-grid { grid-template-columns: repeat(2, 1fr); }
+      .service-card--featured { grid-column: span 2; flex-direction: column; }
+      .service-card--featured .service-card__aside { width: 100%; flex-direction: row; }
+      .model-strip { grid-template-columns: 1fr; }
+      .process-strip { grid-template-columns: repeat(2, 1fr); gap: 32px; }
+      .process-strip::before { display: none; }
+      .footer__top { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      .nav__links, .nav__actions { display: none; }
+      .nav__hamburger { display: flex; }
+      .services-grid { grid-template-columns: 1fr; }
+      .service-card--featured { grid-column: span 1; }
+      .service-card--featured .service-card__aside { flex-direction: column; }
+      .hero__stats { gap: 24px; }
+      .hero__stat-divider { display: none; }
+      .process-strip { grid-template-columns: 1fr; }
+      .chat-widget { bottom: 88px; right: 16px; width: calc(100vw - 32px); }
+      .chat-toggle  { bottom: 20px; right: 20px; }
+      .footer__top  { grid-template-columns: 1fr 1fr; gap: 32px; }
+    }
+    @media (max-width: 480px) {
+      .hero { padding: calc(var(--nav-h) + 48px) 20px 64px; }
+      .section { padding: 64px 20px; }
+      .footer__top { grid-template-columns: 1fr; }
+      .hero__actions { flex-direction: column; }
+      .hero__actions .btn { width: 100%; justify-content: center; }
+      .cta-section__actions { flex-direction: column; }
+      .cta-section__actions .btn { width: 100%; justify-content: center; }
     }
   </style>
-
 </head>
 <body>
 
-<header class="nav">
-  <div class="container nav_row">
-    <a class="brand" href="/index.html" aria-label="CyberBench homepage">
-      <span class="logo" aria-hidden="true">X</span>
-      <span>CyberBench</span>
+<!-- ══════════════ TOAST ══════════════ -->
+<div class="toast-container" id="toastContainer" aria-live="polite" aria-label="Notifications"></div>
+
+<!-- ══════════════ NAVIGATION ══════════════ -->
+<nav class="nav" role="navigation" aria-label="Main navigation">
+  <div class="nav__inner">
+
+    <a href="/index.html" class="cb-logo" aria-label="CyberBench home">
+      <span class="cb-logo__mark">
+        <svg viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="sg-n" x1="0" y1="0" x2="38" y2="38" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#3b82f6"/>
+              <stop offset="100%" stop-color="#06b6d4"/>
+            </linearGradient>
+            <linearGradient id="ig-n" x1="0" y1="0" x2="38" y2="38" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9"/>
+              <stop offset="100%" stop-color="#93c5fd" stop-opacity="0.9"/>
+            </linearGradient>
+          </defs>
+          <path d="M19 3L5 9v10c0 8.5 6 16 14 18 8-2 14-9.5 14-18V9L19 3z"
+                fill="url(#sg-n)" opacity="0.15"/>
+          <path d="M19 3L5 9v10c0 8.5 6 16 14 18 8-2 14-9.5 14-18V9L19 3z"
+                stroke="url(#sg-n)" stroke-width="1.5" fill="none"/>
+          <text x="10" y="24" font-family="Inter,sans-serif" font-weight="800"
+                font-size="13" fill="url(#ig-n)" letter-spacing="-1">CB</text>
+          <path d="M13 20l3 3 6-6" stroke="#06b6d4" stroke-width="1.8"
+                stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <span class="cb-logo__text">
+        <span class="cb-logo__name">CyberBench</span>
+        <span class="cb-logo__tagline">Security Operations</span>
+      </span>
     </a>
 
-    <div class="nav_menu">
-      <button
-        class="nav_toggle"
-        type="button"
-        aria-label="Open navigation menu"
-        aria-expanded="false"
-        aria-controls="nav_links"
-      >
-        <span class="hamburger"></span>
-        <span class="sr-only">Menu</span>
-      </button>
+    <ul class="nav__links" role="list">
+      <li><a href="/services.html" class="active">Services</a></li>
+      <li><a href="/about.html">About</a></li>
+      <li><a href="/blog.html">Blog</a></li>
+      <li><a href="/client-portal.html">Client Portal</a></li>
+      <li><a href="/consultant-portal.html">Consultant Portal</a></li>
+    </ul>
 
-      <nav class="nav_links" id="nav_links" aria-label="Main Navigation">
-        <a href="/services.html">Services</a>
-        <a href="/about.html">About</a>
-        <a href="/blog.html">Blog</a>
-        <a href="/client-portal.html">Client Portal</a>
-        <a href="/consultant-portal.html">Consultant Portal</a>
-        <a class="btn btn-primary" href="/submit-ticket.html">Deploy Security Now</a>
-      </nav>
+    <div class="nav__actions">
+      <a href="/login.html" class="btn btn-ghost">Log In</a>
+      <a href="/submit-ticket.html" class="btn btn-primary">Submit Ticket</a>
     </div>
+
+    <button class="nav__hamburger" id="hamburger"
+            aria-label="Toggle mobile menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
   </div>
-</header>
+</nav>
 
-<main class="container">
-  <section class="hero" style="padding-top:46px;">
-    <div class="kicker"><span class="dot"></span> Services</div>
-    <h1 class="h1" style="max-width:22ch;">Enterprise security, delivered like a product.</h1>
-    <p class="sub" style="max-width:92ch;">
-CyberBench delivers enterprise-grade cybersecurity services through a fast, ticket-driven model designed for real-world operations. 
-From SIEM monitoring and vulnerability management to disaster recovery, backups, incident response, and compliance support, organizations get direct access to vetted cybersecurity specialists without the delays of traditional consulting. 
-Our internal cyber team and flexible bench model provide continuity, measurable outcomes, and rapid execution — helping businesses reduce risk, improve visibility, and strengthen security operations at a fraction of traditional enterprise cost.
-    </p>
-
-    <div style="display:flex; gap:10px; flex-wrap:wrap; margin-top:16px;">
-      <a class="btn btn-primary" href="/submit-ticket.html">Deploy Security Now</a>
-      <a class="btn btn-ghost" href="/client-portal.html">Client Portal</a>
-    </div>
-  </section>
-
-  <section>
-    <div class="feature_grid">
-
-<div class="card">
-  <span class="badge">CyberBench Model</span>
-  <h3>Expertise & Continuity</h3>
-  <p>
-    Access a vetted bench of cybersecurity specialists matched to your environment and risk profile.
-    Maintain continuity across engagements with consistent execution, not rotating consulting teams.
-  </p>
-  <div class="pills">
-    <span class="pill">Vetted specialists</span>
-    <span class="pill">Continuous support</span>
-    <span class="pill">Right expert, right issue</span>
+<!-- Mobile Nav -->
+<div class="nav__mobile" id="mobileNav" role="navigation" aria-label="Mobile navigation">
+  <a href="/services.html">Services</a>
+  <a href="/about.html">About</a>
+  <a href="/blog.html">Blog</a>
+  <a href="/client-portal.html">Client Portal</a>
+  <a href="/consultant-portal.html">Consultant Portal</a>
+  <div class="mobile-actions">
+    <a href="/login.html" class="btn btn-ghost">Log In</a>
+    <a href="/submit-ticket.html" class="btn btn-primary">Submit Ticket</a>
   </div>
 </div>
 
-      <div class="card">
-        <span class="badge">Detection & Response</span>
-        <h3>SIEM Monitoring</h3>
-        <p>
-          24/7 threat visibility with tuned alerts, security dashboards, and triage workflows
-          designed to reduce noise and accelerate response times.
-        </p>
-        <div class="pills">
-          <span class="pill">Alert tuning</span>
-          <span class="pill">Dashboards</span>
-          <span class="pill">Threat triage</span>
-        </div>
+<!-- ══════════════ MAIN ══════════════ -->
+<main>
+
+  <!-- ══════ HERO ══════ -->
+  <section class="hero" aria-labelledby="hero-heading">
+    <div class="hero__bg" aria-hidden="true"></div>
+    <div class="hero__grid" aria-hidden="true"></div>
+    <div class="hero__inner">
+
+      <div class="hero__eyebrow">CyberBench Services</div>
+
+      <h1 id="hero-heading">
+        Enterprise security,<br>
+        <span class="highlight">delivered like a product.</span>
+      </h1>
+
+      <p class="hero__sub">
+        CyberBench delivers enterprise-grade cybersecurity through a fast, ticket-driven model
+        designed for real-world operations. From SIEM monitoring and vulnerability management
+        to disaster recovery, incident response, and compliance — direct access to vetted
+        specialists without the delays of traditional consulting.
+      </p>
+
+      <div class="hero__actions">
+        <a href="/submit-ticket.html" class="btn btn-primary btn-lg">
+          🚀 Deploy Security Now
+        </a>
+        <a href="/client-portal.html" class="btn btn-outline btn-lg">
+          Client Portal →
+        </a>
       </div>
 
-      <div class="card">
-        <span class="badge">Vulnerability</span>
-        <h3>Vulnerability Management</h3>
-        <p>
-          Continuous scanning, risk-based prioritization, and structured remediation plans
-          with executive-ready reporting and patch tracking.
-        </p>
-        <div class="pills">
-          <span class="pill">Risk scoring</span>
-          <span class="pill">Remediation plans</span>
-          <span class="pill">Patch tracking</span>
+      <div class="hero__stats" aria-label="CyberBench key statistics">
+        <div class="hero__stat">
+          <span class="hero__stat-value">30 min</span>
+          <div class="hero__stat-label">Incident response SLA</div>
         </div>
-      </div>
-
-<div class="card">
-  <span class="badge">Disaster recovery</span>
-  <h3>Backups & Recovery</h3>
-  <p>
-    Protect your data with resilient backups and validated recovery processes,
-    ensuring fast restoration and minimal disruption during incidents.
-  </p>
-  <div class="pills">
-    <span class="pill">Restore validation</span>
-    <span class="pill">Continuous backups</span>
-    <span class="pill">Rapid restore</span>
-  </div>
-</div>
-
-      <div class="card">
-        <span class="badge">Response</span>
-        <h3>Incident Response</h3>
-        <p>
-          Rapid containment and investigation of cyber incidents with forensic analysis,
-          response coordination, and documented recovery actions.
-        </p>
-        <div class="pills">
-          <span class="pill">Threat containment</span>
-          <span class="pill">Forensics</span>
-          <span class="pill">Incident analysis</span>
+        <div class="hero__stat-divider" aria-hidden="true"></div>
+        <div class="hero__stat">
+          <span class="hero__stat-value">24/7</span>
+          <div class="hero__stat-label">SIEM monitoring</div>
         </div>
-      </div>
-
-<div class="card">
-  <span class="badge">Security Operations</span>
-  <h3>Infrastructure Protection</h3>
-  <p>
-    Continuously secure your environment by reducing attack surface, enforcing controls,
-    and maintaining protection across endpoints, networks, and cloud systems.
-  </p>
-  <div class="pills">
-    <span class="pill">Attack surface reduction</span>
-    <span class="pill">Access enforcement</span>
-    <span class="pill">Continuous protection</span>
-  </div>
-</div>
-
-<div class="card">
-  <span class="badge">Security Operations</span>
-  <h3>Security & Risk Management</h3>
-  <p>
-    Identify, prioritize, and reduce risk through continuous assessment,
-    remediation planning, and clear visibility into your security posture.
-  </p>
-  <div class="pills">
-    <span class="pill">Risk visibility</span>
-    <span class="pill">Remediation tracking</span>
-    <span class="pill">Posture improvement</span>
-  </div>
-</div>
-
-      <div class="card">
-        <span class="badge">Human Security</span>
-        <h3>Security Awareness</h3>
-        <p>
-          Reduce human risk through employee security training,
-          phishing simulations, and organizational security culture programs.
-        </p>
-        <div class="pills">
-          <span class="pill">Phishing tests</span>
-          <span class="pill">Training programs</span>
-          <span class="pill">Security culture</span>
+        <div class="hero__stat-divider" aria-hidden="true"></div>
+        <div class="hero__stat">
+          <span class="hero__stat-value">100%</span>
+          <div class="hero__stat-label">Ticket-documented delivery</div>
+        </div>
+        <div class="hero__stat-divider" aria-hidden="true"></div>
+        <div class="hero__stat">
+          <span class="hero__stat-value">SMB</span>
+          <div class="hero__stat-label">Focused & priced right</div>
         </div>
       </div>
 
     </div>
   </section>
+
+  <!-- ══════ HOW THE MODEL WORKS ══════ -->
+  <section class="section section--alt" aria-labelledby="model-heading">
+    <div class="section__inner">
+      <div class="section__header">
+        <div class="section__eyebrow"><span></span> How We Operate <span></span></div>
+        <h2 class="section__title" id="model-heading">The CyberBench Model</h2>
+        <p class="section__sub">
+          Expertise, continuity, and execution — built around your environment, not a generic playbook.
+        </p>
+      </div>
+
+      <div class="model-strip" role="list" aria-label="CyberBench delivery model pillars">
+
+        <div class="model-item" role="listitem">
+          <div class="model-item__icon" aria-hidden="true">🧠</div>
+          <div class="model-item__title">Expertise &amp; Continuity</div>
+          <p class="model-item__desc">
+            Access a vetted bench of cybersecurity specialists matched to your environment and risk profile.
+            Maintain continuity across engagements with consistent execution, not rotating consulting teams.
+          </p>
+          <div class="model-item__tags">
+            <span class="tag">Vetted specialists</span>
+            <span class="tag">Continuous support</span>
+            <span class="tag">Right expert, right issue</span>
+          </div>
+        </div>
+
+        <div class="model-item" role="listitem">
+          <div class="model-item__icon" aria-hidden="true">🎫</div>
+          <div class="model-item__title">Ticket-Driven Delivery</div>
+          <p class="model-item__desc">
+            Every engagement is tracked as a ticket — scoped, assigned, executed, and documented.
+            No ambiguity, no scope creep, and full audit trail for every action taken.
+          </p>
+          <div class="model-item__tags">
+            <span class="tag">Full audit trail</span>
+            <span class="tag">Scoped & assigned</span>
+            <span class="tag">Documented outcomes</span>
+          </div>
+        </div>
+
+        <div class="model-item" role="listitem">
+          <div class="model-item__icon" aria-hidden="true">📊</div>
+          <div class="model-item__title">Measurable Outcomes</div>
+          <p class="model-item__desc">
+            Every service ties back to KPIs — SLA compliance, threat reduction, coverage metrics,
+            and executive-ready reporting so you always know what you're getting.
+          </p>
+          <div class="model-item__tags">
+            <span class="tag">KPI dashboards</span>
+            <span class="tag">SLA compliance</span>
+            <span class="tag">Executive reporting</span>
+          </div>
+        </div>
+
+      </div>
+
+      <!-- Process Strip -->
+      <div class="process-strip" role="list" aria-label="CyberBench delivery process steps">
+        <div class="process-step" role="listitem">
+          <div class="process-step__num" aria-label="Step 1">1</div>
+          <div class="process-step__title">Submit a Ticket</div>
+          <p class="process-step__desc">Describe your security need — incident, project, or ongoing service.</p>
+        </div>
+        <div class="process-step" role="listitem">
+          <div class="process-step__num" aria-label="Step 2">2</div>
+          <div class="process-step__title">Specialist Matched</div>
+          <p class="process-step__desc">We route to the right expert based on skill set, priority, and SLA.</p>
+        </div>
+        <div class="process-step" role="listitem">
+          <div class="process-step__num" aria-label="Step 3">3</div>
+          <div class="process-step__title">Work Executed</div>
+          <p class="process-step__desc">Triage, remediation, and delivery — tracked in real time.</p>
+        </div>
+        <div class="process-step" role="listitem">
+          <div class="process-step__num" aria-label="Step 4">4</div>
+          <div class="process-step__title">Outcome Documented</div>
+          <p class="process-step__desc">Full report, evidence, and follow-up actions logged for your records.</p>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════ SERVICES GRID ══════ -->
+  <section class="section" aria-labelledby="services-heading">
+    <div class="section__inner">
+      <div class="section__header">
+        <div class="section__eyebrow"><span></span> What We Deliver <span></span></div>
+        <h2 class="section__title" id="services-heading">Our Service Portfolio</h2>
+        <p class="section__sub">
+          Eight core capabilities covering the full security operations lifecycle —
+          from detection and response to compliance and human risk.
+        </p>
+      </div>
+
+      <div class="services-grid" role="list" aria-label="CyberBench services">
+
+        <!-- Featured — SIEM Monitoring -->
+        <article class="service-card service-card--blue service-card--featured" role="listitem"
+                 aria-labelledby="svc-siem-heading">
+          <div class="service-card__body">
+            <div class="service-card__icon icon--blue" aria-hidden="true">📡</div>
+            <div class="service-card__category">Detection &amp; Response</div>
+            <h3 id="svc-siem-heading">SIEM Monitoring</h3>
+            <p>
+              24/7 threat visibility with tuned alerts, security dashboards, and triage workflows
+              designed to reduce noise and accelerate response times. Our analysts continuously
+              monitor your environment, correlate events, and escalate real threats — not false positives.
+            </p>
+            <div class="service-card__tags">
+              <span class="tag">Alert tuning</span>
+              <span class="tag">Dashboards</span>
+              <span class="tag">Threat triage</span>
+              <span class="tag">24/7 coverage</span>
+              <span class="tag">Escalation workflows</span>
+            </div>
+            <a href="/siem-alert-noise.html" class="service-card__link" aria-label="Learn more about SIEM Monitoring">
+              Learn more →
+            </a>
+          </div>
+          <div class="service-card__aside" aria-label="SIEM service statistics">
+            <div class="aside-stat">
+              <div class="aside-stat__value">24/7</div>
+              <div class="aside-stat__label">Continuous monitoring coverage</div>
+            </div>
+            <div class="aside-stat">
+              <div class="aside-stat__value">&lt;30 min</div>
+              <div class="aside-stat__label">Alert-to-triage SLA target</div>
+            </div>
+            <div class="aside-stat">
+              <div class="aside-stat__value">90%+</div>
+              <div class="aside-stat__label">Alert noise reduction target</div>
+            </div>
+          </div>
+          <span class="service-card__badge badge--blue">Core Service</span>
+        </article>
+
+        <!-- Vulnerability Management -->
+        <article class="service-card service-card--cyan" role="listitem"
+                 aria-labelledby="svc-vuln-heading">
+          <div class="service-card__icon icon--cyan" aria-hidden="true">🔍</div>
+          <div class="service-card__category">Vulnerability</div>
+          <h3 id="svc-vuln-heading">Vulnerability Management</h3>
+          <p>
+            Continuous scanning, risk-based prioritization, and structured remediation plans
+            with executive-ready reporting and patch tracking.
+          </p>
+          <div class="service-card__tags">
+            <span class="tag">Risk scoring</span>
+            <span class="tag">Remediation plans</span>
+            <span class="tag">Patch tracking</span>
+          </div>
+          <a href="/services.html#vulnerability" class="service-card__link"
+             aria-label="Learn more about Vulnerability Management">Learn more →</a>
+          <span class="service-card__badge badge--cyan">Continuous</span>
+        </article>
+
+        <!-- Backups & Recovery -->
+        <article class="service-card service-card--green" role="listitem"
+                 aria-labelledby="svc-backup-heading">
+          <div class="service-card__icon icon--green" aria-hidden="true">💾</div>
+          <div class="service-card__category">Disaster Recovery</div>
+          <h3 id="svc-backup-heading">Backups &amp; Recovery</h3>
+          <p>
+            Protect your data with resilient immutable backups and validated recovery processes,
+            ensuring fast restoration and minimal disruption during incidents.
+          </p>
+          <div class="service-card__tags">
+            <span class="tag">Restore validation</span>
+            <span class="tag">Continuous backups</span>
+            <span class="tag">Rapid restore</span>
+          </div>
+          <a href="/immutable-backups.html" class="service-card__link"
+             aria-label="Learn more about Backups and Recovery">Learn more →</a>
+          <span class="service-card__badge badge--green">Immutable</span>
+        </article>
+
+        <!-- Incident Response -->
+        <article class="service-card service-card--red" role="listitem"
+                 aria-labelledby="svc-ir-heading">
+          <div class="service-card__icon icon--red" aria-hidden="true">🚨</div>
+          <div class="service-card__category">Response</div>
+          <h3 id="svc-ir-heading">Incident Response</h3>
+          <p>
+            Rapid containment and investigation of cyber incidents with forensic analysis,
+            response coordination, and documented recovery actions.
+          </p>
+          <div class="service-card__tags">
+            <span class="tag">Threat containment</span>
+            <span class="tag">Forensics</span>
+            <span class="tag">Incident analysis</span>
+          </div>
+          <a href="/incident-response-30min.html" class="service-card__link"
+             aria-label="Learn more about Incident Response">Learn more →</a>
+          <span class="service-card__badge badge--red">30-Min SLA</span>
+        </article>
+
+        <!-- Infrastructure Protection -->
+        <article class="service-card service-card--purple" role="listitem"
+                 aria-labelledby="svc-infra-heading">
+          <div class="service-card__icon icon--purple" aria-hidden="true">🛡</div>
+          <div class="service-card__category">Security Operations</div>
+          <h3 id="svc-infra-heading">Infrastructure Protection</h3>
+          <p>
+            Continuously secure your environment by reducing attack surface, enforcing controls,
+            and maintaining protection across endpoints, networks, and cloud systems.
+          </p>
+          <div class="service-card__tags">
+            <span class="tag">Attack surface reduction</span>
+            <span class="tag">Access enforcement</span>
+            <span class="tag">Continuous protection</span>
+          </div>
+          <a href="/services.html#infrastructure" class="service-card__link"
+             aria-label="Learn more about Infrastructure Protection">Learn more →</a>
+          <span class="service-card__badge badge--purple">Always-On</span>
+        </article>
+
+        <!-- Security & Risk Management -->
+        <article class="service-card service-card--yellow" role="listitem"
+                 aria-labelledby="svc-risk-heading">
+          <div class="service-card__icon icon--yellow" aria-hidden="true">📊</div>
+          <div class="service-card__category">Security Operations</div>
+          <h3 id="svc-risk-heading">Security &amp; Risk Management</h3>
+          <p>
+            Identify, prioritize, and reduce risk through continuous assessment,
+            remediation planning, and clear visibility into your security posture.
+          </p>
+          <div class="service-card__tags">
+            <span class="tag">Risk visibility</span>
+            <span class="tag">Remediation tracking</span>
+            <span class="tag">Posture improvement</span>
+          </div>
+          <a href="/compliance-readiness.html" class="service-card__link"
+             aria-label="Learn more about Security and Risk Management">Learn more →</a>
+          <span class="service-card__badge badge--yellow">Continuous</span>
+        </article>
+
+        <!-- Compliance -->
+        <article class="service-card service-card--cyan" role="listitem"
+                 aria-labelledby="svc-compliance-heading">
+          <div class="service-card__icon icon--cyan" aria-hidden="true">📋</div>
+          <div class="service-card__category">Compliance</div>
+          <h3 id="svc-compliance-heading">Compliance Readiness</h3>
+          <p>
+            Prepare for audits and framework certifications with gap assessments,
+            policy documentation, evidence collection, and remediation guidance
+            for NIST CSF, SOC 2, HIPAA, ISO 27001, and more.
+          </p>
+          <div class="service-card__tags">
+            <span class="tag">Gap assessments</span>
+            <span class="tag">NIST CSF</span>
+            <span class="tag">SOC 2</span>
+            <span class="tag">HIPAA</span>
+          </div>
+          <a href="/compliance-readiness.html" class="service-card__link"
+             aria-label="Learn more about Compliance Readiness">Learn more →</a>
+          <span class="service-card__badge badge--cyan">Framework-Ready</span>
+        </article>
+
+        <!-- Security Awareness -->
+        <article class="service-card service-card--orange" role="listitem"
+                 aria-labelledby="svc-awareness-heading">
+          <div class="service-card__icon icon--orange" aria-hidden="true">👥</div>
+          <div class="service-card__category">Human Security</div>
+          <h3 id="svc-awareness-heading">Security Awareness</h3>
+          <p>
+            Reduce human risk through employee security training,
+            phishing simulations, and organizational security culture programs.
+          </p>
+          <div class="service-card__tags">
+            <span class="tag">Phishing tests</span>
+            <span class="tag">Training programs</span>
+            <span class="tag">Security culture</span>
+          </div>
+          <a href="/services.html#awareness" class="service-card__link"
+             aria-label="Learn more about Security Awareness">Learn more →</a>
+          <span class="service-card__badge badge--orange">Human Risk</span>
+        </article>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════ CTA ══════ -->
+  <section class="cta-section" aria-labelledby="cta-heading">
+    <div class="cta-section__bg" aria-hidden="true"></div>
+    <div class="cta-section__inner">
+
+      <div class="section__eyebrow" style="justify-content:center; margin-bottom:20px;">
+        <span></span> Get Started Today <span></span>
+      </div>
+
+      <h2 id="cta-heading">
+        Ready to deploy enterprise<br>security operations?
+      </h2>
+      <p>
+        Submit your first ticket and get matched to the right specialist within minutes.
+        No long contracts, no bloated retainers — just execution.
+      </p>
+
+      <div class="cta-section__actions">
+        <a href="/submit-ticket.html" class="btn btn-primary btn-lg">
+          🚀 Submit Your First Ticket
+        </a>
+        <a href="/client-portal.html" class="btn btn-outline btn-lg">
+          View Client Portal
+        </a>
+      </div>
+
+      <div class="cta-trust">
+        <div class="trust-item"><span>🔒</span> No lock-in contracts</div>
+        <div class="trust-item"><span>⚡</span> 30-minute IR SLA</div>
+        <div class="trust-item"><span>📋</span> Every action documented</div>
+        <div class="trust-item"><span>👥</span> Vetted specialists only</div>
+      </div>
+
+    </div>
+  </section>
+
 </main>
 
-<footer class="footer">
-  <div class="container">
-    <a href="/index.html" class="footer-logo" aria-label="CyberBench homepage">
-      <span class="logo" aria-hidden="true"></span>
-      <span>CyberBench</span>
-    </a>
+<!-- ══════════════ FOOTER ══════════════ -->
+<footer class="footer" role="contentinfo">
+  <div class="footer__inner">
+    <div class="footer__top">
 
-  <nav class="footer-nav">
-    <a href="/services.html">Services</a>
-    <a href="/about.html">About</a>
-    <a href="/blog.html">Blog</a>
-    <a href="/client-portal.html">Client Portal</a>
-    <a href="/consultant-portal.html">Consultant Portal</a>
-  </nav>
+      <div class="footer__brand">
+        <a href="/index.html" class="cb-logo cb-logo--sm" aria-label="CyberBench home">
+          <span class="cb-logo__mark">
+            <svg viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <defs>
+                <linearGradient id="sg-f" x1="0" y1="0" x2="38" y2="38" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#3b82f6"/>
+                  <stop offset="100%" stop-color="#06b6d4"/>
+                </linearGradient>
+                <linearGradient id="ig-f" x1="0" y1="0" x2="38" y2="38" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9"/>
+                  <stop offset="100%" stop-color="#93c5fd" stop-opacity="0.9"/>
+                </linearGradient>
+              </defs>
+              <path d="M19 3L5 9v10c0 8.5 6 16 14 18 8-2 14-9.5 14-18V9L19 3z"
+                    fill="url(#sg-f)" opacity="0.15"/>
+              <path d="M19 3L5 9v10c0 8.5 6 16 14 18 8-2 14-9.5 14-18V9L19 3z"
+                    stroke="url(#sg-f)" stroke-width="1.5" fill="none"/>
+              <text x="10" y="24" font-family="Inter,sans-serif" font-weight="800"
+                    font-size="13" fill="url(#ig-f)" letter-spacing="-1">CB</text>
+              <path d="M13 20l3 3 6-6" stroke="#06b6d4" stroke-width="1.8"
+                    stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span class="cb-logo__text">
+            <span class="cb-logo__name">CyberBench</span>
+          </span>
+        </a>
+        <p>Execution-driven cybersecurity for modern SMBs. Ticket-first, specialist-matched, outcome-documented.</p>
+      </div>
 
-  <div class="footer-contact">
-    <span>Support</span>
-    <a href="mailto:support@cyberbench.io">support@cyberbench.io</a>
-  </div>
+      <div class="footer__col">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="/services.html#siem">SOC &amp; SIEM</a></li>
+          <li><a href="/incident-response-30min.html">Incident Response</a></li>
+          <li><a href="/compliance-readiness.html">Compliance</a></li>
+          <li><a href="/immutable-backups.html">Immutable Backups</a></li>
+        </ul>
+      </div>
 
-  <div class="footer-bottom">
-    © <span id="year"></span> CyberBench. All rights reserved.
+      <div class="footer__col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="/about.html">About</a></li>
+          <li><a href="/blog.html">Blog</a></li>
+          <li><a href="/consultant-portal.html">Consultants</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__col">
+        <h4>Platform</h4>
+        <ul>
+          <li><a href="/client-portal.html">Client Portal</a></li>
+          <li><a href="/submit-ticket.html">Submit Ticket</a></li>
+          <li><a href="/login.html">Login</a></li>
+          <li><a href="mailto:support@cyberbench.io">Support</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="footer__bottom">
+      <p>© <span id="year"></span> CyberBench. All rights reserved.</p>
+      <div class="footer__bottom-links">
+        <a href="/privacy.html">Privacy Policy</a>
+        <a href="/terms.html">Terms of Service</a>
+      </div>
+    </div>
   </div>
 </footer>
 
-<script>
-  document.getElementById("year").textContent = new Date().getFullYear();
+<!-- ══════════════ AI CHAT WIDGET ══════════════ -->
+<button class="chat-toggle" id="chatToggle"
+        aria-label="Open CyberBench AI assistant" aria-expanded="false">
+  🤖
+  <span class="chat-toggle__badge" aria-hidden="true">AI</span>
+</button>
 
-  document.addEventListener("DOMContentLoaded", function () {
-    const nav = document.getElementById("nav_links");
-    const toggle = document.querySelector(".nav_toggle");
-    const navLinks = document.querySelectorAll(".nav_links a[href^='/']");
-    const currentPath = window.location.pathname.replace(/\/$/, "") || "/";
-
-    navLinks.forEach(function (link) {
-      const linkPath = (link.getAttribute("href") || "").replace(/\/$/, "") || "/";
-
-      if (linkPath === currentPath && !link.classList.contains("btn")) {
-        link.classList.add("nav-active");
-      } else {
-        link.classList.remove("nav-active");
-      }
-    });
-
-    if (!nav || !toggle) return;
-
-    function openMenu() {
-      nav.classList.add("nav_open");
-      document.body.classList.add("menu-open");
-      toggle.setAttribute("aria-expanded", "true");
-      toggle.setAttribute("aria-label", "Close navigation menu");
-    }
-
-    function closeMenu() {
-      nav.classList.remove("nav_open");
-      document.body.classList.remove("menu-open");
-      toggle.setAttribute("aria-expanded", "false");
-      toggle.setAttribute("aria-label", "Open navigation menu");
-    }
-
-    toggle.addEventListener("click", function (event) {
-      event.stopPropagation();
-
-      if (nav.classList.contains("nav_open")) {
-        closeMenu();
-      } else {
-        openMenu();
-      }
-    });
-
-    nav.querySelectorAll("a").forEach(function (link) {
-      link.addEventListener("click", closeMenu);
-    });
-
-    document.addEventListener("click", function (event) {
-      if (!nav.contains(event.target) && !toggle.contains(event.target)) {
-        closeMenu();
-      }
-    });
-
-    document.addEventListener("keydown", function (event) {
-      if (event.key === "Escape") {
-        closeMenu();
-      }
-    });
-
-    window.addEventListener("resize", function () {
-      if (window.innerWidth > 768) {
-        closeMenu();
-      }
-    });
-  });
-</script>
-
-<button class="cb-chat-fab" id="cbChatFab" aria-label="Open CyberBench AI chat">AI</button>
-
-<div class="cb-chat" id="cbChat" aria-hidden="true">
-  <div class="cb-chat-header">
-    <div class="cb-chat-title">
-      <div class="cb-chat-dot"></div>
-      <div>
-        <div class="cb-chat-name">CyberBench AI</div>
-        <div class="cb-chat-sub">Fast triage • How-to • Guidance</div>
-      </div>
+<div class="chat-widget" id="chatWidget"
+     role="dialog" aria-label="CyberBench AI Assistant" aria-hidden="true">
+  <div class="chat-widget__header">
+    <div class="chat-widget__avatar" aria-hidden="true">🤖</div>
+    <div class="chat-widget__info">
+      <div class="chat-widget__name">CyberBench AI</div>
+      <div class="chat-widget__status">Online — Services Guide</div>
     </div>
-    <button class="cb-chat-close" id="cbChatClose" aria-label="Close chat">✕</button>
+    <button class="chat-widget__close" id="chatClose" aria-label="Close AI chat">✕</button>
   </div>
 
-  <div class="cb-chat-body" id="cbChatBody"></div>
+  <div class="chat-widget__messages" id="chatMessages"
+       role="log" aria-live="polite" aria-label="Chat messages"></div>
 
-  <form class="cb-chat-form" id="cbChatForm">
-    <input
-      class="cb-chat-input"
-      id="cbChatInput"
-      placeholder="Ask about tickets, KPIs, services, or next steps…"
-      autocomplete="off"
-      required
-    />
-    <button class="cb-chat-send" type="submit">Send</button>
-  </form>
+  <div class="quick-replies" id="quickReplies" aria-label="Quick reply suggestions">
+    <button class="quick-reply" data-msg="What SIEM services do you offer?">SIEM Monitoring</button>
+    <button class="quick-reply" data-msg="Tell me about incident response">Incident Response</button>
+    <button class="quick-reply" data-msg="What compliance frameworks do you support?">Compliance</button>
+    <button class="quick-reply" data-msg="How do immutable backups work?">Backups</button>
+    <button class="quick-reply" data-msg="How do I get started?">Get Started</button>
+  </div>
 
-  <div class="cb-chat-footnote">Demo widget. Don’t paste secrets.</div>
+  <div class="chat-widget__input">
+    <textarea
+      id="chatInput"
+      placeholder="Ask about our services…"
+      rows="1"
+      aria-label="Type your message"
+      maxlength="500"
+    ></textarea>
+    <button class="chat-send" id="chatSend" aria-label="Send message">➤</button>
+  </div>
+  <div class="chat-widget__footer">
+    🔒 Demo widget — do not share sensitive data
+  </div>
 </div>
 
+<!-- ══════════════ SCRIPTS ══════════════ -->
 <script>
-  (function () {
-    const fab = document.getElementById("cbChatFab");
-    const box = document.getElementById("cbChat");
-    const close = document.getElementById("cbChatClose");
-    const body = document.getElementById("cbChatBody");
-    const form = document.getElementById("cbChatForm");
-    const input = document.getElementById("cbChatInput");
+/* ── Year ── */
+document.getElementById('year').textContent = new Date().getFullYear();
 
-    const escapeHtml = (s) =>
-      String(s).replace(/[&<>"']/g, (m) => ({
-        "&":"&amp;",
-        "<":"&lt;",
-        ">":"&gt;",
-        '"':"&quot;",
-        "'":"&#39;"
-      }[m]));
+/* ── Mobile Nav ── */
+const hamburger = document.getElementById('hamburger');
+const mobileNav = document.getElementById('mobileNav');
+hamburger.addEventListener('click', () => {
+  const isOpen = mobileNav.classList.toggle('open');
+  hamburger.classList.toggle('open', isOpen);
+  hamburger.setAttribute('aria-expanded', String(isOpen));
+});
+document.addEventListener('click', e => {
+  if (!hamburger.contains(e.target) && !mobileNav.contains(e.target)) {
+    mobileNav.classList.remove('open');
+    hamburger.classList.remove('open');
+    hamburger.setAttribute('aria-expanded', 'false');
+  }
+});
 
-    function addMsg(role, text) {
-      const row = document.createElement("div");
-      row.className = "cb-chat-row " + (role === "user" ? "is-user" : "is-ai");
-      row.innerHTML = `<div class="cb-chat-bubble">${escapeHtml(text)}</div>`;
-      body.appendChild(row);
-      body.scrollTop = body.scrollHeight;
+/* ── Toast ── */
+function showToast(title, msg, type = 'info') {
+  const tc   = document.getElementById('toastContainer');
+  const icon = type === 'success' ? '✅' : 'ℹ️';
+  const t    = document.createElement('div');
+  t.className = `toast toast--${type}`;
+  t.setAttribute('role', 'alert');
+  t.innerHTML = `
+    <span class="toast__icon">${icon}</span>
+    <div class="toast__body">
+      <div class="toast__title">${title}</div>
+      <div class="toast__msg">${msg}</div>
+    </div>
+    <button class="toast__close" aria-label="Dismiss notification">✕</button>`;
+  t.querySelector('.toast__close').addEventListener('click', () => t.remove());
+  tc.appendChild(t);
+  setTimeout(() => { if (t.parentNode) t.remove(); }, 5000);
+}
+
+/* ══════════════════════════════════════
+   AI CHAT ENGINE — Services KB
+══════════════════════════════════════ */
+const chatToggle   = document.getElementById('chatToggle');
+const chatWidget   = document.getElementById('chatWidget');
+const chatClose    = document.getElementById('chatClose');
+const chatMessages = document.getElementById('chatMessages');
+const chatInput    = document.getElementById('chatInput');
+const chatSend     = document.getElementById('chatSend');
+const quickReplies = document.getElementById('quickReplies');
+
+const KB = [
+  {
+    patterns: ['siem','monitoring','alert','detection','threat','triage','noise','dashboard'],
+    response: `📡 **SIEM Monitoring:**\n\nOur 24/7 SIEM service includes:\n\n• **Alert tuning** — eliminate false positives and reduce noise by 90%+\n• **Security dashboards** — real-time visibility into your environment\n• **Threat triage** — analysts prioritize and escalate real threats\n• **SLA target** — alert-to-triage under 30 minutes\n• **Continuous coverage** — no gaps, no shift handoff delays\n\nLearn more → [SIEM Alert Noise Reduction](/siem-alert-noise.html)`
+  },
+  {
+    patterns: ['incident','response','ir','forensic','contain','breach','ransomware','compromise'],
+    response: `🚨 **Incident Response:**\n\nCyberBench IR includes:\n\n• **30-minute response SLA** for critical incidents\n• **Rapid containment** — isolate affected systems immediately\n• **Forensic analysis** — root cause, timeline, and attacker TTPs\n• **Response coordination** — internal and external stakeholder comms\n• **Documented recovery** — full incident report and follow-up actions\n\nLearn more → [Incident Response](/incident-response-30min.html)`
+  },
+  {
+    patterns: ['compliance','audit','nist','soc 2','hipaa','iso','framework','gdpr','regulation'],
+    response: `📋 **Compliance Readiness:**\n\nWe support:\n\n• **NIST CSF** — full framework gap assessment and roadmap\n• **SOC 2 Type I & II** — readiness and evidence collection\n• **HIPAA** — security rule compliance and risk analysis\n• **ISO 27001** — ISMS design and audit preparation\n\nDeliverables include gap reports, policy templates, evidence packages, and remediation plans.\n\nLearn more → [Compliance Readiness](/compliance-readiness.html)`
+  },
+  {
+    patterns: ['backup','recover','immutable','disaster','restore','ransomware','data loss','rto','rpo'],
+    response: `💾 **Immutable Backups & Recovery:**\n\nOur backup service covers:\n\n• **Immutable storage** — backups that can't be encrypted or deleted by ransomware\n• **Continuous backups** — near-zero RPO for critical data\n• **Restore validation** — regular tested recovery drills\n• **Rapid restore** — minimise downtime during incidents\n• **Offsite & cloud** — geographically redundant copies\n\nLearn more → [Immutable Backups](/immutable-backups.html)`
+  },
+  {
+    patterns: ['vulnerability','vuln','scan','patch','cve','risk score','remediation','pentest'],
+    response: `🔍 **Vulnerability Management:**\n\nOur VM service includes:\n\n• **Continuous scanning** — internal, external, and cloud assets\n• **Risk-based prioritization** — CVSS + business context scoring\n• **Remediation plans** — actionable fix guidance per finding\n• **Patch tracking** — monitor remediation progress over time\n• **Executive reporting** — board-ready vulnerability posture summaries`
+  },
+  {
+    patterns: ['infrastructure','endpoint','network','cloud','access','attack surface','hardening','control'],
+    response: `🛡 **Infrastructure Protection:**\n\nWe continuously secure your environment through:\n\n• **Attack surface reduction** — close unnecessary exposure\n• **Access enforcement** — least-privilege, MFA, PAM controls\n• **Endpoint hardening** — CIS benchmarks and EDR tuning\n• **Network segmentation** — contain lateral movement\n• **Cloud security** — AWS, Azure, GCP posture management`
+  },
+  {
+    patterns: ['risk','posture','assessment','security program','governance','visibility'],
+    response: `📊 **Security & Risk Management:**\n\nWe help you:\n\n• **Identify risk** — asset inventory, threat modelling, gap analysis\n• **Prioritize** — risk-ranked remediation roadmap\n• **Track posture** — continuous KPI dashboard and trend reporting\n• **Reduce risk** — measurable improvement over each quarter\n• **Report to leadership** — executive-ready risk summaries`
+  },
+  {
+    patterns: ['awareness','phishing','training','human','employee','culture','simulation'],
+    response: `👥 **Security Awareness:**\n\nOur human risk program includes:\n\n• **Phishing simulations** — realistic campaigns with click tracking\n• **Training modules** — role-based, engaging, and measurable\n• **Security culture** — org-wide campaigns and policy reinforcement\n• **Metrics** — click rates, completion rates, improvement over time\n• **Tailored content** — industry-specific scenarios`
+  },
+  {
+    patterns: ['price','cost','pricing','how much','plan','package','contract','retainer'],
+    response: `💳 **Pricing & Packages:**\n\nCyberBench uses a **ticket-driven model** — no bloated retainers or long lock-in contracts.\n\n• Services are scoped per ticket or engagement\n• Pricing reflects actual work delivered\n• Flexible for one-off incidents or ongoing coverage\n\nContact us at **support@cyberbench.io** or submit a ticket to get a tailored quote.`
+  },
+  {
+    patterns: ['start','get started','how','begin','first','submit','ticket','sign up','deploy'],
+    response: `🚀 **Getting Started:**\n\n1. **Submit a ticket** at [submit-ticket.html](/submit-ticket.html)\n2. Describe your security need — incident, project, or ongoing service\n3. We match you to the right specialist within minutes\n4. Work is scoped, executed, and fully documented\n\nOr log into the **[Client Portal](/client-portal.html)** to manage existing engagements.`
+  },
+  {
+    patterns: ['hello','hi','hey','greetings','help','what can','welcome'],
+    response: `👋 **Welcome to CyberBench Services!**\n\nI can help you explore:\n\n• 📡 SIEM Monitoring & threat detection\n• 🚨 Incident Response (30-min SLA)\n• 🔍 Vulnerability Management\n• 💾 Immutable Backups & Recovery\n• 📋 Compliance Readiness (NIST, SOC 2, HIPAA)\n• 🛡 Infrastructure Protection\n• 👥 Security Awareness Training\n\nWhat are you looking for?`
+  },
+  {
+    patterns: ['thank','thanks','appreciate','great','helpful','awesome','perfect'],
+    response: `😊 Happy to help! Ready to get started? Submit a ticket at **[submit-ticket.html](/submit-ticket.html)** or email **support@cyberbench.io**.`
+  }
+];
+
+function getResponse(input) {
+  const text = input.toLowerCase().trim();
+  for (const entry of KB) {
+    if (entry.patterns.some(p => text.includes(p))) return entry.response;
+  }
+  return `🤔 I'm not sure about that specifically, but I can help with:\n\n• 📡 SIEM & threat monitoring\n• 🚨 Incident response\n• 📋 Compliance frameworks\n• 💾 Backups & recovery\n• 🔍 Vulnerability management\n• 🚀 Getting started\n\nOr email **support@cyberbench.io** for a direct conversation.`;
+}
+
+function renderMessage(text, role) {
+  const wrap   = document.createElement('div');
+  wrap.className = `msg msg--${role}`;
+  const avatar = document.createElement('div');
+  avatar.className = 'msg__avatar';
+  avatar.setAttribute('aria-hidden', 'true');
+  avatar.textContent = role === 'bot' ? '🤖' : '👤';
+  const bubble = document.createElement('div');
+  bubble.className = 'msg__bubble';
+  bubble.innerHTML = text
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" style="color:var(--accent);text-decoration:underline;">$1</a>')
+    .replace(/\n/g, '<br>');
+  const time = document.createElement('span');
+  time.className = 'msg__time';
+  time.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  bubble.appendChild(time);
+  wrap.appendChild(avatar);
+  wrap.appendChild(bubble);
+  chatMessages.appendChild(wrap);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+
+function showTyping() {
+  const wrap = document.createElement('div');
+  wrap.className = 'msg msg--bot';
+  wrap.id = 'typingMsg';
+  const avatar = document.createElement('div');
+  avatar.className = 'msg__avatar';
+  avatar.setAttribute('aria-hidden', 'true');
+  avatar.textContent = '🤖';
+  const ind = document.createElement('div');
+  ind.className = 'typing-indicator';
+  ind.innerHTML = '<span></span><span></span><span></span>';
+  wrap.appendChild(avatar);
+  wrap.appendChild(ind);
+  chatMessages.appendChild(wrap);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+function hideTyping() {
+  const el = document.getElementById('typingMsg');
+  if (el) el.remove();
+}
+
+function sendMessage(text) {
+  text = (text || '').trim();
+  if (!text) return;
+  chatInput.value = '';
+  chatInput.style.height = 'auto';
+  chatSend.disabled = true;
+  renderMessage(text, 'user');
+  quickReplies.style.display = 'none';
+  showTyping();
+  setTimeout(() => {
+    hideTyping();
+    renderMessage(getResponse(text), 'bot');
+    chatSend.disabled = false;
+    chatInput.focus();
+  }, 600 + Math.random() * 600);
+}
+
+function openChat() {
+  chatWidget.classList.add('open');
+  chatWidget.setAttribute('aria-hidden', 'false');
+  chatToggle.setAttribute('aria-expanded', 'true');
+  chatInput.focus();
+}
+function closeChat() {
+  chatWidget.classList.remove('open');
+  chatWidget.setAttribute('aria-hidden', 'true');
+  chatToggle.setAttribute('aria-expanded', 'false');
+  chatToggle.focus();
+}
+
+chatToggle.addEventListener('click', () =>
+  chatWidget.classList.contains('open') ? closeChat() : openChat());
+chatClose.addEventListener('click', closeChat);
+chatSend.addEventListener('click', () => sendMessage(chatInput.value));
+chatInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(chatInput.value); }
+});
+chatInput.addEventListener('input', () => {
+  chatInput.style.height = 'auto';
+  chatInput.style.height = Math.min(chatInput.scrollHeight, 100) + 'px';
+});
+quickReplies.querySelectorAll('.quick-reply').forEach(btn =>
+  btn.addEventListener('click', () => sendMessage(btn.dataset.msg)));
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    if (chatWidget.classList.contains('open')) closeChat();
+    if (mobileNav.classList.contains('open')) {
+      mobileNav.classList.remove('open');
+      hamburger.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', 'false');
     }
+  }
+});
 
-    function setOpen(isOpen) {
-      box.style.display = isOpen ? "flex" : "none";
-      box.setAttribute("aria-hidden", isOpen ? "false" : "true");
-      if (isOpen) input.focus();
-    }
-
-    fab.addEventListener("click", () => {
-      setOpen(true);
-      if (!body.dataset.greeted) {
-        addMsg("ai", "Hi — I’m CyberBench AI. Tell me what you need help with (ticket submission, KPIs, services, or triage).");
-        body.dataset.greeted = "1";
-      }
-    });
-
-    close.addEventListener("click", () => setOpen(false));
-
-    form.addEventListener("submit", async (e) => {
-      e.preventDefault();
-      const text = input.value.trim();
-      if (!text) return;
-
-      addMsg("user", text);
-      input.value = "";
-
-      addMsg("ai", "Typing…");
-      const loadingNode = body.lastElementChild;
-
-      try {
-        const r = await fetch("/api/chat", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: text })
-        });
-
-        const data = await r.json();
-        const reply = data.reply || "No response.";
-        loadingNode.querySelector(".cb-chat-bubble").textContent = reply;
-      } catch (err) {
-        loadingNode.querySelector(".cb-chat-bubble").textContent =
-          "Chat service is offline. Start your server and try again.";
-      }
-    });
-
-    setOpen(false);
-  })();
+/* Welcome message */
+setTimeout(() => {
+  renderMessage(
+    `👋 Welcome to **CyberBench Services**!\n\nI can walk you through our full portfolio — from SIEM monitoring and incident response to compliance readiness and immutable backups. What are you looking to solve?`,
+    'bot'
+  );
+}, 400);
 </script>
 
 </body>
