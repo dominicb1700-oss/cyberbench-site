@@ -1,1591 +1,1940 @@
 <!doctype html>
 <html lang="en">
-
 <head>
-
-<meta charset="UTF-8">
-
-<meta
-name="viewport"
-content="width=device-width, initial-scale=1.0"
-/>
-
-<title>
-CyberBench Consultant Portal
-</title>
-
-<link
-rel="stylesheet"
-href="/styles.css"
-/>
-
-<style>
-
-body{
-
-margin:0;
-
-background:
-radial-gradient(circle at top left,rgba(45,85,255,.12),transparent 32%),
-#050816;
-
-font-family:Inter,sans-serif;
-
-color:white;
-
-}
-
-.container{
-
-width:min(1300px,92%);
-
-margin:auto;
-
-}
-
-.nav{
-
-position:sticky;
-
-top:0;
-
-z-index:1000;
-
-background:
-rgba(5,8,22,.92);
-
-backdrop-filter:
-blur(10px);
-
-border-bottom:
-1px solid rgba(255,255,255,.06);
-
-}
-
-.nav_row{
-
-display:flex;
-
-align-items:center;
-
-justify-content:space-between;
-
-padding:18px 0;
-
-}
-
-.brand{
-
-display:flex;
-
-align-items:center;
-
-gap:12px;
-
-font-weight:800;
-
-color:white;
-
-text-decoration:none;
-
-}
-
-.logo{
-
-width:34px;
-
-height:34px;
-
-border-radius:50%;
-
-display:flex;
-
-align-items:center;
-
-justify-content:center;
-
-background:
-
-linear-gradient(
-135deg,
-#4d7cff,
-#6b74ff
-);
-
-}
-
-.nav_links{
-
-display:flex;
-
-gap:28px;
-
-align-items:center;
-
-}
-
-.nav_links a{
-
-text-decoration:none;
-
-color:white;
-
-opacity:.82;
-
-font-size:15px;
-
-}
-
-.nav_links a:hover{
-
-opacity:1;
-
-}
-
-.nav-active{
-
-color:#6f87ff!important;
-
-}
-
-.portal{
-
-width:min(1200px,92%);
-
-margin:auto;
-
-padding:70px 0;
-
-display:grid;
-
-grid-template-columns:1fr 1fr;
-
-gap:28px;
-
-}
-
-.card{
-
-background:
-
-linear-gradient(
-180deg,
-#0c1222,
-#070d18
-);
-
-border:1px solid rgba(255,255,255,.06);
-
-border-radius:28px;
-
-padding:40px;
-
-box-shadow:
-0 20px 50px rgba(0,0,0,.25);
-
-}
-
-.kicker{
-
-font-size:12px;
-
-letter-spacing:.2em;
-
-font-weight:700;
-
-color:#6f87ff;
-
-margin-bottom:18px;
-
-}
-
-.title{
-
-font-size:54px;
-
-font-weight:900;
-
-line-height:1;
-
-margin-bottom:18px;
-
-}
-
-.sub{
-
-color:rgba(255,255,255,.65);
-
-line-height:1.8;
-
-margin-bottom:30px;
-
-}
-
-.field{
-
-margin-bottom:20px;
-
-}
-
-.label{
-
-display:block;
-
-margin-bottom:10px;
-
-font-size:12px;
-
-font-weight:700;
-
-letter-spacing:.15em;
-
-}
-
-.input{
-
-width:100%;
-
-height:62px;
-
-background:#040913;
-
-border:1px solid rgba(255,255,255,.06);
-
-border-radius:18px;
-
-padding:0 18px;
-
-box-sizing:border-box;
-
-font-size:16px;
-
-color:white;
-
-}
-
-.input:focus{
-
-outline:none;
-
-border-color:#5576ff;
-
-}
-
-.actions{
-
-display:flex;
-
-gap:14px;
-
-margin-top:24px;
-
-}
-
-.btn{
-
-height:56px;
-
-padding:0 30px;
-
-border:none;
-
-border-radius:18px;
-
-cursor:pointer;
-
-font-weight:700;
-
-font-size:15px;
-
-text-decoration:none;
-
-display:inline-flex;
-
-align-items:center;
-
-justify-content:center;
-
-}
-
-.primary{
-
-background:
-
-linear-gradient(
-135deg,
-#4d7cff,
-#6d75ff
-);
-
-color:white;
-
-}
-
-.secondary{
-
-background:#0b1120;
-
-border:1px solid rgba(255,255,255,.08);
-
-color:white;
-
-}
-
-.signup-row{
-
-margin-top:22px;
-
-color:rgba(255,255,255,.68);
-
-font-size:15px;
-
-}
-
-.signup-row a{
-
-color:#6f87ff;
-
-font-weight:800;
-
-text-decoration:none;
-
-cursor:pointer;
-
-}
-
-.signup-row a:hover{
-
-text-decoration:underline;
-
-}
-
-.note{
-
-margin-top:24px;
-
-padding:18px;
-
-border-radius:18px;
-
-background:#0a1120;
-
-line-height:1.7;
-
-color:rgba(255,255,255,.7);
-
-}
-
-.kpi-grid{
-
-display:grid;
-
-grid-template-columns:1fr 1fr;
-
-gap:18px;
-
-margin-top:28px;
-
-}
-
-.kpi{
-
-background:#050a14;
-
-padding:24px;
-
-border-radius:18px;
-
-}
-
-.kpi-title{
-
-color:rgba(255,255,255,.62);
-
-font-size:13px;
-
-font-weight:800;
-
-letter-spacing:.12em;
-
-text-transform:uppercase;
-
-}
-
-.kpi-value{
-
-font-size:42px;
-
-font-weight:900;
-
-margin-top:14px;
-
-}
-
-.error{
-
-margin-top:18px;
-
-color:#ff7575;
-
-font-weight:700;
-
-}
-
-.success{
-
-margin-top:18px;
-
-color:#61d891;
-
-font-weight:700;
-
-}
-
-.footer{
-
-padding:60px 0;
-
-border-top:1px solid rgba(255,255,255,.06);
-
-margin-top:80px;
-
-text-align:center;
-
-}
-
-.footer-logo{
-
-font-size:24px;
-
-font-weight:900;
-
-margin-bottom:18px;
-
-display:block;
-
-text-decoration:none;
-
-color:white;
-
-}
-
-.footer-nav{
-
-display:flex;
-
-justify-content:center;
-
-gap:24px;
-
-flex-wrap:wrap;
-
-margin-bottom:20px;
-
-}
-
-.footer-nav a{
-
-color:rgba(255,255,255,.72);
-
-text-decoration:none;
-
-}
-
-.footer p{
-
-color:rgba(255,255,255,.55);
-
-}
-
-@media(max-width:900px){
-
-.portal{
-
-grid-template-columns:1fr;
-
-}
-
-.nav_links{
-
-display:none;
-
-}
-
-.title{
-
-font-size:42px;
-
-}
-
-}
-
-
-/* ===== CONSULTANT PORTAL MOBILE MENU ONLY ===== */
-
-.nav_menu{
-
-display:flex;
-
-align-items:center;
-
-}
-
-.nav_toggle{
-
-display:none;
-
-align-items:center;
-
-justify-content:center;
-
-width:46px;
-
-height:46px;
-
-padding:0;
-
-border:0;
-
-border-radius:12px;
-
-background:transparent;
-
-cursor:pointer;
-
-}
-
-.hamburger{
-
-position:relative;
-
-display:block;
-
-width:26px;
-
-height:2px;
-
-border-radius:999px;
-
-background:#fff;
-
-transition:.25s ease;
-
-}
-
-.hamburger::before,
-.hamburger::after{
-
-content:"";
-
-position:absolute;
-
-left:0;
-
-width:26px;
-
-height:2px;
-
-border-radius:999px;
-
-background:#fff;
-
-transition:.25s ease;
-
-}
-
-.hamburger::before{
-
-top:-8px;
-
-}
-
-.hamburger::after{
-
-top:8px;
-
-}
-
-.nav_toggle[aria-expanded="true"] .hamburger{
-
-background:transparent;
-
-}
-
-.nav_toggle[aria-expanded="true"] .hamburger::before{
-
-top:0;
-
-transform:rotate(45deg);
-
-}
-
-.nav_toggle[aria-expanded="true"] .hamburger::after{
-
-top:0;
-
-transform:rotate(-45deg);
-
-}
-
-.sr-only{
-
-position:absolute;
-
-width:1px;
-
-height:1px;
-
-padding:0;
-
-margin:-1px;
-
-overflow:hidden;
-
-clip:rect(0,0,0,0);
-
-white-space:nowrap;
-
-border:0;
-
-}
-
-@media(max-width:768px){
-
-body{
-
-padding-top:72px;
-
-}
-
-body.menu-open{
-
-overflow:hidden;
-
-}
-
-.nav{
-
-position:fixed !important;
-
-top:0 !important;
-
-left:0 !important;
-
-right:0 !important;
-
-width:100%;
-
-height:72px;
-
-z-index:99999 !important;
-
-background:rgba(5,8,22,.98) !important;
-
-border-bottom:1px solid rgba(255,255,255,.08);
-
-backdrop-filter:blur(14px);
-
--webkit-backdrop-filter:blur(14px);
-
-}
-
-.nav_row{
-
-min-height:72px;
-
-height:72px;
-
-display:flex;
-
-align-items:center;
-
-justify-content:space-between;
-
-padding:0 18px !important;
-
-}
-
-.brand{
-
-position:relative;
-
-z-index:100002;
-
-}
-
-.nav_menu{
-
-position:static;
-
-}
-
-.nav_toggle{
-
-position:relative;
-
-display:flex !important;
-
-z-index:100003;
-
-}
-
-.nav_links{
-
-position:fixed !important;
-
-top:72px !important;
-
-left:0 !important;
-
-right:0 !important;
-
-bottom:0 !important;
-
-width:100vw !important;
-
-max-width:100vw !important;
-
-height:calc(100dvh - 72px) !important;
-
-display:none !important;
-
-flex-direction:column !important;
-
-flex-wrap:nowrap !important;
-
-align-items:stretch !important;
-
-justify-content:flex-start !important;
-
-gap:0 !important;
-
-margin:0 !important;
-
-padding:20px 22px 36px !important;
-
-overflow-x:hidden !important;
-
-overflow-y:auto !important;
-
-background:
-radial-gradient(650px 420px at 20% 0%,rgba(46,91,220,.18),transparent 58%),
-linear-gradient(180deg,#081124 0%,#050816 100%) !important;
-
-border:0 !important;
-
-border-radius:0 !important;
-
-box-shadow:none !important;
-
-z-index:100001 !important;
-
-}
-
-.nav_links.nav_open{
-
-display:flex !important;
-
-}
-
-.nav_links > a{
-
-display:flex !important;
-
-flex:0 0 auto !important;
-
-align-items:center !important;
-
-justify-content:flex-start !important;
-
-width:100% !important;
-
-min-height:64px !important;
-
-margin:0 !important;
-
-padding:0 4px !important;
-
-color:rgba(245,248,255,.95) !important;
-
-font-size:17px !important;
-
-font-weight:800 !important;
-
-line-height:1.25 !important;
-
-text-align:left !important;
-
-white-space:normal !important;
-
-background:transparent !important;
-
-border:0 !important;
-
-border-bottom:1px solid rgba(255,255,255,.08) !important;
-
-border-radius:0 !important;
-
-opacity:1 !important;
-
-}
-
-.nav_links > a:hover,
-.nav_links > a.nav-active{
-
-color:#7c97ff !important;
-
-background:transparent !important;
-
-}
-
-.nav_links a::after{
-
-display:none !important;
-
-}
-
-}
-
-</style>
-
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="CyberBench Consultant Portal — Secure access to assigned tickets, triage workflows, documentation, remediation playbooks, and active CyberBench delivery operations." />
+  <title>Consultant Portal | CyberBench</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
+  <style>
+    /* ── Reset & Base ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: #0a0f1e;
+      color: #e2e8f0;
+      line-height: 1.6;
+      overflow-x: hidden;
+      min-height: 100vh;
+    }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
+    img { max-width: 100%; display: block; }
+    button { cursor: pointer; font-family: inherit; }
+
+    /* ── CSS Variables ── */
+    :root {
+      --primary: #3b82f6;
+      --primary-dark: #2563eb;
+      --primary-glow: rgba(59,130,246,0.25);
+      --accent: #06b6d4;
+      --accent-alt: #8b5cf6;
+      --surface: #111827;
+      --surface-2: #1f2937;
+      --surface-3: #374151;
+      --border: rgba(255,255,255,0.08);
+      --border-focus: rgba(139,92,246,0.5);
+      --text-muted: #9ca3af;
+      --text-dim: #6b7280;
+      --success: #10b981;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --purple: #8b5cf6;
+      --purple-glow: rgba(139,92,246,0.25);
+      --radius: 12px;
+      --radius-sm: 8px;
+      --shadow: 0 4px 24px rgba(0,0,0,0.4);
+      --shadow-lg: 0 8px 48px rgba(0,0,0,0.6);
+      --nav-h: 68px;
+    }
+
+    /* ══════════════════════════════════════
+       LOGO
+    ══════════════════════════════════════ */
+    .cb-logo {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      text-decoration: none;
+      user-select: none;
+    }
+    .cb-logo__mark { position: relative; width: 38px; height: 38px; flex-shrink: 0; }
+    .cb-logo__mark svg { width: 38px; height: 38px; display: block; }
+    .cb-logo__text { display: flex; flex-direction: column; line-height: 1; }
+    .cb-logo__name {
+      font-size: 1.15rem;
+      font-weight: 800;
+      letter-spacing: -0.02em;
+      background: linear-gradient(135deg, #ffffff 0%, #93c5fd 60%, #3b82f6 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    .cb-logo__tagline {
+      font-size: 0.58rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-top: 2px;
+      -webkit-text-fill-color: var(--accent);
+    }
+    .cb-logo--sm .cb-logo__mark { width: 28px; height: 28px; }
+    .cb-logo--sm .cb-logo__mark svg { width: 28px; height: 28px; }
+    .cb-logo--sm .cb-logo__name { font-size: 0.95rem; }
+    .cb-logo--sm .cb-logo__tagline { display: none; }
+
+    /* ══════════════════════════════════════
+       NAVIGATION
+    ══════════════════════════════════════ */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      height: var(--nav-h);
+      background: rgba(10,15,30,0.92);
+      backdrop-filter: blur(16px);
+      -webkit-backdrop-filter: blur(16px);
+      border-bottom: 1px solid var(--border);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+    }
+    .nav__inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      padding: 0 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 24px;
+    }
+    .nav__links { display: flex; align-items: center; gap: 4px; }
+    .nav__links a {
+      padding: 8px 14px;
+      font-size: 0.875rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      border-radius: var(--radius-sm);
+      transition: color 0.2s, background 0.2s;
+      white-space: nowrap;
+    }
+    .nav__links a:hover { color: #fff; background: rgba(255,255,255,0.06); }
+    .nav__links a.active { color: var(--purple); }
+    .nav__actions { display: flex; align-items: center; gap: 10px; flex-shrink: 0; }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      padding: 9px 18px;
+      border-radius: var(--radius-sm);
+      font-size: 0.875rem;
+      font-weight: 600;
+      border: none;
+      transition: all 0.2s;
+      cursor: pointer;
+      white-space: nowrap;
+      text-decoration: none;
+    }
+    .btn-ghost {
+      background: transparent;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
+    .btn-ghost:hover { color: #fff; border-color: rgba(255,255,255,0.2); background: rgba(255,255,255,0.06); }
+    .btn-primary { background: var(--primary); color: #fff; }
+    .btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); box-shadow: 0 4px 16px var(--primary-glow); }
+    .btn-purple { background: var(--purple); color: #fff; }
+    .btn-purple:hover { background: #7c3aed; transform: translateY(-1px); box-shadow: 0 4px 16px var(--purple-glow); }
+
+    /* Hamburger */
+    .nav__hamburger {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      padding: 6px;
+      border-radius: 6px;
+    }
+    .nav__hamburger span {
+      display: block;
+      width: 22px; height: 2px;
+      background: #fff;
+      border-radius: 2px;
+      transition: all 0.3s;
+    }
+    .nav__hamburger.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
+    .nav__hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav__hamburger.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
+
+    /* Mobile nav */
+    .nav__mobile {
+      display: none;
+      position: fixed;
+      top: var(--nav-h); left: 0; right: 0;
+      background: rgba(10,15,30,0.98);
+      backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--border);
+      padding: 20px 24px 28px;
+      z-index: 999;
+      flex-direction: column;
+      gap: 6px;
+    }
+    .nav__mobile.open { display: flex; }
+    .nav__mobile a {
+      padding: 12px 16px;
+      font-size: 0.95rem;
+      font-weight: 500;
+      color: var(--text-muted);
+      border-radius: var(--radius-sm);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav__mobile a:hover { color: #fff; background: rgba(255,255,255,0.05); }
+    .nav__mobile .mobile-actions { display: flex; flex-direction: column; gap: 10px; margin-top: 12px; }
+    .nav__mobile .mobile-actions .btn { justify-content: center; }
+
+    /* ══════════════════════════════════════
+       PAGE LAYOUT — split screen
+    ══════════════════════════════════════ */
+    .portal-page {
+      min-height: 100vh;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      padding-top: var(--nav-h);
+    }
+
+    /* ══════════════════════════════════════
+       LEFT — LOGIN PANEL
+    ══════════════════════════════════════ */
+    .portal-login {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      padding: 60px 48px;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      position: relative;
+      overflow: hidden;
+    }
+    .portal-login::before {
+      content: '';
+      position: absolute;
+      top: -120px; left: -120px;
+      width: 400px; height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(139,92,246,0.08) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .portal-login::after {
+      content: '';
+      position: absolute;
+      bottom: -80px; right: -80px;
+      width: 300px; height: 300px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(6,182,212,0.06) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .login-box {
+      width: 100%;
+      max-width: 420px;
+      position: relative;
+      z-index: 1;
+    }
+    .login-box__eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(139,92,246,0.1);
+      border: 1px solid rgba(139,92,246,0.3);
+      border-radius: 100px;
+      padding: 5px 14px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--purple);
+      margin-bottom: 24px;
+    }
+    .login-box__eyebrow::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--purple);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%,100% { opacity:1; transform:scale(1); }
+      50% { opacity:0.5; transform:scale(1.4); }
+    }
+    .login-box h1 {
+      font-size: clamp(1.6rem, 3vw, 2.1rem);
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.03em;
+      line-height: 1.15;
+      margin-bottom: 8px;
+    }
+    .login-box__sub {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      line-height: 1.65;
+      margin-bottom: 36px;
+    }
+
+    /* ── Role Selector ── */
+    .role-selector {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 28px;
+    }
+    .role-card {
+      background: var(--surface-2);
+      border: 2px solid var(--border);
+      border-radius: var(--radius-sm);
+      padding: 14px 16px;
+      cursor: pointer;
+      transition: border-color 0.2s, background 0.2s;
+      display: flex;
+      flex-direction: column;
+      gap: 4px;
+    }
+    .role-card:hover { border-color: rgba(139,92,246,0.4); }
+    .role-card.selected {
+      border-color: var(--purple);
+      background: rgba(139,92,246,0.08);
+    }
+    .role-card__icon { font-size: 1.2rem; }
+    .role-card__title {
+      font-size: 0.82rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .role-card__desc {
+      font-size: 0.7rem;
+      color: var(--text-dim);
+    }
+
+    /* ── Form ── */
+    .login-form { display: flex; flex-direction: column; gap: 20px; }
+    .form-group { display: flex; flex-direction: column; gap: 7px; }
+    .form-group label {
+      font-size: 0.75rem;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .form-group label .required { color: var(--danger); margin-left: 2px; }
+    .input-wrap { position: relative; }
+    .input-wrap__icon {
+      position: absolute;
+      left: 14px;
+      top: 50%;
+      transform: translateY(-50%);
+      font-size: 1rem;
+      pointer-events: none;
+      opacity: 0.5;
+    }
+    .input-wrap input {
+      width: 100%;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-sm);
+      color: #fff;
+      font-family: inherit;
+      font-size: 0.9rem;
+      padding: 13px 14px 13px 42px;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      outline: none;
+    }
+    .input-wrap input:focus {
+      border-color: var(--purple);
+      box-shadow: 0 0 0 3px var(--purple-glow);
+    }
+    .input-wrap input::placeholder { color: var(--text-dim); }
+    .input-wrap input.error { border-color: var(--danger); }
+    .input-wrap input.error:focus { box-shadow: 0 0 0 3px rgba(239,68,68,0.2); }
+
+    .pw-toggle {
+      position: absolute;
+      right: 12px; top: 50%;
+      transform: translateY(-50%);
+      background: none; border: none;
+      color: var(--text-dim);
+      font-size: 0.85rem;
+      padding: 4px 6px;
+      border-radius: 4px;
+      transition: color 0.2s;
+      cursor: pointer;
+    }
+    .pw-toggle:hover { color: var(--text-muted); }
+
+    .field-error {
+      font-size: 0.75rem;
+      color: var(--danger);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .field-error::before { content: '⚠'; font-size: 0.7rem; }
+    .field-error:empty { display: none; }
+
+    .form-options {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      font-size: 0.82rem;
+    }
+    .remember-me {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      cursor: pointer;
+      color: var(--text-muted);
+    }
+    .remember-me input[type="checkbox"] {
+      width: 16px; height: 16px;
+      accent-color: var(--purple);
+      cursor: pointer;
+    }
+    .forgot-link { color: var(--purple); font-weight: 500; transition: color 0.2s; }
+    .forgot-link:hover { color: var(--accent); }
+
+    .login-submit {
+      width: 100%;
+      padding: 14px;
+      background: linear-gradient(135deg, var(--purple), #6d28d9);
+      border: none;
+      border-radius: var(--radius-sm);
+      color: #fff;
+      font-size: 0.95rem;
+      font-weight: 700;
+      letter-spacing: 0.02em;
+      transition: opacity 0.2s, transform 0.2s, box-shadow 0.2s;
+      position: relative;
+    }
+    .login-submit:hover:not(:disabled) {
+      opacity: 0.92;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 24px var(--purple-glow);
+    }
+    .login-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+    .login-submit .spinner {
+      display: none;
+      width: 16px; height: 16px;
+      border: 2px solid rgba(255,255,255,0.3);
+      border-top-color: #fff;
+      border-radius: 50%;
+      animation: spin 0.7s linear infinite;
+      margin-right: 8px;
+      vertical-align: middle;
+    }
+    @keyframes spin { to { transform: rotate(360deg); } }
+    .login-submit.loading .spinner { display: inline-block; }
+    .login-submit.loading .btn-text { opacity: 0.7; }
+
+    .form-error-banner {
+      background: rgba(239,68,68,0.1);
+      border: 1px solid rgba(239,68,68,0.3);
+      border-radius: var(--radius-sm);
+      padding: 12px 16px;
+      font-size: 0.82rem;
+      color: #fca5a5;
+      display: none;
+      align-items: center;
+      gap: 8px;
+      margin-bottom: 4px;
+    }
+    .form-error-banner.visible { display: flex; }
+
+    .login-divider {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: var(--text-dim);
+      font-size: 0.78rem;
+      margin-top: 24px;
+    }
+    .login-divider::before, .login-divider::after {
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .no-account {
+      margin-top: 16px;
+      font-size: 0.8rem;
+      color: var(--text-dim);
+      text-align: center;
+    }
+    .no-account a { color: var(--purple); font-weight: 600; transition: color 0.2s; }
+    .no-account a:hover { color: var(--accent); }
+
+    .login-box__footer {
+      margin-top: 28px;
+      padding-top: 24px;
+      border-top: 1px solid var(--border);
+    }
+    .login-box__footer-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .secure-badge {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 0.72rem;
+      color: var(--text-dim);
+    }
+    .support-link {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      transition: color 0.2s;
+    }
+    .support-link:hover { color: var(--purple); }
+
+    /* ══════════════════════════════════════
+       RIGHT — PREVIEW PANEL
+    ══════════════════════════════════════ */
+    .portal-preview {
+      background:
+        radial-gradient(ellipse 80% 60% at 60% 20%, rgba(139,92,246,0.1) 0%, transparent 65%),
+        radial-gradient(ellipse 40% 40% at 20% 80%, rgba(6,182,212,0.06) 0%, transparent 60%),
+        #0a0f1e;
+      padding: 60px 48px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .portal-preview::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: radial-gradient(circle, rgba(255,255,255,0.02) 1px, transparent 1px);
+      background-size: 36px 36px;
+      pointer-events: none;
+    }
+    .preview-inner { position: relative; z-index: 1; max-width: 480px; }
+
+    .preview-eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 0.72rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 20px;
+    }
+    .preview-eyebrow span {
+      width: 20px; height: 1px;
+      background: var(--text-dim);
+      display: inline-block;
+    }
+    .preview-inner h2 {
+      font-size: clamp(1.5rem, 2.5vw, 2rem);
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.03em;
+      line-height: 1.2;
+      margin-bottom: 10px;
+    }
+    .preview-inner > p {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      line-height: 1.7;
+      margin-bottom: 36px;
+    }
+
+    /* KPI Grid */
+    .kpi-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 28px;
+    }
+    .kpi-card {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 20px;
+      position: relative;
+      overflow: hidden;
+      transition: border-color 0.2s, transform 0.2s;
+    }
+    .kpi-card:hover { border-color: rgba(139,92,246,0.3); transform: translateY(-2px); }
+    .kpi-card::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 2px;
+    }
+    .kpi-card--purple::before { background: linear-gradient(90deg, var(--purple), var(--accent)); }
+    .kpi-card--blue::before   { background: linear-gradient(90deg, var(--primary), var(--accent)); }
+    .kpi-card--red::before    { background: linear-gradient(90deg, var(--danger), #f97316); }
+    .kpi-card--yellow::before { background: linear-gradient(90deg, var(--warning), #fbbf24); }
+
+    .kpi-card--empty {
+      background: repeating-linear-gradient(
+        -45deg,
+        var(--surface-2),
+        var(--surface-2) 4px,
+        rgba(255,255,255,0.02) 4px,
+        rgba(255,255,255,0.02) 8px
+      );
+    }
+    .kpi-card__icon { font-size: 1.4rem; margin-bottom: 10px; }
+    .kpi-card__value {
+      font-size: 2rem;
+      font-weight: 800;
+      color: #fff;
+      letter-spacing: -0.04em;
+      line-height: 1;
+      margin-bottom: 4px;
+    }
+    .kpi-card--empty .kpi-card__value { color: var(--text-dim); font-size: 1.6rem; }
+    .kpi-card__label {
+      font-size: 0.72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+      color: var(--text-dim);
+    }
+    .kpi-card__sub {
+      font-size: 0.68rem;
+      color: var(--text-dim);
+      margin-top: 6px;
+    }
+    .kpi-card__badge {
+      position: absolute;
+      top: 16px; right: 16px;
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 100px;
+    }
+    .badge--new     { background: rgba(139,92,246,0.15); color: var(--purple); border: 1px solid rgba(139,92,246,0.3); }
+    .badge--pending { background: rgba(245,158,11,0.12); color: var(--warning); border: 1px solid rgba(245,158,11,0.25); }
+    .badge--empty   { background: rgba(107,114,128,0.15); color: var(--text-dim); border: 1px solid var(--border); }
+
+    /* Queue Table */
+    .queue-panel {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+      margin-bottom: 24px;
+    }
+    .queue-panel__header {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .queue-panel__header h3 {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #fff;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .live-dot {
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--success);
+      animation: pulse 2s infinite;
+    }
+    .queue-panel__tag {
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 100px;
+      background: rgba(139,92,246,0.12);
+      border: 1px solid rgba(139,92,246,0.25);
+      color: var(--purple);
+    }
+    .queue-empty {
+      padding: 32px 18px;
+      text-align: center;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+    }
+    .queue-empty__icon { font-size: 2rem; opacity: 0.4; }
+    .queue-empty__title {
+      font-size: 0.85rem;
+      font-weight: 700;
+      color: var(--text-muted);
+    }
+    .queue-empty__sub {
+      font-size: 0.75rem;
+      color: var(--text-dim);
+      max-width: 260px;
+    }
+    .queue-empty__cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      background: rgba(139,92,246,0.1);
+      border: 1px solid rgba(139,92,246,0.25);
+      border-radius: 100px;
+      padding: 6px 14px;
+      font-size: 0.75rem;
+      font-weight: 600;
+      color: var(--purple);
+      cursor: pointer;
+      transition: all 0.2s;
+    }
+    .queue-empty__cta:hover { background: rgba(139,92,246,0.2); }
+
+    /* Onboarding steps */
+    .onboarding-steps {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      overflow: hidden;
+    }
+    .onboarding-steps__header {
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+    }
+    .onboarding-steps__header h3 {
+      font-size: 0.8rem;
+      font-weight: 700;
+      color: #fff;
+    }
+    .step-list { display: flex; flex-direction: column; }
+    .step-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 14px 18px;
+      border-bottom: 1px solid var(--border);
+      transition: background 0.15s;
+    }
+    .step-item:last-child { border-bottom: none; }
+    .step-item:hover { background: rgba(255,255,255,0.02); }
+    .step-item__num {
+      width: 26px; height: 26px;
+      border-radius: 50%;
+      background: rgba(139,92,246,0.12);
+      border: 1px solid rgba(139,92,246,0.3);
+      color: var(--purple);
+      font-size: 0.72rem;
+      font-weight: 800;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      flex-shrink: 0;
+    }
+    .step-item__num--done {
+      background: rgba(16,185,129,0.12);
+      border-color: rgba(16,185,129,0.3);
+      color: var(--success);
+    }
+    .step-item__body { flex: 1; }
+    .step-item__title {
+      font-size: 0.8rem;
+      font-weight: 600;
+      color: #e2e8f0;
+      margin-bottom: 2px;
+    }
+    .step-item__desc { font-size: 0.7rem; color: var(--text-dim); }
+    .step-item__status {
+      font-size: 0.65rem;
+      font-weight: 700;
+      padding: 2px 8px;
+      border-radius: 100px;
+      flex-shrink: 0;
+    }
+    .status--pending { background: rgba(245,158,11,0.12); color: var(--warning); }
+    .status--done    { background: rgba(16,185,129,0.12); color: var(--success); }
+
+    /* Preview features */
+    .preview-features {
+      margin-top: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .preview-feature {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 0.82rem;
+      color: var(--text-muted);
+    }
+    .preview-feature__icon {
+      width: 28px; height: 28px;
+      border-radius: 6px;
+      background: rgba(139,92,246,0.1);
+      border: 1px solid rgba(139,92,246,0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.85rem;
+      flex-shrink: 0;
+    }
+
+    /* ══════════════════════════════════════
+       TOAST
+    ══════════════════════════════════════ */
+    .toast-container {
+      position: fixed;
+      top: calc(var(--nav-h) + 16px);
+      right: 20px;
+      z-index: 3000;
+      display: flex;
+      flex-direction: column;
+      gap: 10px;
+    }
+    .toast {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 14px 18px;
+      min-width: 300px;
+      max-width: 380px;
+      box-shadow: var(--shadow-lg);
+      animation: toastIn 0.3s ease;
+    }
+    @keyframes toastIn {
+      from { opacity:0; transform:translateX(40px); }
+      to   { opacity:1; transform:translateX(0); }
+    }
+    .toast--success { border-left: 3px solid var(--success); }
+    .toast--error   { border-left: 3px solid var(--danger); }
+    .toast__icon { font-size: 1.1rem; flex-shrink: 0; margin-top: 1px; }
+    .toast__body { flex: 1; }
+    .toast__title { font-size: 0.85rem; font-weight: 700; color: #fff; margin-bottom: 2px; }
+    .toast__msg   { font-size: 0.78rem; color: var(--text-muted); }
+    .toast__close {
+      background: none; border: none;
+      color: var(--text-dim);
+      font-size: 1rem;
+      padding: 2px 6px;
+      border-radius: 4px;
+      transition: color 0.2s;
+    }
+    .toast__close:hover { color: #fff; }
+
+    /* ══════════════════════════════════════
+       FOOTER
+    ══════════════════════════════════════ */
+    .footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 60px 24px 32px;
+    }
+    .footer__inner { max-width: 1200px; margin: 0 auto; }
+    .footer__top {
+      display: grid;
+      grid-template-columns: 1.5fr 1fr 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 48px;
+    }
+    .footer__brand p {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      margin-top: 14px;
+      line-height: 1.65;
+      max-width: 260px;
+    }
+    .footer__col h4 {
+      font-size: 0.8rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #fff;
+      margin-bottom: 16px;
+    }
+    .footer__col ul { display: flex; flex-direction: column; gap: 10px; }
+    .footer__col ul li a {
+      font-size: 0.875rem;
+      color: var(--text-muted);
+      transition: color 0.2s;
+    }
+    .footer__col ul li a:hover { color: var(--purple); }
+    .footer__bottom {
+      border-top: 1px solid var(--border);
+      padding-top: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .footer__bottom p { font-size: 0.8rem; color: var(--text-dim); }
+    .footer__bottom-links { display: flex; gap: 20px; }
+    .footer__bottom-links a { font-size: 0.8rem; color: var(--text-dim); transition: color 0.2s; }
+    .footer__bottom-links a:hover { color: var(--text-muted); }
+
+    /* ══════════════════════════════════════
+       AI CHAT WIDGET
+    ══════════════════════════════════════ */
+    .chat-toggle {
+      position: fixed;
+      bottom: 28px; right: 28px;
+      width: 56px; height: 56px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--purple), var(--accent));
+      border: none;
+      color: #fff;
+      font-size: 1.4rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      box-shadow: 0 4px 24px rgba(139,92,246,0.5);
+      z-index: 2000;
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .chat-toggle:hover { transform: scale(1.08); box-shadow: 0 6px 32px rgba(139,92,246,0.65); }
+    .chat-toggle__badge {
+      position: absolute;
+      top: -4px; right: -4px;
+      width: 18px; height: 18px;
+      background: var(--success);
+      border-radius: 50%;
+      border: 2px solid #0a0f1e;
+      font-size: 0.6rem;
+      font-weight: 700;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .chat-widget {
+      position: fixed;
+      bottom: 96px; right: 28px;
+      width: 380px;
+      max-width: calc(100vw - 32px);
+      max-height: calc(100vh - 120px);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 20px;
+      box-shadow: var(--shadow-lg);
+      display: flex;
+      flex-direction: column;
+      z-index: 1999;
+      overflow: hidden;
+      transform: scale(0.92) translateY(16px);
+      opacity: 0;
+      pointer-events: none;
+      transition: transform 0.25s cubic-bezier(0.34,1.56,0.64,1), opacity 0.2s;
+    }
+    .chat-widget.open {
+      transform: scale(1) translateY(0);
+      opacity: 1;
+      pointer-events: all;
+    }
+    .chat-widget__header {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      padding: 18px 20px;
+      background: linear-gradient(135deg, rgba(139,92,246,0.15), rgba(6,182,212,0.08));
+      border-bottom: 1px solid var(--border);
+      flex-shrink: 0;
+    }
+    .chat-widget__avatar {
+      width: 40px; height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--purple), var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.1rem;
+      flex-shrink: 0;
+    }
+    .chat-widget__info { flex: 1; }
+    .chat-widget__name { font-size: 0.9rem; font-weight: 700; color: #fff; }
+    .chat-widget__status {
+      font-size: 0.72rem;
+      color: var(--success);
+      display: flex;
+      align-items: center;
+      gap: 4px;
+    }
+    .chat-widget__status::before {
+      content: '';
+      width: 5px; height: 5px;
+      border-radius: 50%;
+      background: var(--success);
+    }
+    .chat-widget__close {
+      background: none; border: none;
+      color: var(--text-muted);
+      font-size: 1.1rem;
+      padding: 4px 8px;
+      border-radius: 6px;
+      transition: color 0.2s, background 0.2s;
+    }
+    .chat-widget__close:hover { color: #fff; background: rgba(255,255,255,0.08); }
+    .chat-widget__messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+      min-height: 260px;
+      max-height: 340px;
+      scroll-behavior: smooth;
+    }
+    .chat-widget__messages::-webkit-scrollbar { width: 4px; }
+    .chat-widget__messages::-webkit-scrollbar-track { background: transparent; }
+    .chat-widget__messages::-webkit-scrollbar-thumb { background: var(--surface-3); border-radius: 4px; }
+    .msg { display: flex; gap: 8px; animation: msgIn 0.22s ease; }
+    @keyframes msgIn { from { opacity:0; transform:translateY(8px); } to { opacity:1; transform:translateY(0); } }
+    .msg--bot  { align-self: flex-start; }
+    .msg--user { align-self: flex-end; flex-direction: row-reverse; }
+    .msg__avatar {
+      width: 28px; height: 28px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--purple), var(--accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.7rem;
+      flex-shrink: 0;
+      margin-top: 2px;
+    }
+    .msg__bubble {
+      max-width: 82%;
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-size: 0.83rem;
+      line-height: 1.55;
+    }
+    .msg--bot .msg__bubble {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: #e2e8f0;
+      border-bottom-left-radius: 4px;
+    }
+    .msg--user .msg__bubble {
+      background: var(--purple);
+      color: #fff;
+      border-bottom-right-radius: 4px;
+    }
+    .msg__time { font-size: 0.65rem; color: var(--text-dim); margin-top: 4px; display: block; }
+    .msg--user .msg__time { text-align: right; }
+    .typing-indicator {
+      display: flex;
+      gap: 4px;
+      padding: 10px 14px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 14px;
+      border-bottom-left-radius: 4px;
+      width: fit-content;
+    }
+    .typing-indicator span {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: var(--text-dim);
+      animation: typing 1.2s infinite;
+    }
+    .typing-indicator span:nth-child(2) { animation-delay: 0.2s; }
+    .typing-indicator span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes typing {
+      0%,60%,100% { transform:translateY(0); opacity:0.4; }
+      30% { transform:translateY(-5px); opacity:1; }
+    }
+    .quick-replies {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      padding: 0 20px 12px;
+    }
+    .quick-reply {
+      background: rgba(139,92,246,0.1);
+      border: 1px solid rgba(139,92,246,0.25);
+      border-radius: 100px;
+      padding: 5px 12px;
+      font-size: 0.75rem;
+      font-weight: 500;
+      color: var(--purple);
+      cursor: pointer;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+    .quick-reply:hover { background: rgba(139,92,246,0.2); border-color: var(--purple); color: #fff; }
+    .chat-widget__input {
+      padding: 14px 16px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 8px;
+      align-items: flex-end;
+      flex-shrink: 0;
+    }
+    .chat-widget__input textarea {
+      flex: 1;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      color: #fff;
+      font-family: inherit;
+      font-size: 0.83rem;
+      padding: 10px 12px;
+      resize: none;
+      min-height: 40px;
+      max-height: 100px;
+      line-height: 1.5;
+      transition: border-color 0.2s;
+    }
+    .chat-widget__input textarea:focus { outline: none; border-color: var(--purple); }
+    .chat-widget__input textarea::placeholder { color: var(--text-dim); }
+    .chat-send {
+      width: 40px; height: 40px;
+      border-radius: 10px;
+      background: var(--purple);
+      border: none;
+      color: #fff;
+      font-size: 1rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, transform 0.15s;
+      flex-shrink: 0;
+    }
+    .chat-send:hover { background: #7c3aed; transform: scale(1.05); }
+    .chat-send:disabled { opacity: 0.5; cursor: not-allowed; transform: none; }
+    .chat-widget__footer {
+      padding: 8px 16px 12px;
+      text-align: center;
+      font-size: 0.68rem;
+      color: var(--text-dim);
+      flex-shrink: 0;
+    }
+
+    /* ══════════════════════════════════════
+       RESPONSIVE
+    ══════════════════════════════════════ */
+    @media (max-width: 1024px) {
+      .portal-page { grid-template-columns: 1fr; }
+      .portal-login { border-right: none; border-bottom: 1px solid var(--border); padding: 48px 32px; }
+      .portal-preview { padding: 48px 32px; }
+      .footer__top { grid-template-columns: 1fr 1fr; }
+    }
+    @media (max-width: 768px) {
+      .nav__links, .nav__actions { display: none; }
+      .nav__hamburger { display: flex; }
+      .portal-login  { padding: 36px 24px; }
+      .portal-preview { padding: 36px 24px; }
+      .kpi-grid { grid-template-columns: 1fr 1fr; }
+      .footer__top { grid-template-columns: 1fr 1fr; gap: 32px; }
+      .chat-widget { bottom: 88px; right: 16px; width: calc(100vw - 32px); }
+      .chat-toggle  { bottom: 20px; right: 20px; }
+    }
+    @media (max-width: 480px) {
+      .kpi-grid  { grid-template-columns: 1fr 1fr; }
+      .footer__top { grid-template-columns: 1fr; }
+      .role-selector { grid-template-columns: 1fr; }
+      .login-box h1 { font-size: 1.5rem; }
+    }
+  </style>
 </head>
-
 <body>
 
-<header class="nav">
+<!-- ══════════════ TOAST ══════════════ -->
+<div class="toast-container" id="toastContainer" aria-live="polite" aria-label="Notifications"></div>
 
-<div class="container nav_row">
+<!-- ══════════════ NAVIGATION ══════════════ -->
+<nav class="nav" role="navigation" aria-label="Main navigation">
+  <div class="nav__inner">
 
-<a
-class="brand"
-href="/index.html"
->
+    <a href="/index.html" class="cb-logo" aria-label="CyberBench home">
+      <span class="cb-logo__mark">
+        <svg viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="sg-a" x1="0" y1="0" x2="38" y2="38" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#3b82f6"/>
+              <stop offset="100%" stop-color="#06b6d4"/>
+            </linearGradient>
+            <linearGradient id="ig-a" x1="0" y1="0" x2="38" y2="38" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9"/>
+              <stop offset="100%" stop-color="#93c5fd" stop-opacity="0.9"/>
+            </linearGradient>
+          </defs>
+          <path d="M19 3L5 9v10c0 8.5 6 16 14 18 8-2 14-9.5 14-18V9L19 3z"
+                fill="url(#sg-a)" opacity="0.15"/>
+          <path d="M19 3L5 9v10c0 8.5 6 16 14 18 8-2 14-9.5 14-18V9L19 3z"
+                stroke="url(#sg-a)" stroke-width="1.5" fill="none"/>
+          <text x="10" y="24" font-family="Inter,sans-serif" font-weight="800"
+                font-size="13" fill="url(#ig-a)" letter-spacing="-1">CB</text>
+          <path d="M13 20l3 3 6-6" stroke="#06b6d4" stroke-width="1.8"
+                stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <span class="cb-logo__text">
+        <span class="cb-logo__name">CyberBench</span>
+        <span class="cb-logo__tagline">Security Operations</span>
+      </span>
+    </a>
 
-<div class="logo">
+    <ul class="nav__links" role="list">
+      <li><a href="/services.html">Services</a></li>
+      <li><a href="/about.html">About</a></li>
+      <li><a href="/blog.html">Blog</a></li>
+      <li><a href="/client-portal.html">Client Portal</a></li>
+      <li><a href="/consultant-portal.html" class="active">Consultant Portal</a></li>
+    </ul>
 
-X
+    <div class="nav__actions">
+      <a href="/login.html" class="btn btn-ghost">Log In</a>
+      <a href="/submit-ticket.html" class="btn btn-primary">Submit Ticket</a>
+    </div>
 
-</div>
-
-<span>
-
-CyberBench
-
-</span>
-
-</a>
-
-<div class="nav_menu">
-
-<button
-class="nav_toggle"
-type="button"
-aria-label="Open navigation menu"
-aria-expanded="false"
-aria-controls="nav_links"
->
-
-<span class="hamburger"></span>
-
-<span class="sr-only">
-
-Menu
-
-</span>
-
-</button>
-
-<nav
-class="nav_links"
-id="nav_links"
-aria-label="Main Navigation"
->
-
-<a href="/services.html">
-
-Services
-
-</a>
-
-<a href="/about.html">
-
-About
-
-</a>
-
-<a href="/blog.html">
-
-Blog
-
-</a>
-
-<a href="/client-portal.html">
-
-Client Portal
-
-</a>
-
-<a
-href="/consultant-portal.html"
-class="nav-active"
->
-
-Consultant Portal
-
-</a>
-
+    <button class="nav__hamburger" id="hamburger"
+            aria-label="Toggle mobile menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
 </nav>
 
+<!-- Mobile Nav -->
+<div class="nav__mobile" id="mobileNav" role="navigation" aria-label="Mobile navigation">
+  <a href="/services.html">Services</a>
+  <a href="/about.html">About</a>
+  <a href="/blog.html">Blog</a>
+  <a href="/client-portal.html">Client Portal</a>
+  <a href="/consultant-portal.html">Consultant Portal</a>
+  <div class="mobile-actions">
+    <a href="/login.html" class="btn btn-ghost">Log In</a>
+    <a href="/submit-ticket.html" class="btn btn-primary">Submit Ticket</a>
+  </div>
 </div>
 
-</div>
-
-</header>
-
-<div class="portal">
-
-<div class="card">
-
-<div class="kicker">
-
-CONSULTANT PORTAL
-
-</div>
-
-<div
-class="title"
-id="formTitle"
->
-
-Access your console
-
-</div>
-
-<div
-class="sub"
-id="formSubtitle"
->
-
-Secure access to assigned tickets,
-triage workflows,
-documentation,
-remediation playbooks,
-and active CyberBench delivery operations.
-
-</div>
-
-<form
-id="consultantForm"
-onsubmit="handleConsultantAuth(event)"
->
-
-<div class="field">
-
-<label class="label">
-
-EMAIL
-
-</label>
-
-<input
-id="email"
-class="input"
-type="email"
-required
-/>
-
-</div>
-
-<div class="field">
-
-<label class="label">
-
-PASSWORD
-
-</label>
-
-<input
-id="password"
-class="input"
-type="password"
-required
-/>
-
-</div>
-
-<div class="actions">
-
-<button
-id="authButton"
-type="submit"
-class="btn primary"
->
-
-Login
-
-</button>
-
-<button
-type="button"
-class="btn secondary"
-onclick="location.href='/'"
->
-
-Back
-
-</button>
-
-</div>
-
-<div class="signup-row">
-
-<span id="toggleText">
-
-Don’t have a consultant account?
-
-</span>
-
-<a
-id="toggleLink"
-onclick="toggleSignup()"
->
-
-Sign up
-
-</a>
-
-</div>
-
-<div id="message">
-
-</div>
-
-<div class="note">
-
-CyberBench Secure Consultant Portal
-
-<br><br>
-
-support@cyberbench.io
-
-</div>
-
-</form>
-
-</div>
-
-<div class="card">
-
-<div class="kicker">
-
-WORKSPACE PREVIEW
-
-</div>
-
-<div class="title">
-
-Consultant KPIs
-
-</div>
-
-<div class="sub">
-
-Real-time visibility into assigned work,
-ticket queues,
-SLA activity,
-and CyberBench delivery execution.
-
-</div>
-
-<div class="kpi-grid">
-
-<div class="kpi">
-
-<div class="kpi-title">
-
-Assigned
-
-</div>
-
-<div class="kpi-value">
-
-0
-
-</div>
-
-</div>
-
-<div class="kpi">
-
-<div class="kpi-title">
-
-Open
-
-</div>
-
-<div
-class="kpi-value"
-id="kpi-open"
->
-
-—
-
-</div>
-
-</div>
-
-<div class="kpi">
-
-<div class="kpi-title">
-
-SLA Due
-
-</div>
-
-<div class="kpi-value">
-
-—
-
-</div>
-
-</div>
-
-<div class="kpi">
-
-<div class="kpi-title">
-
-Avg/Day
-
-</div>
-
-<div
-class="kpi-value"
-id="kpi-avg"
->
-
-—
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-</div>
-
-<footer class="footer">
-
-<a
-href="/"
-class="footer-logo"
->
-
-CyberBench
-
-</a>
-
-<div class="footer-nav">
-
-<a href="/services.html">
-
-Services
-
-</a>
-
-<a href="/about.html">
-
-About
-
-</a>
-
-<a href="/blog.html">
-
-Blog
-
-</a>
-
-<a href="/client-portal.html">
-
-Client Portal
-
-</a>
-
-<a href="/consultant-portal.html">
-
-Consultant Portal
-
-</a>
-
-</div>
-
-<p>
-
-support@cyberbench.io
-
-</p>
-
-<p>
-
-© 2026 CyberBench.
-All rights reserved.
-
-</p>
-
+<!-- ══════════════ MAIN ══════════════ -->
+<main>
+  <div class="portal-page">
+
+    <!-- ══════ LEFT — LOGIN ══════ -->
+    <section class="portal-login" aria-labelledby="portal-heading">
+      <div class="login-box">
+
+        <div class="login-box__eyebrow">Consultant Portal</div>
+
+        <h1 id="portal-heading">Access your<br>console</h1>
+        <p class="login-box__sub">
+          Secure access to assigned tickets, triage workflows, documentation,
+          remediation playbooks, and active CyberBench delivery operations.
+        </p>
+
+        <!-- Role Selector -->
+        <fieldset style="border:none;margin-bottom:0;" aria-label="Select your consultant role">
+          <legend style="font-size:0.75rem;font-weight:700;letter-spacing:0.08em;text-transform:uppercase;color:var(--text-muted);margin-bottom:10px;">
+            I am a
+          </legend>
+          <div class="role-selector">
+            <div class="role-card selected" data-role="analyst"
+                 role="radio" aria-checked="true" tabindex="0"
+                 aria-label="SOC Analyst role">
+              <div class="role-card__icon">🔍</div>
+              <div class="role-card__title">SOC Analyst</div>
+              <div class="role-card__desc">Triage & monitoring</div>
+            </div>
+            <div class="role-card" data-role="ir"
+                 role="radio" aria-checked="false" tabindex="0"
+                 aria-label="IR Specialist role">
+              <div class="role-card__icon">🚨</div>
+              <div class="role-card__title">IR Specialist</div>
+              <div class="role-card__desc">Incident response</div>
+            </div>
+            <div class="role-card" data-role="compliance"
+                 role="radio" aria-checked="false" tabindex="0"
+                 aria-label="Compliance Engineer role">
+              <div class="role-card__icon">📋</div>
+              <div class="role-card__title">Compliance Eng.</div>
+              <div class="role-card__desc">Audit & frameworks</div>
+            </div>
+            <div class="role-card" data-role="architect"
+                 role="radio" aria-checked="false" tabindex="0"
+                 aria-label="Security Architect role">
+              <div class="role-card__icon">🏗</div>
+              <div class="role-card__title">Sec. Architect</div>
+              <div class="role-card__desc">Design & strategy</div>
+            </div>
+          </div>
+        </fieldset>
+
+        <!-- Error Banner -->
+        <div class="form-error-banner" id="errorBanner" role="alert">
+          <span>🔐</span>
+          <span id="errorMsg">Invalid email or password. Please try again.</span>
+        </div>
+
+        <!-- Login Form -->
+        <form class="login-form" id="loginForm" novalidate
+              aria-label="Consultant portal login form">
+
+          <!-- Email -->
+          <div class="form-group">
+            <label for="email">
+              Email Address <span class="required" aria-hidden="true">*</span>
+            </label>
+            <div class="input-wrap">
+              <span class="input-wrap__icon" aria-hidden="true">✉</span>
+              <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="consultant@cyberbench.io"
+                autocomplete="email"
+                required
+                aria-required="true"
+                aria-describedby="email-error"
+              />
+            </div>
+            <span class="field-error" id="email-error" role="alert"></span>
+          </div>
+
+          <!-- Password -->
+          <div class="form-group">
+            <label for="password">
+              Password <span class="required" aria-hidden="true">*</span>
+            </label>
+            <div class="input-wrap">
+              <span class="input-wrap__icon" aria-hidden="true">🔒</span>
+              <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Enter your password"
+                autocomplete="current-password"
+                required
+                aria-required="true"
+                aria-describedby="password-error"
+              />
+              <button type="button" class="pw-toggle" id="pwToggle"
+                      aria-label="Show password">👁</button>
+            </div>
+            <span class="field-error" id="password-error" role="alert"></span>
+          </div>
+
+          <!-- Options -->
+          <div class="form-options">
+            <label class="remember-me">
+              <input type="checkbox" id="rememberMe" name="rememberMe" />
+              Remember me
+            </label>
+            <a href="/login.html#reset" class="forgot-link">Forgot password?</a>
+          </div>
+
+          <!-- Submit -->
+          <button type="submit" class="login-submit" id="loginBtn">
+            <span class="spinner" aria-hidden="true"></span>
+            <span class="btn-text">Log In to Console</span>
+          </button>
+
+        </form>
+
+        <!-- Divider -->
+        <div class="login-divider">or</div>
+
+        <!-- Sign up -->
+        <div class="no-account">
+          Don't have a consultant account?
+          <a href="/signup.html">Apply to join the network</a>
+        </div>
+
+        <!-- Footer -->
+        <div class="login-box__footer">
+          <div class="login-box__footer-row">
+            <div class="secure-badge">
+              <span>🔒</span>
+              CyberBench Secure Consultant Portal
+            </div>
+            <a href="mailto:support@cyberbench.io" class="support-link">
+              support@cyberbench.io
+            </a>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+    <!-- ══════ RIGHT — PREVIEW ══════ -->
+    <section class="portal-preview" aria-labelledby="preview-heading">
+      <div class="preview-inner">
+
+        <div class="preview-eyebrow">
+          <span></span> Workspace Preview
+        </div>
+
+        <h2 id="preview-heading">Consultant KPIs</h2>
+        <p>
+          Real-time visibility into assigned work, ticket queues, SLA activity,
+          and CyberBench delivery execution.
+        </p>
+
+        <!-- KPI Grid -->
+        <div class="kpi-grid" aria-label="Consultant key performance indicators">
+
+          <div class="kpi-card kpi-card--purple" role="region" aria-label="Assigned tickets">
+            <div class="kpi-card__icon" aria-hidden="true">📂</div>
+            <div class="kpi-card__value">0</div>
+            <div class="kpi-card__label">Assigned</div>
+            <div class="kpi-card__sub">Awaiting first ticket</div>
+            <span class="kpi-card__badge badge--new">New Account</span>
+          </div>
+
+          <div class="kpi-card kpi-card--blue kpi-card--empty" role="region" aria-label="Open tickets">
+            <div class="kpi-card__icon" aria-hidden="true">🎫</div>
+            <div class="kpi-card__value">—</div>
+            <div class="kpi-card__label">Open</div>
+            <div class="kpi-card__sub">No active tickets yet</div>
+            <span class="kpi-card__badge badge--empty">Pending</span>
+          </div>
+
+          <div class="kpi-card kpi-card--red kpi-card--empty" role="region" aria-label="SLA due tickets">
+            <div class="kpi-card__icon" aria-hidden="true">⏱</div>
+            <div class="kpi-card__value">—</div>
+            <div class="kpi-card__label">SLA Due</div>
+            <div class="kpi-card__sub">No SLA deadlines set</div>
+            <span class="kpi-card__badge badge--empty">Pending</span>
+          </div>
+
+          <div class="kpi-card kpi-card--yellow kpi-card--empty" role="region" aria-label="Average tickets per day">
+            <div class="kpi-card__icon" aria-hidden="true">📈</div>
+            <div class="kpi-card__value">—</div>
+            <div class="kpi-card__label">Avg / Day</div>
+            <div class="kpi-card__sub">Tracks after 7 days</div>
+            <span class="kpi-card__badge badge--empty">Pending</span>
+          </div>
+
+        </div>
+
+        <!-- Ticket Queue -->
+        <div class="queue-panel" aria-label="Ticket queue">
+          <div class="queue-panel__header">
+            <h3>
+              <span class="live-dot" aria-hidden="true"></span>
+              Ticket Queue
+            </h3>
+            <span class="queue-panel__tag">0 Active</span>
+          </div>
+          <div class="queue-empty" role="status" aria-live="polite">
+            <div class="queue-empty__icon" aria-hidden="true">📭</div>
+            <div class="queue-empty__title">No tickets assigned yet</div>
+            <div class="queue-empty__sub">
+              Once onboarding is complete, tickets will be matched to your skill set and routed here automatically.
+            </div>
+            <button class="queue-empty__cta" onclick="sendMessage('How does ticket assignment work?')">
+              ✦ How does assignment work?
+            </button>
+          </div>
+        </div>
+
+        <!-- Onboarding Steps -->
+        <div class="onboarding-steps" aria-label="Consultant onboarding checklist">
+          <div class="onboarding-steps__header">
+            <h3>🚀 Getting Started — Onboarding Checklist</h3>
+          </div>
+          <div class="step-list" role="list">
+
+            <div class="step-item" role="listitem">
+              <div class="step-item__num step-item__num--done" aria-label="Completed">✓</div>
+              <div class="step-item__body">
+                <div class="step-item__title">Account created</div>
+                <div class="step-item__desc">Portal access provisioned successfully</div>
+              </div>
+              <span class="step-item__status status--done">Done</span>
+            </div>
+
+            <div class="step-item" role="listitem">
+              <div class="step-item__num" aria-label="Step 2">2</div>
+              <div class="step-item__body">
+                <div class="step-item__title">Complete profile & skill tags</div>
+                <div class="step-item__desc">Set specialisations, certifications, and availability</div>
+              </div>
+              <span class="step-item__status status--pending">Pending</span>
+            </div>
+
+            <div class="step-item" role="listitem">
+              <div class="step-item__num" aria-label="Step 3">3</div>
+              <div class="step-item__body">
+                <div class="step-item__title">Review delivery standards</div>
+                <div class="step-item__desc">Read SLA commitments, escalation paths, and playbooks</div>
+              </div>
+              <span class="step-item__status status--pending">Pending</span>
+            </div>
+
+            <div class="step-item" role="listitem">
+              <div class="step-item__num" aria-label="Step 4">4</div>
+              <div class="step-item__body">
+                <div class="step-item__title">First ticket assignment</div>
+                <div class="step-item__desc">Matched automatically based on skill set and availability</div>
+              </div>
+              <span class="step-item__status status--pending">Pending</span>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Feature list -->
+        <div class="preview-features" aria-label="Console features">
+          <div class="preview-feature">
+            <div class="preview-feature__icon" aria-hidden="true">🎫</div>
+            Skill-matched ticket routing with SLA countdown
+          </div>
+          <div class="preview-feature">
+            <div class="preview-feature__icon" aria-hidden="true">📖</div>
+            Full remediation playbook library access
+          </div>
+          <div class="preview-feature">
+            <div class="preview-feature__icon" aria-hidden="true">📊</div>
+            Personal KPI tracking — quality, speed, SLA rate
+          </div>
+          <div class="preview-feature">
+            <div class="preview-feature__icon" aria-hidden="true">🤝</div>
+            Peer escalation and senior consultant handoffs
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </div><!-- /portal-page -->
+</main>
+
+<!-- ══════════════ FOOTER ══════════════ -->
+<footer class="footer" role="contentinfo">
+  <div class="footer__inner">
+    <div class="footer__top">
+
+      <div class="footer__brand">
+        <a href="/index.html" class="cb-logo cb-logo--sm" aria-label="CyberBench home">
+          <span class="cb-logo__mark">
+            <svg viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+              <defs>
+                <linearGradient id="sg-f" x1="0" y1="0" x2="38" y2="38" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#3b82f6"/>
+                  <stop offset="100%" stop-color="#06b6d4"/>
+                </linearGradient>
+                <linearGradient id="ig-f" x1="0" y1="0" x2="38" y2="38" gradientUnits="userSpaceOnUse">
+                  <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9"/>
+                  <stop offset="100%" stop-color="#93c5fd" stop-opacity="0.9"/>
+                </linearGradient>
+              </defs>
+              <path d="M19 3L5 9v10c0 8.5 6 16 14 18 8-2 14-9.5 14-18V9L19 3z"
+                    fill="url(#sg-f)" opacity="0.15"/>
+              <path d="M19 3L5 9v10c0 8.5 6 16 14 18 8-2 14-9.5 14-18V9L19 3z"
+                    stroke="url(#sg-f)" stroke-width="1.5" fill="none"/>
+              <text x="10" y="24" font-family="Inter,sans-serif" font-weight="800"
+                    font-size="13" fill="url(#ig-f)" letter-spacing="-1">CB</text>
+              <path d="M13 20l3 3 6-6" stroke="#06b6d4" stroke-width="1.8"
+                    stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+          </span>
+          <span class="cb-logo__text">
+            <span class="cb-logo__name">CyberBench</span>
+          </span>
+        </a>
+        <p>Execution-driven cybersecurity for modern SMBs. Ticket-first, specialist-matched, outcome-documented.</p>
+      </div>
+
+      <div class="footer__col">
+        <h4>Services</h4>
+        <ul>
+          <li><a href="/services.html#soc">SOC & SIEM</a></li>
+          <li><a href="/services.html#ir">Incident Response</a></li>
+          <li><a href="/services.html#compliance">Compliance</a></li>
+          <li><a href="/services.html#backup">Immutable Backups</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="/about.html">About</a></li>
+          <li><a href="/blog.html">Blog</a></li>
+          <li><a href="/consultant-portal.html">Consultants</a></li>
+        </ul>
+      </div>
+
+      <div class="footer__col">
+        <h4>Platform</h4>
+        <ul>
+          <li><a href="/client-portal.html">Client Portal</a></li>
+          <li><a href="/submit-ticket.html">Submit Ticket</a></li>
+          <li><a href="/login.html">Login</a></li>
+          <li><a href="mailto:support@cyberbench.io">Support</a></li>
+        </ul>
+      </div>
+
+    </div>
+
+    <div class="footer__bottom">
+      <p>© <span id="year"></span> CyberBench. All rights reserved.</p>
+      <div class="footer__bottom-links">
+        <a href="/privacy.html">Privacy Policy</a>
+        <a href="/terms.html">Terms of Service</a>
+      </div>
+    </div>
+  </div>
 </footer>
 
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<!-- ══════════════ AI CHAT WIDGET ══════════════ -->
+<button class="chat-toggle" id="chatToggle"
+        aria-label="Open CyberBench AI assistant" aria-expanded="false">
+  🤖
+  <span class="chat-toggle__badge" aria-hidden="true">AI</span>
+</button>
 
+<div class="chat-widget" id="chatWidget"
+     role="dialog" aria-label="CyberBench AI Assistant" aria-hidden="true">
+  <div class="chat-widget__header">
+    <div class="chat-widget__avatar" aria-hidden="true">🤖</div>
+    <div class="chat-widget__info">
+      <div class="chat-widget__name">CyberBench AI</div>
+      <div class="chat-widget__status">Online — Consultant Support</div>
+    </div>
+    <button class="chat-widget__close" id="chatClose" aria-label="Close AI chat">✕</button>
+  </div>
+
+  <div class="chat-widget__messages" id="chatMessages"
+       role="log" aria-live="polite" aria-label="Chat messages"></div>
+
+  <div class="quick-replies" id="quickReplies" aria-label="Quick reply suggestions">
+    <button class="quick-reply" data-msg="How does ticket assignment work?">Ticket Assignment</button>
+    <button class="quick-reply" data-msg="What are the SLA requirements?">SLA Rules</button>
+    <button class="quick-reply" data-msg="How do I access playbooks?">Playbooks</button>
+    <button class="quick-reply" data-msg="How do I reset my password?">Reset Password</button>
+    <button class="quick-reply" data-msg="How do I complete my profile?">My Profile</button>
+  </div>
+
+  <div class="chat-widget__input">
+    <textarea
+      id="chatInput"
+      placeholder="Ask about your consultant console…"
+      rows="1"
+      aria-label="Type your message"
+      maxlength="500"
+    ></textarea>
+    <button class="chat-send" id="chatSend" aria-label="Send message">➤</button>
+  </div>
+  <div class="chat-widget__footer">
+    🔒 Demo widget — do not share sensitive data
+  </div>
+</div>
+
+<!-- ══════════════ SCRIPTS ══════════════ -->
 <script>
+/* ── Year ── */
+document.getElementById('year').textContent = new Date().getFullYear();
 
-
-
-const nav=
-document.getElementById("nav_links");
-
-const toggle=
-document.querySelector(".nav_toggle");
-
-function openMenu(){
-
-nav.classList.add("nav_open");
-
-document.body.classList.add("menu-open");
-
-toggle.setAttribute(
-"aria-expanded",
-"true"
-);
-
-toggle.setAttribute(
-"aria-label",
-"Close navigation menu"
-);
-
-}
-
-function closeMenu(){
-
-nav.classList.remove("nav_open");
-
-document.body.classList.remove("menu-open");
-
-toggle.setAttribute(
-"aria-expanded",
-"false"
-);
-
-toggle.setAttribute(
-"aria-label",
-"Open navigation menu"
-);
-
-}
-
-toggle.addEventListener(
-"click",
-function(event){
-
-event.stopPropagation();
-
-if(
-nav.classList.contains("nav_open")
-){
-
-closeMenu();
-
-}else{
-
-openMenu();
-
-}
-
-}
-);
-
-nav
-.querySelectorAll("a")
-.forEach(function(link){
-
-link.addEventListener(
-"click",
-closeMenu
-);
-
+/* ── Mobile Nav ── */
+const hamburger = document.getElementById('hamburger');
+const mobileNav = document.getElementById('mobileNav');
+hamburger.addEventListener('click', () => {
+  const isOpen = mobileNav.classList.toggle('open');
+  hamburger.classList.toggle('open', isOpen);
+  hamburger.setAttribute('aria-expanded', String(isOpen));
+});
+document.addEventListener('click', e => {
+  if (!hamburger.contains(e.target) && !mobileNav.contains(e.target)) {
+    mobileNav.classList.remove('open');
+    hamburger.classList.remove('open');
+    hamburger.setAttribute('aria-expanded', 'false');
+  }
 });
 
-document.addEventListener(
-"click",
-function(event){
-
-if(
-!nav.contains(event.target)
-&&
-!toggle.contains(event.target)
-){
-
-closeMenu();
-
-}
-
-}
-);
-
-document.addEventListener(
-"keydown",
-function(event){
-
-if(event.key==="Escape"){
-
-closeMenu();
-
-}
-
-}
-);
-
-window.addEventListener(
-"resize",
-function(){
-
-if(window.innerWidth>768){
-
-closeMenu();
-
-}
-
-}
-);
-
-
-const supabaseUrl=
-"https://zrcglelaiumuysuannwt.supabase.co";
-
-const supabaseKey=
-"sb_publishable_liTRmLDG57hTPCMjnasmEQ_n-477YSt";
-
-const client=
-window.supabase.createClient(
-supabaseUrl,
-supabaseKey
-);
-
-let signupMode=false;
-
-function toggleSignup(){
-
-signupMode=
-!signupMode;
-
-const formTitle=
-document.getElementById(
-"formTitle"
-);
-
-const formSubtitle=
-document.getElementById(
-"formSubtitle"
-);
-
-const authButton=
-document.getElementById(
-"authButton"
-);
-
-const toggleText=
-document.getElementById(
-"toggleText"
-);
-
-const toggleLink=
-document.getElementById(
-"toggleLink"
-);
-
-const message=
-document.getElementById(
-"message"
-);
-
-message.innerHTML="";
-
-if(signupMode){
-
-formTitle.innerText=
-"Create consultant account";
-
-formSubtitle.innerText=
-"Create your CyberBench consultant account to access assigned work, tickets, remediation workflows, and delivery operations.";
-
-authButton.innerText=
-"Create Account";
-
-toggleText.innerText=
-"Already have a consultant account?";
-
-toggleLink.innerText=
-"Login";
-
-}else{
-
-formTitle.innerText=
-"Access your console";
-
-formSubtitle.innerText=
-"Secure access to assigned tickets, triage workflows, documentation, remediation playbooks, and active CyberBench delivery operations.";
-
-authButton.innerText=
-"Login";
-
-toggleText.innerText=
-"Don’t have a consultant account?";
-
-toggleLink.innerText=
-"Sign up";
-
-}
-
-}
-
-async function handleConsultantAuth(e){
-
-e.preventDefault();
-
-const message=
-document.getElementById(
-"message"
-);
-
-const authButton=
-document.getElementById(
-"authButton"
-);
-
-message.innerHTML="";
-
-const email=
-document
-.getElementById("email")
-.value
-.trim();
-
-const password=
-document
-.getElementById("password")
-.value;
-
-if(signupMode){
-
-authButton.innerText=
-"Creating Account...";
-
-const{
-error
-}
-=
-await client
-.auth
-.signUp({
-
-email,
-password
-
+/* ── Role Selector ── */
+document.querySelectorAll('.role-card').forEach(card => {
+  const activate = () => {
+    document.querySelectorAll('.role-card').forEach(c => {
+      c.classList.remove('selected');
+      c.setAttribute('aria-checked', 'false');
+    });
+    card.classList.add('selected');
+    card.setAttribute('aria-checked', 'true');
+  };
+  card.addEventListener('click', activate);
+  card.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); }
+  });
 });
 
-if(error){
-
-message.innerHTML=
-'<div class="error">'
-+
-error.message+
-'</div>';
-
-authButton.innerText=
-"Create Account";
-
-return;
-
+/* ── Toast ── */
+function showToast(title, msg, type = 'success') {
+  const tc   = document.getElementById('toastContainer');
+  const icon = type === 'success' ? '✅' : '❌';
+  const t    = document.createElement('div');
+  t.className = `toast toast--${type}`;
+  t.setAttribute('role', 'alert');
+  t.innerHTML = `
+    <span class="toast__icon">${icon}</span>
+    <div class="toast__body">
+      <div class="toast__title">${title}</div>
+      <div class="toast__msg">${msg}</div>
+    </div>
+    <button class="toast__close" aria-label="Dismiss notification">✕</button>`;
+  t.querySelector('.toast__close').addEventListener('click', () => t.remove());
+  tc.appendChild(t);
+  setTimeout(() => { if (t.parentNode) t.remove(); }, 5000);
 }
 
-message.innerHTML=
-'<div class="success">'
-+
-'Account created. Check your email to verify your account.'+
-'</div>';
-
-authButton.innerText=
-"Create Account";
-
-return;
-
-}
-
-authButton.innerText=
-"Signing In...";
-
-const{
-error
-}
-=
-await client
-.auth
-.signInWithPassword({
-
-email,
-password
-
+/* ── Password Toggle ── */
+const pwToggle = document.getElementById('pwToggle');
+const pwInput  = document.getElementById('password');
+pwToggle.addEventListener('click', () => {
+  const show = pwInput.type === 'password';
+  pwInput.type = show ? 'text' : 'password';
+  pwToggle.setAttribute('aria-label', show ? 'Hide password' : 'Show password');
+  pwToggle.textContent = show ? '🙈' : '👁';
 });
 
-if(error){
+/* ── Form Validation ── */
+const loginForm   = document.getElementById('loginForm');
+const loginBtn    = document.getElementById('loginBtn');
+const errorBanner = document.getElementById('errorBanner');
 
-message.innerHTML=
-'<div class="error">'
-+
-error.message+
-'</div>';
-
-authButton.innerText=
-"Login";
-
-return;
-
+function setError(fieldId, errId, msg) {
+  document.getElementById(fieldId).classList.add('error');
+  document.getElementById(errId).textContent = msg;
+}
+function clearError(fieldId, errId) {
+  document.getElementById(fieldId).classList.remove('error');
+  document.getElementById(errId).textContent = '';
 }
 
-message.innerHTML=
-'<div class="success">'
-+
-'Login successful'+
-'</div>';
+document.getElementById('email').addEventListener('input',    () => clearError('email',    'email-error'));
+document.getElementById('password').addEventListener('input', () => clearError('password', 'password-error'));
 
-setTimeout(()=>{
+loginForm.addEventListener('submit', async e => {
+  e.preventDefault();
+  errorBanner.classList.remove('visible');
 
-window.location.href=
-"/dashboard.html";
+  const email = document.getElementById('email').value.trim();
+  const pass  = document.getElementById('password').value;
+  let valid   = true;
 
-},700);
+  if (!email) {
+    setError('email', 'email-error', 'Email address is required.');
+    valid = false;
+  } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    setError('email', 'email-error', 'Please enter a valid email address.');
+    valid = false;
+  } else {
+    clearError('email', 'email-error');
+  }
 
+  if (!pass) {
+    setError('password', 'password-error', 'Password is required.');
+    valid = false;
+  } else if (pass.length < 6) {
+    setError('password', 'password-error', 'Password must be at least 6 characters.');
+    valid = false;
+  } else {
+    clearError('password', 'password-error');
+  }
+
+  if (!valid) return;
+
+  loginBtn.classList.add('loading');
+  loginBtn.disabled = true;
+
+  await new Promise(r => setTimeout(r, 1600));
+
+  loginBtn.classList.remove('loading');
+  loginBtn.disabled = false;
+
+  showToast('Login Successful', 'Redirecting to your consultant console…', 'success');
+  setTimeout(() => { window.location.href = '/dashboard.html'; }, 1400);
+});
+
+/* ══════════════════════════════════════
+   AI CHAT ENGINE — Consultant-specific KB
+══════════════════════════════════════ */
+const chatToggle   = document.getElementById('chatToggle');
+const chatWidget   = document.getElementById('chatWidget');
+const chatClose    = document.getElementById('chatClose');
+const chatMessages = document.getElementById('chatMessages');
+const chatInput    = document.getElementById('chatInput');
+const chatSend     = document.getElementById('chatSend');
+const quickReplies = document.getElementById('quickReplies');
+
+const KB = [
+  {
+    patterns: ['ticket','assign','assignment','routed','queue','how does','get ticket','receive'],
+    response: `🎫 **Ticket Assignment:**\n\nTickets are routed automatically based on:\n\n• **Skill tags** — set in your profile (e.g. SIEM, IR, Compliance)\n• **Availability** — your active hours and current workload\n• **Certifications** — CISSP, CISM, CEH, etc.\n• **Priority matching** — P1 Critical tickets go to senior consultants first\n\nOnce a ticket is assigned, you'll receive an email and in-console notification. First response is expected within your SLA window.`
+  },
+  {
+    patterns: ['sla','service level','deadline','response time','breach','commitment'],
+    response: `⏱ **SLA Requirements:**\n\n| Priority | First Response | Resolution Target |\n|---|---|---|\n| P1 Critical | **15 minutes** | 4 hours |\n| P2 High | **1 hour** | 8 hours |\n| P3 Medium | **4 hours** | 24 hours |\n| P4 Low | **8 hours** | 72 hours |\n\nSLA timers start when a ticket is assigned to you. Breaches are flagged automatically. Escalate to a senior consultant if you anticipate a breach.`
+  },
+  {
+    patterns: ['playbook','remediation','runbook','procedure','guide','documentation'],
+    response: `📖 **Playbook Library:**\n\nAfter logging in, access playbooks at:\n**Console → Playbooks → Browse Library**\n\nAvailable categories:\n• 🚨 Incident Response (ransomware, phishing, BEC)\n• 📡 SIEM tuning & alert triage\n• 📋 Compliance frameworks (NIST CSF, SOC 2, HIPAA)\n• 💾 Backup validation & recovery\n• 🔐 Access control & identity\n\nAll playbooks are versioned and updated by the CyberBench team.`
+  },
+  {
+    patterns: ['profile','skill','tag','specialisation','certification','availability','update'],
+    response: `👤 **Completing Your Profile:**\n\n1. Log in → **Settings → My Profile**\n2. Add your **skill tags** (SIEM, IR, Cloud, Compliance, etc.)\n3. Upload or link **certifications** (CISSP, CEH, CISM, CompTIA)\n4. Set your **availability hours** and timezone\n5. Add a short **bio** for client-facing visibility\n\nA complete profile improves your ticket match rate and unlocks higher-priority assignments.`
+  },
+  {
+    patterns: ['reset','password','forgot','locked','can\'t log in','access'],
+    response: `🔐 **Password Reset:**\n\n1. Click **"Forgot password?"** below the login form\n2. Enter your registered consultant email\n3. Check your inbox for a reset link (valid 30 minutes)\n4. Set a new password — minimum 12 characters\n\nIf your account is locked after multiple failed attempts, contact **support@cyberbench.io** for manual unlock.`
+  },
+  {
+    patterns: ['escalate','escalation','senior','handoff','help','stuck'],
+    response: `🤝 **Escalation & Handoffs:**\n\nIf you need to escalate a ticket:\n\n1. Open the ticket → **Actions → Escalate**\n2. Select escalation reason (complexity, SLA risk, skill gap)\n3. Add a handoff note with context and steps taken\n4. A senior consultant will be assigned within **15 minutes**\n\nFor P1 Critical escalations, use the **emergency escalation** button — this pages the on-call senior immediately.`
+  },
+  {
+    patterns: ['kpi','performance','metric','rating','score','quality'],
+    response: `📊 **Your Consultant KPIs:**\n\nYour personal KPI dashboard tracks:\n\n• ✅ **SLA Compliance Rate** — target ≥ 95%\n• ⭐ **Client Satisfaction Score** — post-ticket ratings\n• 🎫 **Tickets Closed** — daily, weekly, monthly\n• ⏱ **Average Response Time** — vs SLA target\n• 📈 **Resolution Rate** — tickets closed without escalation\n\nKPIs update in real time after each ticket closure. Monthly reviews are conducted by the delivery team.`
+  },
+  {
+    patterns: ['pay','payment','invoice','rate','billing','compensation','earn'],
+    response: `💳 **Payments & Compensation:**\n\nConsultant compensation details:\n\n• Rates are set during your onboarding agreement\n• Payments are processed **monthly** via direct transfer\n• Invoices auto-generated from completed ticket logs\n• View earnings history at **Console → Payments**\n\nFor rate queries or payment issues, contact **support@cyberbench.io** directly.`
+  },
+  {
+    patterns: ['onboard','onboarding','getting started','first step','setup','begin'],
+    response: `🚀 **Onboarding Checklist:**\n\n1. ✅ Account created — done!\n2. ⏳ Complete profile & skill tags\n3. ⏳ Review SLA commitments and delivery standards\n4. ⏳ Read the playbook library overview\n5. ⏳ Receive your first ticket assignment\n\nComplete steps 2–4 to unlock ticket routing. Most consultants receive their first ticket within **24–48 hours** of completing onboarding.`
+  },
+  {
+    patterns: ['hello','hi','hey','greetings','good morning','start','welcome'],
+    response: `👋 **Welcome to the CyberBench Consultant Portal!**\n\nI can help you with:\n\n• 🎫 How ticket assignment works\n• ⏱ SLA requirements and escalation\n• 📖 Accessing playbooks and documentation\n• 👤 Completing your profile and skill tags\n• 📊 Understanding your KPI dashboard\n• 🔐 Password reset and account access\n\nWhat do you need help with?`
+  },
+  {
+    patterns: ['thank','thanks','appreciate','great','helpful','awesome'],
+    response: `😊 Happy to help! Complete your profile to start receiving ticket assignments, or contact **support@cyberbench.io** for any account questions.`
+  }
+];
+
+function getResponse(input) {
+  const text = input.toLowerCase().trim();
+  for (const entry of KB) {
+    if (entry.patterns.some(p => text.includes(p))) return entry.response;
+  }
+  return `🤔 I'm not sure about that, but I can help with:\n\n• 🎫 Ticket assignment & queue\n• ⏱ SLA requirements\n• 📖 Playbook library\n• 👤 Profile & skill tags\n• 📊 Consultant KPIs\n• 🔐 Password reset\n\nOr email **support@cyberbench.io**`;
 }
 
-fetch("/api/kpi")
-.then(r=>r.json())
-.then(k=>{
+function renderMessage(text, role) {
+  const wrap   = document.createElement('div');
+  wrap.className = `msg msg--${role}`;
+  const avatar = document.createElement('div');
+  avatar.className = 'msg__avatar';
+  avatar.setAttribute('aria-hidden', 'true');
+  avatar.textContent = role === 'bot' ? '🤖' : '👤';
+  const bubble = document.createElement('div');
+  bubble.className = 'msg__bubble';
+  bubble.innerHTML = text
+    .replace(/\*\*(.*?)\*\*/g, '<strong>$1</strong>')
+    .replace(/\n/g, '<br>');
+  const time = document.createElement('span');
+  time.className = 'msg__time';
+  time.textContent = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  bubble.appendChild(time);
+  wrap.appendChild(avatar);
+  wrap.appendChild(bubble);
+  chatMessages.appendChild(wrap);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
 
-document
-.getElementById("kpi-open")
-.textContent=
-k.open||0;
+function showTyping() {
+  const wrap = document.createElement('div');
+  wrap.className = 'msg msg--bot';
+  wrap.id = 'typingMsg';
+  const avatar = document.createElement('div');
+  avatar.className = 'msg__avatar';
+  avatar.setAttribute('aria-hidden', 'true');
+  avatar.textContent = '🤖';
+  const ind = document.createElement('div');
+  ind.className = 'typing-indicator';
+  ind.innerHTML = '<span></span><span></span><span></span>';
+  wrap.appendChild(avatar);
+  wrap.appendChild(ind);
+  chatMessages.appendChild(wrap);
+  chatMessages.scrollTop = chatMessages.scrollHeight;
+}
+function hideTyping() {
+  const el = document.getElementById('typingMsg');
+  if (el) el.remove();
+}
 
-document
-.getElementById("kpi-avg")
-.textContent=
-k.avgPerDay7||0;
+function sendMessage(text) {
+  text = (text || '').trim();
+  if (!text) return;
+  chatInput.value = '';
+  chatInput.style.height = 'auto';
+  chatSend.disabled = true;
+  renderMessage(text, 'user');
+  quickReplies.style.display = 'none';
+  showTyping();
+  setTimeout(() => {
+    hideTyping();
+    renderMessage(getResponse(text), 'bot');
+    chatSend.disabled = false;
+    chatInput.focus();
+  }, 600 + Math.random() * 600);
+}
 
-})
-.catch(()=>{});
+function openChat() {
+  chatWidget.classList.add('open');
+  chatWidget.setAttribute('aria-hidden', 'false');
+  chatToggle.setAttribute('aria-expanded', 'true');
+  chatInput.focus();
+}
+function closeChat() {
+  chatWidget.classList.remove('open');
+  chatWidget.setAttribute('aria-hidden', 'true');
+  chatToggle.setAttribute('aria-expanded', 'false');
+  chatToggle.focus();
+}
 
+chatToggle.addEventListener('click', () =>
+  chatWidget.classList.contains('open') ? closeChat() : openChat());
+chatClose.addEventListener('click', closeChat);
+chatSend.addEventListener('click', () => sendMessage(chatInput.value));
+chatInput.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); sendMessage(chatInput.value); }
+});
+chatInput.addEventListener('input', () => {
+  chatInput.style.height = 'auto';
+  chatInput.style.height = Math.min(chatInput.scrollHeight, 100) + 'px';
+});
+quickReplies.querySelectorAll('.quick-reply').forEach(btn =>
+  btn.addEventListener('click', () => sendMessage(btn.dataset.msg)));
+
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') {
+    if (chatWidget.classList.contains('open')) closeChat();
+    if (mobileNav.classList.contains('open')) {
+      mobileNav.classList.remove('open');
+      hamburger.classList.remove('open');
+      hamburger.setAttribute('aria-expanded', 'false');
+    }
+  }
+});
+
+/* Welcome message */
+setTimeout(() => {
+  renderMessage(
+    `👋 Welcome to the **CyberBench Consultant Portal**!\n\nI can help you get set up — from completing your profile and understanding SLA commitments, to navigating the ticket queue and playbook library. What do you need?`,
+    'bot'
+  );
+}, 400);
 </script>
 
 </body>
-
 </html>
