@@ -3,390 +3,299 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="CyberBench delivers execution-driven cybersecurity operations — ticket-first, specialist-matched, and fully documented." />
+  <meta name="description" content="CyberBench delivers execution-driven cybersecurity operations — ticket-first, specialist-matched, and KPI-reported for modern SMBs." />
   <title>CyberBench | Execution-Driven Security</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
     /* ══════════════════════════════════════
-       RESET & BASE
+       TOKENS & RESET
     ══════════════════════════════════════ */
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
     :root {
-      --bg:        #0a0e1a;
-      --surface:   #111827;
-      --surface2:  #1a2235;
-      --border:    #1e2d45;
-      --accent:    #3b82f6;
-      --accent2:   #8b5cf6;
-      --success:   #10b981;
-      --warning:   #f59e0b;
-      --danger:    #ef4444;
-      --text:      #f1f5f9;
-      --text-dim:  #94a3b8;
-      --text-mute: #64748b;
-      --radius:    12px;
-      --radius-sm: 8px;
-      --shadow:    0 4px 24px rgba(0,0,0,.4);
+      --brand:       #6c63ff;
+      --brand-dark:  #574fd6;
+      --brand-light: #a89dff;
+      --accent:      #00d4aa;
+      --danger:      #ff4d6d;
+      --warning:     #ffa94d;
+      --success:     #40c057;
+      --bg:          #0d0f1a;
+      --surface:     #13162a;
+      --surface-2:   #1a1e35;
+      --border:      rgba(108,99,255,.18);
+      --text:        #e8eaf6;
+      --text-dim:    #8b92b8;
+      --radius:      12px;
+      --radius-lg:   20px;
+      --shadow:      0 8px 32px rgba(0,0,0,.45);
+      --transition:  .25s ease;
     }
-
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
-
     body {
       font-family: 'Inter', sans-serif;
       background: var(--bg);
       color: var(--text);
       line-height: 1.6;
-      min-height: 100vh;
+      overflow-x: hidden;
     }
-
     a { color: inherit; text-decoration: none; }
     img { max-width: 100%; display: block; }
-    button { cursor: pointer; font-family: inherit; }
+    ul { list-style: none; }
+
+    /* ══════════════════════════════════════
+       SCROLLBAR
+    ══════════════════════════════════════ */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--brand); border-radius: 3px; }
 
     /* ══════════════════════════════════════
        NAVIGATION
     ══════════════════════════════════════ */
     .nav {
-      position: sticky;
-      top: 0;
-      z-index: 100;
-      background: rgba(10,14,26,.95);
-      backdrop-filter: blur(12px);
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      background: rgba(13,15,26,.92);
+      backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--border);
     }
-
     .nav__inner {
       max-width: 1200px;
       margin: 0 auto;
       padding: 0 24px;
-      height: 64px;
+      height: 68px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 24px;
     }
-
-    /* Logo */
     .nav__logo {
       display: flex;
       align-items: center;
       gap: 10px;
-      text-decoration: none;
-      flex-shrink: 0;
-    }
-
-    .logo-mark {
-      width: 36px;
-      height: 36px;
-      flex-shrink: 0;
-    }
-
-    .logo-text {
-      font-size: 1.2rem;
       font-weight: 800;
-      letter-spacing: -0.5px;
-      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      font-size: 1.2rem;
+      letter-spacing: -.3px;
     }
-
-    /* Desktop links */
+    .nav__logo-icon {
+      width: 36px; height: 36px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .nav__logo-text { background: linear-gradient(135deg,#a89dff,#6c63ff); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
     .nav__links {
       display: flex;
       align-items: center;
-      gap: 4px;
-      list-style: none;
+      gap: 8px;
     }
-
-    .nav__links a {
+    .nav__link {
       padding: 8px 14px;
-      border-radius: var(--radius-sm);
-      font-size: 0.875rem;
+      border-radius: 8px;
+      font-size: .875rem;
       font-weight: 500;
       color: var(--text-dim);
-      transition: color .2s, background .2s;
+      transition: color var(--transition), background var(--transition);
     }
-
-    .nav__links a:hover { color: var(--text); background: var(--surface2); }
-
-    .nav__links .nav__cta {
-      background: var(--accent);
+    .nav__link:hover { color: var(--text); background: rgba(108,99,255,.12); }
+    .nav__link--cta {
+      background: var(--brand);
       color: #fff;
-      padding: 8px 16px;
-      border-radius: var(--radius-sm);
+      padding: 8px 18px;
       font-weight: 600;
     }
-
-    .nav__links .nav__cta:hover { background: #2563eb; }
-
-    /* Hamburger */
+    .nav__link--cta:hover { background: var(--brand-dark); color: #fff; }
     .nav__toggle {
       display: none;
       flex-direction: column;
-      justify-content: center;
       gap: 5px;
-      width: 36px;
-      height: 36px;
       background: none;
       border: none;
+      cursor: pointer;
       padding: 4px;
-      border-radius: var(--radius-sm);
     }
-
     .nav__toggle span {
       display: block;
-      height: 2px;
-      background: var(--text-dim);
+      width: 24px; height: 2px;
+      background: var(--text);
       border-radius: 2px;
-      transition: transform .3s, opacity .3s;
+      transition: var(--transition);
     }
-
-    .nav__toggle[aria-expanded="true"] span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-    .nav__toggle[aria-expanded="true"] span:nth-child(2) { opacity: 0; }
-    .nav__toggle[aria-expanded="true"] span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-
-    /* Mobile drawer */
-    .nav__drawer {
+    .nav__mobile {
       display: none;
       flex-direction: column;
-      background: var(--surface);
-      border-top: 1px solid var(--border);
-      padding: 12px 24px 20px;
       gap: 4px;
+      padding: 12px 24px 16px;
+      border-top: 1px solid var(--border);
+      background: rgba(13,15,26,.97);
     }
-
-    .nav__drawer.is-open { display: flex; }
-
-    .nav__drawer a {
-      padding: 10px 12px;
-      border-radius: var(--radius-sm);
-      font-size: 0.9rem;
-      font-weight: 500;
-      color: var(--text-dim);
-      transition: color .2s, background .2s;
-    }
-
-    .nav__drawer a:hover { color: var(--text); background: var(--surface2); }
-
-    .nav__drawer .nav__cta {
-      background: var(--accent);
-      color: #fff;
-      text-align: center;
-      margin-top: 8px;
-      font-weight: 600;
-    }
+    .nav__mobile.open { display: flex; }
+    .nav__mobile .nav__link { padding: 10px 14px; }
 
     /* ══════════════════════════════════════
        HERO
     ══════════════════════════════════════ */
     .hero {
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      padding: 120px 24px 80px;
       position: relative;
       overflow: hidden;
-      padding: 100px 24px 80px;
-      text-align: center;
     }
-
     .hero::before {
       content: '';
       position: absolute;
       inset: 0;
       background:
-        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(59,130,246,.15) 0%, transparent 70%),
-        radial-gradient(ellipse 60% 40% at 80% 80%, rgba(139,92,246,.1) 0%, transparent 60%);
+        radial-gradient(ellipse 80% 60% at 50% 0%, rgba(108,99,255,.18) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 40% at 80% 60%, rgba(0,212,170,.08) 0%, transparent 60%);
       pointer-events: none;
     }
-
     .hero__inner {
-      position: relative;
-      max-width: 860px;
+      max-width: 1200px;
       margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 64px;
+      align-items: center;
+      width: 100%;
     }
-
     .hero__badge {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 6px 16px;
-      background: rgba(59,130,246,.12);
-      border: 1px solid rgba(59,130,246,.3);
-      border-radius: 999px;
-      font-size: 0.78rem;
+      background: rgba(108,99,255,.15);
+      border: 1px solid rgba(108,99,255,.3);
+      border-radius: 100px;
+      padding: 6px 14px;
+      font-size: .75rem;
       font-weight: 600;
-      color: var(--accent);
+      color: var(--brand-light);
       letter-spacing: .5px;
       text-transform: uppercase;
-      margin-bottom: 28px;
-    }
-
-    .hero__title {
-      font-size: clamp(2.2rem, 5vw, 3.8rem);
-      font-weight: 800;
-      line-height: 1.15;
-      letter-spacing: -1px;
       margin-bottom: 24px;
     }
-
-    .hero__title .grad {
-      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
+    .hero__badge-dot {
+      width: 6px; height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50%      { opacity: .5; transform: scale(1.4); }
+    }
+    .hero__title {
+      font-size: clamp(2rem, 4vw, 3.25rem);
+      font-weight: 800;
+      line-height: 1.15;
+      letter-spacing: -.5px;
+      margin-bottom: 20px;
+    }
+    .hero__title-gradient {
+      background: linear-gradient(135deg, var(--brand-light), var(--brand), var(--accent));
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
-      background-clip: text;
     }
-
     .hero__desc {
-      font-size: clamp(1rem, 2vw, 1.15rem);
+      font-size: 1rem;
       color: var(--text-dim);
-      max-width: 680px;
-      margin: 0 auto 40px;
+      max-width: 520px;
+      margin-bottom: 36px;
       line-height: 1.75;
     }
-
     .hero__actions {
       display: flex;
-      gap: 16px;
-      justify-content: center;
+      gap: 14px;
       flex-wrap: wrap;
-      margin-bottom: 48px;
+      margin-bottom: 40px;
     }
-
     .btn {
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      padding: 14px 28px;
-      border-radius: var(--radius-sm);
-      font-size: 0.95rem;
+      padding: 13px 26px;
+      border-radius: var(--radius);
+      font-size: .9rem;
       font-weight: 600;
+      cursor: pointer;
       border: none;
-      transition: transform .2s, box-shadow .2s, background .2s;
-      text-decoration: none;
+      transition: var(--transition);
     }
-
-    .btn:hover { transform: translateY(-2px); }
-
     .btn--primary {
-      background: var(--accent);
+      background: linear-gradient(135deg, var(--brand), var(--brand-dark));
       color: #fff;
-      box-shadow: 0 4px 20px rgba(59,130,246,.35);
+      box-shadow: 0 4px 20px rgba(108,99,255,.4);
     }
-
-    .btn--primary:hover { background: #2563eb; box-shadow: 0 6px 28px rgba(59,130,246,.5); }
-
+    .btn--primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(108,99,255,.5); }
     .btn--ghost {
       background: transparent;
-      color: var(--text);
       border: 1px solid var(--border);
+      color: var(--text);
     }
-
-    .btn--ghost:hover { background: var(--surface2); border-color: var(--accent); }
-
-    .hero__pills {
+    .btn--ghost:hover { background: rgba(108,99,255,.1); border-color: var(--brand); }
+    .hero__trust {
       display: flex;
+      gap: 20px;
       flex-wrap: wrap;
-      gap: 10px;
-      justify-content: center;
     }
-
-    .pill {
-      display: inline-flex;
+    .hero__trust-item {
+      display: flex;
       align-items: center;
       gap: 6px;
-      padding: 6px 14px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      font-size: 0.78rem;
-      font-weight: 500;
+      font-size: .78rem;
       color: var(--text-dim);
     }
+    .hero__trust-item span { color: var(--accent); font-size: .85rem; }
 
-    .pill::before { content: '✓'; color: var(--success); font-weight: 700; }
-
-    /* ══════════════════════════════════════
-       LIVE PLATFORM WIDGET
-    ══════════════════════════════════════ */
-    .platform {
-      padding: 60px 24px;
+    /* Live Ticket Panel */
+    .hero__panel {
       background: var(--surface);
-      border-top: 1px solid var(--border);
-      border-bottom: 1px solid var(--border);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden;
+      box-shadow: var(--shadow);
     }
-
-    .platform__inner {
-      max-width: 900px;
-      margin: 0 auto;
-    }
-
-    .platform__header {
+    .panel__header {
+      background: var(--surface-2);
+      padding: 14px 20px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-bottom: 20px;
-      flex-wrap: wrap;
-      gap: 12px;
+      border-bottom: 1px solid var(--border);
     }
-
-    .platform__title {
-      font-size: 0.85rem;
+    .panel__title {
+      font-size: .8rem;
       font-weight: 700;
       color: var(--text-dim);
       letter-spacing: .5px;
       text-transform: uppercase;
     }
-
-    .platform__live {
-      display: flex;
-      align-items: center;
-      gap: 6px;
-      font-size: 0.75rem;
-      color: var(--success);
-      font-weight: 600;
-    }
-
-    .platform__live::before {
-      content: '';
-      width: 8px;
-      height: 8px;
-      background: var(--success);
+    .panel__dots { display: flex; gap: 6px; }
+    .panel__dot {
+      width: 10px; height: 10px;
       border-radius: 50%;
-      animation: pulse 1.5s infinite;
     }
-
-    @keyframes pulse {
-      0%, 100% { opacity: 1; }
-      50% { opacity: .3; }
-    }
-
-    .ticket-list { display: flex; flex-direction: column; gap: 12px; }
-
+    .panel__dot--red   { background: #ff5f57; }
+    .panel__dot--amber { background: #febc2e; }
+    .panel__dot--green { background: #28c840; }
+    .panel__body { padding: 16px; display: flex; flex-direction: column; gap: 10px; }
     .ticket {
-      display: flex;
-      align-items: center;
-      gap: 16px;
-      padding: 16px 20px;
-      background: var(--surface2);
+      background: var(--surface-2);
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      transition: border-color .2s;
+      padding: 14px 16px;
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      transition: border-color var(--transition);
     }
-
-    .ticket:hover { border-color: var(--accent); }
-
-    .ticket__icon {
-      font-size: 1.4rem;
-      flex-shrink: 0;
-      width: 40px;
-      text-align: center;
-    }
-
+    .ticket:hover { border-color: var(--brand); }
+    .ticket__icon { font-size: 1.3rem; flex-shrink: 0; margin-top: 2px; }
     .ticket__body { flex: 1; min-width: 0; }
-
     .ticket__title {
-      font-size: 0.9rem;
+      font-size: .82rem;
       font-weight: 600;
       color: var(--text);
       margin-bottom: 4px;
@@ -394,100 +303,67 @@
       overflow: hidden;
       text-overflow: ellipsis;
     }
-
-    .ticket__meta {
-      font-size: 0.75rem;
-      color: var(--text-mute);
-    }
-
+    .ticket__meta { font-size: .72rem; color: var(--text-dim); }
     .ticket__badge {
       flex-shrink: 0;
-      padding: 4px 10px;
-      border-radius: 999px;
-      font-size: 0.7rem;
+      font-size: .65rem;
       font-weight: 700;
+      padding: 3px 8px;
+      border-radius: 100px;
       text-transform: uppercase;
-      letter-spacing: .5px;
+      letter-spacing: .4px;
     }
-
-    .badge--critical { background: rgba(239,68,68,.15); color: var(--danger); }
-    .badge--high     { background: rgba(245,158,11,.15); color: var(--warning); }
-    .badge--medium   { background: rgba(59,130,246,.15); color: var(--accent); }
-    .badge--resolved { background: rgba(16,185,129,.15); color: var(--success); }
-
-    .platform__stats {
+    .badge--critical { background: rgba(255,77,109,.15); color: var(--danger); }
+    .badge--high     { background: rgba(255,169,77,.15);  color: var(--warning); }
+    .badge--medium   { background: rgba(108,99,255,.15);  color: var(--brand-light); }
+    .badge--resolved { background: rgba(64,192,87,.15);   color: var(--success); }
+    .panel__stats {
       display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 16px;
-      margin-top: 24px;
+      grid-template-columns: repeat(3,1fr);
+      border-top: 1px solid var(--border);
     }
-
-    .stat {
+    .panel__stat {
+      padding: 14px;
       text-align: center;
-      padding: 20px;
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
+      border-right: 1px solid var(--border);
     }
-
-    .stat__value {
-      font-size: 1.8rem;
+    .panel__stat:last-child { border-right: none; }
+    .panel__stat-val {
+      font-size: 1.2rem;
       font-weight: 800;
-      background: linear-gradient(135deg, #3b82f6, #8b5cf6);
-      -webkit-background-clip: text;
-      -webkit-text-fill-color: transparent;
-      background-clip: text;
+      color: var(--brand-light);
+      display: block;
     }
-
-    .stat__label {
-      font-size: 0.75rem;
-      color: var(--text-mute);
-      margin-top: 4px;
-      font-weight: 500;
-    }
+    .panel__stat-label { font-size: .68rem; color: var(--text-dim); }
 
     /* ══════════════════════════════════════
        SECTION SHARED
     ══════════════════════════════════════ */
-    .section {
-      padding: 80px 24px;
-    }
-
+    .section { padding: 96px 24px; }
     .section--alt { background: var(--surface); }
-
-    .section__inner {
-      max-width: 1200px;
-      margin: 0 auto;
-    }
-
-    .section__header {
-      text-align: center;
-      margin-bottom: 56px;
-    }
-
+    .section__inner { max-width: 1200px; margin: 0 auto; }
+    .section__header { text-align: center; margin-bottom: 60px; }
     .section__label {
       display: inline-block;
-      font-size: 0.75rem;
+      font-size: .72rem;
       font-weight: 700;
       letter-spacing: 1px;
       text-transform: uppercase;
-      color: var(--accent);
+      color: var(--brand-light);
       margin-bottom: 12px;
     }
-
     .section__title {
-      font-size: clamp(1.6rem, 3.5vw, 2.4rem);
+      font-size: clamp(1.6rem, 3vw, 2.4rem);
       font-weight: 800;
-      letter-spacing: -0.5px;
-      margin-bottom: 16px;
+      letter-spacing: -.3px;
+      margin-bottom: 14px;
     }
-
-    .section__desc {
-      font-size: 1rem;
+    .section__sub {
+      font-size: .95rem;
       color: var(--text-dim);
-      max-width: 600px;
+      max-width: 560px;
       margin: 0 auto;
-      line-height: 1.75;
+      line-height: 1.7;
     }
 
     /* ══════════════════════════════════════
@@ -495,179 +371,140 @@
     ══════════════════════════════════════ */
     .pillars__grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      grid-template-columns: repeat(3, 1fr);
       gap: 24px;
     }
-
+    @media (max-width: 900px) { .pillars__grid { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 580px) { .pillars__grid { grid-template-columns: 1fr; } }
     .pillar {
-      padding: 28px;
-      background: var(--surface2);
+      background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: var(--radius);
-      transition: border-color .2s, transform .2s;
+      border-radius: var(--radius-lg);
+      padding: 32px 28px;
+      transition: border-color var(--transition), transform var(--transition);
     }
-
-    .pillar:hover { border-color: var(--accent); transform: translateY(-4px); }
-
+    .pillar:hover { border-color: var(--brand); transform: translateY(-4px); }
     .pillar__icon {
-      font-size: 2rem;
-      margin-bottom: 16px;
+      width: 52px; height: 52px;
+      background: rgba(108,99,255,.12);
+      border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.5rem;
+      margin-bottom: 20px;
     }
-
     .pillar__title {
       font-size: 1rem;
       font-weight: 700;
-      margin-bottom: 8px;
+      margin-bottom: 10px;
     }
-
-    .pillar__desc {
-      font-size: 0.875rem;
-      color: var(--text-dim);
-      line-height: 1.65;
-    }
+    .pillar__desc { font-size: .875rem; color: var(--text-dim); line-height: 1.7; }
 
     /* ══════════════════════════════════════
        PROCESS STEPS
     ══════════════════════════════════════ */
-    .steps {
+    .process__steps {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      grid-template-columns: repeat(4, 1fr);
       gap: 24px;
       position: relative;
     }
-
+    .process__steps::before {
+      content: '';
+      position: absolute;
+      top: 28px; left: 10%; right: 10%;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--border), transparent);
+    }
+    @media (max-width: 860px) {
+      .process__steps { grid-template-columns: 1fr 1fr; }
+      .process__steps::before { display: none; }
+    }
+    @media (max-width: 480px) { .process__steps { grid-template-columns: 1fr; } }
     .step {
-      text-align: center;
-      padding: 32px 24px;
-      background: var(--surface2);
+      background: var(--surface-2);
       border: 1px solid var(--border);
-      border-radius: var(--radius);
-      position: relative;
+      border-radius: var(--radius-lg);
+      padding: 28px 24px;
+      text-align: center;
+      transition: border-color var(--transition), transform var(--transition);
     }
-
-    .step__number {
-      width: 48px;
-      height: 48px;
+    .step:hover { border-color: var(--brand); transform: translateY(-4px); }
+    .step__num {
+      width: 48px; height: 48px;
+      background: linear-gradient(135deg, var(--brand), var(--brand-dark));
       border-radius: 50%;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      color: #fff;
-      font-size: 1.1rem;
-      font-weight: 800;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 auto 16px;
-    }
-
-    .step__title {
+      display: flex; align-items: center; justify-content: center;
       font-size: 1rem;
-      font-weight: 700;
-      margin-bottom: 8px;
+      font-weight: 800;
+      color: #fff;
+      margin: 0 auto 18px;
     }
-
-    .step__desc {
-      font-size: 0.85rem;
-      color: var(--text-dim);
-      line-height: 1.65;
-    }
+    .step__title { font-size: .95rem; font-weight: 700; margin-bottom: 8px; }
+    .step__desc { font-size: .82rem; color: var(--text-dim); line-height: 1.65; }
 
     /* ══════════════════════════════════════
        SERVICES GRID
     ══════════════════════════════════════ */
     .services__grid {
       display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      grid-template-columns: repeat(2, 1fr);
       gap: 24px;
     }
-
+    @media (max-width: 680px) { .services__grid { grid-template-columns: 1fr; } }
     .service-card {
-      padding: 28px;
-      background: var(--surface2);
+      background: var(--surface-2);
       border: 1px solid var(--border);
-      border-radius: var(--radius);
-      transition: border-color .2s, transform .2s;
+      border-radius: var(--radius-lg);
+      padding: 32px 28px;
+      transition: border-color var(--transition), transform var(--transition);
     }
-
-    .service-card:hover { border-color: var(--accent2); transform: translateY(-4px); }
-
+    .service-card:hover { border-color: var(--brand); transform: translateY(-4px); }
     .service-card__icon {
       font-size: 2rem;
       margin-bottom: 16px;
     }
-
-    .service-card__title {
-      font-size: 1rem;
-      font-weight: 700;
-      margin-bottom: 8px;
-    }
-
-    .service-card__desc {
-      font-size: 0.875rem;
-      color: var(--text-dim);
-      line-height: 1.65;
-    }
+    .service-card__title { font-size: 1.05rem; font-weight: 700; margin-bottom: 10px; }
+    .service-card__desc { font-size: .875rem; color: var(--text-dim); line-height: 1.7; }
 
     /* ══════════════════════════════════════
        CTA SECTION
     ══════════════════════════════════════ */
     .cta {
-      padding: 80px 24px;
+      padding: 96px 24px;
       text-align: center;
       position: relative;
       overflow: hidden;
     }
-
     .cta::before {
       content: '';
       position: absolute;
       inset: 0;
-      background: radial-gradient(ellipse 70% 60% at 50% 50%, rgba(59,130,246,.12) 0%, transparent 70%);
+      background: radial-gradient(ellipse 70% 80% at 50% 50%, rgba(108,99,255,.12) 0%, transparent 70%);
       pointer-events: none;
     }
-
-    .cta__inner {
-      position: relative;
-      max-width: 680px;
-      margin: 0 auto;
-    }
-
+    .cta__inner { max-width: 680px; margin: 0 auto; position: relative; }
     .cta__title {
-      font-size: clamp(1.8rem, 4vw, 2.8rem);
+      font-size: clamp(1.8rem, 3.5vw, 2.8rem);
       font-weight: 800;
-      letter-spacing: -0.5px;
+      letter-spacing: -.3px;
       margin-bottom: 16px;
     }
-
-    .cta__desc {
-      font-size: 1rem;
-      color: var(--text-dim);
-      margin-bottom: 36px;
-      line-height: 1.75;
-    }
-
-    .cta__actions {
-      display: flex;
-      gap: 16px;
-      justify-content: center;
-      flex-wrap: wrap;
-      margin-bottom: 32px;
-    }
-
+    .cta__desc { font-size: .95rem; color: var(--text-dim); margin-bottom: 36px; line-height: 1.7; }
+    .cta__actions { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; margin-bottom: 32px; }
     .cta__trust {
       display: flex;
-      flex-wrap: wrap;
-      gap: 20px;
+      gap: 24px;
       justify-content: center;
+      flex-wrap: wrap;
     }
-
     .cta__trust-item {
       display: flex;
       align-items: center;
       gap: 6px;
-      font-size: 0.8rem;
-      color: var(--text-mute);
-      font-weight: 500;
+      font-size: .78rem;
+      color: var(--text-dim);
     }
+    .cta__trust-item span { color: var(--accent); }
 
     /* ══════════════════════════════════════
        FOOTER
@@ -675,48 +512,42 @@
     .footer {
       background: var(--surface);
       border-top: 1px solid var(--border);
-      padding: 48px 24px 28px;
+      padding: 60px 24px 32px;
     }
-
     .footer__inner {
       max-width: 1200px;
       margin: 0 auto;
     }
-
-    .footer__grid {
+    .footer__top {
       display: grid;
       grid-template-columns: 2fr 1fr 1fr 1fr;
-      gap: 40px;
-      margin-bottom: 40px;
+      gap: 48px;
+      margin-bottom: 48px;
     }
-
+    @media (max-width: 860px) { .footer__top { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 480px) { .footer__top { grid-template-columns: 1fr; } }
     .footer__brand p {
-      font-size: 0.875rem;
+      font-size: .85rem;
       color: var(--text-dim);
-      line-height: 1.7;
       margin-top: 12px;
+      line-height: 1.7;
       max-width: 280px;
     }
-
-    .footer__col h4 {
-      font-size: 0.8rem;
+    .footer__col-title {
+      font-size: .78rem;
       font-weight: 700;
-      text-transform: uppercase;
       letter-spacing: .8px;
-      color: var(--text-mute);
+      text-transform: uppercase;
+      color: var(--text-dim);
       margin-bottom: 16px;
     }
-
-    .footer__col ul { list-style: none; display: flex; flex-direction: column; gap: 10px; }
-
-    .footer__col ul a {
-      font-size: 0.875rem;
+    .footer__col li + li { margin-top: 10px; }
+    .footer__col a {
+      font-size: .85rem;
       color: var(--text-dim);
-      transition: color .2s;
+      transition: color var(--transition);
     }
-
-    .footer__col ul a:hover { color: var(--text); }
-
+    .footer__col a:hover { color: var(--brand-light); }
     .footer__bottom {
       border-top: 1px solid var(--border);
       padding-top: 24px;
@@ -726,703 +557,681 @@
       flex-wrap: wrap;
       gap: 12px;
     }
-
-    .footer__copy {
-      font-size: 0.8rem;
-      color: var(--text-mute);
-    }
-
-    .footer__legal {
-      display: flex;
-      gap: 20px;
-    }
-
-    .footer__legal a {
-      font-size: 0.8rem;
-      color: var(--text-mute);
-      transition: color .2s;
-    }
-
-    .footer__legal a:hover { color: var(--text-dim); }
+    .footer__copy { font-size: .78rem; color: var(--text-dim); }
+    .footer__legal { display: flex; gap: 20px; }
+    .footer__legal a { font-size: .78rem; color: var(--text-dim); transition: color var(--transition); }
+    .footer__legal a:hover { color: var(--brand-light); }
 
     /* ══════════════════════════════════════
        AI CHAT WIDGET
     ══════════════════════════════════════ */
+    .chat-toggle {
+      position: fixed;
+      bottom: 28px; right: 28px;
+      width: 58px; height: 58px;
+      background: linear-gradient(135deg, var(--brand), var(--brand-dark));
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+      box-shadow: 0 4px 24px rgba(108,99,255,.5);
+      z-index: 2000;
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .chat-toggle:hover { transform: scale(1.1); box-shadow: 0 8px 32px rgba(108,99,255,.6); }
     .chat-widget {
       position: fixed;
-      bottom: 24px;
-      right: 24px;
-      z-index: 999;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-end;
-      gap: 12px;
-    }
-
-    .chat-toggle {
-      width: 56px;
-      height: 56px;
-      border-radius: 50%;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-      border: none;
-      color: #fff;
-      font-size: 1.4rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      box-shadow: 0 4px 20px rgba(59,130,246,.4);
-      transition: transform .2s, box-shadow .2s;
-      cursor: pointer;
-    }
-
-    .chat-toggle:hover { transform: scale(1.1); box-shadow: 0 6px 28px rgba(59,130,246,.6); }
-
-    .chat-dialog {
-      display: none;
-      flex-direction: column;
-      width: 340px;
+      bottom: 100px; right: 28px;
+      width: 360px;
       max-height: 520px;
       background: var(--surface);
       border: 1px solid var(--border);
-      border-radius: var(--radius);
+      border-radius: var(--radius-lg);
       box-shadow: var(--shadow);
-      overflow: hidden;
-    }
-
-    .chat-dialog.is-open { display: flex; }
-
-    .chat-dialog__header {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      padding: 14px 16px;
-      background: linear-gradient(135deg, var(--accent), var(--accent2));
-    }
-
-    .chat-dialog__title {
       display: flex;
       flex-direction: column;
+      z-index: 1999;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(16px) scale(.97);
+      pointer-events: none;
+      transition: opacity .25s ease, transform .25s ease;
     }
-
-    .chat-dialog__title strong {
-      font-size: 0.9rem;
-      font-weight: 700;
-      color: #fff;
+    .chat-widget.open {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: all;
     }
-
-    .chat-dialog__title span {
-      font-size: 0.72rem;
-      color: rgba(255,255,255,.75);
+    @media (max-width: 480px) {
+      .chat-widget {
+        bottom: 0; right: 0; left: 0;
+        width: 100%; border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+        max-height: 70vh;
+      }
+      .chat-toggle { bottom: 20px; right: 20px; }
     }
-
-    .chat-close {
+    .chat-widget__header {
+      background: linear-gradient(135deg, var(--brand), var(--brand-dark));
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .chat-widget__avatar {
+      width: 36px; height: 36px;
+      background: rgba(255,255,255,.2);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+    }
+    .chat-widget__info { flex: 1; }
+    .chat-widget__name { font-size: .9rem; font-weight: 700; color: #fff; }
+    .chat-widget__status { font-size: .72rem; color: rgba(255,255,255,.75); }
+    .chat-widget__close {
       background: rgba(255,255,255,.15);
       border: none;
+      border-radius: 8px;
       color: #fff;
-      width: 28px;
-      height: 28px;
-      border-radius: 50%;
-      font-size: 0.9rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
+      width: 30px; height: 30px;
       cursor: pointer;
-      transition: background .2s;
+      font-size: 1rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: background var(--transition);
     }
-
-    .chat-close:hover { background: rgba(255,255,255,.3); }
-
-    .chat-chips {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 6px;
-      padding: 12px 14px;
-      border-bottom: 1px solid var(--border);
-    }
-
-    .chip {
-      padding: 5px 11px;
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      font-size: 0.72rem;
-      font-weight: 500;
-      color: var(--text-dim);
-      cursor: pointer;
-      transition: border-color .2s, color .2s;
-    }
-
-    .chip:hover { border-color: var(--accent); color: var(--text); }
-
-    .chat-messages {
+    .chat-widget__close:hover { background: rgba(255,255,255,.3); }
+    .chat-widget__messages {
       flex: 1;
       overflow-y: auto;
-      padding: 14px;
+      padding: 16px;
       display: flex;
       flex-direction: column;
-      gap: 10px;
+      gap: 12px;
     }
-
     .chat-msg {
       max-width: 85%;
-      padding: 10px 13px;
-      border-radius: 10px;
-      font-size: 0.82rem;
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-size: .82rem;
       line-height: 1.55;
     }
-
     .chat-msg--bot {
-      background: var(--surface2);
+      background: var(--surface-2);
       border: 1px solid var(--border);
       color: var(--text);
       align-self: flex-start;
+      border-radius: 4px 14px 14px 14px;
     }
-
     .chat-msg--user {
-      background: var(--accent);
+      background: var(--brand);
       color: #fff;
       align-self: flex-end;
+      border-radius: 14px 14px 4px 14px;
     }
-
-    .chat-form {
+    .chat-widget__chips {
+      padding: 0 16px 12px;
       display: flex;
       gap: 8px;
-      padding: 12px 14px;
+      flex-wrap: wrap;
+    }
+    .chat-chip {
+      background: rgba(108,99,255,.12);
+      border: 1px solid rgba(108,99,255,.25);
+      border-radius: 100px;
+      padding: 5px 12px;
+      font-size: .75rem;
+      color: var(--brand-light);
+      cursor: pointer;
+      transition: background var(--transition);
+    }
+    .chat-chip:hover { background: rgba(108,99,255,.25); }
+    .chat-widget__input-row {
+      padding: 12px 16px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .chat-widget__input {
+      flex: 1;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 9px 14px;
+      color: var(--text);
+      font-size: .82rem;
+      font-family: inherit;
+      resize: none;
+      outline: none;
+      transition: border-color var(--transition);
+    }
+    .chat-widget__input:focus { border-color: var(--brand); }
+    .chat-widget__send {
+      width: 36px; height: 36px;
+      background: var(--brand);
+      border: none;
+      border-radius: 10px;
+      color: #fff;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+      transition: background var(--transition);
+      flex-shrink: 0;
+    }
+    .chat-widget__send:hover { background: var(--brand-dark); }
+    .chat-widget__footer {
+      padding: 8px 16px;
+      font-size: .68rem;
+      color: var(--text-dim);
+      text-align: center;
       border-top: 1px solid var(--border);
     }
 
-    .chat-form textarea {
-      flex: 1;
-      background: var(--surface2);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      color: var(--text);
-      font-size: 0.82rem;
-      padding: 8px 10px;
-      resize: none;
-      height: 38px;
-      font-family: inherit;
-      line-height: 1.4;
-    }
-
-    .chat-form textarea:focus {
-      outline: none;
-      border-color: var(--accent);
-    }
-
-    .chat-send {
-      width: 38px;
-      height: 38px;
-      border-radius: var(--radius-sm);
-      background: var(--accent);
-      border: none;
-      color: #fff;
-      font-size: 1rem;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      flex-shrink: 0;
-      transition: background .2s;
-    }
-
-    .chat-send:hover { background: #2563eb; }
-
-    .chat-footer {
-      padding: 6px 14px 10px;
-      font-size: 0.68rem;
-      color: var(--text-mute);
-      text-align: center;
-    }
-
     /* ══════════════════════════════════════
-       RESPONSIVE
+       RESPONSIVE — NAV
     ══════════════════════════════════════ */
-    @media (max-width: 768px) {
+    @media (max-width: 860px) {
       .nav__links { display: none; }
       .nav__toggle { display: flex; }
-
-      .hero { padding: 72px 20px 60px; }
-
-      .platform__stats { grid-template-columns: repeat(3, 1fr); }
-
-      .footer__grid { grid-template-columns: 1fr 1fr; }
-
-      .chat-dialog { width: 300px; }
     }
-
-    @media (max-width: 480px) {
-      .platform__stats { grid-template-columns: repeat(3, 1fr); gap: 8px; }
-      .stat__value { font-size: 1.4rem; }
-
-      .footer__grid { grid-template-columns: 1fr; }
-
-      .chat-widget { bottom: 16px; right: 16px; }
-      .chat-dialog { width: calc(100vw - 32px); }
+    @media (max-width: 860px) {
+      .hero__inner { grid-template-columns: 1fr; gap: 48px; }
+      .hero { padding-top: 100px; }
     }
   </style>
 </head>
 <body>
 
-<!-- ══════ NAVIGATION ══════ -->
-<header class="nav" role="banner">
-  <div class="nav__inner">
-    <a href="index.html" class="nav__logo" aria-label="CyberBench Home">
-      <svg class="logo-mark" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <path d="M18 2L4 8v10c0 8.4 6 16.3 14 18 8-1.7 14-9.6 14-18V8L18 2z" fill="url(#shield-grad)"/>
-        <path d="M13 18l3.5 3.5L23 14" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
-        <defs>
-          <linearGradient id="shield-grad" x1="4" y1="2" x2="32" y2="36" gradientUnits="userSpaceOnUse">
-            <stop stop-color="#3b82f6"/>
-            <stop offset="1" stop-color="#8b5cf6"/>
-          </linearGradient>
-        </defs>
-      </svg>
-      <span class="logo-text">CyberBench</span>
-    </a>
-
-    <nav aria-label="Primary navigation">
-      <ul class="nav__links">
-        <li><a href="services.html">Services</a></li>
-        <li><a href="about.html">About</a></li>
-        <li><a href="blog.html">Blog</a></li>
-        <li><a href="client-portal.html">Client Portal</a></li>
-        <li><a href="consultant-portal.html">Consultant Portal</a></li>
-        <li><a href="submit-ticket.html" class="nav__cta">Submit Ticket</a></li>
-      </ul>
-    </nav>
-
-    <button class="nav__toggle" aria-label="Toggle navigation" aria-expanded="false" aria-controls="mobile-drawer">
-      <span></span><span></span><span></span>
-    </button>
-  </div>
-
-  <nav class="nav__drawer" id="mobile-drawer" aria-label="Mobile navigation">
-    <a href="services.html">Services</a>
-    <a href="about.html">About</a>
-    <a href="blog.html">Blog</a>
-    <a href="client-portal.html">Client Portal</a>
-    <a href="consultant-portal.html">Consultant Portal</a>
-    <a href="submit-ticket.html" class="nav__cta">Submit Ticket</a>
-  </nav>
-</header>
-
-<!-- ══════ HERO ══════ -->
-<main id="main-content">
-<section class="hero" aria-labelledby="hero-title">
-  <div class="hero__inner">
-    <div class="hero__badge" aria-label="Platform category">
-      ⚡ Enterprise standards. Startup agility.
-    </div>
-
-    <h1 class="hero__title" id="hero-title">
-      Execution-driven security.<br/>
-      <span class="grad">Operationally delivered.</span>
-    </h1>
-
-    <p class="hero__desc">
-      CyberBench executes security work for you — not just advises. Through a ticket-first
-      model powered by our internal cyber team and a bench of vetted specialists, you submit
-      a request, get matched fast, and receive documented outcomes. Continuity, accountability,
-      and executive-ready reporting — with near real-time visibility across your entire environment.
-    </p>
-
-    <div class="hero__actions">
-      <a href="submit-ticket.html" class="btn btn--primary">🚀 Deploy Security Now</a>
-      <a href="services.html" class="btn btn--ghost">View Capabilities →</a>
-    </div>
-
-    <div class="hero__pills" role="list" aria-label="Platform highlights">
-      <span class="pill" role="listitem">Rapid response delivery</span>
-      <span class="pill" role="listitem">Ticket-first execution</span>
-      <span class="pill" role="listitem">KPI reporting</span>
-      <span class="pill" role="listitem">SMB-friendly pricing</span>
-      <span class="pill" role="listitem">Disaster recovery</span>
-      <span class="pill" role="listitem">Incident response</span>
-    </div>
-  </div>
-</section>
-
-<!-- ══════ LIVE PLATFORM ══════ -->
-<section class="platform" aria-labelledby="platform-title">
-  <div class="platform__inner">
-    <div class="platform__header">
-      <span class="platform__title" id="platform-title">CyberBench Platform — Live Tickets</span>
-      <span class="platform__live" aria-label="Live feed indicator">LIVE</span>
-    </div>
-
-    <ol class="ticket-list" aria-label="Active security tickets">
-      <li class="ticket">
-        <div class="ticket__icon" aria-hidden="true">🚨</div>
-        <div class="ticket__body">
-          <div class="ticket__title">Ransomware Containment — Finance</div>
-          <div class="ticket__meta">Assigned · 4 min ago · IR Specialist</div>
-        </div>
-        <span class="ticket__badge badge--critical">Critical</span>
-      </li>
-      <li class="ticket">
-        <div class="ticket__icon" aria-hidden="true">📡</div>
-        <div class="ticket__body">
-          <div class="ticket__title">SIEM Alert Tuning — 847 rules reviewed</div>
-          <div class="ticket__meta">In Progress · 22 min ago · SOC Analyst</div>
-        </div>
-        <span class="ticket__badge badge--high">High</span>
-      </li>
-      <li class="ticket">
-        <div class="ticket__icon" aria-hidden="true">🔍</div>
-        <div class="ticket__body">
-          <div class="ticket__title">Vuln Scan — 3 Critical CVEs Found</div>
-          <div class="ticket__meta">Triage · 41 min ago · VM Engineer</div>
-        </div>
-        <span class="ticket__badge badge--medium">Medium</span>
-      </li>
-      <li class="ticket">
-        <div class="ticket__icon" aria-hidden="true">✅</div>
-        <div class="ticket__body">
-          <div class="ticket__title">Backup Restore Validated — DR Test</div>
-          <div class="ticket__meta">Closed · 1 hr ago · Recovery Lead</div>
-        </div>
-        <span class="ticket__badge badge--resolved">Resolved</span>
-      </li>
-    </ol>
-
-    <div class="platform__stats" role="list" aria-label="Platform statistics">
-      <div class="stat" role="listitem">
-        <div class="stat__value">24/7</div>
-        <div class="stat__label">Monitoring</div>
-      </div>
-      <div class="stat" role="listitem">
-        <div class="stat__value">30 min</div>
-        <div class="stat__label">IR SLA</div>
-      </div>
-      <div class="stat" role="listitem">
-        <div class="stat__value">100%</div>
-        <div class="stat__label">Documented</div>
-      </div>
-    </div>
-  </div>
-</section>
-
-<!-- ══════ PILLARS ══════ -->
-<section class="section" aria-labelledby="pillars-title">
-  <div class="section__inner">
-    <div class="section__header">
-      <span class="section__label">How We Operate</span>
-      <h2 class="section__title" id="pillars-title">Built for real-world security operations</h2>
-      <p class="section__desc">
-        Three foundational pillars power every CyberBench engagement —
-        framework alignment, execution discipline, and verified expertise.
-      </p>
-    </div>
-
-    <div class="pillars__grid" role="list">
-      <article class="pillar" role="listitem">
-        <div class="pillar__icon" aria-hidden="true">🛡</div>
-        <h3 class="pillar__title">Security Framework</h3>
-        <p class="pillar__desc">Mapped to Identify, Protect, Detect, Respond, Recover — built for real environments, not checkbox compliance.</p>
-      </article>
-      <article class="pillar" role="listitem">
-        <div class="pillar__icon" aria-hidden="true">🎫</div>
-        <h3 class="pillar__title">Execution Model</h3>
-        <p class="pillar__desc">Clear intake → fast routing → tracked work → documented closure. Every engagement has a paper trail and an SLA.</p>
-      </article>
-      <article class="pillar" role="listitem">
-        <div class="pillar__icon" aria-hidden="true">🧠</div>
-        <h3 class="pillar__title">Verified Expertise</h3>
-        <p class="pillar__desc">Specialists assigned by skill fit — not whoever is available. Right expert, right issue, every time.</p>
-      </article>
-      <article class="pillar" role="listitem">
-        <div class="pillar__icon" aria-hidden="true">📊</div>
-        <h3 class="pillar__title">Operational Discipline</h3>
-        <p class="pillar__desc">Response cadence, SLA targets, executive summaries, and measurable outcomes — so you always know what you're getting.</p>
-      </article>
-      <article class="pillar" role="listitem">
-        <div class="pillar__icon" aria-hidden="true">💰</div>
-        <h3 class="pillar__title">Pricing Advantage</h3>
-        <p class="pillar__desc">Enterprise-grade execution without enterprise consulting overhead. Priced for modern SMBs who need results, not retainers.</p>
-      </article>
-      <article class="pillar" role="listitem">
-        <div class="pillar__icon" aria-hidden="true">🔄</div>
-        <h3 class="pillar__title">Continuity</h3>
-        <p class="pillar__desc">Structured oversight and aligned execution across every engagement — maintaining operational consistency as your environment evolves.</p>
-      </article>
-    </div>
-  </div>
-</section>
-
-<!-- ══════ PROCESS ══════ -->
-<section class="section section--alt" aria-labelledby="process-title">
-  <div class="section__inner">
-    <div class="section__header">
-      <span class="section__label">The Process</span>
-      <h2 class="section__title" id="process-title">From ticket to outcome in four steps</h2>
-      <p class="section__desc">
-        No ambiguity, no scope creep — just clear intake, expert execution, and documented results.
-      </p>
-    </div>
-
-    <ol class="steps" aria-label="Engagement process steps">
-      <li class="step">
-        <div class="step__number" aria-hidden="true">1</div>
-        <h3 class="step__title">Submit a Ticket</h3>
-        <p class="step__desc">Describe your security need — incident, project, or ongoing service.</p>
-      </li>
-      <li class="step">
-        <div class="step__number" aria-hidden="true">2</div>
-        <h3 class="step__title">Specialist Matched</h3>
-        <p class="step__desc">We route to the right expert based on skill, priority, and SLA.</p>
-      </li>
-      <li class="step">
-        <div class="step__number" aria-hidden="true">3</div>
-        <h3 class="step__title">Work Executed</h3>
-        <p class="step__desc">Triage, remediation, and delivery — tracked in real time.</p>
-      </li>
-      <li class="step">
-        <div class="step__number" aria-hidden="true">4</div>
-        <h3 class="step__title">Outcome Documented</h3>
-        <p class="step__desc">Full report, evidence, and follow-up actions logged for your records.</p>
-      </li>
-    </ol>
-  </div>
-</section>
-
-<!-- ══════ SERVICES ══════ -->
-<section class="section" aria-labelledby="services-title">
-  <div class="section__inner">
-    <div class="section__header">
-      <span class="section__label">Core Capabilities</span>
-      <h2 class="section__title" id="services-title">Everything you need, nothing you don't</h2>
-      <p class="section__desc">
-        From 24/7 SIEM monitoring to rapid incident response — all delivered through our
-        ticket-first platform by vetted specialists.
-      </p>
-    </div>
-
-    <div class="services__grid" role="list">
-      <article class="service-card" role="listitem">
-        <div class="service-card__icon" aria-hidden="true">📡</div>
-        <h3 class="service-card__title">Continuous Monitoring (SIEM)</h3>
-        <p class="service-card__desc">24/7 threat detection, log ingestion, alert tuning, and real-time triage to identify and respond to threats before they impact operations.</p>
-      </article>
-      <article class="service-card" role="listitem">
-        <div class="service-card__icon" aria-hidden="true">🚨</div>
-        <h3 class="service-card__title">Rapid Incident Response</h3>
-        <p class="service-card__desc">24/7 on-call specialists ready for ransomware, breaches, and zero-days. Skip the procurement process when seconds count.</p>
-      </article>
-      <article class="service-card" role="listitem">
-        <div class="service-card__icon" aria-hidden="true">🔍</div>
-        <h3 class="service-card__title">Vulnerability Management</h3>
-        <p class="service-card__desc">Risk-based scanning, prioritized remediation plans, and patch tracking — with executive-ready reporting on your security posture.</p>
-      </article>
-      <article class="service-card" role="listitem">
-        <div class="service-card__icon" aria-hidden="true">💾</div>
-        <h3 class="service-card__title">Disaster Recovery</h3>
-        <p class="service-card__desc">Protect your data with resilient, ransomware-proof backups and tested recovery processes — ensuring fast restoration when it matters most.</p>
-      </article>
-    </div>
-  </div>
-</section>
-
-<!-- ══════ CTA ══════ -->
-<section class="cta" aria-labelledby="cta-title">
-  <div class="cta__inner">
-    <h2 class="cta__title" id="cta-title">
-      Ready to deploy execution-driven<br/>security operations?
-    </h2>
-    <p class="cta__desc">
-      Submit your first ticket and get matched to the right specialist within minutes.
-      No long contracts, no bloated retainers — just execution.
-    </p>
-    <div class="cta__actions">
-      <a href="submit-ticket.html" class="btn btn--primary">🚀 Submit Your First Ticket</a>
-      <a href="services.html" class="btn btn--ghost">Explore Services</a>
-    </div>
-    <div class="cta__trust" aria-label="Trust indicators">
-      <span class="cta__trust-item">🔒 No lock-in contracts</span>
-      <span class="cta__trust-item">⚡ 30-minute IR SLA</span>
-      <span class="cta__trust-item">📋 Every action documented</span>
-      <span class="cta__trust-item">👥 Vetted specialists only</span>
-    </div>
-  </div>
-</section>
-</main>
-
-<!-- ══════ FOOTER ══════ -->
-<footer class="footer" role="contentinfo">
-  <div class="footer__inner">
-    <div class="footer__grid">
-      <div class="footer__brand">
-        <a href="index.html" class="nav__logo" aria-label="CyberBench Home">
-          <svg class="logo-mark" viewBox="0 0 36 36" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-            <path d="M18 2L4 8v10c0 8.4 6 16.3 14 18 8-1.7 14-9.6 14-18V8L18 2z" fill="url(#shield-grad-f)"/>
+  <!-- ══════ NAVIGATION ══════ -->
+  <nav class="nav" aria-label="Main navigation">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo" aria-label="CyberBench home">
+        <div class="nav__logo-icon">
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+            <path d="M18 3L4 9v10c0 8.4 5.9 16.2 14 18 8.1-1.8 14-9.6 14-18V9L18 3z" fill="url(#sg)" opacity=".9"/>
             <path d="M13 18l3.5 3.5L23 14" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
             <defs>
-              <linearGradient id="shield-grad-f" x1="4" y1="2" x2="32" y2="36" gradientUnits="userSpaceOnUse">
-                <stop stop-color="#3b82f6"/>
-                <stop offset="1" stop-color="#8b5cf6"/>
+              <linearGradient id="sg" x1="4" y1="3" x2="32" y2="37" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#a89dff"/>
+                <stop offset="1" stop-color="#6c63ff"/>
               </linearGradient>
             </defs>
           </svg>
-          <span class="logo-text">CyberBench</span>
-        </a>
-        <p>Execution-driven cybersecurity operations — ticket-first, specialist-matched, and fully documented.</p>
+        </div>
+        <span class="nav__logo-text">CyberBench</span>
+      </a>
+
+      <div class="nav__links" role="menubar">
+        <a href="services.html"          class="nav__link" role="menuitem">Services</a>
+        <a href="about.html"             class="nav__link" role="menuitem">About</a>
+        <a href="blog.html"              class="nav__link" role="menuitem">Blog</a>
+        <a href="client-portal.html"     class="nav__link" role="menuitem">Client Portal</a>
+        <a href="consultant-portal.html" class="nav__link" role="menuitem">Consultant Portal</a>
+        <a href="submit-ticket.html"     class="nav__link nav__link--cta" role="menuitem">Submit Ticket</a>
       </div>
 
-      <div class="footer__col">
-        <h4>Services</h4>
-        <ul>
-          <li><a href="services.html#siem">SIEM Monitoring</a></li>
-          <li><a href="services.html#ir">Incident Response</a></li>
-          <li><a href="services.html#vm">Vulnerability Mgmt</a></li>
-          <li><a href="services.html#dr">Disaster Recovery</a></li>
-        </ul>
-      </div>
-
-      <div class="footer__col">
-        <h4>Company</h4>
-        <ul>
-          <li><a href="about.html">About</a></li>
-          <li><a href="blog.html">Blog</a></li>
-          <li><a href="submit-ticket.html">Submit Ticket</a></li>
-        </ul>
-      </div>
-
-      <div class="footer__col">
-        <h4>Portals</h4>
-        <ul>
-          <li><a href="client-portal.html">Client Portal</a></li>
-          <li><a href="consultant-portal.html">Consultant Portal</a></li>
-        </ul>
-      </div>
+      <button class="nav__toggle" aria-label="Toggle navigation" aria-expanded="false" id="navToggle">
+        <span></span><span></span><span></span>
+      </button>
     </div>
 
-    <div class="footer__bottom">
-      <p class="footer__copy">© 2025 CyberBench. All rights reserved.</p>
-      <div class="footer__legal">
-        <a href="#">Privacy Policy</a>
-        <a href="#">Terms of Service</a>
+    <div class="nav__mobile" id="navMobile" role="menu" aria-label="Mobile navigation">
+      <a href="services.html"          class="nav__link" role="menuitem">Services</a>
+      <a href="about.html"             class="nav__link" role="menuitem">About</a>
+      <a href="blog.html"              class="nav__link" role="menuitem">Blog</a>
+      <a href="client-portal.html"     class="nav__link" role="menuitem">Client Portal</a>
+      <a href="consultant-portal.html" class="nav__link" role="menuitem">Consultant Portal</a>
+      <a href="submit-ticket.html"     class="nav__link nav__link--cta" role="menuitem">Submit Ticket</a>
+    </div>
+  </nav>
+
+  <!-- ══════ HERO ══════ -->
+  <main id="main-content">
+  <section class="hero" aria-labelledby="hero-title">
+    <div class="hero__inner">
+
+      <!-- Left: Copy -->
+      <div class="hero__content">
+        <div class="hero__badge">
+          <span class="hero__badge-dot" aria-hidden="true"></span>
+          Enterprise standards. Startup agility.
+        </div>
+        <h1 class="hero__title" id="hero-title">
+          Execution-driven security.<br>
+          <span class="hero__title-gradient">Operationally delivered.</span>
+        </h1>
+        <p class="hero__desc">
+          CyberBench executes security work for you — not just advises. Through a ticket-first
+          model powered by our internal cyber team and a bench of vetted specialists, you submit
+          a request, get matched fast, and receive documented outcomes. Continuity, accountability,
+          and executive-ready reporting — with near real-time visibility across your entire environment.
+        </p>
+        <div class="hero__actions">
+          <a href="submit-ticket.html" class="btn btn--primary">🚀 Deploy Security Now</a>
+          <a href="services.html"      class="btn btn--ghost">View Capabilities →</a>
+        </div>
+        <div class="hero__trust" aria-label="Platform highlights">
+          <div class="hero__trust-item"><span>⚡</span> Rapid response delivery</div>
+          <div class="hero__trust-item"><span>🎫</span> Ticket-first execution</div>
+          <div class="hero__trust-item"><span>📊</span> KPI reporting</div>
+          <div class="hero__trust-item"><span>💰</span> SMB-friendly pricing</div>
+          <div class="hero__trust-item"><span>💾</span> Disaster recovery</div>
+          <div class="hero__trust-item"><span>🚨</span> Incident response</div>
+        </div>
+      </div>
+
+      <!-- Right: Live Ticket Panel -->
+      <div class="hero__panel" role="region" aria-label="Live platform activity">
+        <div class="panel__header">
+          <span class="panel__title">CyberBench Platform — Live Tickets</span>
+          <div class="panel__dots" aria-hidden="true">
+            <div class="panel__dot panel__dot--red"></div>
+            <div class="panel__dot panel__dot--amber"></div>
+            <div class="panel__dot panel__dot--green"></div>
+          </div>
+        </div>
+        <div class="panel__body">
+          <article class="ticket" aria-label="Ticket: Ransomware Containment">
+            <div class="ticket__icon" aria-hidden="true">🚨</div>
+            <div class="ticket__body">
+              <div class="ticket__title">Ransomware Containment — Finance</div>
+              <div class="ticket__meta">Assigned · 4 min ago · IR Specialist</div>
+            </div>
+            <span class="ticket__badge badge--critical">Critical</span>
+          </article>
+          <article class="ticket" aria-label="Ticket: SIEM Alert Tuning">
+            <div class="ticket__icon" aria-hidden="true">📡</div>
+            <div class="ticket__body">
+              <div class="ticket__title">SIEM Alert Tuning — 847 rules reviewed</div>
+              <div class="ticket__meta">In Progress · 22 min ago · SOC Analyst</div>
+            </div>
+            <span class="ticket__badge badge--high">High</span>
+          </article>
+          <article class="ticket" aria-label="Ticket: Vulnerability Scan">
+            <div class="ticket__icon" aria-hidden="true">🔍</div>
+            <div class="ticket__body">
+              <div class="ticket__title">Vuln Scan — 3 Critical CVEs Found</div>
+              <div class="ticket__meta">Triage · 41 min ago · VM Engineer</div>
+            </div>
+            <span class="ticket__badge badge--medium">Medium</span>
+          </article>
+          <article class="ticket" aria-label="Ticket: Backup Restore Validated">
+            <div class="ticket__icon" aria-hidden="true">✅</div>
+            <div class="ticket__body">
+              <div class="ticket__title">Backup Restore Validated — DR Test</div>
+              <div class="ticket__meta">Closed · 1 hr ago · Recovery Lead</div>
+            </div>
+            <span class="ticket__badge badge--resolved">Resolved</span>
+          </article>
+        </div>
+        <div class="panel__stats" aria-label="Platform statistics">
+          <div class="panel__stat">
+            <span class="panel__stat-val">24/7</span>
+            <span class="panel__stat-label">Monitoring</span>
+          </div>
+          <div class="panel__stat">
+            <span class="panel__stat-val">30 min</span>
+            <span class="panel__stat-label">IR SLA</span>
+          </div>
+          <div class="panel__stat">
+            <span class="panel__stat-val">100%</span>
+            <span class="panel__stat-label">Documented</span>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- ══════ PILLARS ══════ -->
+  <section class="section" aria-labelledby="pillars-title">
+    <div class="section__inner">
+      <header class="section__header">
+        <span class="section__label">How We Operate</span>
+        <h2 class="section__title" id="pillars-title">Built for real-world security operations</h2>
+        <p class="section__sub">
+          Three foundational pillars power every CyberBench engagement —
+          framework alignment, execution discipline, and verified expertise.
+        </p>
+      </header>
+      <div class="pillars__grid">
+        <div class="pillar">
+          <div class="pillar__icon" aria-hidden="true">🛡️</div>
+          <h3 class="pillar__title">Security Framework</h3>
+          <p class="pillar__desc">Mapped to Identify, Protect, Detect, Respond, Recover — built for real environments, not checkbox compliance.</p>
+        </div>
+        <div class="pillar">
+          <div class="pillar__icon" aria-hidden="true">🎫</div>
+          <h3 class="pillar__title">Execution Model</h3>
+          <p class="pillar__desc">Clear intake → fast routing → tracked work → documented closure. Every engagement has a paper trail and an SLA.</p>
+        </div>
+        <div class="pillar">
+          <div class="pillar__icon" aria-hidden="true">🧠</div>
+          <h3 class="pillar__title">Verified Expertise</h3>
+          <p class="pillar__desc">Specialists assigned by skill fit — not whoever is available. Right expert, right issue, every time.</p>
+        </div>
+        <div class="pillar">
+          <div class="pillar__icon" aria-hidden="true">📊</div>
+          <h3 class="pillar__title">Operational Discipline</h3>
+          <p class="pillar__desc">Response cadence, SLA targets, executive summaries, and measurable outcomes — so you always know what you're getting.</p>
+        </div>
+        <div class="pillar">
+          <div class="pillar__icon" aria-hidden="true">💰</div>
+          <h3 class="pillar__title">Pricing Advantage</h3>
+          <p class="pillar__desc">Enterprise-grade execution without enterprise consulting overhead. Priced for modern SMBs who need results, not retainers.</p>
+        </div>
+        <div class="pillar">
+          <div class="pillar__icon" aria-hidden="true">🔄</div>
+          <h3 class="pillar__title">Continuity</h3>
+          <p class="pillar__desc">Structured oversight and aligned execution across every engagement — maintaining operational consistency as your environment evolves.</p>
+        </div>
       </div>
     </div>
-  </div>
-</footer>
+  </section>
 
-<!-- ══════ AI CHAT WIDGET ══════ -->
-<div class="chat-widget" role="complementary" aria-label="AI chat assistant">
-  <div class="chat-dialog" id="chat-dialog" role="dialog" aria-modal="true" aria-labelledby="chat-title">
-    <div class="chat-dialog__header">
-      <div class="chat-dialog__title">
-        <strong id="chat-title">🤖 CyberBench AI</strong>
-        <span>Online — Platform Guide</span>
+  <!-- ══════ PROCESS ══════ -->
+  <section class="section section--alt" aria-labelledby="process-title">
+    <div class="section__inner">
+      <header class="section__header">
+        <span class="section__label">The Process</span>
+        <h2 class="section__title" id="process-title">From ticket to outcome in four steps</h2>
+        <p class="section__sub">
+          No ambiguity, no scope creep — just clear intake, expert execution, and documented results.
+        </p>
+      </header>
+      <div class="process__steps">
+        <div class="step">
+          <div class="step__num" aria-hidden="true">1</div>
+          <h3 class="step__title">Submit a Ticket</h3>
+          <p class="step__desc">Describe your security need — incident, project, or ongoing service.</p>
+        </div>
+        <div class="step">
+          <div class="step__num" aria-hidden="true">2</div>
+          <h3 class="step__title">Specialist Matched</h3>
+          <p class="step__desc">We route to the right expert based on skill, priority, and SLA.</p>
+        </div>
+        <div class="step">
+          <div class="step__num" aria-hidden="true">3</div>
+          <h3 class="step__title">Work Executed</h3>
+          <p class="step__desc">Triage, remediation, and delivery — tracked in real time.</p>
+        </div>
+        <div class="step">
+          <div class="step__num" aria-hidden="true">4</div>
+          <h3 class="step__title">Outcome Documented</h3>
+          <p class="step__desc">Full report, evidence, and follow-up actions logged for your records.</p>
+        </div>
       </div>
-      <button class="chat-close" id="chat-close" aria-label="Close chat">✕</button>
+    </div>
+  </section>
+
+  <!-- ══════ SERVICES ══════ -->
+  <section class="section" aria-labelledby="services-title">
+    <div class="section__inner">
+      <header class="section__header">
+        <span class="section__label">Core Capabilities</span>
+        <h2 class="section__title" id="services-title">Everything you need, nothing you don't</h2>
+        <p class="section__sub">
+          From 24/7 SIEM monitoring to rapid incident response — all delivered through our
+          ticket-first platform by vetted specialists.
+        </p>
+      </header>
+      <div class="services__grid">
+        <article class="service-card">
+          <div class="service-card__icon" aria-hidden="true">📡</div>
+          <h3 class="service-card__title">SOC / Continuous Monitoring (SIEM)</h3>
+          <p class="service-card__desc">24/7 threat detection, log ingestion, alert tuning, and real-time triage to identify and respond to threats before they impact operations.</p>
+        </article>
+        <article class="service-card">
+          <div class="service-card__icon" aria-hidden="true">🚨</div>
+          <h3 class="service-card__title">Rapid Response</h3>
+          <p class="service-card__desc">24/7 on-call specialists ready for ransomware, breaches, and zero-days. Skip the procurement process when seconds count.</p>
+        </article>
+        <article class="service-card">
+          <div class="service-card__icon" aria-hidden="true">🔍</div>
+          <h3 class="service-card__title">Vulnerability Management</h3>
+          <p class="service-card__desc">Risk-based scanning, prioritized remediation plans, and patch tracking — with executive-ready reporting on your security posture.</p>
+        </article>
+        <article class="service-card">
+          <div class="service-card__icon" aria-hidden="true">💾</div>
+          <h3 class="service-card__title">Disaster Recovery</h3>
+          <p class="service-card__desc">Protect your data with resilient, ransomware-proof backups and tested recovery processes — ensuring fast restoration when it matters most.</p>
+        </article>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════ CTA ══════ -->
+  <section class="cta" aria-labelledby="cta-title">
+    <div class="cta__inner">
+      <h2 class="cta__title" id="cta-title">
+        Ready to deploy execution-driven<br>security operations?
+      </h2>
+      <p class="cta__desc">
+        Submit your first ticket and get matched to the right specialist within minutes.
+        No long contracts, no bloated retainers — just execution.
+      </p>
+      <div class="cta__actions">
+        <a href="submit-ticket.html" class="btn btn--primary">🚀 Submit Your First Ticket</a>
+        <a href="services.html"      class="btn btn--ghost">Explore Services</a>
+      </div>
+      <div class="cta__trust" aria-label="Trust indicators">
+        <div class="cta__trust-item"><span>🔒</span> No lock-in contracts</div>
+        <div class="cta__trust-item"><span>⚡</span> 30-minute IR SLA</div>
+        <div class="cta__trust-item"><span>📋</span> Every action documented</div>
+        <div class="cta__trust-item"><span>👥</span> Vetted specialists only</div>
+      </div>
+    </div>
+  </section>
+  </main>
+
+  <!-- ══════ FOOTER ══════ -->
+  <footer class="footer" aria-label="Site footer">
+    <div class="footer__inner">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <a href="index.html" class="nav__logo" aria-label="CyberBench home">
+            <div class="nav__logo-icon">
+              <svg width="30" height="30" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+                <path d="M18 3L4 9v10c0 8.4 5.9 16.2 14 18 8.1-1.8 14-9.6 14-18V9L18 3z" fill="url(#sg2)" opacity=".9"/>
+                <path d="M13 18l3.5 3.5L23 14" stroke="#fff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+                <defs>
+                  <linearGradient id="sg2" x1="4" y1="3" x2="32" y2="37" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#a89dff"/>
+                    <stop offset="1" stop-color="#6c63ff"/>
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+            <span class="nav__logo-text">CyberBench</span>
+          </a>
+          <p>Execution-driven cybersecurity for modern SMBs. Ticket-first, specialist-matched, and KPI-reported.</p>
+        </div>
+        <div class="footer__col">
+          <p class="footer__col-title">Platform</p>
+          <ul>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="submit-ticket.html">Submit Ticket</a></li>
+            <li><a href="client-portal.html">Client Portal</a></li>
+            <li><a href="consultant-portal.html">Consultant Portal</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <p class="footer__col-title">Company</p>
+          <ul>
+            <li><a href="about.html">About</a></li>
+            <li><a href="blog.html">Blog</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <p class="footer__col-title">Legal</p>
+          <ul>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span class="footer__copy">© 2025 CyberBench. All rights reserved.</span>
+        <nav class="footer__legal" aria-label="Legal links">
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
+
+  <!-- ══════ AI CHAT WIDGET ══════ -->
+  <button
+    class="chat-toggle"
+    id="chatToggle"
+    aria-label="Open AI chat assistant"
+    aria-expanded="false"
+    aria-controls="chatWidget"
+  >🤖</button>
+
+  <div
+    class="chat-widget"
+    id="chatWidget"
+    role="dialog"
+    aria-modal="true"
+    aria-label="CyberBench AI Assistant"
+    aria-hidden="true"
+  >
+    <div class="chat-widget__header">
+      <div class="chat-widget__avatar" aria-hidden="true">🤖</div>
+      <div class="chat-widget__info">
+        <div class="chat-widget__name">CyberBench AI</div>
+        <div class="chat-widget__status">Online — Platform Guide</div>
+      </div>
+      <button class="chat-widget__close" id="chatClose" aria-label="Close chat">✕</button>
     </div>
 
-    <div class="chat-chips" role="group" aria-label="Quick questions">
-      <button class="chip" data-msg="How does it work?">How it works</button>
-      <button class="chip" data-msg="What services do you offer?">Services</button>
-      <button class="chip" data-msg="Tell me about incident response">Incident Response</button>
-      <button class="chip" data-msg="How do I get started?">Get Started</button>
-      <button class="chip" data-msg="What is the pricing?">Pricing</button>
-    </div>
-
-    <div class="chat-messages" id="chat-messages" role="log" aria-live="polite" aria-label="Chat messages">
+    <div
+      class="chat-widget__messages"
+      id="chatMessages"
+      role="log"
+      aria-live="polite"
+      aria-label="Chat messages"
+    >
       <div class="chat-msg chat-msg--bot">
-        👋 Hi! I'm the CyberBench AI assistant. Ask me anything about our platform, services, or how to get started.
+        👋 Hi! I'm the CyberBench AI assistant. Ask me about our services, how to submit a ticket, or how the platform works.
       </div>
     </div>
 
-    <form class="chat-form" id="chat-form" aria-label="Send a message">
-      <label for="chat-input" class="sr-only">Type your message</label>
-      <textarea id="chat-input" placeholder="Ask about services, pricing, IR…" rows="1" aria-label="Chat input"></textarea>
-      <button type="submit" class="chat-send" aria-label="Send message">➤</button>
-    </form>
+    <div class="chat-widget__chips" aria-label="Quick questions">
+      <button class="chat-chip" data-msg="How does it work?">How it works</button>
+      <button class="chat-chip" data-msg="What services do you offer?">Services</button>
+      <button class="chat-chip" data-msg="Tell me about incident response">Incident Response</button>
+      <button class="chat-chip" data-msg="How do I get started?">Get Started</button>
+      <button class="chat-chip" data-msg="What does it cost?">Pricing</button>
+    </div>
 
-    <p class="chat-footer">🔒 Demo widget — do not share sensitive data</p>
+    <div class="chat-widget__input-row">
+      <textarea
+        class="chat-widget__input"
+        id="chatInput"
+        rows="1"
+        placeholder="Ask a question…"
+        aria-label="Type your message"
+      ></textarea>
+      <button class="chat-widget__send" id="chatSend" aria-label="Send message">➤</button>
+    </div>
+    <div class="chat-widget__footer">🔒 Demo widget — do not share sensitive data</div>
   </div>
 
-  <button class="chat-toggle" id="chat-toggle" aria-label="Open AI chat assistant" aria-expanded="false" aria-controls="chat-dialog">
-    🤖
-  </button>
-</div>
+  <!-- ══════ SCRIPTS ══════ -->
+  <script>
+    /* ── Mobile Nav ── */
+    const navToggle = document.getElementById('navToggle');
+    const navMobile = document.getElementById('navMobile');
+    navToggle.addEventListener('click', () => {
+      const open = navMobile.classList.toggle('open');
+      navToggle.setAttribute('aria-expanded', open);
+    });
 
-<!-- ══════ SCRIPTS ══════ -->
-<script>
-  /* ── Mobile nav ── */
-  const toggle = document.querySelector('.nav__toggle');
-  const drawer = document.querySelector('.nav__drawer');
+    /* ── AI Chat ── */
+    const chatToggle  = document.getElementById('chatToggle');
+    const chatWidget  = document.getElementById('chatWidget');
+    const chatClose   = document.getElementById('chatClose');
+    const chatInput   = document.getElementById('chatInput');
+    const chatSend    = document.getElementById('chatSend');
+    const chatMessages= document.getElementById('chatMessages');
 
-  toggle.addEventListener('click', () => {
-    const open = drawer.classList.toggle('is-open');
-    toggle.setAttribute('aria-expanded', open);
-  });
-
-  document.addEventListener('keydown', e => {
-    if (e.key === 'Escape' && drawer.classList.contains('is-open')) {
-      drawer.classList.remove('is-open');
-      toggle.setAttribute('aria-expanded', 'false');
-      toggle.focus();
+    function openChat() {
+      chatWidget.classList.add('open');
+      chatWidget.setAttribute('aria-hidden', 'false');
+      chatToggle.setAttribute('aria-expanded', 'true');
+      chatInput.focus();
     }
-  });
-
-  /* ── AI Chat ── */
-  const chatToggle  = document.getElementById('chat-toggle');
-  const chatDialog  = document.getElementById('chat-dialog');
-  const chatClose   = document.getElementById('chat-close');
-  const chatForm    = document.getElementById('chat-form');
-  const chatInput   = document.getElementById('chat-input');
-  const chatMessages = document.getElementById('chat-messages');
-
-  const responses = {
-    'how': 'CyberBench works through a ticket-first model. You submit a security request, we match you with the right specialist, work gets executed and tracked, then outcomes are fully documented.',
-    'work': 'CyberBench works through a ticket-first model. You submit a security request, we match you with the right specialist, work gets executed and tracked, then outcomes are fully documented.',
-    'service': 'We offer: 📡 SIEM Monitoring, 🚨 Incident Response, 🔍 Vulnerability Management, and 💾 Disaster Recovery — all delivered by vetted specialists through our ticket platform.',
-    'incident': '🚨 Our IR SLA is 30 minutes. 24/7 on-call specialists handle ransomware, breaches, and zero-days. Submit a ticket and a specialist is assigned immediately.',
-    'response': '🚨 Our IR SLA is 30 minutes. 24/7 on-call specialists handle ransomware, breaches, and zero-days. Submit a ticket and a specialist is assigned immediately.',
-    'start': '🚀 Getting started is simple: submit your first ticket at cyberbench.io/submit-ticket. No contracts required — just describe your need and we match you fast.',
-    'get': '🚀 Getting started is simple: submit your first ticket at cyberbench.io/submit-ticket. No contracts required — just describe your need and we match you fast.',
-    'price': '💰 CyberBench is priced for SMBs — no bloated retainers, no lock-in contracts. You pay for execution, not overhead. Contact us for a custom quote.',
-    'pricing': '💰 CyberBench is priced for SMBs — no bloated retainers, no lock-in contracts. You pay for execution, not overhead. Contact us for a custom quote.',
-    'siem': '📡 Our SIEM service provides 24/7 threat detection, log ingestion, alert tuning, and real-time triage — all managed by our SOC analysts.',
-    'monitor': '📡 Our SIEM service provides 24/7 threat detection, log ingestion, alert tuning, and real-time triage — all managed by our SOC analysts.',
-    'backup': '💾 We provide immutable, ransomware-proof backups with validated recovery testing — so you can restore fast when it matters most.',
-    'recover': '💾 We provide immutable, ransomware-proof backups with validated recovery testing — so you can restore fast when it matters most.',
-    'vuln': '🔍 Our vulnerability management includes risk-based scanning, prioritized remediation, and patch tracking with executive-ready reporting.',
-    'contract': '✅ No lock-in contracts. You get execution-grade security without long-term commitments or bloated retainers.',
-    'hello': '👋 Hello! I\'m here to help you learn about CyberBench. Ask me about our services, pricing, incident response, or how to get started.',
-    'hi': '👋 Hello! I\'m here to help you learn about CyberBench. Ask me about our services, pricing, incident response, or how to get started.',
-  };
-
-  function getBotReply(msg) {
-    const lower = msg.toLowerCase();
-    for (const [key, reply] of Object.entries(responses)) {
-      if (lower.includes(key)) return reply;
+    function closeChat() {
+      chatWidget.classList.remove('open');
+      chatWidget.setAttribute('aria-hidden', 'true');
+      chatToggle.setAttribute('aria-expanded', 'false');
+      chatToggle.focus();
     }
-    return "I'm not sure about that yet. For specific questions, please visit our services page or submit a ticket and our team will respond shortly.";
-  }
 
-  function addMessage(text, type) {
-    const div = document.createElement('div');
-    div.className = `chat-msg chat-msg--${type}`;
-    div.textContent = text;
-    chatMessages.appendChild(div);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-  }
+    chatToggle.addEventListener('click', () => chatWidget.classList.contains('open') ? closeChat() : openChat());
+    chatClose.addEventListener('click', closeChat);
+    document.addEventListener('keydown', e => { if (e.key === 'Escape' && chatWidget.classList.contains('open')) closeChat(); });
 
-  function openChat() {
-    chatDialog.classList.add('is-open');
-    chatToggle.setAttribute('aria-expanded', 'true');
-    chatToggle.setAttribute('aria-label', 'Close AI chat assistant');
-    chatInput.focus();
-  }
+    function addMsg(text, type) {
+      const el = document.createElement('div');
+      el.className = `chat-msg chat-msg--${type}`;
+      el.textContent = text;
+      chatMessages.appendChild(el);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
 
-  function closeChat() {
-    chatDialog.classList.remove('is-open');
-    chatToggle.setAttribute('aria-expanded', 'false');
-    chatToggle.setAttribute('aria-label', 'Open AI chat assistant');
-    chatToggle.focus();
-  }
+    const KB = {
+      'how': 'CyberBench works on a ticket-first model: you submit a request, we match you to a vetted specialist, they execute the work, and you receive a documented outcome — all tracked in real time.',
+      'work': 'CyberBench works on a ticket-first model: you submit a request, we match you to a vetted specialist, they execute the work, and you receive a documented outcome — all tracked in real time.',
+      'service': 'We offer SOC/SIEM monitoring, rapid incident response, vulnerability management, compliance readiness, and disaster recovery — all through a unified ticket-first platform.',
+      'siem': 'Our SOC team provides 24/7 SIEM monitoring — log ingestion, alert tuning, and real-time triage to catch threats before they impact your operations.',
+      'monitor': 'Our SOC team provides 24/7 SIEM monitoring — log ingestion, alert tuning, and real-time triage to catch threats before they impact your operations.',
+      'incident': 'Our IR specialists are on-call 24/7 with a 30-minute SLA. We handle ransomware, breaches, and zero-days — without the procurement delays of traditional firms.',
+      'ransomware': 'Our IR specialists are on-call 24/7 with a 30-minute SLA. We handle ransomware, breaches, and zero-days — without the procurement delays of traditional firms.',
+      'start': 'Getting started is simple: visit the Submit Ticket page, describe your security need, and we\'ll match you to the right specialist within minutes.',
+      'get started': 'Getting started is simple: visit the Submit Ticket page, describe your security need, and we\'ll match you to the right specialist within minutes.',
+      'ticket': 'Submit a ticket at cyberbench.io/submit-ticket. Describe your need, set priority, and our team will route it to the right specialist immediately.',
+      'price': 'CyberBench is priced for modern SMBs — no bloated retainers, no lock-in contracts. Contact us for a tailored quote based on your environment.',
+      'cost': 'CyberBench is priced for modern SMBs — no bloated retainers, no lock-in contracts. Contact us for a tailored quote based on your environment.',
+      'backup': 'We provide immutable, ransomware-proof backups with validated recovery testing — so you can restore fast when it matters most.',
+      'recovery': 'We provide immutable, ransomware-proof backups with validated recovery testing — so you can restore fast when it matters most.',
+      'compliance': 'CyberBench maps all work to NIST CSF — Identify, Protect, Detect, Respond, Recover — giving you audit-ready documentation and executive-level reporting.',
+      'nist': 'CyberBench maps all work to NIST CSF — Identify, Protect, Detect, Respond, Recover — giving you audit-ready documentation and executive-level reporting.',
+      'vuln': 'Our vulnerability management service includes risk-based scanning, prioritized remediation plans, and patch tracking — with executive-ready reporting.',
+      'specialist': 'Every ticket is routed to a vetted specialist matched by skill and priority — not just whoever is available. You get the right expert every time.',
+      'kpi': 'CyberBench provides executive-ready KPI dashboards — response cadence, SLA metrics, and measurable outcomes so you always know what you\'re getting.',
+      'report': 'Every engagement closes with a full documented report — evidence, actions taken, and follow-up recommendations — ready for executive or board review.',
+    };
 
-  chatToggle.addEventListener('click', () => {
-    chatDialog.classList.contains('is-open') ? closeChat() : openChat();
-  });
+    function getBotReply(msg) {
+      const lower = msg.toLowerCase();
+      for (const [key, reply] of Object.entries(KB)) {
+        if (lower.includes(key)) return reply;
+      }
+      return "Great question! For detailed information, please visit our Services page or submit a ticket and our team will get back to you promptly.";
+    }
 
-  chatClose.addEventListener('click', closeChat
+    function handleSend() {
+      const text = chatInput.value.trim();
+      if (!text) return;
+      addMsg(text, 'user');
+      chatInput.value = '';
+      setTimeout(() => addMsg(getBotReply(text), 'bot'), 600);
+    }
+
+    chatSend.addEventListener('click', handleSend);
+    chatInput.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); }
+    });
+
+    document.querySelectorAll('.chat-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        chatInput.value = chip.dataset.msg;
+        handleSend();
+      });
+    });
+  </script>
+</body>
+</html>
