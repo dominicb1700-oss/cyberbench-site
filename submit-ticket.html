@@ -1,494 +1,1317 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="Submit a security ticket to CyberBench. Describe your need, set urgency, and get matched to the right specialist within minutes." />
   <title>Submit Ticket | CyberBench</title>
-  <link rel="stylesheet" href="/styles.css" />
-
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
-    /* ===== SUBMIT TICKET MOBILE MENU ONLY ===== */
+    /* ══════════════════════════════════════
+       TOKENS & RESET
+    ══════════════════════════════════════ */
+    :root {
+      --brand:       #6c63ff;
+      --brand-dark:  #574fd6;
+      --brand-light: #a89dff;
+      --accent:      #00d4aa;
+      --danger:      #ff4d6d;
+      --warning:     #ffa94d;
+      --success:     #40c057;
+      --bg:          #0d0f1a;
+      --surface:     #13162a;
+      --surface-2:   #1a1e35;
+      --border:      rgba(108,99,255,.18);
+      --text:        #e8eaf6;
+      --text-dim:    #8b92b8;
+      --radius:      12px;
+      --radius-lg:   20px;
+      --shadow:      0 8px 32px rgba(0,0,0,.45);
+      --transition:  .25s ease;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
 
-    .nav_menu{
-      display:flex;
-      align-items:center;
+    /* ══════════════════════════════════════
+       SCROLLBAR
+    ══════════════════════════════════════ */
+    ::-webkit-scrollbar { width: 6px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--brand); border-radius: 3px; }
+
+    /* ══════════════════════════════════════
+       NAVIGATION
+    ══════════════════════════════════════ */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      background: rgba(13,15,26,.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav__inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      padding: 0 24px;
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    .nav__logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 1.2rem;
+      letter-spacing: -.3px;
+    }
+    .nav__logo-icon {
+      width: 36px; height: 36px;
+      display: flex; align-items: center; justify-content: center;
+    }
+    .nav__logo-text {
+      background: linear-gradient(135deg,#a89dff,#6c63ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .nav__links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .nav__link {
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: .875rem;
+      font-weight: 500;
+      color: var(--text-dim);
+      transition: color var(--transition), background var(--transition);
+    }
+    .nav__link:hover { color: var(--text); background: rgba(108,99,255,.12); }
+    .nav__link--cta {
+      background: var(--brand);
+      color: #fff !important;
+      padding: 8px 18px;
+      font-weight: 600;
+    }
+    .nav__link--cta:hover { background: var(--brand-dark); }
+    .nav__link--active { color: var(--brand-light); }
+    .nav__toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
+    }
+    .nav__toggle span {
+      display: block;
+      width: 24px; height: 2px;
+      background: var(--text);
+      border-radius: 2px;
+      transition: var(--transition);
+    }
+    .nav__mobile {
+      display: none;
+      flex-direction: column;
+      gap: 4px;
+      padding: 12px 24px 16px;
+      border-top: 1px solid var(--border);
+      background: rgba(13,15,26,.97);
+    }
+    .nav__mobile.open { display: flex; }
+    .nav__mobile .nav__link { padding: 10px 14px; }
+
+    /* ══════════════════════════════════════
+       PAGE HERO
+    ══════════════════════════════════════ */
+    .page-hero {
+      padding: 120px 24px 60px;
+      text-align: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .page-hero::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 60% at 50% 0%,
+        rgba(108,99,255,.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .page-hero__inner { max-width: 680px; margin: 0 auto; position: relative; }
+    .page-hero__label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(108,99,255,.15);
+      border: 1px solid rgba(108,99,255,.3);
+      border-radius: 100px;
+      padding: 6px 14px;
+      font-size: .72rem;
+      font-weight: 700;
+      color: var(--brand-light);
+      letter-spacing: .8px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
+    }
+    .page-hero__label-dot {
+      width: 6px; height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50%      { opacity: .5; transform: scale(1.4); }
+    }
+    .page-hero__title {
+      font-size: clamp(1.9rem, 4vw, 2.8rem);
+      font-weight: 800;
+      letter-spacing: -.4px;
+      line-height: 1.15;
+      margin-bottom: 16px;
+    }
+    .page-hero__title span {
+      background: linear-gradient(135deg, var(--brand-light), var(--brand), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+    }
+    .page-hero__desc {
+      font-size: .95rem;
+      color: var(--text-dim);
+      line-height: 1.75;
+      margin-bottom: 32px;
+    }
+    .page-hero__stats {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
+      flex-wrap: wrap;
+    }
+    .page-hero__stat {
+      text-align: center;
+    }
+    .page-hero__stat-val {
+      display: block;
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--brand-light);
+    }
+    .page-hero__stat-label {
+      font-size: .72rem;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: .5px;
     }
 
-    .nav_toggle{
-      display:none;
-      align-items:center;
-      justify-content:center;
-      width:46px;
-      height:46px;
-      padding:0;
-      border:0;
-      border-radius:12px;
-
-      background:transparent;
-      cursor:pointer;
+    /* ══════════════════════════════════════
+       MAIN LAYOUT
+    ══════════════════════════════════════ */
+    .intake {
+      padding: 0 24px 96px;
+    }
+    .intake__inner {
+      max-width: 1100px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: 40px;
+      align-items: start;
+    }
+    @media (max-width: 900px) {
+      .intake__inner { grid-template-columns: 1fr; }
     }
 
-    .hamburger{
-      position:relative;
-      display:block;
-      width:26px;
-      height:2px;
-      border-radius:999px;
-      background:#fff;
-      transition:.25s ease;
+    /* ══════════════════════════════════════
+       FORM CARD
+    ══════════════════════════════════════ */
+    .form-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      box-shadow: var(--shadow);
+    }
+    @media (max-width: 560px) { .form-card { padding: 24px; } }
+    .form-card__title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .form-card__title-icon {
+      width: 36px; height: 36px;
+      background: rgba(108,99,255,.15);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    @media (max-width: 560px) { .form-row { grid-template-columns: 1fr; } }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 20px;
+    }
+    .form-group:last-of-type { margin-bottom: 0; }
+    .form-label {
+      font-size: .8rem;
+      font-weight: 600;
+      color: var(--text-dim);
+      letter-spacing: .3px;
+    }
+    .form-label span {
+      color: var(--danger);
+      margin-left: 2px;
+    }
+    .form-input,
+    .form-select,
+    .form-textarea {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 11px 14px;
+      color: var(--text);
+      font-size: .875rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color var(--transition), box-shadow var(--transition);
+      width: 100%;
+    }
+    .form-input:focus,
+    .form-select:focus,
+    .form-textarea:focus {
+      border-color: var(--brand);
+      box-shadow: 0 0 0 3px rgba(108,99,255,.15);
+    }
+    .form-input::placeholder,
+    .form-textarea::placeholder { color: var(--text-dim); opacity: .6; }
+    .form-select { appearance: none; cursor: pointer; }
+    .form-select-wrap { position: relative; }
+    .form-select-wrap::after {
+      content: '▾';
+      position: absolute;
+      right: 14px; top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-dim);
+      pointer-events: none;
+      font-size: .85rem;
+    }
+    .form-textarea { resize: vertical; min-height: 130px; line-height: 1.6; }
+    .form-hint {
+      font-size: .75rem;
+      color: var(--text-dim);
+      margin-top: 4px;
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+    }
+    .form-hint::before { content: '💡'; flex-shrink: 0; }
+    .urgency-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+    @media (max-width: 480px) { .urgency-grid { grid-template-columns: repeat(2,1fr); } }
+    .urgency-option { display: none; }
+    .urgency-label {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 12px 8px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      cursor: pointer;
+      font-size: .75rem;
+      font-weight: 600;
+      text-align: center;
+      transition: border-color var(--transition), background var(--transition);
+    }
+    .urgency-label:hover { border-color: var(--brand); background: rgba(108,99,255,.08); }
+    .urgency-option:checked + .urgency-label {
+      border-color: var(--brand);
+      background: rgba(108,99,255,.15);
+      color: var(--brand-light);
+    }
+    .urgency-label__icon { font-size: 1.2rem; }
+    .urgency-label--low    { --u-color: var(--success); }
+    .urgency-label--medium { --u-color: var(--accent); }
+    .urgency-label--high   { --u-color: var(--warning); }
+    .urgency-label--critical { --u-color: var(--danger); }
+    .urgency-option:checked + .urgency-label--low     { border-color: var(--success);  background: rgba(64,192,87,.12);  color: var(--success); }
+    .urgency-option:checked + .urgency-label--medium  { border-color: var(--accent);   background: rgba(0,212,170,.12);  color: var(--accent); }
+    .urgency-option:checked + .urgency-label--high    { border-color: var(--warning);  background: rgba(255,169,77,.12); color: var(--warning); }
+    .urgency-option:checked + .urgency-label--critical{ border-color: var(--danger);   background: rgba(255,77,109,.12); color: var(--danger); }
+
+    .form-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 28px 0;
+    }
+    .form-actions {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 28px;
+    }
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 26px;
+      border-radius: var(--radius);
+      font-size: .9rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: var(--transition);
+      font-family: inherit;
+    }
+    .btn--primary {
+      background: linear-gradient(135deg, var(--brand), var(--brand-dark));
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(108,99,255,.4);
+      flex: 1;
+      justify-content: center;
+    }
+    .btn--primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(108,99,255,.5); }
+    .btn--ghost {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      font-size: .85rem;
+      padding: 13px 20px;
+    }
+    .btn--ghost:hover { border-color: var(--brand); color: var(--text); }
+
+    /* Success state */
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: 48px 24px;
+    }
+    .form-success__icon {
+      font-size: 3rem;
+      margin-bottom: 16px;
+    }
+    .form-success__title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .form-success__desc {
+      font-size: .9rem;
+      color: var(--text-dim);
+      margin-bottom: 24px;
+      line-height: 1.7;
     }
 
-    .hamburger::before,
-    .hamburger::after{
-      content:"";
-      position:absolute;
-      left:0;
-      width:26px;
-      height:2px;
-      border-radius:999px;
-      background:#fff;
-      transition:.25s ease;
+    /* ══════════════════════════════════════
+       SIDEBAR
+    ══════════════════════════════════════ */
+    .sidebar { display: flex; flex-direction: column; gap: 20px; }
+
+    .info-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+    }
+    .info-card__title {
+      font-size: .8rem;
+      font-weight: 700;
+      letter-spacing: .6px;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 18px;
+    }
+    .info-card__list { display: flex; flex-direction: column; gap: 14px; }
+    .info-card__item {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+    }
+    .info-card__item-icon {
+      width: 34px; height: 34px;
+      background: rgba(108,99,255,.12);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .9rem;
+      flex-shrink: 0;
+    }
+    .info-card__item-body {}
+    .info-card__item-title {
+      font-size: .82rem;
+      font-weight: 600;
+      margin-bottom: 2px;
+    }
+    .info-card__item-desc {
+      font-size: .75rem;
+      color: var(--text-dim);
+      line-height: 1.5;
     }
 
-    .hamburger::before{top:-8px;}
-    .hamburger::after{top:8px;}
+    .sla-card {
+      background: linear-gradient(135deg, rgba(108,99,255,.12), rgba(0,212,170,.06));
+      border: 1px solid rgba(108,99,255,.25);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+      text-align: center;
+    }
+    .sla-card__val {
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: var(--brand-light);
+      display: block;
+      margin-bottom: 4px;
+    }
+    .sla-card__label {
+      font-size: .8rem;
+      color: var(--text-dim);
+      margin-bottom: 16px;
+    }
+    .sla-card__divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 16px 0;
+    }
+    .sla-card__items { display: flex; flex-direction: column; gap: 10px; }
+    .sla-card__item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: .8rem;
+      color: var(--text-dim);
+    }
+    .sla-card__item span { color: var(--accent); font-size: .9rem; }
 
-    .nav_toggle[aria-expanded="true"] .hamburger{
-      background:transparent;
+    .contact-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
+    }
+    .contact-card__title {
+      font-size: .8rem;
+      font-weight: 700;
+      letter-spacing: .6px;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 14px;
+    }
+    .contact-card__email {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 14px;
+      font-size: .85rem;
+      color: var(--brand-light);
+      transition: border-color var(--transition);
+    }
+    .contact-card__email:hover { border-color: var(--brand); }
+
+    /* ══════════════════════════════════════
+       FOOTER
+    ══════════════════════════════════════ */
+    .footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 60px 24px 32px;
+    }
+    .footer__inner { max-width: 1200px; margin: 0 auto; }
+    .footer__top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 48px;
+    }
+    @media (max-width: 860px) { .footer__top { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 480px) { .footer__top { grid-template-columns: 1fr; } }
+    .footer__brand p {
+      font-size: .85rem;
+      color: var(--text-dim);
+      margin-top: 12px;
+      line-height: 1.7;
+      max-width: 280px;
+    }
+    .footer__col-title {
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .8px;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 16px;
+    }
+    .footer__col li + li { margin-top: 10px; }
+    .footer__col a {
+      font-size: .85rem;
+      color: var(--text-dim);
+      transition: color var(--transition);
+    }
+    .footer__col a:hover { color: var(--brand-light); }
+    .footer__bottom {
+      border-top: 1px solid var(--border);
+      padding-top: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .footer__copy { font-size: .78rem; color: var(--text-dim); }
+    .footer__legal { display: flex; gap: 20px; }
+    .footer__legal a {
+      font-size: .78rem;
+      color: var(--text-dim);
+      transition: color var(--transition);
+    }
+    .footer__legal a:hover { color: var(--brand-light); }
+
+    /* ══════════════════════════════════════
+       AI CHAT WIDGET
+    ══════════════════════════════════════ */
+    .chat-toggle {
+      position: fixed;
+      bottom: 28px; right: 28px;
+      width: 58px; height: 58px;
+      background: linear-gradient(135deg, var(--brand), var(--brand-dark));
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+      box-shadow: 0 4px 24px rgba(108,99,255,.5);
+      z-index: 2000;
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .chat-toggle:hover { transform: scale(1.1); box-shadow: 0 8px 32px rgba(108,99,255,.6); }
+    .chat-widget {
+      position: fixed;
+      bottom: 100px; right: 28px;
+      width: 360px;
+      max-height: 520px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      z-index: 1999;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(16px) scale(.97);
+      pointer-events: none;
+      transition: opacity .25s ease, transform .25s ease;
+    }
+    .chat-widget.open {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: all;
+    }
+    @media (max-width: 480px) {
+      .chat-widget {
+        bottom: 0; right: 0; left: 0;
+        width: 100%;
+        border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+        max-height: 70vh;
+      }
+      .chat-toggle { bottom: 20px; right: 20px; }
+    }
+    .chat-widget__header {
+      background: linear-gradient(135deg, var(--brand), var(--brand-dark));
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .chat-widget__avatar {
+      width: 36px; height: 36px;
+      background: rgba(255,255,255,.2);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+    }
+    .chat-widget__info { flex: 1; }
+    .chat-widget__name { font-size: .9rem; font-weight: 700; color: #fff; }
+    .chat-widget__status { font-size: .72rem; color: rgba(255,255,255,.75); }
+    .chat-widget__close {
+      background: rgba(255,255,255,.15);
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      width: 30px; height: 30px;
+      cursor: pointer;
+      font-size: 1rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: background var(--transition);
+    }
+    .chat-widget__close:hover { background: rgba(255,255,255,.3); }
+    .chat-widget__messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .chat-msg {
+      max-width: 85%;
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-size: .82rem;
+      line-height: 1.55;
+    }
+    .chat-msg--bot {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      align-self: flex-start;
+      border-radius: 4px 14px 14px 14px;
+    }
+    .chat-msg--user {
+      background: var(--brand);
+      color: #fff;
+      align-self: flex-end;
+      border-radius: 14px 14px 4px 14px;
+    }
+    .chat-widget__chips {
+      padding: 0 16px 12px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .chat-chip {
+      background: rgba(108,99,255,.12);
+      border: 1px solid rgba(108,99,255,.25);
+      border-radius: 100px;
+      padding: 5px 12px;
+      font-size: .75rem;
+      color: var(--brand-light);
+      cursor: pointer;
+      transition: background var(--transition);
+      font-family: inherit;
+    }
+    .chat-chip:hover { background: rgba(108,99,255,.25); }
+    .chat-widget__input-row {
+      padding: 12px 16px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .chat-widget__input {
+      flex: 1;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 9px 14px;
+      color: var(--text);
+      font-size: .82rem;
+      font-family: inherit;
+      resize: none;
+      outline: none;
+      transition: border-color var(--transition);
+    }
+    .chat-widget__input:focus { border-color: var(--brand); }
+    .chat-widget__send {
+      width: 36px; height: 36px;
+      background: var(--brand);
+      border: none;
+      border-radius: 10px;
+      color: #fff;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+      transition: background var(--transition);
+      flex-shrink: 0;
+    }
+    .chat-widget__send:hover { background: var(--brand-dark); }
+    .chat-widget__footer {
+      padding: 8px 16px;
+      font-size: .68rem;
+      color: var(--text-dim);
+      text-align: center;
+      border-top: 1px solid var(--border);
     }
 
-    .nav_toggle[aria-expanded="true"] .hamburger::before{
-      top:0;
-      transform:rotate(45deg);
-    }
-
-    .nav_toggle[aria-expanded="true"] .hamburger::after{
-      top:0;
-      transform:rotate(-45deg);
-    }
-
-    .sr-only{
-      position:absolute;
-      width:1px;
-      height:1px;
-      padding:0;
-      margin:-1px;
-      overflow:hidden;
-      clip:rect(0,0,0,0);
-      white-space:nowrap;
-      border:0;
-    }
-
-    @media(max-width:768px){
-      body{
-        padding-top:72px;
-      }
-
-      body.menu-open{
-        overflow:hidden;
-      }
-
-      .nav{
-        position:fixed !important;
-        top:0 !important;
-        left:0 !important;
-        right:0 !important;
-        width:100%;
-        height:72px;
-        z-index:99999 !important;
-        background:rgba(5,8,22,.98) !important;
-        border-bottom:1px solid rgba(255,255,255,.08);
-        backdrop-filter:blur(14px);
-        -webkit-backdrop-filter:blur(14px);
-      }
-
-      .nav_row{
-        min-height:72px;
-        height:72px;
-        display:flex;
-        align-items:center;
-        justify-content:space-between;
-        padding:0 18px !important;
-      }
-
-      .brand{
-        position:relative;
-        z-index:100002;
-      }
-
-      .nav_menu{
-        position:static;
-      }
-
-      .nav_toggle{
-        position:relative;
-        display:flex !important;
-        z-index:100003;
-      }
-
-      .nav_links{
-        position:fixed !important;
-        top:72px !important;
-        left:0 !important;
-        right:0 !important;
-        bottom:0 !important;
-        width:100vw !important;
-        max-width:100vw !important;
-        height:calc(100dvh - 72px) !important;
-        display:none !important;
-        flex-direction:column !important;
-        flex-wrap:nowrap !important;
-        align-items:stretch !important;
-        justify-content:flex-start !important;
-        gap:0 !important;
-        margin:0 !important;
-        padding:20px 22px 36px !important;
-        overflow-x:hidden !important;
-        overflow-y:auto !important;
-        background:
-          radial-gradient(650px 420px at 20% 0%, rgba(46,91,220,.18), transparent 58%),
-          linear-gradient(180deg,#081124 0%,#050816 100%) !important;
-        border:0 !important;
-        border-radius:0 !important;
-        box-shadow:none !important;
-        z-index:100001 !important;
-      }
-
-      .nav_links.nav_open{
-        display:flex !important;
-      }
-
-      .nav_links > a{
-        display:flex !important;
-        flex:0 0 auto !important;
-        align-items:center !important;
-        justify-content:flex-start !important;
-        width:100% !important;
-        min-height:64px !important;
-        margin:0 !important;
-        padding:0 4px !important;
-        color:rgba(245,248,255,.95) !important;
-        font-size:17px !important;
-        font-weight:800 !important;
-        line-height:1.25 !important;
-        text-align:left !important;
-        white-space:normal !important;
-        background:transparent !important;
-        border:0 !important;
-        border-bottom:1px solid rgba(255,255,255,.08) !important;
-        border-radius:0 !important;
-      }
-
-      .nav_links > a:hover,
-      .nav_links > a.nav-active{
-        color:#7c97ff !important;
-        background:transparent !important;
-      }
-
-      .nav_links > a.btn,
-      .nav_links > a.btn.nav-active{
-        justify-content:center !important;
-        min-height:56px !important;
-        margin-top:24px !important;
-        margin-left:0 !important;
-        padding:0 18px !important;
-        color:#fff !important;
-        background:linear-gradient(135deg,#4779ff,#6267ff) !important;
-        border:0 !important;
-        border-radius:14px !important;
-        box-shadow:0 14px 34px rgba(75,106,255,.30) !important;
-      }
-
-      .nav_links a::after{
-        display:none !important;
-      }
-
-      body.menu-open .cb-chat-fab,
-      body.menu-open .cb-chat{
-        display:none !important;
-      }
+    /* ══════════════════════════════════════
+       RESPONSIVE — NAV
+    ══════════════════════════════════════ */
+    @media (max-width: 860px) {
+      .nav__links  { display: none; }
+      .nav__toggle { display: flex; }
     }
   </style>
 </head>
 <body>
-<header class="nav">
-  <div class="container nav_row">
-    <a class="brand" href="/index.html">
-      <span class="logo" aria-hidden="true">X</span>
-      <span>CyberBench</span>
-    </a>
 
-    <div class="nav_menu">
-      <button
-        class="nav_toggle"
-        type="button"
-        aria-label="Open navigation menu"
-        aria-expanded="false"
-        aria-controls="nav_links"
-      >
-        <span class="hamburger"></span>
-        <span class="sr-only">Menu</span>
+  <!-- ══════ NAVIGATION ══════ -->
+  <nav class="nav" aria-label="Main navigation">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo" aria-label="CyberBench home">
+        <div class="nav__logo-icon">
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+            <path d="M18 3L4 9v10c0 8.4 5.9 16.2 14 18 8.1-1.8 14-9.6 14-18V9L18 3z"
+                  fill="url(#sg)" opacity=".9"/>
+            <path d="M13 18l3.5 3.5L23 14" stroke="#fff" stroke-width="2.2"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+            <defs>
+              <linearGradient id="sg" x1="4" y1="3" x2="32" y2="37" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#a89dff"/>
+                <stop offset="1" stop-color="#6c63ff"/>
+              </linearGradient>
+            </defs>
+          </svg>
+        </div>
+        <span class="nav__logo-text">CyberBench</span>
+      </a>
+
+      <div class="nav__links" role="menubar">
+        <a href="services.html"          class="nav__link"          role="menuitem">Services</a>
+        <a href="about.html"             class="nav__link"          role="menuitem">About</a>
+        <a href="blog.html"              class="nav__link"          role="menuitem">Blog</a>
+        <a href="client-portal.html"     class="nav__link"          role="menuitem">Client Portal</a>
+        <a href="consultant-portal.html" class="nav__link"          role="menuitem">Consultant Portal</a>
+        <a href="submit-ticket.html"     class="nav__link nav__link--cta nav__link--active"
+                                                                    role="menuitem"
+                                                                    aria-current="page">Submit Ticket</a>
+      </div>
+
+      <button class="nav__toggle" aria-label="Toggle navigation"
+              aria-expanded="false" id="navToggle">
+        <span></span><span></span><span></span>
       </button>
-
-      <nav class="nav_links" id="nav_links" aria-label="Main Navigation">
-        <a href="/services.html">Services</a>
-        <a href="/about.html">About</a>
-        <a href="/blog.html">Blog</a>
-        <a href="/client-portal.html">Client Portal</a>
-        <a href="/consultant-portal.html">Consultant Portal</a>
-        <a class="btn btn-primary" href="/submit-ticket.html">Deploy Security Now</a>
-      </nav>
     </div>
-  </div>
-</header>
 
-<!-- ===== ENTERPRISE SUBMIT TICKET (REPLACE ENTIRE SECTION) ===== -->
-<section class="st-wrap" id="ticket-form">
-  <div class="st-hero">
-    <div class="st-kicker"><span class="st-dot"></span> CYBERBENCH INTAKE</div>
-    <h1 class="st-title">Submit a Cyber Ticket</h1>
-    <p class="st-sub">
-      Provide a clear summary and urgency.
-      We’ll route this to the right specialist and track outcomes end-to-end.
-      Not sure how to describe the issue? Use the AI assistant to structure your request.
-    </p>
+    <div class="nav__mobile" id="navMobile" role="menu" aria-label="Mobile navigation">
+      <a href="services.html"          class="nav__link" role="menuitem">Services</a>
+      <a href="about.html"             class="nav__link" role="menuitem">About</a>
+      <a href="blog.html"              class="nav__link" role="menuitem">Blog</a>
+      <a href="client-portal.html"     class="nav__link" role="menuitem">Client Portal</a>
+      <a href="consultant-portal.html" class="nav__link" role="menuitem">Consultant Portal</a>
+      <a href="submit-ticket.html"     class="nav__link nav__link--cta" role="menuitem">Submit Ticket</a>
+    </div>
+  </nav>
 
-    <div class="st-metrics">
-      <div class="st-metric">
-        <div class="st-metric-value">&lt; 15m</div>
-        <div class="st-metric-label">Typical response</div>
+  <!-- ══════ PAGE HERO ══════ -->
+  <main id="main-content">
+  <section class="page-hero" aria-labelledby="page-title">
+    <div class="page-hero__inner">
+      <div class="page-hero__label">
+        <span class="page-hero__label-dot" aria-hidden="true"></span>
+        CyberBench Intake
       </div>
-      <div class="st-metric">
-        <div class="st-metric-value">24/7</div>
-        <div class="st-metric-label">Coverage</div>
-      </div>
-      <div class="st-metric">
-        <div class="st-metric-value">Executive</div>
-        <div class="st-metric-label">Reporting</div>
+      <h1 class="page-hero__title" id="page-title">
+        Submit a <span>Cyber Ticket</span>
+      </h1>
+      <p class="page-hero__desc">
+        Provide a clear summary and urgency. We'll route this to the right specialist
+        and track outcomes end-to-end. Not sure how to describe the issue?
+        Use the AI assistant to structure your request.
+      </p>
+      <div class="page-hero__stats" aria-label="Platform SLA stats">
+        <div class="page-hero__stat">
+          <span class="page-hero__stat-val">&lt; 15m</span>
+          <span class="page-hero__stat-label">Typical Response</span>
+        </div>
+        <div class="page-hero__stat">
+          <span class="page-hero__stat-val">24/7</span>
+          <span class="page-hero__stat-label">Coverage</span>
+        </div>
+        <div class="page-hero__stat">
+          <span class="page-hero__stat-val">100%</span>
+          <span class="page-hero__stat-label">Documented</span>
+        </div>
       </div>
     </div>
-  </div>
+  </section>
 
-  <div class="st-card">
-    <form class="st-form" action="/submit-ticket" method="POST">
-      <div class="st-grid">
-        <div class="st-field">
-          <label class="st-label" for="company">Company</label>
-          <input class="st-input" id="company" name="company" type="text" placeholder="Your company name" required />
+  <!-- ══════ INTAKE LAYOUT ══════ -->
+  <div class="intake">
+    <div class="intake__inner">
+
+      <!-- ── FORM COLUMN ── -->
+      <div>
+        <div class="form-card" role="region" aria-label="Ticket submission form">
+
+          <!-- Success State (hidden until submit) -->
+          <div class="form-success" id="formSuccess" aria-live="polite">
+            <div class="form-success__icon">✅</div>
+            <h2 class="form-success__title">Ticket Submitted!</h2>
+            <p class="form-success__desc">
+              Your request has been received. A specialist will be assigned within minutes
+              and you'll receive an email confirmation shortly.
+            </p>
+            <a href="index.html" class="btn btn--primary" style="display:inline-flex;">
+              ← Back to Home
+            </a>
+          </div>
+
+          <!-- Form -->
+          <form id="ticketForm" novalidate>
+            <div class="form-card__title">
+              <div class="form-card__title-icon" aria-hidden="true">🎫</div>
+              Ticket Details
+            </div>
+
+            <!-- Row 1: Company + Name -->
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="company">
+                  Company <span aria-hidden="true">*</span>
+                </label>
+                <input
+                  class="form-input"
+                  type="text"
+                  id="company"
+                  name="company"
+                  placeholder="Acme Corp"
+                  required
+                  aria-required="true"
+                  autocomplete="organization"
+                />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="fullname">
+                  Your Name <span aria-hidden="true">*</span>
+                </label>
+                <input
+                  class="form-input"
+                  type="text"
+                  id="fullname"
+                  name="fullname"
+                  placeholder="Jane Smith"
+                  required
+                  aria-required="true"
+                  autocomplete="name"
+                />
+              </div>
+            </div>
+
+            <!-- Row 2: Email + Phone -->
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="email">
+                  Email <span aria-hidden="true">*</span>
+                </label>
+                <input
+                  class="form-input"
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="jane@acme.com"
+                  required
+                  aria-required="true"
+                  autocomplete="email"
+                />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="phone">Phone <em style="font-weight:400;">(optional)</em></label>
+                <input
+                  class="form-input"
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  placeholder="+1 (555) 000-0000"
+                  autocomplete="tel"
+                />
+              </div>
+            </div>
+
+            <hr class="form-divider" />
+
+            <!-- Urgency -->
+            <div class="form-group">
+              <label class="form-label" id="urgency-label">
+                Urgency Level <span aria-hidden="true">*</span>
+              </label>
+              <div class="urgency-grid" role="radiogroup" aria-labelledby="urgency-label">
+                <div>
+                  <input class="urgency-option" type="radio" name="urgency"
+                         id="u-low" value="low" />
+                  <label class="urgency-label urgency-label--low" for="u-low">
+                    <span class="urgency-label__icon">🟢</span>Low
+                  </label>
+                </div>
+                <div>
+                  <input class="urgency-option" type="radio" name="urgency"
+                         id="u-medium" value="medium" checked />
+                  <label class="urgency-label urgency-label--medium" for="u-medium">
+                    <span class="urgency-label__icon">🔵</span>Medium
+                  </label>
+                </div>
+                <div>
+                  <input class="urgency-option" type="radio" name="urgency"
+                         id="u-high" value="high" />
+                  <label class="urgency-label urgency-label--high" for="u-high">
+                    <span class="urgency-label__icon">🟠</span>High
+                  </label>
+                </div>
+                <div>
+                  <input class="urgency-option" type="radio" name="urgency"
+                         id="u-critical" value="critical" />
+                  <label class="urgency-label urgency-label--critical" for="u-critical">
+                    <span class="urgency-label__icon">🔴</span>Critical
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <hr class="form-divider" />
+
+            <!-- Description -->
+            <div class="form-group">
+              <label class="form-label" for="description">
+                Describe the Issue <span aria-hidden="true">*</span>
+              </label>
+              <textarea
+                class="form-textarea"
+                id="description"
+                name="description"
+                placeholder="Describe the security issue, affected systems, when it started, and any recent changes…"
+                required
+                aria-required="true"
+                aria-describedby="desc-hint"
+              ></textarea>
+              <p class="form-hint" id="desc-hint">
+                Include affected systems, when it started, and what changed recently.
+              </p>
+            </div>
+
+            <!-- Actions -->
+            <div class="form-actions">
+              <button type="submit" class="btn btn--primary">
+                🚀 Deploy Security Now
+              </button>
+              <a href="services.html" class="btn btn--ghost">View Services</a>
+            </div>
+          </form>
         </div>
+      </div>
 
-        <div class="st-field">
-          <label class="st-label" for="urgency">Urgency</label>
-          <select class="st-input" id="urgency" name="urgency" required>
-            <option value="Low">Low</option>
-            <option value="Medium" selected>Medium</option>
-            <option value="High">High</option>
-            <option value="Critical">Critical</option>
-          </select>
-        </div>
+      <!-- ── SIDEBAR ── -->
+      <aside class="sidebar" aria-label="Ticket submission information">
 
-        <div class="st-field">
-          <label class="st-label" for="name">Your name</label>
-          <input class="st-input" id="name" name="name" type="text" placeholder="Full name" required />
-        </div>
-
-        <div class="st-field">
-          <label class="st-label" for="email">Email</label>
-          <input class="st-input" id="email" name="email" type="email" placeholder="name@company.com" required />
-        </div>
-
-        <div class="st-field st-span2">
-          <label class="st-label" for="phone">Phone (optional)</label>
-          <input class="st-input" id="phone" name="phone" type="tel" placeholder="(555) 555-5555" />
-        </div>
-
-        <div class="st-field st-span2">
-          <label class="st-label" for="details">Describe the issue</label>
-          <textarea class="st-input st-textarea" id="details" name="details"
-            placeholder="What happened? What systems are impacted? Any deadlines? What access do you have?"></textarea>
-          <div class="st-help">
-            Tip: Include affected systems, when it started, and what changed recently.
+        <!-- SLA Card -->
+        <div class="sla-card">
+          <span class="sla-card__val">30 min</span>
+          <div class="sla-card__label">Incident Response SLA</div>
+          <hr class="sla-card__divider" />
+          <div class="sla-card__items">
+            <div class="sla-card__item"><span>⚡</span> &lt; 15 min typical first response</div>
+            <div class="sla-card__item"><span>🔒</span> No lock-in contracts</div>
+            <div class="sla-card__item"><span>📋</span> Every action documented</div>
+            <div class="sla-card__item"><span>👥</span> Vetted specialists only</div>
+            <div class="sla-card__item"><span>📊</span> Executive-ready KPIs</div>
           </div>
         </div>
-      </div>
 
-      <div class="st-actions">
-        <a class="st-link" href="/services">View services</a>
-        <button class="btn btn-primary st-btn" type="submit">Deploy Security Now</button>
-      </div>
-    </form>
+        <!-- What Happens Next -->
+        <div class="info-card">
+          <p class="info-card__title">What Happens Next</p>
+          <div class="info-card__list">
+            <div class="info-card__item">
+              <div class="info-card__item-icon" aria-hidden="true">📥</div>
+              <div class="info-card__item-body">
+                <div class="info-card__item-title">Ticket Received</div>
+                <div class="info-card__item-desc">Your request is logged instantly and queued for triage.</div>
+              </div>
+            </div>
+            <div class="info-card__item">
+              <div class="info-card__item-icon" aria-hidden="true">🧠</div>
+              <div class="info-card__item-body">
+                <div class="info-card__item-title">Specialist Matched</div>
+                <div class="info-card__item-desc">Routed to the right expert by skill, priority, and SLA.</div>
+              </div>
+            </div>
+            <div class="info-card__item">
+              <div class="info-card__item-icon" aria-hidden="true">⚙️</div>
+              <div class="info-card__item-body">
+                <div class="info-card__item-title">Work Executed</div>
+                <div class="info-card__item-desc">Triage, remediation, and delivery tracked in real time.</div>
+              </div>
+            </div>
+            <div class="info-card__item">
+              <div class="info-card__item-icon" aria-hidden="true">📄</div>
+              <div class="info-card__item-body">
+                <div class="info-card__item-title">Outcome Documented</div>
+                <div class="info-card__item-desc">Full report, evidence, and follow-up actions logged.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact Card -->
+        <div class="contact-card">
+          <p class="contact-card__title">Direct Support</p>
+          <a href="mailto:support@cyberbench.io" class="contact-card__email"
+             aria-label="Email support at support@cyberbench.io">
+            ✉️ &nbsp;support@cyberbench.io
+          </a>
+        </div>
+
+      </aside>
+    </div>
   </div>
-</section>
+  </main>
 
-<!-- ===== CyberBench AI Chat Widget ===== -->
-<button class="cb-chat-fab" id="cbChatFab" aria-label="Open CyberBench AI chat">AI</button>
-
-<div class="cb-chat" id="cbChat" aria-hidden="true">
-  <div class="cb-chat-header">
-    <div class="cb-chat-title">
-      <div class="cb-chat-dot"></div>
-      <div>
-        <div class="cb-chat-name">CyberBench AI</div>
-        <div class="cb-chat-sub">Fast triage • How-to • Guidance</div>
+  <!-- ══════ FOOTER ══════ -->
+  <footer class="footer" aria-label="Site footer">
+    <div class="footer__inner">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <a href="index.html" class="nav__logo" aria-label="CyberBench home">
+            <div class="nav__logo-icon">
+              <svg width="30" height="30" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+                <path d="M18 3L4 9v10c0 8.4 5.9 16.2 14 18 8.1-1.8 14-9.6 14-18V9L18 3z"
+                      fill="url(#sg2)" opacity=".9"/>
+                <path d="M13 18l3.5 3.5L23 14" stroke="#fff" stroke-width="2.2"
+                      stroke-linecap="round" stroke-linejoin="round"/>
+                <defs>
+                  <linearGradient id="sg2" x1="4" y1="3" x2="32" y2="37" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#a89dff"/>
+                    <stop offset="1" stop-color="#6c63ff"/>
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+            <span class="nav__logo-text">CyberBench</span>
+          </a>
+          <p>Execution-driven cybersecurity for modern SMBs. Ticket-first, specialist-matched, and KPI-reported.</p>
+        </div>
+        <div class="footer__col">
+          <p class="footer__col-title">Platform</p>
+          <ul>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="submit-ticket.html">Submit Ticket</a></li>
+            <li><a href="client-portal.html">Client Portal</a></li>
+            <li><a href="consultant-portal.html">Consultant Portal</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <p class="footer__col-title">Company</p>
+          <ul>
+            <li><a href="about.html">About</a></li>
+            <li><a href="blog.html">Blog</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <p class="footer__col-title">Legal</p>
+          <ul>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span class="footer__copy">© 2025 CyberBench. All rights reserved.</span>
+        <nav class="footer__legal" aria-label="Legal links">
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
+        </nav>
       </div>
     </div>
-    <button class="cb-chat-close" id="cbChatClose" aria-label="Close chat">✕</button>
+  </footer>
+
+  <!-- ══════ AI CHAT WIDGET ══════ -->
+  <button
+    class="chat-toggle"
+    id="chatToggle"
+    aria-label="Open AI chat assistant"
+    aria-expanded="false"
+    aria-controls="chatWidget"
+  >🤖</button>
+
+  <div
+    class="chat-widget"
+    id="chatWidget"
+    role="dialog"
+    aria-modal="true"
+    aria-label="CyberBench AI Assistant"
+    aria-hidden="true"
+  >
+    <div class="chat-widget__header">
+      <div class="chat-widget__avatar" aria-hidden="true">🤖</div>
+      <div class="chat-widget__info">
+        <div class="chat-widget__name">CyberBench AI</div>
+        <div class="chat-widget__status">Fast triage · How-to · Guidance</div>
+      </div>
+      <button class="chat-widget__close" id="chatClose" aria-label="Close chat">✕</button>
+    </div>
+
+    <div
+      class="chat-widget__messages"
+      id="chatMessages"
+      role="log"
+      aria-live="polite"
+      aria-label="Chat messages"
+    >
+      <div class="chat-msg chat-msg--bot">
+        👋 Need help structuring your ticket? Tell me what's happening and I'll help you describe it clearly.
+      </div>
+    </div>
+
+    <div class="chat-widget__chips" aria-label="Quick prompts">
+      <button class="chat-chip" data-msg="I think I have a ransomware attack">Ransomware</button>
+      <button class="chat-chip" data-msg="I need help with SIEM alerts">SIEM Alerts</button>
+      <button class="chat-chip" data-msg="What urgency level should I pick?">Urgency Guide</button>
+      <button class="chat-chip" data-msg="How do I describe my issue?">Describe Issue</button>
+    </div>
+
+    <div class="chat-widget__input-row">
+      <textarea
+        class="chat-widget__input"
+        id="chatInput"
+        rows="1"
+        placeholder="Describe what's happening…"
+        aria-label="Type your message"
+      ></textarea>
+      <button class="chat-widget__send" id="chatSend" aria-label="Send message">➤</button>
+    </div>
+    <div class="chat-widget__footer">🔒 Demo widget — do not share sensitive data</div>
   </div>
 
-  <div class="cb-chat-body" id="cbChatBody"></div>
-
-  <form class="cb-chat-form" id="cbChatForm">
-    <input
-      class="cb-chat-input"
-      id="cbChatInput"
-      placeholder="Ask about tickets, KPIs, services, or next steps…"
-      autocomplete="off"
-      required
-    />
-    <button class="cb-chat-send" type="submit">Send</button>
-  </form>
-
-  <div class="cb-chat-footnote">Demo widget. Don’t paste secrets.</div>
-</div>
-
-<div class="footer-contact">
-  <span>Support</span>
-  <a href="mailto:support@cyberbench.io">support@cyberbench.io</a>
-</div>
-
-<script>
-  document.addEventListener("DOMContentLoaded", function () {
-    const nav = document.getElementById("nav_links");
-    const toggle = document.querySelector(".nav_toggle");
-    const navLinks = document.querySelectorAll(".nav_links a[href^='/']");
-    const currentPath = window.location.pathname.replace(/\/$/, "") || "/";
-
-    navLinks.forEach(function (link) {
-      const linkPath = (link.getAttribute("href") || "").replace(/\/$/, "") || "/";
-
-      if (linkPath === currentPath && !link.classList.contains("btn")) {
-        link.classList.add("nav-active");
-      } else {
-        link.classList.remove("nav-active");
-      }
+  <!-- ══════ SCRIPTS ══════ -->
+  <script>
+    /* ── Mobile Nav ── */
+    const navToggle = document.getElementById('navToggle');
+    const navMobile = document.getElementById('navMobile');
+    navToggle.addEventListener('click', () => {
+      const open = navMobile.classList.toggle('open');
+      navToggle.setAttribute('aria-expanded', open);
     });
 
-    if (!nav || !toggle) return;
+    /* ── Form Submit ── */
+    const ticketForm  = document.getElementById('ticketForm');
+    const formSuccess = document.getElementById('formSuccess');
 
-    function openMenu() {
-      nav.classList.add("nav_open");
-      document.body.classList.add("menu-open");
-      toggle.setAttribute("aria-expanded", "true");
-      toggle.setAttribute("aria-label", "Close navigation menu");
-    }
-
-    function closeMenu() {
-      nav.classList.remove("nav_open");
-      document.body.classList.remove("menu-open");
-      toggle.setAttribute("aria-expanded", "false");
-      toggle.setAttribute("aria-label", "Open navigation menu");
-    }
-
-    toggle.addEventListener("click", function (event) {
-      event.stopPropagation();
-
-      if (nav.classList.contains("nav_open")) {
-        closeMenu();
-      } else {
-        openMenu();
-      }
-    });
-
-    nav.querySelectorAll("a").forEach(function (link) {
-      link.addEventListener("click", closeMenu);
-    });
-
-    document.addEventListener("click", function (event) {
-      if (!nav.contains(event.target) && !toggle.contains(event.target)) {
-        closeMenu();
-      }
-    });
-
-    document.addEventListener("keydown", function (event) {
-      if (event.key === "Escape") {
-        closeMenu();
-      }
-    });
-
-    window.addEventListener("resize", function () {
-      if (window.innerWidth > 768) {
-        closeMenu();
-      }
-    });
-  });
-</script>
-
-<script>
-  (function () {
-    const fab = document.getElementById("cbChatFab");
-    const box = document.getElementById("cbChat");
-    const close = document.getElementById("cbChatClose");
-    const body = document.getElementById("cbChatBody");
-    const form = document.getElementById("cbChatForm");
-    const input = document.getElementById("cbChatInput");
-
-    const escapeHtml = (s) =>
-      String(s).replace(/[&<>"']/g, (m) => ({ "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;" }[m]));
-
-    function addMsg(role, text) {
-      const row = document.createElement("div");
-      row.className = "cb-chat-row " + (role === "user" ? "is-user" : "is-ai");
-      row.innerHTML = `<div class="cb-chat-bubble">${escapeHtml(text)}</div>`;
-      body.appendChild(row);
-      body.scrollTop = body.scrollHeight;
-    }
-
-    function setOpen(isOpen) {
-      box.style.display = isOpen ? "flex" : "none";
-      box.setAttribute("aria-hidden", isOpen ? "false" : "true");
-      if (isOpen) input.focus();
-    }
-
-    fab.addEventListener("click", () => {
-      setOpen(true);
-      if (!body.dataset.greeted) {
-        addMsg("ai", "Hi — I’m CyberBench AI. Tell me what you need help with (ticket submission, KPIs, services, or triage).");
-        body.dataset.greeted = "1";
-      }
-    });
-
-    close.addEventListener("click", () => setOpen(false));
-
-    form.addEventListener("submit", async (e) => {
+    ticketForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      const text = input.value.trim();
-      if (!text) return;
+      const company  = document.getElementById('company').value.trim();
+      const fullname = document.getElementById('fullname').value.trim();
+      const email    = document.getElementById('email').value.trim();
+      const desc     = document.getElementById('description').value.trim();
 
-      addMsg("user", text);
-      input.value = "";
-
-      addMsg("ai", "Typing…");
-      const loadingNode = body.lastElementChild;
-
-      try {
-        const r = await fetch("/api/chat", {
-          method: "POST",
-          headers: { "Content-Type": "application/json" },
-          body: JSON.stringify({ message: text })
-        });
-
-        const data = await r.json();
-        const reply = data.reply || "No response.";
-        loadingNode.querySelector(".cb-chat-bubble").textContent = reply;
-      } catch (err) {
-        loadingNode.querySelector(".cb-chat-bubble").textContent =
-          "Chat service is offline. Start your server and try again.";
+      if (!company || !fullname || !email || !desc) {
+        alert('Please fill in all required fields.');
+        return;
       }
+      const emailRx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRx.test(email)) {
+        alert('Please enter a valid email address.');
+        return;
+      }
+
+      ticketForm.style.display  = 'none';
+      formSuccess.style.display = 'block';
+      formSuccess.querySelector('h2').focus();
     });
 
-    setOpen(false);
-  })();
-</script>
+    /* ── AI Chat ── */
+    const chatToggle   = document.getElementById('chatToggle');
+    const chatWidget   = document.getElementById('chatWidget');
+    const chatClose    = document.getElementById('chatClose');
+    const chatInput    = document.getElementById('chatInput');
+    const chatSend     = document.getElementById('chatSend');
+    const chatMessages = document.getElementById('chatMessages');
 
+    function openChat() {
+      chatWidget.classList.add('open');
+      chatWidget.setAttribute('aria-hidden', 'false');
+      chatToggle.setAttribute('aria-expanded', 'true');
+      chatInput.focus();
+    }
+    function closeChat() {
+      chatWidget.classList.remove('open');
+      chatWidget.setAttribute('aria-hidden', 'true');
+      chatToggle.setAttribute('aria-expanded', 'false');
+      chatToggle.focus();
+    }
+
+    chatToggle.addEventListener('click', () =>
+      chatWidget.classList.contains('open') ? closeChat() : openChat()
+    );
+    chatClose.addEventListener('click', closeChat);
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && chatWidget.classList.contains('open')) closeChat();
+    });
+
+    function addMsg(text, type) {
+      const el = document.createElement('div');
+      el.className = `chat-msg chat-msg--${type}`;
+      el.textContent = text;
+      chatMessages.appendChild(el);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    const KB = {
+      'ransomware': 'For ransomware, set urgency to Critical immediately. Describe: which systems are affected, when you first noticed, whether files are encrypted, and if any backups are accessible. Our IR team will be on it within 30 minutes.',
+      'siem': 'For SIEM alert issues, set urgency to High. Describe the alert name, volume of alerts, which rules are firing, and the timeframe. Include your SIEM platform if possible.',
+      'urgency': 'Urgency guide: Low = general questions or non-urgent projects. Medium = ongoing issues with no immediate impact. High = active threat or degraded security posture. Critical = active breach, ransomware, or data exfiltration.',
+      'describe': 'To describe your issue clearly: (1) What system or service is affected? (2) When did it start? (3) What changed recently? (4) What have you already tried? This helps us route to the right specialist faster.',
+      'breach': 'For a suspected breach, set urgency to Critical. Include: affected systems, any indicators of compromise (IOCs), whether data may have been exfiltrated, and your current containment status.',
+      'backup': 'For backup or recovery issues, set urgency based on impact. Describe: the backup solution in use, when the last successful backup was, and whether a recovery test has been attempted.',
+      'vuln': 'For vulnerability issues, set urgency to Medium or High depending on exploitability. Include: the CVE or scan tool output, affected systems, and whether any exploits are known in the wild.',
+      'compliance': 'For compliance-related tickets, set urgency to Low or Medium. Describe the framework (e.g. NIST, SOC2, ISO 27001), the specific control gap, and any upcoming audit deadlines.',
+      'phish': 'For phishing incidents, set urgency to High. Describe: the email sender, whether any links were clicked or credentials entered, and how many users received the email.',
+      'password': 'For password or account access issues, set urgency to Medium. Include: the affected account or system, whether MFA is enabled, and whether you suspect unauthorized access.',
+    };
+
+    function getBotReply(msg) {
+      const lower = msg.toLowerCase();
+      for (const [key, reply] of Object.entries(KB)) {
+        if (lower.includes(key)) return reply;
+      }
+      return "I can help you structure your ticket. Try describing what's happening — which system is affected, when it started, and how urgent it is — and I'll guide you from there.";
+    }
+
+    function handleSend() {
+      const text = chatInput.value.trim();
+      if (!text) return;
+      addMsg(text, 'user');
+      chatInput.value = '';
+      setTimeout(() => addMsg(getBotReply(text), 'bot'), 600);
+    }
+
+    chatSend.addEventListener('click', handleSend);
+    chatInput.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); }
+    });
+
+    document.querySelectorAll('.chat-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        chatInput.value = chip.dataset.msg;
+        handleSend();
+      });
+    });
+  </script>
 </body>
 </html>
