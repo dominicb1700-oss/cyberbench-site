@@ -864,23 +864,57 @@
 <!-- ══════════════════════════════════════════
      NAVIGATION
 ══════════════════════════════════════════ -->
-<nav class="cb-nav" aria-label="Main navigation">
-  <div class="cb-nav__inner">
 
-    <!-- Logo -->
-    <a href="index.html" class="cb-logo" aria-label="CyberBench — Home">
-      <div class="cb-logo__shield-wrap" aria-hidden="true">
-        <div class="cb-logo__shield-bg">
-          <span class="cb-logo__monogram">
-            <span class="m-c">C</span><span class="m-b">B</span>
-          </span>
-        </div>
-      </div>
-      <div class="cb-logo__text-group">
+<nav class="nav" role="navigation" aria-label="Main navigation">
+  <div class="nav__inner">
+
+    <a href="/index.html" class="cb-logo" aria-label="CyberBench home">
+      <span class="cb-logo__mark">
+        <svg viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <defs>
+            <linearGradient id="sg-n" x1="0" y1="0" x2="38" y2="38" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#3b82f6"/>
+              <stop offset="100%" stop-color="#06b6d4"/>
+            </linearGradient>
+            <linearGradient id="ig-n" x1="0" y1="0" x2="38" y2="38" gradientUnits="userSpaceOnUse">
+              <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9"/>
+              <stop offset="100%" stop-color="#93c5fd" stop-opacity="0.9"/>
+            </linearGradient>
+          </defs>
+          <path d="M19 3L5 9v10c0 8.5 6 16 14 18 8-2 14-9.5 14-18V9L19 3z"
+                fill="url(#sg-n)" opacity="0.15"/>
+          <path d="M19 3L5 9v10c0 8.5 6 16 14 18 8-2 14-9.5 14-18V9L19 3z"
+                stroke="url(#sg-n)" stroke-width="1.5" fill="none"/>
+          <text x="10" y="24" font-family="Inter,sans-serif" font-weight="800"
+                font-size="13" fill="url(#ig-n)" letter-spacing="-1">CB</text>
+          <path d="M13 20l3 3 6-6" stroke="#06b6d4" stroke-width="1.8"
+                stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+      </span>
+      <span class="cb-logo__text">
         <span class="cb-logo__name">CyberBench</span>
-        <span class="cb-logo__sub">Security Operations</span>
-      </div>
+        <span class="cb-logo__tagline">Security Operations</span>
+      </span>
     </a>
+
+    <ul class="nav__links" role="list">
+      <li><a href="/services.html">Services</a></li>
+      <li><a href="/about.html">About</a></li>
+      <li><a href="/blog.html">Blog</a></li>
+      <li><a href="/client-portal.html">Client Portal</a></li>
+      <li><a href="/consultant-portal.html">Consultant Portal</a></li>
+    </ul>
+
+    <div class="nav__actions">
+      <a href="/submit-ticket.html" class="btn btn-primary">Submit Ticket</a>
+    </div>
+
+    <button class="nav__hamburger" id="hamburger"
+            aria-label="Toggle mobile menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
 
     <!-- Desktop links -->
     <div class="cb-nav__links" role="list">
