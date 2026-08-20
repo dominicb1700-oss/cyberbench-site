@@ -3,1370 +3,1315 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Submit a Ticket — CyberBench</title>
-  <meta name="description" content="Submit a support ticket to CyberBench SOC team. 24/7 security operations support." />
+  <meta name="description" content="Submit a security ticket to CyberBench. Describe your need, set urgency, and get matched to the right specialist within minutes." />
+  <title>Submit Ticket | CyberBench</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
   <style>
-    /* ── Reset & Base ── */
+    /* ══════════════════════════════════════
+       TOKENS & RESET
+    ══════════════════════════════════════ */
+    :root {
+      --brand:       #6c63ff;
+      --brand-dark:  #574fd6;
+      --brand-light: #a89dff;
+      --accent:      #00d4aa;
+      --danger:      #ff4d6d;
+      --warning:     #ffa94d;
+      --success:     #40c057;
+      --bg:          #0d0f1a;
+      --surface:     #13162a;
+      --surface-2:   #1a1e35;
+      --border:      rgba(108,99,255,.18);
+      --text:        #e8eaf6;
+      --text-dim:    #8b92b8;
+      --radius:      12px;
+      --radius-lg:   20px;
+      --shadow:      0 8px 32px rgba(0,0,0,.45);
+      --transition:  .25s ease;
+    }
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
     body {
-      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-      background: #0a0e1a;
-      color: #e2e8f0;
-      min-height: 100vh;
+      font-family: 'Inter', sans-serif;
+      background: var(--bg);
+      color: var(--text);
       line-height: 1.6;
+      overflow-x: hidden;
     }
+    a { color: inherit; text-decoration: none; }
+    ul { list-style: none; }
 
-    /* ── CSS Variables ── */
-    :root {
-      --cyan: #00d4ff;
-      --cyan-dark: #0099bb;
-      --blue: #1e3a5f;
-      --dark: #0a0e1a;
-      --darker: #060910;
-      --card: #111827;
-      --card-border: #1e2d45;
-      --text: #e2e8f0;
-      --text-muted: #94a3b8;
-      --red: #ef4444;
-      --green: #22c55e;
-      --yellow: #f59e0b;
-      --orange: #f97316;
-      --radius: 12px;
-      --nav-h: 64px;
-    }
-
-    /* ── Scrollbar ── */
+    /* ══════════════════════════════════════
+       SCROLLBAR
+    ══════════════════════════════════════ */
     ::-webkit-scrollbar { width: 6px; }
-    ::-webkit-scrollbar-track { background: var(--darker); }
-    ::-webkit-scrollbar-thumb { background: var(--cyan-dark); border-radius: 3px; }
+    ::-webkit-scrollbar-track { background: var(--bg); }
+    ::-webkit-scrollbar-thumb { background: var(--brand); border-radius: 3px; }
 
-    /* ════════════════════════════════
-       NAVBAR
-    ════════════════════════════════ */
-    .cb-nav {
-      position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
-      height: var(--nav-h);
-      background: rgba(6,9,16,0.95);
-      backdrop-filter: blur(12px);
-      border-bottom: 1px solid var(--card-border);
-      display: flex; align-items: center;
+    /* ══════════════════════════════════════
+       NAVIGATION
+    ══════════════════════════════════════ */
+    .nav {
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      z-index: 1000;
+      background: rgba(13,15,26,.92);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
     }
-    .cb-nav__inner {
-      max-width: 1200px; width: 100%; margin: 0 auto;
+    .nav__inner {
+      max-width: 1200px;
+      margin: 0 auto;
       padding: 0 24px;
-      display: flex; align-items: center; justify-content: space-between;
+      height: 68px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
     }
-    .cb-nav__logo {
-      display: flex; align-items: center; gap: 10px;
-      text-decoration: none; flex-shrink: 0;
+    .nav__logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-weight: 800;
+      font-size: 1.2rem;
+      letter-spacing: -.3px;
     }
-    .cb-nav__logo-svg { width: 36px; height: 36px; }
-    .cb-nav__logo-text {
-      font-size: 1.2rem; font-weight: 700;
-      color: var(--cyan); letter-spacing: 0.5px;
+    .nav__logo-icon {
+      width: 36px; height: 36px;
+      display: flex; align-items: center; justify-content: center;
     }
-    .cb-nav__links {
-      display: flex; align-items: center; gap: 8px;
-      list-style: none;
+    .nav__logo-text {
+      background: linear-gradient(135deg,#a89dff,#6c63ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
-    .cb-nav__links a {
-      color: var(--text-muted); text-decoration: none;
-      padding: 6px 14px; border-radius: 6px;
-      font-size: 0.9rem; transition: all 0.2s;
+    .nav__links {
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
-    .cb-nav__links a:hover,
-    .cb-nav__links a.active { color: var(--cyan); background: rgba(0,212,255,0.08); }
-    .cb-nav__cta {
-      background: var(--cyan); color: var(--darker) !important;
-      font-weight: 600; padding: 8px 18px !important;
-      border-radius: 8px !important;
+    .nav__link {
+      padding: 8px 14px;
+      border-radius: 8px;
+      font-size: .875rem;
+      font-weight: 500;
+      color: var(--text-dim);
+      transition: color var(--transition), background var(--transition);
     }
-    .cb-nav__cta:hover { background: #00b8d9 !important; color: var(--darker) !important; }
-    .cb-nav__toggle {
-      display: none; flex-direction: column; gap: 5px;
-      background: none; border: none; cursor: pointer;
-      padding: 8px; border-radius: 6px;
+    .nav__link:hover { color: var(--text); background: rgba(108,99,255,.12); }
+    .nav__link--cta {
+      background: var(--brand);
+      color: #fff !important;
+      padding: 8px 18px;
+      font-weight: 600;
     }
-    .cb-nav__toggle span {
-      display: block; width: 24px; height: 2px;
-      background: var(--text); border-radius: 2px;
-      transition: all 0.3s;
+    .nav__link--cta:hover { background: var(--brand-dark); }
+    .nav__link--active { color: var(--brand-light); }
+    .nav__toggle {
+      display: none;
+      flex-direction: column;
+      gap: 5px;
+      background: none;
+      border: none;
+      cursor: pointer;
+      padding: 4px;
     }
-    .cb-nav__toggle.open span:nth-child(1) { transform: translateY(7px) rotate(45deg); }
-    .cb-nav__toggle.open span:nth-child(2) { opacity: 0; }
-    .cb-nav__toggle.open span:nth-child(3) { transform: translateY(-7px) rotate(-45deg); }
-    .cb-nav__mobile {
-      display: none; position: fixed;
-      top: var(--nav-h); left: 0; right: 0;
-      background: rgba(6,9,16,0.98);
-      border-bottom: 1px solid var(--card-border);
-      padding: 16px 24px 24px; z-index: 999;
-      flex-direction: column; gap: 4px;
-    }
-    .cb-nav__mobile.open { display: flex; }
-    .cb-nav__mobile a {
-      color: var(--text-muted); text-decoration: none;
-      padding: 12px 16px; border-radius: 8px;
-      font-size: 0.95rem; transition: all 0.2s;
+    .nav__toggle span {
       display: block;
+      width: 24px; height: 2px;
+      background: var(--text);
+      border-radius: 2px;
+      transition: var(--transition);
     }
-    .cb-nav__mobile a:hover { color: var(--cyan); background: rgba(0,212,255,0.08); }
-    .cb-nav__mobile a.active { color: var(--cyan); }
-
-    @media (max-width: 768px) {
-      .cb-nav__links { display: none; }
-      .cb-nav__toggle { display: flex; }
+    .nav__mobile {
+      display: none;
+      flex-direction: column;
+      gap: 4px;
+      padding: 12px 24px 16px;
+      border-top: 1px solid var(--border);
+      background: rgba(13,15,26,.97);
     }
+    .nav__mobile.open { display: flex; }
+    .nav__mobile .nav__link { padding: 10px 14px; }
 
-    /* ════════════════════════════════
-       HERO BANNER
-    ════════════════════════════════ */
-    .hero {
-      margin-top: var(--nav-h);
-      padding: 64px 24px 48px;
+    /* ══════════════════════════════════════
+       PAGE HERO
+    ══════════════════════════════════════ */
+    .page-hero {
+      padding: 120px 24px 60px;
       text-align: center;
-      background: linear-gradient(180deg, rgba(0,212,255,0.06) 0%, transparent 100%);
-      border-bottom: 1px solid var(--card-border);
-      position: relative; overflow: hidden;
+      position: relative;
+      overflow: hidden;
     }
-    .hero::before {
+    .page-hero::before {
       content: '';
-      position: absolute; top: -50%; left: 50%; transform: translateX(-50%);
-      width: 600px; height: 400px;
-      background: radial-gradient(ellipse, rgba(0,212,255,0.08) 0%, transparent 70%);
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse 70% 60% at 50% 0%,
+        rgba(108,99,255,.15) 0%, transparent 70%);
       pointer-events: none;
     }
-    .hero__badge {
-      display: inline-flex; align-items: center; gap: 8px;
-      background: rgba(0,212,255,0.1); border: 1px solid rgba(0,212,255,0.3);
-      border-radius: 20px; padding: 6px 16px;
-      font-size: 0.8rem; color: var(--cyan); font-weight: 600;
-      margin-bottom: 20px; letter-spacing: 0.5px;
+    .page-hero__inner { max-width: 680px; margin: 0 auto; position: relative; }
+    .page-hero__label {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(108,99,255,.15);
+      border: 1px solid rgba(108,99,255,.3);
+      border-radius: 100px;
+      padding: 6px 14px;
+      font-size: .72rem;
+      font-weight: 700;
+      color: var(--brand-light);
+      letter-spacing: .8px;
+      text-transform: uppercase;
+      margin-bottom: 20px;
     }
-    .hero__badge-dot {
-      width: 8px; height: 8px; border-radius: 50%;
-      background: var(--green);
+    .page-hero__label-dot {
+      width: 6px; height: 6px;
+      background: var(--accent);
+      border-radius: 50%;
       animation: pulse 2s infinite;
     }
     @keyframes pulse {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.5; transform: scale(0.8); }
+      0%,100% { opacity: 1; transform: scale(1); }
+      50%      { opacity: .5; transform: scale(1.4); }
     }
-    .hero h1 {
-      font-size: clamp(1.8rem, 4vw, 2.8rem);
-      font-weight: 800; color: #fff;
-      margin-bottom: 16px; line-height: 1.2;
+    .page-hero__title {
+      font-size: clamp(1.9rem, 4vw, 2.8rem);
+      font-weight: 800;
+      letter-spacing: -.4px;
+      line-height: 1.15;
+      margin-bottom: 16px;
     }
-    .hero h1 span { color: var(--cyan); }
-    .hero p {
-      font-size: 1.05rem; color: var(--text-muted);
-      max-width: 560px; margin: 0 auto 32px;
+    .page-hero__title span {
+      background: linear-gradient(135deg, var(--brand-light), var(--brand), var(--accent));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
     }
-    .hero__stats {
-      display: flex; justify-content: center; gap: 32px;
+    .page-hero__desc {
+      font-size: .95rem;
+      color: var(--text-dim);
+      line-height: 1.75;
+      margin-bottom: 32px;
+    }
+    .page-hero__stats {
+      display: flex;
+      justify-content: center;
+      gap: 32px;
       flex-wrap: wrap;
     }
-    .hero__stat {
-      display: flex; align-items: center; gap: 8px;
-      font-size: 0.85rem; color: var(--text-muted);
+    .page-hero__stat {
+      text-align: center;
     }
-    .hero__stat svg { color: var(--cyan); flex-shrink: 0; }
-    .hero__stat strong { color: var(--text); }
+    .page-hero__stat-val {
+      display: block;
+      font-size: 1.4rem;
+      font-weight: 800;
+      color: var(--brand-light);
+    }
+    .page-hero__stat-label {
+      font-size: .72rem;
+      color: var(--text-dim);
+      text-transform: uppercase;
+      letter-spacing: .5px;
+    }
 
-    /* ════════════════════════════════
+    /* ══════════════════════════════════════
        MAIN LAYOUT
-    ════════════════════════════════ */
-    .page-wrap {
-      max-width: 1100px; margin: 0 auto;
-      padding: 48px 24px 80px;
+    ══════════════════════════════════════ */
+    .intake {
+      padding: 0 24px 96px;
+    }
+    .intake__inner {
+      max-width: 1100px;
+      margin: 0 auto;
       display: grid;
-      grid-template-columns: 1fr 340px;
-      gap: 32px;
+      grid-template-columns: 1fr 380px;
+      gap: 40px;
       align-items: start;
     }
     @media (max-width: 900px) {
-      .page-wrap { grid-template-columns: 1fr; }
+      .intake__inner { grid-template-columns: 1fr; }
     }
 
-    /* ════════════════════════════════
+    /* ══════════════════════════════════════
        FORM CARD
-    ════════════════════════════════ */
+    ══════════════════════════════════════ */
     .form-card {
-      background: var(--card);
-      border: 1px solid var(--card-border);
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 40px;
+      box-shadow: var(--shadow);
+    }
+    @media (max-width: 560px) { .form-card { padding: 24px; } }
+    .form-card__title {
+      font-size: 1.15rem;
+      font-weight: 700;
+      margin-bottom: 28px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+    .form-card__title-icon {
+      width: 36px; height: 36px;
+      background: rgba(108,99,255,.15);
+      border-radius: 10px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+    }
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+    @media (max-width: 560px) { .form-row { grid-template-columns: 1fr; } }
+    .form-group {
+      display: flex;
+      flex-direction: column;
+      gap: 6px;
+      margin-bottom: 20px;
+    }
+    .form-group:last-of-type { margin-bottom: 0; }
+    .form-label {
+      font-size: .8rem;
+      font-weight: 600;
+      color: var(--text-dim);
+      letter-spacing: .3px;
+    }
+    .form-label span {
+      color: var(--danger);
+      margin-left: 2px;
+    }
+    .form-input,
+    .form-select,
+    .form-textarea {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
       border-radius: var(--radius);
-      overflow: hidden;
-    }
-    .form-card__header {
-      padding: 24px 28px;
-      border-bottom: 1px solid var(--card-border);
-      display: flex; align-items: center; gap: 12px;
-    }
-    .form-card__header-icon {
-      width: 40px; height: 40px; border-radius: 10px;
-      background: rgba(0,212,255,0.1);
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0;
-    }
-    .form-card__header h2 {
-      font-size: 1.1rem; font-weight: 700; color: #fff;
-    }
-    .form-card__header p {
-      font-size: 0.8rem; color: var(--text-muted); margin-top: 2px;
-    }
-    .form-card__body { padding: 28px; }
-
-    /* ── Success State ── */
-    .success-state {
-      display: none; text-align: center; padding: 40px 20px;
-    }
-    .success-state.show { display: block; }
-    .success-icon {
-      width: 72px; height: 72px; border-radius: 50%;
-      background: rgba(34,197,94,0.15); border: 2px solid var(--green);
-      display: flex; align-items: center; justify-content: center;
-      margin: 0 auto 20px; font-size: 2rem;
-    }
-    .success-state h3 { font-size: 1.4rem; color: #fff; margin-bottom: 8px; }
-    .success-state p { color: var(--text-muted); margin-bottom: 24px; }
-    .ticket-id-badge {
-      display: inline-block;
-      background: rgba(0,212,255,0.1); border: 1px solid rgba(0,212,255,0.3);
-      border-radius: 8px; padding: 10px 20px;
-      font-family: monospace; font-size: 1rem; color: var(--cyan);
-      margin-bottom: 24px;
-    }
-    .success-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
-
-    /* ── Form Fields ── */
-    .form-grid {
-      display: grid; grid-template-columns: 1fr 1fr; gap: 20px;
-    }
-    .form-grid .full { grid-column: 1 / -1; }
-    @media (max-width: 600px) {
-      .form-grid { grid-template-columns: 1fr; }
-      .form-grid .full { grid-column: 1; }
-    }
-
-    .field { display: flex; flex-direction: column; gap: 6px; }
-    .field label {
-      font-size: 0.85rem; font-weight: 600;
-      color: var(--text-muted); letter-spacing: 0.3px;
-    }
-    .field label .req { color: var(--cyan); margin-left: 2px; }
-    .field input,
-    .field select,
-    .field textarea {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid var(--card-border);
-      border-radius: 8px; padding: 11px 14px;
-      color: var(--text); font-size: 0.9rem;
-      font-family: inherit; width: 100%;
-      transition: border-color 0.2s, box-shadow 0.2s;
-      outline: none;
-    }
-    .field input:focus,
-    .field select:focus,
-    .field textarea:focus {
-      border-color: var(--cyan);
-      box-shadow: 0 0 0 3px rgba(0,212,255,0.12);
-    }
-    .field input.error,
-    .field select.error,
-    .field textarea.error {
-      border-color: var(--red);
-      box-shadow: 0 0 0 3px rgba(239,68,68,0.12);
-    }
-    .field select option { background: #1a2332; }
-    .field textarea { resize: vertical; min-height: 130px; }
-    .field__error {
-      font-size: 0.78rem; color: var(--red);
-      display: none; align-items: center; gap: 4px;
-    }
-    .field__error.show { display: flex; }
-    .field__hint { font-size: 0.78rem; color: var(--text-muted); }
-
-    /* ── Priority Radio ── */
-    .priority-group {
-      display: grid; grid-template-columns: repeat(4,1fr); gap: 10px;
-    }
-    @media (max-width: 500px) { .priority-group { grid-template-columns: repeat(2,1fr); } }
-    .priority-option { position: relative; }
-    .priority-option input { position: absolute; opacity: 0; width: 0; height: 0; }
-    .priority-option label {
-      display: flex; flex-direction: column; align-items: center; gap: 4px;
-      padding: 12px 8px; border-radius: 10px;
-      border: 2px solid var(--card-border);
-      cursor: pointer; transition: all 0.2s;
-      font-size: 0.8rem; font-weight: 600; color: var(--text-muted);
-      text-align: center;
-    }
-    .priority-option label .dot {
-      width: 10px; height: 10px; border-radius: 50%;
-    }
-    .priority-option.p-low label .dot { background: var(--green); }
-    .priority-option.p-med label .dot { background: var(--yellow); }
-    .priority-option.p-high label .dot { background: var(--orange); }
-    .priority-option.p-crit label .dot { background: var(--red); }
-    .priority-option input:checked + label {
-      border-color: currentColor; background: rgba(255,255,255,0.04);
+      padding: 11px 14px;
       color: var(--text);
+      font-size: .875rem;
+      font-family: inherit;
+      outline: none;
+      transition: border-color var(--transition), box-shadow var(--transition);
+      width: 100%;
     }
-    .priority-option.p-low input:checked + label { border-color: var(--green); color: var(--green); }
-    .priority-option.p-med input:checked + label { border-color: var(--yellow); color: var(--yellow); }
-    .priority-option.p-high input:checked + label { border-color: var(--orange); color: var(--orange); }
-    .priority-option.p-crit input:checked + label { border-color: var(--red); color: var(--red); }
-    .priority-option label:hover { border-color: rgba(255,255,255,0.2); color: var(--text); }
+    .form-input:focus,
+    .form-select:focus,
+    .form-textarea:focus {
+      border-color: var(--brand);
+      box-shadow: 0 0 0 3px rgba(108,99,255,.15);
+    }
+    .form-input::placeholder,
+    .form-textarea::placeholder { color: var(--text-dim); opacity: .6; }
+    .form-select { appearance: none; cursor: pointer; }
+    .form-select-wrap { position: relative; }
+    .form-select-wrap::after {
+      content: '▾';
+      position: absolute;
+      right: 14px; top: 50%;
+      transform: translateY(-50%);
+      color: var(--text-dim);
+      pointer-events: none;
+      font-size: .85rem;
+    }
+    .form-textarea { resize: vertical; min-height: 130px; line-height: 1.6; }
+    .form-hint {
+      font-size: .75rem;
+      color: var(--text-dim);
+      margin-top: 4px;
+      display: flex;
+      align-items: flex-start;
+      gap: 6px;
+    }
+    .form-hint::before { content: '💡'; flex-shrink: 0; }
+    .urgency-grid {
+      display: grid;
+      grid-template-columns: repeat(4, 1fr);
+      gap: 10px;
+    }
+    @media (max-width: 480px) { .urgency-grid { grid-template-columns: repeat(2,1fr); } }
+    .urgency-option { display: none; }
+    .urgency-label {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+      padding: 12px 8px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      cursor: pointer;
+      font-size: .75rem;
+      font-weight: 600;
+      text-align: center;
+      transition: border-color var(--transition), background var(--transition);
+    }
+    .urgency-label:hover { border-color: var(--brand); background: rgba(108,99,255,.08); }
+    .urgency-option:checked + .urgency-label {
+      border-color: var(--brand);
+      background: rgba(108,99,255,.15);
+      color: var(--brand-light);
+    }
+    .urgency-label__icon { font-size: 1.2rem; }
+    .urgency-label--low    { --u-color: var(--success); }
+    .urgency-label--medium { --u-color: var(--accent); }
+    .urgency-label--high   { --u-color: var(--warning); }
+    .urgency-label--critical { --u-color: var(--danger); }
+    .urgency-option:checked + .urgency-label--low     { border-color: var(--success);  background: rgba(64,192,87,.12);  color: var(--success); }
+    .urgency-option:checked + .urgency-label--medium  { border-color: var(--accent);   background: rgba(0,212,170,.12);  color: var(--accent); }
+    .urgency-option:checked + .urgency-label--high    { border-color: var(--warning);  background: rgba(255,169,77,.12); color: var(--warning); }
+    .urgency-option:checked + .urgency-label--critical{ border-color: var(--danger);   background: rgba(255,77,109,.12); color: var(--danger); }
 
-    /* ── File Drop ── */
-    .file-drop {
-      border: 2px dashed var(--card-border);
-      border-radius: 10px; padding: 28px 20px;
-      text-align: center; cursor: pointer;
-      transition: all 0.2s; position: relative;
+    .form-divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 28px 0;
     }
-    .file-drop:hover, .file-drop.dragover {
-      border-color: var(--cyan);
-      background: rgba(0,212,255,0.04);
+    .form-actions {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+      flex-wrap: wrap;
+      margin-top: 28px;
     }
-    .file-drop input[type="file"] {
-      position: absolute; inset: 0; opacity: 0;
-      cursor: pointer; width: 100%; height: 100%;
-    }
-    .file-drop__icon { font-size: 2rem; margin-bottom: 8px; }
-    .file-drop__text { font-size: 0.85rem; color: var(--text-muted); }
-    .file-drop__text strong { color: var(--cyan); }
-    .file-drop__hint { font-size: 0.75rem; color: var(--text-muted); margin-top: 4px; }
-    .file-list { margin-top: 12px; display: flex; flex-direction: column; gap: 8px; }
-    .file-item {
-      display: flex; align-items: center; justify-content: space-between;
-      background: rgba(255,255,255,0.04); border: 1px solid var(--card-border);
-      border-radius: 8px; padding: 8px 12px; font-size: 0.82rem;
-    }
-    .file-item__name { color: var(--text); flex: 1; }
-    .file-item__size { color: var(--text-muted); margin: 0 12px; }
-    .file-item__remove {
-      background: none; border: none; color: var(--text-muted);
-      cursor: pointer; padding: 2px 6px; border-radius: 4px;
-      font-size: 1rem; line-height: 1; transition: color 0.2s;
-    }
-    .file-item__remove:hover { color: var(--red); }
-
-    /* ── Submit Button ── */
-    .btn-submit {
-      width: 100%; padding: 14px;
-      background: linear-gradient(135deg, var(--cyan) 0%, #0099bb 100%);
-      color: var(--darker); font-size: 1rem; font-weight: 700;
-      border: none; border-radius: 10px; cursor: pointer;
-      display: flex; align-items: center; justify-content: center; gap: 10px;
-      transition: all 0.2s; margin-top: 8px;
-      letter-spacing: 0.3px;
-    }
-    .btn-submit:hover { transform: translateY(-1px); box-shadow: 0 8px 24px rgba(0,212,255,0.3); }
-    .btn-submit:active { transform: translateY(0); }
-    .btn-submit:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
-    .btn-submit .spinner {
-      width: 18px; height: 18px; border: 2px solid rgba(0,0,0,0.3);
-      border-top-color: var(--darker); border-radius: 50%;
-      animation: spin 0.6s linear infinite; display: none;
-    }
-    .btn-submit.loading .spinner { display: block; }
-    .btn-submit.loading .btn-text { display: none; }
-    @keyframes spin { to { transform: rotate(360deg); } }
-
-    .form-footer {
-      display: flex; align-items: center; justify-content: center;
-      gap: 8px; margin-top: 14px;
-      font-size: 0.78rem; color: var(--text-muted);
-    }
-
-    /* ── Buttons ── */
     .btn {
-      padding: 10px 20px; border-radius: 8px; font-size: 0.9rem;
-      font-weight: 600; cursor: pointer; transition: all 0.2s;
-      border: none; text-decoration: none; display: inline-flex;
-      align-items: center; gap: 8px;
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      padding: 13px 26px;
+      border-radius: var(--radius);
+      font-size: .9rem;
+      font-weight: 600;
+      cursor: pointer;
+      border: none;
+      transition: var(--transition);
+      font-family: inherit;
     }
-    .btn-primary { background: var(--cyan); color: var(--darker); }
-    .btn-primary:hover { background: #00b8d9; }
-    .btn-outline {
-      background: transparent; color: var(--text-muted);
-      border: 1px solid var(--card-border);
+    .btn--primary {
+      background: linear-gradient(135deg, var(--brand), var(--brand-dark));
+      color: #fff;
+      box-shadow: 0 4px 20px rgba(108,99,255,.4);
+      flex: 1;
+      justify-content: center;
     }
-    .btn-outline:hover { border-color: var(--cyan); color: var(--cyan); }
+    .btn--primary:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(108,99,255,.5); }
+    .btn--ghost {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-dim);
+      font-size: .85rem;
+      padding: 13px 20px;
+    }
+    .btn--ghost:hover { border-color: var(--brand); color: var(--text); }
 
-    /* ════════════════════════════════
+    /* Success state */
+    .form-success {
+      display: none;
+      text-align: center;
+      padding: 48px 24px;
+    }
+    .form-success__icon {
+      font-size: 3rem;
+      margin-bottom: 16px;
+    }
+    .form-success__title {
+      font-size: 1.3rem;
+      font-weight: 700;
+      margin-bottom: 10px;
+    }
+    .form-success__desc {
+      font-size: .9rem;
+      color: var(--text-dim);
+      margin-bottom: 24px;
+      line-height: 1.7;
+    }
+
+    /* ══════════════════════════════════════
        SIDEBAR
-    ════════════════════════════════ */
+    ══════════════════════════════════════ */
     .sidebar { display: flex; flex-direction: column; gap: 20px; }
 
     .info-card {
-      background: var(--card); border: 1px solid var(--card-border);
-      border-radius: var(--radius); padding: 22px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
     }
     .info-card__title {
-      font-size: 0.85rem; font-weight: 700; color: var(--text-muted);
-      text-transform: uppercase; letter-spacing: 0.8px;
-      margin-bottom: 16px; display: flex; align-items: center; gap: 8px;
+      font-size: .8rem;
+      font-weight: 700;
+      letter-spacing: .6px;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 18px;
     }
-    .info-card__title svg { color: var(--cyan); }
-
-    /* SLA Table */
-    .sla-table { width: 100%; border-collapse: collapse; }
-    .sla-table tr { border-bottom: 1px solid rgba(255,255,255,0.05); }
-    .sla-table tr:last-child { border-bottom: none; }
-    .sla-table td { padding: 10px 0; font-size: 0.83rem; vertical-align: middle; }
-    .sla-table td:last-child { text-align: right; font-weight: 600; }
-    .sla-badge {
-      display: inline-flex; align-items: center; gap: 5px;
-      padding: 3px 10px; border-radius: 20px; font-size: 0.75rem; font-weight: 600;
-    }
-    .sla-badge.critical { background: rgba(239,68,68,0.15); color: var(--red); }
-    .sla-badge.high { background: rgba(249,115,22,0.15); color: var(--orange); }
-    .sla-badge.medium { background: rgba(245,158,11,0.15); color: var(--yellow); }
-    .sla-badge.low { background: rgba(34,197,94,0.15); color: var(--green); }
-    .sla-time { color: var(--text-muted); font-size: 0.82rem; }
-
-    /* Contact Methods */
-    .contact-list { display: flex; flex-direction: column; gap: 14px; }
-    .contact-item { display: flex; align-items: flex-start; gap: 12px; }
-    .contact-item__icon {
-      width: 36px; height: 36px; border-radius: 8px;
-      background: rgba(0,212,255,0.1);
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; font-size: 1rem;
-    }
-    .contact-item__label {
-      font-size: 0.75rem; color: var(--text-muted); margin-bottom: 2px;
-    }
-    .contact-item__value {
-      font-size: 0.85rem; color: var(--text); font-weight: 600;
-    }
-    .contact-item__value a {
-      color: var(--cyan); text-decoration: none;
-    }
-    .contact-item__value a:hover { text-decoration: underline; }
-
-    /* Tips */
-    .tips-list { display: flex; flex-direction: column; gap: 10px; }
-    .tip-item {
-      display: flex; gap: 10px; align-items: flex-start;
-      font-size: 0.82rem; color: var(--text-muted);
-    }
-    .tip-item__num {
-      width: 20px; height: 20px; border-radius: 50%;
-      background: rgba(0,212,255,0.15); color: var(--cyan);
-      font-size: 0.7rem; font-weight: 700;
-      display: flex; align-items: center; justify-content: center;
-      flex-shrink: 0; margin-top: 1px;
-    }
-
-    /* ════════════════════════════════
-       AI CHAT WIDGET
-    ════════════════════════════════ */
-    .chat-widget {
-      position: fixed; bottom: 24px; right: 24px; z-index: 900;
-    }
-    .chat-bubble {
-      width: 56px; height: 56px; border-radius: 50%;
-      background: linear-gradient(135deg, var(--cyan), #0077aa);
-      border: none; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      box-shadow: 0 4px 20px rgba(0,212,255,0.4);
-      transition: all 0.3s; font-size: 1.4rem;
-      color: var(--darker);
-    }
-    .chat-bubble:hover { transform: scale(1.1); box-shadow: 0 6px 28px rgba(0,212,255,0.5); }
-    .chat-bubble .chat-bubble__close { display: none; }
-    .chat-bubble.open .chat-bubble__open { display: none; }
-    .chat-bubble.open .chat-bubble__close { display: block; }
-    .chat-bubble__badge {
-      position: absolute; top: -4px; right: -4px;
-      width: 18px; height: 18px; border-radius: 50%;
-      background: var(--red); color: #fff;
-      font-size: 0.65rem; font-weight: 700;
-      display: flex; align-items: center; justify-content: center;
-      border: 2px solid var(--dark);
-    }
-    .chat-panel {
-      position: absolute; bottom: 70px; right: 0;
-      width: 360px; max-height: 520px;
-      background: var(--card); border: 1px solid var(--card-border);
-      border-radius: 16px; overflow: hidden;
-      box-shadow: 0 20px 60px rgba(0,0,0,0.5);
-      display: none; flex-direction: column;
-      transform-origin: bottom right;
-    }
-    .chat-panel.open {
+    .info-card__list { display: flex; flex-direction: column; gap: 14px; }
+    .info-card__item {
       display: flex;
-      animation: chatIn 0.25s ease;
+      align-items: flex-start;
+      gap: 12px;
     }
-    @keyframes chatIn {
-      from { opacity: 0; transform: scale(0.9) translateY(10px); }
-      to { opacity: 1; transform: scale(1) translateY(0); }
-    }
-    .chat-panel__header {
-      padding: 16px 18px;
-      background: linear-gradient(135deg, rgba(0,212,255,0.15), rgba(0,119,170,0.1));
-      border-bottom: 1px solid var(--card-border);
-      display: flex; align-items: center; gap: 12px;
-    }
-    .chat-avatar {
-      width: 38px; height: 38px; border-radius: 50%;
-      background: linear-gradient(135deg, var(--cyan), #0077aa);
+    .info-card__item-icon {
+      width: 34px; height: 34px;
+      background: rgba(108,99,255,.12);
+      border-radius: 10px;
       display: flex; align-items: center; justify-content: center;
-      font-size: 1.1rem; flex-shrink: 0;
-    }
-    .chat-panel__header-info h4 { font-size: 0.95rem; color: #fff; font-weight: 700; }
-    .chat-status {
-      font-size: 0.75rem; color: var(--green);
-      display: flex; align-items: center; gap: 5px;
-    }
-    .chat-status::before {
-      content: ''; width: 6px; height: 6px; border-radius: 50%;
-      background: var(--green); display: inline-block;
-      animation: pulse 2s infinite;
-    }
-    .chat-messages {
-      flex: 1; overflow-y: auto; padding: 16px;
-      display: flex; flex-direction: column; gap: 12px;
-      max-height: 320px;
-    }
-    .chat-msg { display: flex; gap: 8px; align-items: flex-start; }
-    .chat-msg.user { flex-direction: row-reverse; }
-    .chat-msg__avatar {
-      width: 28px; height: 28px; border-radius: 50%;
-      background: rgba(0,212,255,0.2); font-size: 0.8rem;
-      display: flex; align-items: center; justify-content: center;
+      font-size: .9rem;
       flex-shrink: 0;
     }
-    .chat-msg.user .chat-msg__avatar { background: rgba(255,255,255,0.1); }
-    .chat-msg__bubble {
-      max-width: 80%; padding: 10px 14px; border-radius: 12px;
-      font-size: 0.84rem; line-height: 1.5; color: var(--text);
-      background: rgba(255,255,255,0.06); border: 1px solid var(--card-border);
+    .info-card__item-body {}
+    .info-card__item-title {
+      font-size: .82rem;
+      font-weight: 600;
+      margin-bottom: 2px;
     }
-    .chat-msg.user .chat-msg__bubble {
-      background: rgba(0,212,255,0.12); border-color: rgba(0,212,255,0.25);
-      color: #fff;
-    }
-    .chat-msg__bubble .typing {
-      display: flex; gap: 4px; align-items: center; padding: 4px 0;
-    }
-    .chat-msg__bubble .typing span {
-      width: 6px; height: 6px; border-radius: 50%;
-      background: var(--text-muted);
-      animation: typingDot 1.2s infinite;
-    }
-    .chat-msg__bubble .typing span:nth-child(2) { animation-delay: 0.2s; }
-    .chat-msg__bubble .typing span:nth-child(3) { animation-delay: 0.4s; }
-    @keyframes typingDot {
-      0%, 60%, 100% { transform: translateY(0); opacity: 0.4; }
-      30% { transform: translateY(-4px); opacity: 1; }
-    }
-    .chat-suggestions {
-      padding: 8px 16px; display: flex; flex-wrap: wrap; gap: 6px;
-    }
-    .chat-suggestion {
-      background: rgba(0,212,255,0.08); border: 1px solid rgba(0,212,255,0.2);
-      color: var(--cyan); border-radius: 20px; padding: 5px 12px;
-      font-size: 0.75rem; cursor: pointer; transition: all 0.2s;
-    }
-    .chat-suggestion:hover { background: rgba(0,212,255,0.18); }
-    .chat-input-row {
-      padding: 12px 16px;
-      border-top: 1px solid var(--card-border);
-      display: flex; gap: 8px; align-items: center;
-    }
-    .chat-input {
-      flex: 1; background: rgba(255,255,255,0.05);
-      border: 1px solid var(--card-border); border-radius: 20px;
-      padding: 9px 16px; color: var(--text); font-size: 0.85rem;
-      font-family: inherit; outline: none; transition: border-color 0.2s;
-    }
-    .chat-input:focus { border-color: var(--cyan); }
-    .chat-send {
-      width: 36px; height: 36px; border-radius: 50%;
-      background: var(--cyan); border: none; cursor: pointer;
-      display: flex; align-items: center; justify-content: center;
-      color: var(--darker); transition: all 0.2s; flex-shrink: 0;
-    }
-    .chat-send:hover { background: #00b8d9; transform: scale(1.05); }
-    .chat-panel__footer {
-      padding: 8px 16px;
-      font-size: 0.68rem; color: var(--text-muted);
-      text-align: center; border-top: 1px solid var(--card-border);
+    .info-card__item-desc {
+      font-size: .75rem;
+      color: var(--text-dim);
+      line-height: 1.5;
     }
 
-    @media (max-width: 420px) {
-      .chat-panel { width: calc(100vw - 32px); right: -8px; }
-    }
-
-    /* ════════════════════════════════
-       FOOTER
-    ════════════════════════════════ */
-    .footer {
-      border-top: 1px solid var(--card-border);
-      padding: 32px 24px;
+    .sla-card {
+      background: linear-gradient(135deg, rgba(108,99,255,.12), rgba(0,212,170,.06));
+      border: 1px solid rgba(108,99,255,.25);
+      border-radius: var(--radius-lg);
+      padding: 24px;
       text-align: center;
-      color: var(--text-muted); font-size: 0.82rem;
     }
-    .footer a { color: var(--cyan); text-decoration: none; }
-    .footer a:hover { text-decoration: underline; }
+    .sla-card__val {
+      font-size: 2.4rem;
+      font-weight: 800;
+      color: var(--brand-light);
+      display: block;
+      margin-bottom: 4px;
+    }
+    .sla-card__label {
+      font-size: .8rem;
+      color: var(--text-dim);
+      margin-bottom: 16px;
+    }
+    .sla-card__divider {
+      border: none;
+      border-top: 1px solid var(--border);
+      margin: 16px 0;
+    }
+    .sla-card__items { display: flex; flex-direction: column; gap: 10px; }
+    .sla-card__item {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-size: .8rem;
+      color: var(--text-dim);
+    }
+    .sla-card__item span { color: var(--accent); font-size: .9rem; }
 
-    /* ════════════════════════════════
-       UTILITIES
-    ════════════════════════════════ */
-    .divider {
-      height: 1px; background: var(--card-border);
-      margin: 20px 0;
+    .contact-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 24px;
     }
-    .sr-only {
-      position: absolute; width: 1px; height: 1px;
-      padding: 0; margin: -1px; overflow: hidden;
-      clip: rect(0,0,0,0); white-space: nowrap; border: 0;
+    .contact-card__title {
+      font-size: .8rem;
+      font-weight: 700;
+      letter-spacing: .6px;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 14px;
+    }
+    .contact-card__email {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 12px 14px;
+      font-size: .85rem;
+      color: var(--brand-light);
+      transition: border-color var(--transition);
+    }
+    .contact-card__email:hover { border-color: var(--brand); }
+
+    /* ══════════════════════════════════════
+       FOOTER
+    ══════════════════════════════════════ */
+    .footer {
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      padding: 60px 24px 32px;
+    }
+    .footer__inner { max-width: 1200px; margin: 0 auto; }
+    .footer__top {
+      display: grid;
+      grid-template-columns: 2fr 1fr 1fr 1fr;
+      gap: 48px;
+      margin-bottom: 48px;
+    }
+    @media (max-width: 860px) { .footer__top { grid-template-columns: 1fr 1fr; } }
+    @media (max-width: 480px) { .footer__top { grid-template-columns: 1fr; } }
+    .footer__brand p {
+      font-size: .85rem;
+      color: var(--text-dim);
+      margin-top: 12px;
+      line-height: 1.7;
+      max-width: 280px;
+    }
+    .footer__col-title {
+      font-size: .78rem;
+      font-weight: 700;
+      letter-spacing: .8px;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      margin-bottom: 16px;
+    }
+    .footer__col li + li { margin-top: 10px; }
+    .footer__col a {
+      font-size: .85rem;
+      color: var(--text-dim);
+      transition: color var(--transition);
+    }
+    .footer__col a:hover { color: var(--brand-light); }
+    .footer__bottom {
+      border-top: 1px solid var(--border);
+      padding-top: 24px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .footer__copy { font-size: .78rem; color: var(--text-dim); }
+    .footer__legal { display: flex; gap: 20px; }
+    .footer__legal a {
+      font-size: .78rem;
+      color: var(--text-dim);
+      transition: color var(--transition);
+    }
+    .footer__legal a:hover { color: var(--brand-light); }
+
+    /* ══════════════════════════════════════
+       AI CHAT WIDGET
+    ══════════════════════════════════════ */
+    .chat-toggle {
+      position: fixed;
+      bottom: 28px; right: 28px;
+      width: 58px; height: 58px;
+      background: linear-gradient(135deg, var(--brand), var(--brand-dark));
+      border: none;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem;
+      box-shadow: 0 4px 24px rgba(108,99,255,.5);
+      z-index: 2000;
+      transition: transform var(--transition), box-shadow var(--transition);
+    }
+    .chat-toggle:hover { transform: scale(1.1); box-shadow: 0 8px 32px rgba(108,99,255,.6); }
+    .chat-widget {
+      position: fixed;
+      bottom: 100px; right: 28px;
+      width: 360px;
+      max-height: 520px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      box-shadow: var(--shadow);
+      display: flex;
+      flex-direction: column;
+      z-index: 1999;
+      overflow: hidden;
+      opacity: 0;
+      transform: translateY(16px) scale(.97);
+      pointer-events: none;
+      transition: opacity .25s ease, transform .25s ease;
+    }
+    .chat-widget.open {
+      opacity: 1;
+      transform: translateY(0) scale(1);
+      pointer-events: all;
+    }
+    @media (max-width: 480px) {
+      .chat-widget {
+        bottom: 0; right: 0; left: 0;
+        width: 100%;
+        border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+        max-height: 70vh;
+      }
+      .chat-toggle { bottom: 20px; right: 20px; }
+    }
+    .chat-widget__header {
+      background: linear-gradient(135deg, var(--brand), var(--brand-dark));
+      padding: 16px 18px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+    .chat-widget__avatar {
+      width: 36px; height: 36px;
+      background: rgba(255,255,255,.2);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.1rem;
+    }
+    .chat-widget__info { flex: 1; }
+    .chat-widget__name { font-size: .9rem; font-weight: 700; color: #fff; }
+    .chat-widget__status { font-size: .72rem; color: rgba(255,255,255,.75); }
+    .chat-widget__close {
+      background: rgba(255,255,255,.15);
+      border: none;
+      border-radius: 8px;
+      color: #fff;
+      width: 30px; height: 30px;
+      cursor: pointer;
+      font-size: 1rem;
+      display: flex; align-items: center; justify-content: center;
+      transition: background var(--transition);
+    }
+    .chat-widget__close:hover { background: rgba(255,255,255,.3); }
+    .chat-widget__messages {
+      flex: 1;
+      overflow-y: auto;
+      padding: 16px;
+      display: flex;
+      flex-direction: column;
+      gap: 12px;
+    }
+    .chat-msg {
+      max-width: 85%;
+      padding: 10px 14px;
+      border-radius: 14px;
+      font-size: .82rem;
+      line-height: 1.55;
+    }
+    .chat-msg--bot {
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      align-self: flex-start;
+      border-radius: 4px 14px 14px 14px;
+    }
+    .chat-msg--user {
+      background: var(--brand);
+      color: #fff;
+      align-self: flex-end;
+      border-radius: 14px 14px 4px 14px;
+    }
+    .chat-widget__chips {
+      padding: 0 16px 12px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+    }
+    .chat-chip {
+      background: rgba(108,99,255,.12);
+      border: 1px solid rgba(108,99,255,.25);
+      border-radius: 100px;
+      padding: 5px 12px;
+      font-size: .75rem;
+      color: var(--brand-light);
+      cursor: pointer;
+      transition: background var(--transition);
+      font-family: inherit;
+    }
+    .chat-chip:hover { background: rgba(108,99,255,.25); }
+    .chat-widget__input-row {
+      padding: 12px 16px;
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 10px;
+      align-items: center;
+    }
+    .chat-widget__input {
+      flex: 1;
+      background: var(--surface-2);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      padding: 9px 14px;
+      color: var(--text);
+      font-size: .82rem;
+      font-family: inherit;
+      resize: none;
+      outline: none;
+      transition: border-color var(--transition);
+    }
+    .chat-widget__input:focus { border-color: var(--brand); }
+    .chat-widget__send {
+      width: 36px; height: 36px;
+      background: var(--brand);
+      border: none;
+      border-radius: 10px;
+      color: #fff;
+      cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1rem;
+      transition: background var(--transition);
+      flex-shrink: 0;
+    }
+    .chat-widget__send:hover { background: var(--brand-dark); }
+    .chat-widget__footer {
+      padding: 8px 16px;
+      font-size: .68rem;
+      color: var(--text-dim);
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ══════════════════════════════════════
+       RESPONSIVE — NAV
+    ══════════════════════════════════════ */
+    @media (max-width: 860px) {
+      .nav__links  { display: none; }
+      .nav__toggle { display: flex; }
     }
   </style>
 </head>
 <body>
 
-<!-- ════════════════════════════════
-     NAVBAR
-════════════════════════════════ -->
-<nav class="cb-nav" role="navigation" aria-label="Main navigation">
-  <div class="cb-nav__inner">
-    <a href="index.html" class="cb-nav__logo" aria-label="CyberBench Home">
-      <svg class="cb-nav__logo-svg" viewBox="0 0 40 40" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
-        <defs>
-          <linearGradient id="shieldGrad" x1="0" y1="0" x2="1" y2="1">
-            <stop offset="0%" stop-color="#00d4ff"/>
-            <stop offset="100%" stop-color="#0077aa"/>
-          </linearGradient>
-        </defs>
-        <path d="M20 3L5 9v10c0 9 6.5 16.5 15 19 8.5-2.5 15-10 15-19V9L20 3z"
-              fill="url(#shieldGrad)" opacity="0.15"/>
-        <path d="M20 3L5 9v10c0 9 6.5 16.5 15 19 8.5-2.5 15-10 15-19V9L20 3z"
-              fill="none" stroke="url(#shieldGrad)" stroke-width="1.5"/>
-        <path d="M14 20l4 4 8-8" stroke="#00d4ff" stroke-width="2"
-              stroke-linecap="round" stroke-linejoin="round"/>
-      </svg>
-      <span class="cb-nav__logo-text">CyberBench</span>
-    </a>
-    <ul class="cb-nav__links" role="list">
-      <li><a href="index.html">Home</a></li>
-      <li><a href="dashboard.html">Dashboard</a></li>
-      <li><a href="services.html">Services</a></li>
-      <li><a href="submit-ticket.html" class="active" aria-current="page">Support</a></li>
-      <li><a href="contact.html" class="cb-nav__cta">Contact</a></li>
-    </ul>
-    <button class="cb-nav__toggle" id="cbNavToggle"
-            aria-label="Toggle navigation" aria-expanded="false" aria-controls="cbNavMobile">
-      <span></span><span></span><span></span>
-    </button>
-  </div>
-</nav>
-
-<!-- Mobile Nav -->
-<nav class="cb-nav__mobile" id="cbNavMobile" aria-label="Mobile navigation">
-  <a href="index.html">Home</a>
-  <a href="dashboard.html">Dashboard</a>
-  <a href="services.html">Services</a>
-  <a href="submit-ticket.html" class="active" aria-current="page">Support</a>
-  <a href="contact.html">Contact</a>
-</nav>
-
-<!-- ════════════════════════════════
-     HERO
-════════════════════════════════ -->
-<section class="hero" aria-labelledby="heroTitle">
-  <div class="hero__badge">
-    <span class="hero__badge-dot" aria-hidden="true"></span>
-    24/7 SOC Support Active
-  </div>
-  <h1 id="heroTitle">Submit a <span>Support Ticket</span></h1>
-  <p>Our security operations team responds fast. Describe your issue and we'll get you covered.</p>
-  <div class="hero__stats" role="list">
-    <div class="hero__stat" role="listitem">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-        <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
-      </svg>
-      <span><strong>Critical: 30 min</strong> response</span>
-    </div>
-    <div class="hero__stat" role="listitem">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-        <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/>
-      </svg>
-      <span><strong>SOC-backed</strong> resolution</span>
-    </div>
-    <div class="hero__stat" role="listitem">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
-        <rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-      </svg>
-      <span><strong>Encrypted</strong> &amp; confidential</span>
-    </div>
-  </div>
-</section>
-
-<!-- ════════════════════════════════
-     MAIN CONTENT
-════════════════════════════════ -->
-<main class="page-wrap" id="main-content">
-
-  <!-- ── FORM COLUMN ── -->
-  <div>
-    <div class="form-card" role="region" aria-label="Support ticket form">
-
-      <!-- Header -->
-      <div class="form-card__header">
-        <div class="form-card__header-icon" aria-hidden="true">
-          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#00d4ff" stroke-width="2">
-            <polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/>
+  <!-- ══════ NAVIGATION ══════ -->
+  <nav class="nav" aria-label="Main navigation">
+    <div class="nav__inner">
+      <a href="index.html" class="nav__logo" aria-label="CyberBench home">
+        <div class="nav__logo-icon">
+          <svg width="36" height="36" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+            <path d="M18 3L4 9v10c0 8.4 5.9 16.2 14 18 8.1-1.8 14-9.6 14-18V9L18 3z"
+                  fill="url(#sg)" opacity=".9"/>
+            <path d="M13 18l3.5 3.5L23 14" stroke="#fff" stroke-width="2.2"
+                  stroke-linecap="round" stroke-linejoin="round"/>
+            <defs>
+              <linearGradient id="sg" x1="4" y1="3" x2="32" y2="37" gradientUnits="userSpaceOnUse">
+                <stop stop-color="#a89dff"/>
+                <stop offset="1" stop-color="#6c63ff"/>
+              </linearGradient>
+            </defs>
           </svg>
         </div>
-        <div>
-          <h2>New Support Ticket</h2>
-          <p>All fields marked <span style="color:var(--cyan)">*</span> are required</p>
-        </div>
+        <span class="nav__logo-text">CyberBench</span>
+      </a>
+
+      <div class="nav__links" role="menubar">
+        <a href="services.html"          class="nav__link"          role="menuitem">Services</a>
+        <a href="about.html"             class="nav__link"          role="menuitem">About</a>
+        <a href="blog.html"              class="nav__link"          role="menuitem">Blog</a>
+        <a href="client-portal.html"     class="nav__link"          role="menuitem">Client Portal</a>
+        <a href="consultant-portal.html" class="nav__link"          role="menuitem">Consultant Portal</a>
+        <a href="submit-ticket.html"     class="nav__link nav__link--cta nav__link--active"
+                                                                    role="menuitem"
+                                                                    aria-current="page">Submit Ticket</a>
       </div>
 
-      <div class="form-card__body">
-
-        <!-- Success State -->
-        <div class="success-state" id="successState" role="alert" aria-live="polite">
-          <div class="success-icon" aria-hidden="true">✅</div>
-          <h3>Ticket Submitted!</h3>
-          <p>Your ticket has been received. Our SOC team will respond within the SLA window for your priority level.</p>
-          <div class="ticket-id-badge" id="ticketIdDisplay">🎫 Ticket ID: <strong id="ticketIdVal">—</strong></div>
-          <div class="success-actions">
-            <button class="btn btn-primary" id="submitAnother">Submit Another</button>
-            <a href="dashboard.html" class="btn btn-outline">View Portal</a>
-          </div>
-        </div>
-
-        <!-- Form -->
-        <form id="ticketForm" novalidate aria-label="Support ticket submission form">
-          <div class="form-grid">
-
-            <!-- Full Name -->
-            <div class="field">
-              <label for="fullName">Full Name <span class="req" aria-hidden="true">*</span></label>
-              <input type="text" id="fullName" name="fullName"
-                     placeholder="Jane Smith" autocomplete="name"
-                     required aria-required="true" aria-describedby="fullNameErr"/>
-              <span class="field__error" id="fullNameErr" role="alert">
-                ⚠ Please enter your full name.
-              </span>
-            </div>
-
-            <!-- Email -->
-            <div class="field">
-              <label for="email">Email Address <span class="req" aria-hidden="true">*</span></label>
-              <input type="email" id="email" name="email"
-                     placeholder="jane@company.com" autocomplete="email"
-                     required aria-required="true" aria-describedby="emailErr"/>
-              <span class="field__error" id="emailErr" role="alert">
-                ⚠ Please enter a valid email address.
-              </span>
-            </div>
-
-            <!-- Company -->
-            <div class="field">
-              <label for="company">Company / Organisation</label>
-              <input type="text" id="company" name="company"
-                     placeholder="Acme Corp" autocomplete="organization"/>
-            </div>
-
-            <!-- Phone -->
-            <div class="field">
-              <label for="phone">Phone Number</label>
-              <input type="tel" id="phone" name="phone"
-                     placeholder="+44 7700 000000" autocomplete="tel"/>
-            </div>
-
-            <!-- Category -->
-            <div class="field full">
-              <label for="category">Issue Category <span class="req" aria-hidden="true">*</span></label>
-              <select id="category" name="category" required
-                      aria-required="true" aria-describedby="categoryErr">
-                <option value="">Select a category…</option>
-                <optgroup label="🚨 Security Incidents">
-                  <option value="active-incident">Active Security Incident</option>
-                  <option value="data-breach">Suspected Data Breach</option>
-                  <option value="ransomware">Ransomware / Malware</option>
-                  <option value="phishing">Phishing / Social Engineering</option>
-                </optgroup>
-                <optgroup label="🔐 Access &amp; Authentication">
-                  <option value="portal-access">Portal Access Issue</option>
-                  <option value="mfa">MFA / Authentication Problem</option>
-                  <option value="account">Account Management</option>
-                  <option value="api">API / Integration Issue</option>
-                </optgroup>
-                <optgroup label="📋 Compliance &amp; Reporting">
-                  <option value="compliance">Compliance Query</option>
-                  <option value="reports">Report Generation</option>
-                  <option value="audit">Audit Log Request</option>
-                </optgroup>
-                <optgroup label="💼 General">
-                  <option value="billing">Billing Enquiry</option>
-                  <option value="feature">Feature Request</option>
-                  <option value="other">Other</option>
-                </optgroup>
-              </select>
-              <span class="field__error" id="categoryErr" role="alert">
-                ⚠ Please select a category.
-              </span>
-            </div>
-
-            <!-- Subject -->
-            <div class="field full">
-              <label for="subject">Subject <span class="req" aria-hidden="true">*</span></label>
-              <input type="text" id="subject" name="subject"
-                     placeholder="Brief description of your issue"
-                     maxlength="120" required
-                     aria-required="true" aria-describedby="subjectErr subjectHint"/>
-              <span class="field__hint" id="subjectHint">Max 120 characters</span>
-              <span class="field__error" id="subjectErr" role="alert">
-                ⚠ Please enter a subject (max 120 characters).
-              </span>
-            </div>
-
-            <!-- Priority -->
-            <div class="field full">
-              <label>Priority <span class="req" aria-hidden="true">*</span></label>
-              <div class="priority-group" role="radiogroup" aria-label="Select ticket priority">
-                <div class="priority-option p-low">
-                  <input type="radio" name="priority" id="pLow" value="low"/>
-                  <label for="pLow"><span class="dot" aria-hidden="true"></span>Low</label>
-                </div>
-                <div class="priority-option p-med">
-                  <input type="radio" name="priority" id="pMed" value="medium" checked/>
-                  <label for="pMed"><span class="dot" aria-hidden="true"></span>Medium</label>
-                </div>
-                <div class="priority-option p-high">
-                  <input type="radio" name="priority" id="pHigh" value="high"/>
-                  <label for="pHigh"><span class="dot" aria-hidden="true"></span>High</label>
-                </div>
-                <div class="priority-option p-crit">
-                  <input type="radio" name="priority" id="pCrit" value="critical"/>
-                  <label for="pCrit"><span class="dot" aria-hidden="true"></span>Critical</label>
-                </div>
-              </div>
-            </div>
-
-            <!-- Description -->
-            <div class="field full">
-              <label for="description">Description <span class="req" aria-hidden="true">*</span></label>
-              <textarea id="description" name="description"
-                        placeholder="Please describe your issue in detail. Include:&#10;• When the issue started&#10;• Systems or services affected&#10;• Any error messages you've seen&#10;• Steps you've already taken"
-                        required minlength="20"
-                        aria-required="true" aria-describedby="descErr"></textarea>
-              <span class="field__error" id="descErr" role="alert">
-                ⚠ Please describe the issue (at least 20 characters).
-              </span>
-            </div>
-
-            <!-- File Upload -->
-            <div class="field full">
-              <label>Attachments <span style="color:var(--text-muted);font-weight:400">(optional)</span></label>
-              <div class="file-drop" id="fileDrop" role="button"
-                   tabindex="0" aria-label="Upload files — click or drag and drop">
-                <input type="file" id="fileInput" multiple
-                       accept=".png,.jpg,.jpeg,.pdf,.txt,.log,.csv,.zip"
-                       aria-hidden="true" tabindex="-1"/>
-                <div class="file-drop__icon" aria-hidden="true">📎</div>
-                <div class="file-drop__text">
-                  <strong>Click to browse</strong> or drag &amp; drop files here
-                </div>
-                <div class="file-drop__hint">PNG, JPG, PDF, TXT, LOG, CSV, ZIP — max 10 MB each</div>
-              </div>
-              <div class="file-list" id="fileList" aria-live="polite" aria-label="Attached files"></div>
-            </div>
-
-          </div><!-- /form-grid -->
-
-          <div class="divider"></div>
-
-          <button type="submit" class="btn-submit" id="submitBtn"
-                  aria-label="Submit support ticket">
-            <span class="spinner" aria-hidden="true"></span>
-            <span class="btn-text">
-              <svg width="18" height="18" viewBox="0 0 24 24" fill="none"
-                   stroke="currentColor" stroke-width="2.5" aria-hidden="true">
-                <line x1="22" y1="2" x2="11" y2="13"/>
-                <polygon points="22 2 15 22 11 13 2 9 22 2"/>
-              </svg>
-              Submit Ticket
-            </span>
-          </button>
-
-          <div class="form-footer" aria-label="Security notice">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-                 stroke="#22c55e" stroke-width="2" aria-hidden="true">
-              <rect x="3" y="11" width="18" height="11" rx="2"/>
-              <path d="M7 11V7a5 5 0 0 1 10 0v4"/>
-            </svg>
-            Encrypted &amp; secure submission — TLS 1.3
-          </div>
-
-        </form>
-      </div><!-- /form-card__body -->
-    </div><!-- /form-card -->
-  </div>
-
-  <!-- ── SIDEBAR ── -->
-  <aside class="sidebar" aria-label="Support information">
-
-    <!-- SLA Card -->
-    <div class="info-card">
-      <div class="info-card__title">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-             stroke="currentColor" stroke-width="2" aria-hidden="true">
-          <circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/>
-        </svg>
-        Response SLAs
-      </div>
-      <table class="sla-table" aria-label="SLA response times by priority">
-        <tbody>
-          <tr>
-            <td><span class="sla-badge critical">🔴 Critical</span></td>
-            <td class="sla-time">30 minutes</td>
-          </tr>
-          <tr>
-            <td><span class="sla-badge high">🟠 High</span></td>
-            <td class="sla-time">2 hours</td>
-          </tr>
-          <tr>
-            <td><span class="sla-badge medium">🟡 Medium</span></td>
-            <td class="sla-time">8 hours</td>
-          </tr>
-          <tr>
-            <td><span class="sla-badge low">🟢 Low</span></td>
-            <td class="sla-time">24 hours</td>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-
-    <!-- Contact Card -->
-    <div class="info-card">
-      <div class="info-card__title">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-             stroke="currentColor" stroke-width="2" aria-hidden="true">
-          <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07A19.5 19.5 0 0 1 4.69 12 19.79 19.79 0 0 1 1.62 3.38 2 2 0 0 1 3.6 1.22h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L7.91 8.8a16 16 0 0 0 6 6l.95-.95a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 21.72 16z"/>
-        </svg>
-        Contact Methods
-      </div>
-      <div class="contact-list">
-        <div class="contact-item">
-          <div class="contact-item__icon" aria-hidden="true">🛡️</div>
-          <div>
-            <div class="contact-item__label">SOC Hotline</div>
-            <div class="contact-item__value">24/7 Emergency Response</div>
-          </div>
-        </div>
-        <div class="contact-item">
-          <div class="contact-item__icon" aria-hidden="true">📧</div>
-          <div>
-            <div class="contact-item__label">Support Email</div>
-            <div class="contact-item__value">
-              <a href="mailto:support@cyberbench.io">support@cyberbench.io</a>
-            </div>
-          </div>
-        </div>
-        <div class="contact-item">
-          <div class="contact-item__icon" aria-hidden="true">🔒</div>
-          <div>
-            <div class="contact-item__label">Secure Email</div>
-            <div class="contact-item__value">
-              <a href="mailto:ops@cyberbench.io">ops@cyberbench.io</a>
-            </div>
-          </div>
-        </div>
-      </div>
-    </div>
-
-    <!-- Tips Card -->
-    <div class="info-card">
-      <div class="info-card__title">
-        <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
-             stroke="currentColor" stroke-width="2" aria-hidden="true">
-          <circle cx="12" cy="12" r="10"/>
-          <line x1="12" y1="8" x2="12" y2="12"/>
-          <line x1="12" y1="16" x2="12.01" y2="16"/>
-        </svg>
-        Tips for Faster Resolution
-      </div>
-      <div class="tips-list">
-        <div class="tip-item">
-          <div class="tip-item__num" aria-hidden="true">1</div>
-          <span>Be specific about when the issue started and what changed.</span>
-        </div>
-        <div class="tip-item">
-          <div class="tip-item__num" aria-hidden="true">2</div>
-          <span>Include error messages, screenshots, or log files.</span>
-        </div>
-        <div class="tip-item">
-          <div class="tip-item__num" aria-hidden="true">3</div>
-          <span>List all affected systems, users, or services.</span>
-        </div>
-        <div class="tip-item">
-          <div class="tip-item__num" aria-hidden="true">4</div>
-          <span>Select <strong style="color:var(--red)">Critical</strong> only for active incidents with business impact.</span>
-        </div>
-      </div>
-    </div>
-
-  </aside>
-</main>
-
-<!-- ════════════════════════════════
-     AI CHAT WIDGET
-════════════════════════════════ -->
-<div class="chat-widget" role="complementary" aria-label="AI Support Assistant">
-
-  <div class="chat-panel" id="chatPanel" aria-label="CyberBench AI chat" role="dialog">
-    <div class="chat-panel__header">
-      <div class="chat-avatar" aria-hidden="true">🤖</div>
-      <div class="chat-panel__header-info">
-        <h4>CyberBench AI</h4>
-        <div class="chat-status">Online — SOC-backed</div>
-      </div>
-    </div>
-    <div class="chat-messages" id="chatMessages" role="log" aria-live="polite" aria-label="Chat messages">
-      <div class="chat-msg">
-        <div class="chat-msg__avatar" aria-hidden="true">🤖</div>
-        <div class="chat-msg__bubble">
-          👋 Hi! I'm the CyberBench AI assistant. I can help you fill out your ticket, explain SLA times, or answer security questions. What do you need?
-        </div>
-      </div>
-    </div>
-    <div class="chat-suggestions" id="chatSuggestions" aria-label="Suggested questions">
-      <button class="chat-suggestion" data-q="What priority should I choose?">Priority help</button>
-      <button class="chat-suggestion" data-q="What are the SLA times?">SLA times</button>
-      <button class="chat-suggestion" data-q="I have an active incident">Active incident</button>
-      <button class="chat-suggestion" data-q="How do I attach files?">Attach files</button>
-    </div>
-    <div class="chat-input-row">
-      <label for="chatInput" class="sr-only">Type your message</label>
-      <input type="text" class="chat-input" id="chatInput"
-             placeholder="Ask me anything…"
-             aria-label="Chat message input"
-             autocomplete="off" maxlength="300"/>
-      <button class="chat-send" id="chatSend" aria-label="Send message">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
-             stroke="currentColor" stroke-width="2.5" aria-hidden="true">
-          <line x1="22" y1="2" x2="11" y2="13"/>
-          <polygon points="22 2 15 22 11 13 2 9 22 2"/>
-        </svg>
+      <button class="nav__toggle" aria-label="Toggle navigation"
+              aria-expanded="false" id="navToggle">
+        <span></span><span></span><span></span>
       </button>
     </div>
-    <div class="chat-panel__footer">
-      Powered by CyberBench SOC Intelligence · Not a substitute for emergency services
+
+    <div class="nav__mobile" id="navMobile" role="menu" aria-label="Mobile navigation">
+      <a href="services.html"          class="nav__link" role="menuitem">Services</a>
+      <a href="about.html"             class="nav__link" role="menuitem">About</a>
+      <a href="blog.html"              class="nav__link" role="menuitem">Blog</a>
+      <a href="client-portal.html"     class="nav__link" role="menuitem">Client Portal</a>
+      <a href="consultant-portal.html" class="nav__link" role="menuitem">Consultant Portal</a>
+      <a href="submit-ticket.html"     class="nav__link nav__link--cta" role="menuitem">Submit Ticket</a>
+    </div>
+  </nav>
+
+  <!-- ══════ PAGE HERO ══════ -->
+  <main id="main-content">
+  <section class="page-hero" aria-labelledby="page-title">
+    <div class="page-hero__inner">
+      <div class="page-hero__label">
+        <span class="page-hero__label-dot" aria-hidden="true"></span>
+        CyberBench Intake
+      </div>
+      <h1 class="page-hero__title" id="page-title">
+        Submit a <span>Cyber Ticket</span>
+      </h1>
+      <p class="page-hero__desc">
+        Provide a clear summary and urgency. We'll route this to the right specialist
+        and track outcomes end-to-end. Not sure how to describe the issue?
+        Use the AI assistant to structure your request.
+      </p>
+      <div class="page-hero__stats" aria-label="Platform SLA stats">
+        <div class="page-hero__stat">
+          <span class="page-hero__stat-val">&lt; 15m</span>
+          <span class="page-hero__stat-label">Typical Response</span>
+        </div>
+        <div class="page-hero__stat">
+          <span class="page-hero__stat-val">24/7</span>
+          <span class="page-hero__stat-label">Coverage</span>
+        </div>
+        <div class="page-hero__stat">
+          <span class="page-hero__stat-val">100%</span>
+          <span class="page-hero__stat-label">Documented</span>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ══════ INTAKE LAYOUT ══════ -->
+  <div class="intake">
+    <div class="intake__inner">
+
+      <!-- ── FORM COLUMN ── -->
+      <div>
+        <div class="form-card" role="region" aria-label="Ticket submission form">
+
+          <!-- Success State (hidden until submit) -->
+          <div class="form-success" id="formSuccess" aria-live="polite">
+            <div class="form-success__icon">✅</div>
+            <h2 class="form-success__title">Ticket Submitted!</h2>
+            <p class="form-success__desc">
+              Your request has been received. A specialist will be assigned within minutes
+              and you'll receive an email confirmation shortly.
+            </p>
+            <a href="index.html" class="btn btn--primary" style="display:inline-flex;">
+              ← Back to Home
+            </a>
+          </div>
+
+          <!-- Form -->
+          <form id="ticketForm" novalidate>
+            <div class="form-card__title">
+              <div class="form-card__title-icon" aria-hidden="true">🎫</div>
+              Ticket Details
+            </div>
+
+            <!-- Row 1: Company + Name -->
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="company">
+                  Company <span aria-hidden="true">*</span>
+                </label>
+                <input
+                  class="form-input"
+                  type="text"
+                  id="company"
+                  name="company"
+                  placeholder="Acme Corp"
+                  required
+                  aria-required="true"
+                  autocomplete="organization"
+                />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="fullname">
+                  Your Name <span aria-hidden="true">*</span>
+                </label>
+                <input
+                  class="form-input"
+                  type="text"
+                  id="fullname"
+                  name="fullname"
+                  placeholder="Jane Smith"
+                  required
+                  aria-required="true"
+                  autocomplete="name"
+                />
+              </div>
+            </div>
+
+            <!-- Row 2: Email + Phone -->
+            <div class="form-row">
+              <div class="form-group">
+                <label class="form-label" for="email">
+                  Email <span aria-hidden="true">*</span>
+                </label>
+                <input
+                  class="form-input"
+                  type="email"
+                  id="email"
+                  name="email"
+                  placeholder="jane@acme.com"
+                  required
+                  aria-required="true"
+                  autocomplete="email"
+                />
+              </div>
+              <div class="form-group">
+                <label class="form-label" for="phone">Phone <em style="font-weight:400;">(optional)</em></label>
+                <input
+                  class="form-input"
+                  type="tel"
+                  id="phone"
+                  name="phone"
+                  placeholder="+1 (555) 000-0000"
+                  autocomplete="tel"
+                />
+              </div>
+            </div>
+
+            <hr class="form-divider" />
+
+            <!-- Urgency -->
+            <div class="form-group">
+              <label class="form-label" id="urgency-label">
+                Urgency Level <span aria-hidden="true">*</span>
+              </label>
+              <div class="urgency-grid" role="radiogroup" aria-labelledby="urgency-label">
+                <div>
+                  <input class="urgency-option" type="radio" name="urgency"
+                         id="u-low" value="low" />
+                  <label class="urgency-label urgency-label--low" for="u-low">
+                    <span class="urgency-label__icon">🟢</span>Low
+                  </label>
+                </div>
+                <div>
+                  <input class="urgency-option" type="radio" name="urgency"
+                         id="u-medium" value="medium" checked />
+                  <label class="urgency-label urgency-label--medium" for="u-medium">
+                    <span class="urgency-label__icon">🔵</span>Medium
+                  </label>
+                </div>
+                <div>
+                  <input class="urgency-option" type="radio" name="urgency"
+                         id="u-high" value="high" />
+                  <label class="urgency-label urgency-label--high" for="u-high">
+                    <span class="urgency-label__icon">🟠</span>High
+                  </label>
+                </div>
+                <div>
+                  <input class="urgency-option" type="radio" name="urgency"
+                         id="u-critical" value="critical" />
+                  <label class="urgency-label urgency-label--critical" for="u-critical">
+                    <span class="urgency-label__icon">🔴</span>Critical
+                  </label>
+                </div>
+              </div>
+            </div>
+
+            <hr class="form-divider" />
+
+            <!-- Description -->
+            <div class="form-group">
+              <label class="form-label" for="description">
+                Describe the Issue <span aria-hidden="true">*</span>
+              </label>
+              <textarea
+                class="form-textarea"
+                id="description"
+                name="description"
+                placeholder="Describe the security issue, affected systems, when it started, and any recent changes…"
+                required
+                aria-required="true"
+                aria-describedby="desc-hint"
+              ></textarea>
+              <p class="form-hint" id="desc-hint">
+                Include affected systems, when it started, and what changed recently.
+              </p>
+            </div>
+
+            <!-- Actions -->
+            <div class="form-actions">
+              <button type="submit" class="btn btn--primary">
+                🚀 Deploy Security Now
+              </button>
+              <a href="services.html" class="btn btn--ghost">View Services</a>
+            </div>
+          </form>
+        </div>
+      </div>
+
+      <!-- ── SIDEBAR ── -->
+      <aside class="sidebar" aria-label="Ticket submission information">
+
+        <!-- SLA Card -->
+        <div class="sla-card">
+          <span class="sla-card__val">30 min</span>
+          <div class="sla-card__label">Incident Response SLA</div>
+          <hr class="sla-card__divider" />
+          <div class="sla-card__items">
+            <div class="sla-card__item"><span>⚡</span> &lt; 15 min typical first response</div>
+            <div class="sla-card__item"><span>🔒</span> No lock-in contracts</div>
+            <div class="sla-card__item"><span>📋</span> Every action documented</div>
+            <div class="sla-card__item"><span>👥</span> Vetted specialists only</div>
+            <div class="sla-card__item"><span>📊</span> Executive-ready KPIs</div>
+          </div>
+        </div>
+
+        <!-- What Happens Next -->
+        <div class="info-card">
+          <p class="info-card__title">What Happens Next</p>
+          <div class="info-card__list">
+            <div class="info-card__item">
+              <div class="info-card__item-icon" aria-hidden="true">📥</div>
+              <div class="info-card__item-body">
+                <div class="info-card__item-title">Ticket Received</div>
+                <div class="info-card__item-desc">Your request is logged instantly and queued for triage.</div>
+              </div>
+            </div>
+            <div class="info-card__item">
+              <div class="info-card__item-icon" aria-hidden="true">🧠</div>
+              <div class="info-card__item-body">
+                <div class="info-card__item-title">Specialist Matched</div>
+                <div class="info-card__item-desc">Routed to the right expert by skill, priority, and SLA.</div>
+              </div>
+            </div>
+            <div class="info-card__item">
+              <div class="info-card__item-icon" aria-hidden="true">⚙️</div>
+              <div class="info-card__item-body">
+                <div class="info-card__item-title">Work Executed</div>
+                <div class="info-card__item-desc">Triage, remediation, and delivery tracked in real time.</div>
+              </div>
+            </div>
+            <div class="info-card__item">
+              <div class="info-card__item-icon" aria-hidden="true">📄</div>
+              <div class="info-card__item-body">
+                <div class="info-card__item-title">Outcome Documented</div>
+                <div class="info-card__item-desc">Full report, evidence, and follow-up actions logged.</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Contact Card -->
+        <div class="contact-card">
+          <p class="contact-card__title">Direct Support</p>
+          <a href="mailto:support@cyberbench.io" class="contact-card__email"
+             aria-label="Email support at support@cyberbench.io">
+            ✉️ &nbsp;support@cyberbench.io
+          </a>
+        </div>
+
+      </aside>
     </div>
   </div>
+  </main>
 
-  <button class="chat-bubble" id="chatToggle"
-          aria-label="Open AI support chat" aria-expanded="false" aria-controls="chatPanel">
-    <span class="chat-bubble__open" aria-hidden="true">💬</span>
-    <span class="chat-bubble__close" aria-hidden="true">✕</span>
-    <span class="chat-bubble__badge" aria-label="1 new message">1</span>
-  </button>
+  <!-- ══════ FOOTER ══════ -->
+  <footer class="footer" aria-label="Site footer">
+    <div class="footer__inner">
+      <div class="footer__top">
+        <div class="footer__brand">
+          <a href="index.html" class="nav__logo" aria-label="CyberBench home">
+            <div class="nav__logo-icon">
+              <svg width="30" height="30" viewBox="0 0 36 36" fill="none" aria-hidden="true">
+                <path d="M18 3L4 9v10c0 8.4 5.9 16.2 14 18 8.1-1.8 14-9.6 14-18V9L18 3z"
+                      fill="url(#sg2)" opacity=".9"/>
+                <path d="M13 18l3.5 3.5L23 14" stroke="#fff" stroke-width="2.2"
+                      stroke-linecap="round" stroke-linejoin="round"/>
+                <defs>
+                  <linearGradient id="sg2" x1="4" y1="3" x2="32" y2="37" gradientUnits="userSpaceOnUse">
+                    <stop stop-color="#a89dff"/>
+                    <stop offset="1" stop-color="#6c63ff"/>
+                  </linearGradient>
+                </defs>
+              </svg>
+            </div>
+            <span class="nav__logo-text">CyberBench</span>
+          </a>
+          <p>Execution-driven cybersecurity for modern SMBs. Ticket-first, specialist-matched, and KPI-reported.</p>
+        </div>
+        <div class="footer__col">
+          <p class="footer__col-title">Platform</p>
+          <ul>
+            <li><a href="services.html">Services</a></li>
+            <li><a href="submit-ticket.html">Submit Ticket</a></li>
+            <li><a href="client-portal.html">Client Portal</a></li>
+            <li><a href="consultant-portal.html">Consultant Portal</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <p class="footer__col-title">Company</p>
+          <ul>
+            <li><a href="about.html">About</a></li>
+            <li><a href="blog.html">Blog</a></li>
+          </ul>
+        </div>
+        <div class="footer__col">
+          <p class="footer__col-title">Legal</p>
+          <ul>
+            <li><a href="#">Privacy Policy</a></li>
+            <li><a href="#">Terms of Service</a></li>
+          </ul>
+        </div>
+      </div>
+      <div class="footer__bottom">
+        <span class="footer__copy">© 2025 CyberBench. All rights reserved.</span>
+        <nav class="footer__legal" aria-label="Legal links">
+          <a href="#">Privacy</a>
+          <a href="#">Terms</a>
+        </nav>
+      </div>
+    </div>
+  </footer>
 
-</div>
+  <!-- ══════ AI CHAT WIDGET ══════ -->
+  <button
+    class="chat-toggle"
+    id="chatToggle"
+    aria-label="Open AI chat assistant"
+    aria-expanded="false"
+    aria-controls="chatWidget"
+  >🤖</button>
 
-<!-- ════════════════════════════════
-     FOOTER
-════════════════════════════════ -->
-<footer class="footer" role="contentinfo">
-  <p>© 2025 CyberBench · <a href="privacy.html">Privacy Policy</a> · <a href="terms.html">Terms of Service</a> · <a href="contact.html">Contact</a></p>
-</footer>
+  <div
+    class="chat-widget"
+    id="chatWidget"
+    role="dialog"
+    aria-modal="true"
+    aria-label="CyberBench AI Assistant"
+    aria-hidden="true"
+  >
+    <div class="chat-widget__header">
+      <div class="chat-widget__avatar" aria-hidden="true">🤖</div>
+      <div class="chat-widget__info">
+        <div class="chat-widget__name">CyberBench AI</div>
+        <div class="chat-widget__status">Fast triage · How-to · Guidance</div>
+      </div>
+      <button class="chat-widget__close" id="chatClose" aria-label="Close chat">✕</button>
+    </div>
 
-<!-- ════════════════════════════════
-     SCRIPTS
-════════════════════════════════ -->
-<script>
-(function () {
-  'use strict';
+    <div
+      class="chat-widget__messages"
+      id="chatMessages"
+      role="log"
+      aria-live="polite"
+      aria-label="Chat messages"
+    >
+      <div class="chat-msg chat-msg--bot">
+        👋 Need help structuring your ticket? Tell me what's happening and I'll help you describe it clearly.
+      </div>
+    </div>
 
-  /* ── Nav Toggle ── */
-  var navToggle = document.getElementById('cbNavToggle');
-  var navMobile = document.getElementById('cbNavMobile');
-  if (navToggle && navMobile) {
-    navToggle.addEventListener('click', function () {
-      var open = navMobile.classList.toggle('open');
-      navToggle.classList.toggle('open', open);
-      navToggle.setAttribute('aria-expanded', String(open));
+    <div class="chat-widget__chips" aria-label="Quick prompts">
+      <button class="chat-chip" data-msg="I think I have a ransomware attack">Ransomware</button>
+      <button class="chat-chip" data-msg="I need help with SIEM alerts">SIEM Alerts</button>
+      <button class="chat-chip" data-msg="What urgency level should I pick?">Urgency Guide</button>
+      <button class="chat-chip" data-msg="How do I describe my issue?">Describe Issue</button>
+    </div>
+
+    <div class="chat-widget__input-row">
+      <textarea
+        class="chat-widget__input"
+        id="chatInput"
+        rows="1"
+        placeholder="Describe what's happening…"
+        aria-label="Type your message"
+      ></textarea>
+      <button class="chat-widget__send" id="chatSend" aria-label="Send message">➤</button>
+    </div>
+    <div class="chat-widget__footer">🔒 Demo widget — do not share sensitive data</div>
+  </div>
+
+  <!-- ══════ SCRIPTS ══════ -->
+  <script>
+    /* ── Mobile Nav ── */
+    const navToggle = document.getElementById('navToggle');
+    const navMobile = document.getElementById('navMobile');
+    navToggle.addEventListener('click', () => {
+      const open = navMobile.classList.toggle('open');
+      navToggle.setAttribute('aria-expanded', open);
     });
-    document.addEventListener('click', function (e) {
-      if (!navToggle.contains(e.target) && !navMobile.contains(e.target)) {
-        navMobile.classList.remove('open');
-        navToggle.classList.remove('open');
-        navToggle.setAttribute('aria-expanded', 'false');
-      }
-    });
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape') {
-        navMobile.classList.remove('open');
-        navToggle.classList.remove('open');
-        navToggle.setAttribute('aria-expanded', 'false');
-      }
-    });
-  }
 
-  /* ── File Upload ── */
-  var fileDrop = document.getElementById('fileDrop');
-  var fileInput = document.getElementById('fileInput');
-  var fileList = document.getElementById('fileList');
-  var uploadedFiles = [];
+    /* ── Form Submit ── */
+    const ticketForm  = document.getElementById('ticketForm');
+    const formSuccess = document.getElementById('formSuccess');
 
-  function renderFiles() {
-    fileList.innerHTML = '';
-    uploadedFiles.forEach(function (f, i) {
-      var item = document.createElement('div');
-      item.className = 'file-item';
-      item.innerHTML =
-        '<span class="file-item__name">📄 ' + escHtml(f.name) + '</span>' +
-        '<span class="file-item__size">' + (f.size / 1024).toFixed(0) + ' KB</span>' +
-        '<button class="file-item__remove" data-idx="' + i + '" aria-label="Remove ' + escHtml(f.name) + '">✕</button>';
-      fileList.appendChild(item);
-    });
-    fileList.querySelectorAll('.file-item__remove').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        uploadedFiles.splice(parseInt(this.dataset.idx), 1);
-        renderFiles();
-      });
-    });
-  }
-
-  if (fileInput) {
-    fileInput.addEventListener('change', function () {
-      Array.from(this.files).forEach(function (f) { uploadedFiles.push(f); });
-      renderFiles();
-      fileInput.value = '';
-    });
-  }
-  if (fileDrop) {
-    fileDrop.addEventListener('dragover', function (e) {
-      e.preventDefault(); fileDrop.classList.add('dragover');
-    });
-    fileDrop.addEventListener('dragleave', function () {
-      fileDrop.classList.remove('dragover');
-    });
-    fileDrop.addEventListener('drop', function (e) {
-      e.preventDefault(); fileDrop.classList.remove('dragover');
-      Array.from(e.dataTransfer.files).forEach(function (f) { uploadedFiles.push(f); });
-      renderFiles();
-    });
-    fileDrop.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault(); fileInput.click();
-      }
-    });
-  }
-
-  /* ── Form Validation & Submit ── */
-  var form = document.getElementById('ticketForm');
-  var successState = document.getElementById('successState');
-  var submitBtn = document.getElementById('submitBtn');
-  var submitAnother = document.getElementById('submitAnother');
-
-  function showError(inputId, errId, show) {
-    var inp = document.getElementById(inputId);
-    var err = document.getElementById(errId);
-    if (!inp || !err) return;
-    inp.classList.toggle('error', show);
-    err.classList.toggle('show', show);
-  }
-
-  function validateForm() {
-    var valid = true;
-    var name = document.getElementById('fullName');
-    var email = document.getElementById('email');
-    var category = document.getElementById('category');
-    var subject = document.getElementById('subject');
-    var desc = document.getElementById('description');
-
-    if (!name || !name.value.trim()) { showError('fullName','fullNameErr',true); valid=false; }
-    else { showError('fullName','fullNameErr',false); }
-
-    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) {
-      showError('email','emailErr',true); valid=false;
-    } else { showError('email','emailErr',false); }
-
-    if (!category || !category.value) { showError('category','categoryErr',true); valid=false; }
-    else { showError('category','categoryErr',false); }
-
-    if (!subject || !subject.value.trim()) { showError('subject','subjectErr',true); valid=false; }
-    else { showError('subject','subjectErr',false); }
-
-    if (!desc || desc.value.trim().length < 20) { showError('description','descErr',true); valid=false; }
-    else { showError('description','descErr',false); }
-
-    return valid;
-  }
-
-  function generateTicketId() {
-    var chars = 'ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
-    var id = 'CB-';
-    for (var i = 0; i < 8; i++) id += chars[Math.floor(Math.random() * chars.length)];
-    return id;
-  }
-
-  if (form) {
-    form.addEventListener('submit', function (e) {
+    ticketForm.addEventListener('submit', (e) => {
       e.preventDefault();
-      if (!validateForm()) {
-        var firstErr = form.querySelector('.error');
-        if (firstErr) firstErr.focus();
+      const company  = document.getElementById('company').value.trim();
+      const fullname = document.getElementById('fullname').value.trim();
+      const email    = document.getElementById('email').value.trim();
+      const desc     = document.getElementById('description').value.trim();
+
+      if (!company || !fullname || !email || !desc) {
+        alert('Please fill in all required fields.');
         return;
       }
-      submitBtn.classList.add('loading');
-      submitBtn.disabled = true;
-      setTimeout(function () {
-        submitBtn.classList.remove('loading');
-        submitBtn.disabled = false;
-        var tid = generateTicketId();
-        var tidEl = document.getElementById('ticketIdVal');
-        if (tidEl) tidEl.textContent = tid;
-        form.style.display = 'none';
-        successState.classList.add('show');
-        successState.focus();
-      }, 1800);
-    });
-  }
-
-  if (submitAnother) {
-    submitAnother.addEventListener('click', function () {
-      successState.classList.remove('show');
-      form.style.display = '';
-      form.reset();
-      uploadedFiles = [];
-      renderFiles();
-      document.getElementById('fullName').focus();
-    });
-  }
-
-  /* ── AI Chat ── */
-  var chatToggle = document.getElementById('chatToggle');
-  var chatPanel = document.getElementById('chatPanel');
-  var chatMessages = document.getElementById('chatMessages');
-  var chatInput = document.getElementById('chatInput');
-  var chatSend = document.getElementById('chatSend');
-  var chatSuggestions = document.getElementById('chatSuggestions');
-  var badge = chatToggle ? chatToggle.querySelector('.chat-bubble__badge') : null;
-
-  var AI_RESPONSES = {
-    'priority': 'Choose your priority based on business impact:\n\n🔴 **Critical** — Active breach, ransomware, or total service outage. Response within 30 minutes.\n🟠 **High** — Significant disruption, partial outage, or suspected compromise. 2-hour response.\n🟡 **Medium** — Degraded performance or non-critical system issues. 8-hour response.\n🟢 **Low** — General questions, feature requests, billing. 24-hour response.\n\nWhen in doubt, go one level higher.',
-    'sla': 'Our SLA response times:\n\n🔴 Critical → 30 minutes\n🟠 High → 2 hours\n🟡 Medium → 8 hours\n🟢 Low → 24 hours\n\nAll times are from ticket submission. Our SOC operates 24/7/365.',
-    'incident': '🚨 For an active incident:\n\n1. Select **Critical** priority\n2. Choose "Active Security Incident" as category\n3. Describe affected systems and timeline\n4. Attach any logs or screenshots\n5. Submit immediately\n\nEmail ops@cyberbench.io for urgent escalation.',
-    'files': 'To attach files:\n\n📎 Click the upload area or drag and drop files\n\nSupported formats: PNG, JPG, PDF, TXT, LOG, CSV, ZIP\nMax size: 10 MB per file\n\nLogs and screenshots greatly help our SOC team diagnose issues faster.',
-    'default': 'I can help with:\n\n• Choosing the right priority level\n• Understanding SLA response times\n• Active security incident guidance\n• File attachment help\n• General support questions\n\nWhat would you like to know?'
-  };
-
-  function getAIResponse(msg) {
-    var m = msg.toLowerCase();
-    if (m.includes('priority') || m.includes('level')) return AI_RESPONSES.priority;
-    if (m.includes('sla') || m.includes('response time') || m.includes('how long')) return AI_RESPONSES.sla;
-    if (m.includes('incident') || m.includes('breach') || m.includes('ransomware') || m.includes('attack')) return AI_RESPONSES.incident;
-    if (m.includes('file') || m.includes('attach') || m.includes('upload') || m.includes('screenshot')) return AI_RESPONSES.files;
-    return AI_RESPONSES.default;
-  }
-
-  function addMessage(text, isUser) {
-    var msg = document.createElement('div');
-    msg.className = 'chat-msg' + (isUser ? ' user' : '');
-    var avatar = document.createElement('div');
-    avatar.className = 'chat-msg__avatar';
-    avatar.setAttribute('aria-hidden', 'true');
-    avatar.textContent = isUser ? '👤' : '🤖';
-    var bubble = document.createElement('div');
-    bubble.className = 'chat-msg__bubble';
-    bubble.textContent = text;
-    msg.appendChild(avatar);
-    msg.appendChild(bubble);
-    chatMessages.appendChild(msg);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-    return msg;
-  }
-
-  function showTyping() {
-    var msg = document.createElement('div');
-    msg.className = 'chat-msg';
-    msg.id = 'typingIndicator';
-    msg.innerHTML =
-      '<div class="chat-msg__avatar" aria-hidden="true">🤖</div>' +
-      '<div class="chat-msg__bubble"><div class="typing" aria-label="AI is typing">' +
-      '<span></span><span></span><span></span></div></div>';
-    chatMessages.appendChild(msg);
-    chatMessages.scrollTop = chatMessages.scrollHeight;
-  }
-
-  function removeTyping() {
-    var t = document.getElementById('typingIndicator');
-    if (t) t.remove();
-  }
-
-  function sendMessage(text) {
-    if (!text || !text.trim()) return;
-    addMessage(text, true);
-    if (chatInput) chatInput.value = '';
-    if (chatSuggestions) chatSuggestions.style.display = 'none';
-    showTyping();
-    setTimeout(function () {
-      removeTyping();
-      addMessage(getAIResponse(text), false);
-    }, 900 + Math.random() * 600);
-  }
-
-  if (chatToggle && chatPanel) {
-    chatToggle.addEventListener('click', function () {
-      var open = chatPanel.classList.toggle('open');
-      chatToggle.classList.toggle('open', open);
-      chatToggle.setAttribute('aria-expanded', String(open));
-      chatToggle.setAttribute('aria-label', open ? 'Close AI support chat' : 'Open AI support chat');
-      if (badge) badge.style.display = 'none';
-      if (open && chatInput) setTimeout(function () { chatInput.focus(); }, 100);
-    });
-    document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && chatPanel.classList.contains('open')) {
-        chatPanel.classList.remove('open');
-        chatToggle.classList.remove('open');
-        chatToggle.setAttribute('aria-expanded', 'false');
-        chatToggle.setAttribute('aria-label', 'Open AI support chat');
-        chatToggle.focus();
+      const emailRx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      if (!emailRx.test(email)) {
+        alert('Please enter a valid email address.');
+        return;
       }
-    });
-  }
 
-  if (chatSend) {
-    chatSend.addEventListener('click', function () {
-      if (chatInput) sendMessage(chatInput.value);
+      ticketForm.style.display  = 'none';
+      formSuccess.style.display = 'block';
+      formSuccess.querySelector('h2').focus();
     });
-  }
-  if (chatInput) {
-    chatInput.addEventListener('keydown', function (e) {
-      if (e.key === 'Enter' && !e.shiftKey) {
-        e.preventDefault();
-        sendMessage(chatInput.value);
+
+    /* ── AI Chat ── */
+    const chatToggle   = document.getElementById('chatToggle');
+    const chatWidget   = document.getElementById('chatWidget');
+    const chatClose    = document.getElementById('chatClose');
+    const chatInput    = document.getElementById('chatInput');
+    const chatSend     = document.getElementById('chatSend');
+    const chatMessages = document.getElementById('chatMessages');
+
+    function openChat() {
+      chatWidget.classList.add('open');
+      chatWidget.setAttribute('aria-hidden', 'false');
+      chatToggle.setAttribute('aria-expanded', 'true');
+      chatInput.focus();
+    }
+    function closeChat() {
+      chatWidget.classList.remove('open');
+      chatWidget.setAttribute('aria-hidden', 'true');
+      chatToggle.setAttribute('aria-expanded', 'false');
+      chatToggle.focus();
+    }
+
+    chatToggle.addEventListener('click', () =>
+      chatWidget.classList.contains('open') ? closeChat() : openChat()
+    );
+    chatClose.addEventListener('click', closeChat);
+    document.addEventListener('keydown', e => {
+      if (e.key === 'Escape' && chatWidget.classList.contains('open')) closeChat();
+    });
+
+    function addMsg(text, type) {
+      const el = document.createElement('div');
+      el.className = `chat-msg chat-msg--${type}`;
+      el.textContent = text;
+      chatMessages.appendChild(el);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+    }
+
+    const KB = {
+      'ransomware': 'For ransomware, set urgency to Critical immediately. Describe: which systems are affected, when you first noticed, whether files are encrypted, and if any backups are accessible. Our IR team will be on it within 30 minutes.',
+      'siem': 'For SIEM alert issues, set urgency to High. Describe the alert name, volume of alerts, which rules are firing, and the timeframe. Include your SIEM platform if possible.',
+      'urgency': 'Urgency guide: Low = general questions or non-urgent projects. Medium = ongoing issues with no immediate impact. High = active threat or degraded security posture. Critical = active breach, ransomware, or data exfiltration.',
+      'describe': 'To describe your issue clearly: (1) What system or service is affected? (2) When did it start? (3) What changed recently? (4) What have you already tried? This helps us route to the right specialist faster.',
+      'breach': 'For a suspected breach, set urgency to Critical. Include: affected systems, any indicators of compromise (IOCs), whether data may have been exfiltrated, and your current containment status.',
+      'backup': 'For backup or recovery issues, set urgency based on impact. Describe: the backup solution in use, when the last successful backup was, and whether a recovery test has been attempted.',
+      'vuln': 'For vulnerability issues, set urgency to Medium or High depending on exploitability. Include: the CVE or scan tool output, affected systems, and whether any exploits are known in the wild.',
+      'compliance': 'For compliance-related tickets, set urgency to Low or Medium. Describe the framework (e.g. NIST, SOC2, ISO 27001), the specific control gap, and any upcoming audit deadlines.',
+      'phish': 'For phishing incidents, set urgency to High. Describe: the email sender, whether any links were clicked or credentials entered, and how many users received the email.',
+      'password': 'For password or account access issues, set urgency to Medium. Include: the affected account or system, whether MFA is enabled, and whether you suspect unauthorized access.',
+    };
+
+    function getBotReply(msg) {
+      const lower = msg.toLowerCase();
+      for (const [key, reply] of Object.entries(KB)) {
+        if (lower.includes(key)) return reply;
       }
+      return "I can help you structure your ticket. Try describing what's happening — which system is affected, when it started, and how urgent it is — and I'll guide you from there.";
+    }
+
+    function handleSend() {
+      const text = chatInput.value.trim();
+      if (!text) return;
+      addMsg(text, 'user');
+      chatInput.value = '';
+      setTimeout(() => addMsg(getBotReply(text), 'bot'), 600);
+    }
+
+    chatSend.addEventListener('click', handleSend);
+    chatInput.addEventListener('keydown', e => {
+      if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); handleSend(); }
     });
-  }
-  if (chatSuggestions) {
-    chatSuggestions.querySelectorAll('.chat-suggestion').forEach(function (btn) {
-      btn.addEventListener('click', function () {
-        sendMessage(this.dataset.q);
+
+    document.querySelectorAll('.chat-chip').forEach(chip => {
+      chip.addEventListener('click', () => {
+        chatInput.value = chip.dataset.msg;
+        handleSend();
       });
     });
-  }
-
-  /* ── Utility ── */
-  function escHtml(str) {
-    return str.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-  }
-
-}());
-</script>
-
+  </script>
 </body>
 </html>
