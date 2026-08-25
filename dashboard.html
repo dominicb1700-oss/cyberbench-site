@@ -1,829 +1,935 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>KPI Dashboard | CyberBench</title>
-  <meta
-    name="description"
-    content="Executive overview of CyberBench security operations, risk posture, ticket activity, and compliance metrics."
-  />
-  <link rel="stylesheet" href="/styles.css" />
-  <!-- Chart.js CDN -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
+  <title>CyberBench KPI Dashboard</title>
+
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
+  <style>
+    * {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+      font-family: Inter, Arial, sans-serif;
+    }
+
+    body {
+      background: #050d18;
+      color: #ffffff;
+      overflow-x: hidden;
+    }
+
+    .app {
+      display: flex;
+      min-height: 100vh;
+      background:
+        radial-gradient(circle at top right, rgba(0, 123, 255, 0.12), transparent 35%),
+        #050d18;
+    }
+
+    .sidebar {
+      width: 255px;
+      background: #07111f;
+      border-right: 1px solid #132235;
+      padding: 24px 16px;
+      position: fixed;
+      top: 0;
+      bottom: 0;
+      left: 0;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 26px;
+      font-weight: 800;
+      margin-bottom: 35px;
+    }
+
+    .brand span {
+      color: #1e9bff;
+    }
+
+    .nav a {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      color: #b9c7d8;
+      text-decoration: none;
+      padding: 14px 15px;
+      border-radius: 9px;
+      margin-bottom: 7px;
+      font-size: 15px;
+    }
+
+    .nav a.active {
+      background: linear-gradient(135deg, #0f8cff, #246bff);
+      color: #fff;
+    }
+
+    .nav .badge {
+      margin-left: auto;
+      background: #ff4055;
+      color: #fff;
+      font-size: 12px;
+      padding: 3px 8px;
+      border-radius: 20px;
+    }
+
+    .sidebar-card {
+      position: absolute;
+      bottom: 24px;
+      left: 16px;
+      right: 16px;
+      background: #0b1828;
+      border: 1px solid #172b42;
+      border-radius: 12px;
+      padding: 16px;
+    }
+
+    .sidebar-card h4 {
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+
+    .sidebar-card p {
+      color: #9fafc4;
+      font-size: 13px;
+      margin-bottom: 15px;
+    }
+
+    .sidebar-card button {
+      width: 100%;
+      background: #111f31;
+      border: 1px solid #1f334d;
+      color: white;
+      padding: 11px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    .main {
+      margin-left: 255px;
+      width: calc(100% - 255px);
+      padding: 24px 28px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 28px;
+    }
+
+    .search {
+      width: 430px;
+      background: #0c1727;
+      border: 1px solid #15273b;
+      color: white;
+      padding: 13px 18px;
+      border-radius: 28px;
+      outline: none;
+    }
+
+    .top-actions {
+      display: flex;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .export-btn {
+      background: linear-gradient(135deg, #0f8cff, #1f74ff);
+      border: none;
+      color: #fff;
+      padding: 13px 20px;
+      border-radius: 8px;
+      font-weight: 700;
+      cursor: pointer;
+    }
+
+    .page-title {
+      margin-bottom: 24px;
+    }
+
+    .page-title h1 {
+      font-size: 31px;
+      margin-bottom: 8px;
+    }
+
+    .page-title p {
+      color: #aeb9c8;
+      font-size: 16px;
+    }
+
+    .cards {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .card,
+    .panel {
+      background: linear-gradient(180deg, #0d1a2b, #091525);
+      border: 1px solid #192b40;
+      border-radius: 12px;
+      box-shadow: 0 15px 40px rgba(0,0,0,0.25);
+    }
+
+    .card {
+      padding: 22px;
+      min-height: 125px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .card h3 {
+      color: #c8d4e2;
+      font-size: 15px;
+      margin-bottom: 16px;
+    }
+
+    .card .value {
+      font-size: 36px;
+      font-weight: 800;
+      color: #199cff;
+    }
+
+    .card .sub {
+      margin-top: 10px;
+      font-size: 13px;
+      color: #7fdba5;
+    }
+
+    .card.red .value { color: #ff4757; }
+    .card.purple .value { color: #9b5cff; }
+    .card.orange .value { color: #ff8f1f; }
+    .card.green .value { color: #37d27f; }
+
+    .icon-circle {
+      position: absolute;
+      right: 22px;
+      top: 34px;
+      width: 64px;
+      height: 64px;
+      border-radius: 50%;
+      background: rgba(25, 156, 255, 0.12);
+      display: grid;
+      place-items: center;
+      font-size: 30px;
+    }
+
+    .dashboard-grid {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .dashboard-grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: 18px;
+      margin-bottom: 18px;
+    }
+
+    .bottom-grid {
+      display: grid;
+      grid-template-columns: 2fr 1fr;
+      gap: 18px;
+    }
+
+    .panel {
+      padding: 22px;
+      min-height: 250px;
+    }
+
+    .panel h3 {
+      font-size: 17px;
+      margin-bottom: 18px;
+    }
+
+    canvas {
+      width: 100% !important;
+      max-height: 230px;
+    }
+
+    .alert-list {
+      list-style: none;
+    }
+
+    .alert-list li {
+      display: flex;
+      justify-content: space-between;
+      border-bottom: 1px solid #18293e;
+      padding: 12px 0;
+      font-size: 13px;
+    }
+
+    .alert-list strong {
+      display: block;
+      font-size: 14px;
+      margin-bottom: 4px;
+    }
+
+    .alert-list span {
+      color: #9eacbd;
+    }
+
+    .pill {
+      background: rgba(255, 64, 85, 0.17);
+      color: #ff5d6d;
+      padding: 5px 10px;
+      border-radius: 14px;
+      font-size: 12px;
+      height: fit-content;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+    }
+
+    th, td {
+      padding: 13px;
+      border-bottom: 1px solid #17283c;
+      color: #cfd9e6;
+      text-align: left;
+    }
+
+    th {
+      color: #8798ad;
+      font-weight: 600;
+    }
+
+    .status {
+      padding: 5px 9px;
+      border-radius: 12px;
+      font-size: 12px;
+    }
+
+    .high {
+      background: rgba(255, 143, 31, 0.15);
+      color: #ff9f33;
+    }
+
+    .progress {
+      background: rgba(25, 156, 255, 0.15);
+      color: #36a7ff;
+    }
+
+    .integration {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background: #0b1726;
+      border: 1px solid #1a2d43;
+      padding: 17px;
+      border-radius: 10px;
+      margin-bottom: 12px;
+    }
+
+    .connected {
+      color: #37d27f;
+      font-size: 13px;
+    }
+
+    @media (max-width: 1200px) {
+      .cards,
+      .dashboard-grid,
+      .dashboard-grid-2,
+      .bottom-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .sidebar {
+        display: none;
+      }
+
+      .main {
+        margin-left: 0;
+        width: 100%;
+      }
+    }
+
+
+    /* ===== DASHBOARD MOBILE MENU ONLY ===== */
+
+    .mobile-dashboard-header {
+      display: none;
+    }
+
+    .mobile-menu-toggle {
+      display: none;
+      align-items: center;
+      justify-content: center;
+      width: 46px;
+      height: 46px;
+      padding: 0;
+      border: 1px solid #1f334d;
+      border-radius: 10px;
+      background: #0b1828;
+      cursor: pointer;
+    }
+
+    .mobile-menu-icon {
+      position: relative;
+      display: block;
+      width: 24px;
+      height: 2px;
+      border-radius: 999px;
+      background: #fff;
+      transition: .25s ease;
+    }
+
+    .mobile-menu-icon::before,
+    .mobile-menu-icon::after {
+      content: "";
+      position: absolute;
+      left: 0;
+      width: 24px;
+      height: 2px;
+      border-radius: 999px;
+      background: #fff;
+      transition: .25s ease;
+    }
+
+    .mobile-menu-icon::before {
+      top: -7px;
+    }
+
+    .mobile-menu-icon::after {
+      top: 7px;
+    }
+
+    .mobile-menu-toggle[aria-expanded="true"] .mobile-menu-icon {
+      background: transparent;
+    }
+
+    .mobile-menu-toggle[aria-expanded="true"] .mobile-menu-icon::before {
+      top: 0;
+      transform: rotate(45deg);
+    }
+
+    .mobile-menu-toggle[aria-expanded="true"] .mobile-menu-icon::after {
+      top: 0;
+      transform: rotate(-45deg);
+    }
+
+    .mobile-menu-label {
+      position: absolute;
+      width: 1px;
+      height: 1px;
+      padding: 0;
+      margin: -1px;
+      overflow: hidden;
+      clip: rect(0, 0, 0, 0);
+      white-space: nowrap;
+      border: 0;
+    }
+
+    .dashboard-overlay {
+      display: none;
+    }
+
+    @media (max-width: 1200px) {
+      body {
+        padding-top: 72px;
+      }
+
+      body.dashboard-menu-open {
+        overflow: hidden;
+      }
+
+      .mobile-dashboard-header {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 10002;
+        height: 72px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 0 18px;
+        background: rgba(5, 13, 24, .98);
+        border-bottom: 1px solid #132235;
+        backdrop-filter: blur(14px);
+        -webkit-backdrop-filter: blur(14px);
+      }
+
+      .mobile-dashboard-brand {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        color: #fff;
+        text-decoration: none;
+        font-size: 20px;
+        font-weight: 800;
+      }
+
+      .mobile-dashboard-brand span {
+        color: #1e9bff;
+      }
+
+      .mobile-menu-toggle {
+        display: inline-flex;
+      }
+
+      .sidebar {
+        display: block;
+        width: min(320px, 86vw);
+        z-index: 10001;
+        transform: translateX(-105%);
+        transition: transform .25s ease;
+        box-shadow: 18px 0 45px rgba(0, 0, 0, .45);
+      }
+
+      .sidebar.mobile-open {
+        transform: translateX(0);
+      }
+
+      .dashboard-overlay {
+        position: fixed;
+        inset: 72px 0 0 0;
+        z-index: 10000;
+        display: none;
+        background: rgba(0, 0, 0, .58);
+        backdrop-filter: blur(2px);
+        -webkit-backdrop-filter: blur(2px);
+      }
+
+      .dashboard-overlay.show {
+        display: block;
+      }
+
+      .main {
+        margin-left: 0;
+        width: 100%;
+      }
+    }
+
+    @media (max-width: 700px) {
+      .main {
+        padding: 18px 14px 28px;
+      }
+
+      .topbar {
+        align-items: stretch;
+        flex-direction: column;
+        gap: 14px;
+      }
+
+      .search {
+        width: 100%;
+      }
+
+      .top-actions {
+        justify-content: space-between;
+        flex-wrap: wrap;
+        gap: 12px;
+      }
+
+      .export-btn {
+        width: 100%;
+      }
+
+      .page-title h1 {
+        font-size: 27px;
+      }
+
+      .cards,
+      .dashboard-grid,
+      .dashboard-grid-2,
+      .bottom-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .card,
+      .panel {
+        min-width: 0;
+      }
+
+      .panel {
+        overflow-x: auto;
+      }
+
+      table {
+        min-width: 760px;
+      }
+    }
+
+  </style>
 </head>
-<body class="dashboard-page">
 
-  <!-- ============================================================
-       HEADER / NAV
-  ============================================================ -->
-  <header class="nav">
-    <div class="container nav_row">
-      <a class="brand" href="/index.html" aria-label="CyberBench homepage">
-        <span class="logo" aria-hidden="true">X</span>
-        <span class="brand-text">CyberBench</span>
-      </a>
+<body>
 
-      <div class="nav_menu">
-        <button
-          class="nav_toggle"
-          type="button"
-          aria-label="Open navigation menu"
-          aria-expanded="false"
-          aria-controls="nav_links"
-        >
-          <span class="hamburger"></span>
-          <span class="sr-only">Menu</span>
-        </button>
+  <header class="mobile-dashboard-header">
+    <a class="mobile-dashboard-brand" href="/dashboard.html" aria-label="CyberBench dashboard">
+      🛡️ <span>CyberBench</span>
+    </a>
 
-        <nav class="nav_links" id="nav_links" aria-label="Main Navigation">
-          <a href="/services.html">Services</a>
-          <a href="/about.html">About</a>
-          <a href="/blog.html">Blog</a>
-          <a href="/client-portal.html">Client Portal</a>
-          <a href="/consultant-portal.html">Consultant Portal</a>
-          <a class="btn btn-primary" href="/submit-ticket.html">Deploy Security Now</a>
-        </nav>
-      </div>
-
-      <!-- Dashboard top-bar actions -->
-      <div class="dash-topbar" role="toolbar" aria-label="Dashboard toolbar">
-        <div class="dash-search">
-          <label for="dashSearch" class="sr-only">Search dashboard</label>
-          <input
-            id="dashSearch"
-            class="dash-search-input"
-            type="search"
-            placeholder="Search tickets, alerts…"
-            autocomplete="off"
-            aria-label="Search dashboard"
-          />
-        </div>
-
-        <button
-          class="dash-icon-btn"
-          type="button"
-          aria-label="Notifications"
-          id="notifBtn"
-        >
-          <span aria-hidden="true">🔔</span>
-          <span class="dash-badge" id="notifBadge" aria-label="3 unread notifications">3</span>
-        </button>
-
-        <button
-          class="dash-icon-btn"
-          type="button"
-          aria-label="Help and documentation"
-          id="helpBtn"
-        >
-          <span aria-hidden="true">❔</span>
-        </button>
-
-        <div class="dash-user" aria-label="Logged in as Admin User">
-          <span class="dash-avatar" aria-hidden="true">AU</span>
-          <span class="dash-username">Admin User</span>
-        </div>
-      </div>
-
-    </div>
+    <button
+      class="mobile-menu-toggle"
+      id="dashboardMenuToggle"
+      type="button"
+      aria-label="Open dashboard menu"
+      aria-expanded="false"
+      aria-controls="dashboardSidebar"
+    >
+      <span class="mobile-menu-icon"></span>
+      <span class="mobile-menu-label">Menu</span>
+    </button>
   </header>
 
-  <!-- ============================================================
-       MAIN CONTENT
-  ============================================================ -->
-  <main class="container dashboard-main" id="main-content">
+  <div class="dashboard-overlay" id="dashboardOverlay"></div>
 
-    <!-- ── Page Header ── -->
-    <div class="dash-page-header">
-      <div>
-        <h1 class="h1 dash-title">Dashboard</h1>
-        <p class="dash-subtitle">
-          Executive overview of security operations and risk posture
-        </p>
-      </div>
-      <button
-        class="btn btn-primary"
-        type="button"
-        id="exportBtn"
-        aria-label="Export dashboard report"
-      >
-        Export Report
-      </button>
-    </div>
-
-    <!-- ── KPI Cards ── -->
-    <section aria-labelledby="kpi-heading">
-      <h2 id="kpi-heading" class="sr-only">Key Performance Indicators</h2>
-
-      <div class="kpi-grid" role="list" aria-label="KPI summary cards">
-
-        <article class="kpi-card" role="listitem" aria-label="Open Tickets">
-          <div class="kpi-card-icon" aria-hidden="true">🎫</div>
-          <div class="kpi-card-body">
-            <div class="kpi-card-label">Open Tickets</div>
-            <div class="kpi-card-value" id="kpiOpenTickets">48</div>
-            <div class="kpi-card-trend kpi-trend--down" aria-label="Down 12% vs last 7 days">
-              ↓ 12% vs last 7 days
-            </div>
-          </div>
-        </article>
-
-        <article class="kpi-card kpi-card--critical" role="listitem" aria-label="Critical Alerts">
-          <div class="kpi-card-icon" aria-hidden="true">🛡️</div>
-          <div class="kpi-card-body">
-            <div class="kpi-card-label">Critical Alerts</div>
-            <div class="kpi-card-value" id="kpiCritical">7</div>
-            <div class="kpi-card-trend kpi-trend--down" aria-label="Down 22% vs last 7 days">
-              ↓ 22% vs last 7 days
-            </div>
-          </div>
-        </article>
-
-        <article class="kpi-card" role="listitem" aria-label="Mean Time To Remediate">
-          <div class="kpi-card-icon" aria-hidden="true">🕒</div>
-          <div class="kpi-card-body">
-            <div class="kpi-card-label">MTTR</div>
-            <div class="kpi-card-value" id="kpiMttr">4.2h</div>
-            <div class="kpi-card-trend kpi-trend--down" aria-label="Down 18% vs last 7 days">
-              ↓ 18% vs last 7 days
-            </div>
-          </div>
-        </article>
-
-        <article class="kpi-card kpi-card--medium" role="listitem" aria-label="Risk Score">
-          <div class="kpi-card-icon" aria-hidden="true">📈</div>
-          <div class="kpi-card-body">
-            <div class="kpi-card-label">Risk Score</div>
-            <div class="kpi-card-value" id="kpiRisk">68</div>
-            <div class="kpi-card-badge">Medium Risk</div>
-          </div>
-        </article>
-
-        <article class="kpi-card kpi-card--good" role="listitem" aria-label="Compliance Score">
-          <div class="kpi-card-icon" aria-hidden="true">✅</div>
-          <div class="kpi-card-body">
-            <div class="kpi-card-label">Compliance Score</div>
-            <div class="kpi-card-value" id="kpiCompliance">87%</div>
-            <div class="kpi-card-trend kpi-trend--up" aria-label="Up 5% vs last 7 days">
-              ↑ 5% vs last 7 days
-            </div>
-          </div>
-        </article>
-
-      </div>
-    </section>
-
-    <!-- ── Charts Row 1 ── -->
-    <section class="dash-charts-row" aria-labelledby="charts-row1-heading">
-      <h2 id="charts-row1-heading" class="sr-only">Security Trend Charts</h2>
-
-      <div class="dash-chart-card">
-        <h3 class="dash-chart-title">Risk Score Over Time</h3>
-        <div class="dash-chart-wrap">
-          <canvas
-            id="chartRisk"
-            role="img"
-            aria-label="Line chart showing risk score over the past 7 days"
-          ></canvas>
-        </div>
-      </div>
-
-      <div class="dash-chart-card">
-        <h3 class="dash-chart-title">Tickets by Status</h3>
-        <div class="dash-chart-wrap">
-          <canvas
-            id="chartTicketStatus"
-            role="img"
-            aria-label="Doughnut chart showing ticket distribution by status"
-          ></canvas>
-        </div>
-      </div>
-
-      <div class="dash-chart-card">
-        <h3 class="dash-chart-title">Tickets by Priority</h3>
-        <div class="dash-chart-wrap">
-          <canvas
-            id="chartTicketPriority"
-            role="img"
-            aria-label="Bar chart showing ticket distribution by priority level"
-          ></canvas>
-        </div>
-      </div>
-
-    </section>
-
-    <!-- ── Charts Row 2 ── -->
-    <section class="dash-charts-row" aria-labelledby="charts-row2-heading">
-      <h2 id="charts-row2-heading" class="sr-only">Alert and Remediation Charts</h2>
-
-      <div class="dash-chart-card">
-        <h3 class="dash-chart-title">Top Alert Categories</h3>
-        <div class="dash-chart-wrap">
-          <canvas
-            id="chartAlertCats"
-            role="img"
-            aria-label="Horizontal bar chart showing top alert categories by volume"
-          ></canvas>
-        </div>
-      </div>
-
-      <div class="dash-chart-card">
-        <h3 class="dash-chart-title">Remediation Progress</h3>
-        <div class="dash-chart-wrap">
-          <canvas
-            id="chartRemediation"
-            role="img"
-            aria-label="Bar chart showing remediation progress across ticket categories"
-          ></canvas>
-        </div>
-      </div>
-
-    </section>
-
-    <!-- ── Recent Critical Alerts ── -->
-    <section class="dash-section" aria-labelledby="alerts-heading">
-      <h2 id="alerts-heading" class="dash-section-title">Recent Critical Alerts</h2>
-
-      <ul class="alert-list" aria-label="Recent critical security alerts">
-
-        <li class="alert-item alert-item--critical">
-          <div class="alert-icon" aria-hidden="true">🛡️</div>
-          <div class="alert-body">
-            <strong class="alert-title">Ransomware Activity Detected</strong>
-            <span class="alert-meta">Endpoint: WS-CA-1432</span>
-          </div>
-          <span class="alert-badge alert-badge--critical" aria-label="Severity: Critical">
-            Critical
-          </span>
-        </li>
-
-        <li class="alert-item alert-item--critical">
-          <div class="alert-icon" aria-hidden="true">🔐</div>
-          <div class="alert-body">
-            <strong class="alert-title">Privilege Escalation Attempt</strong>
-            <span class="alert-meta">User: administrator</span>
-          </div>
-          <span class="alert-badge alert-badge--critical" aria-label="Severity: Critical">
-            Critical
-          </span>
-        </li>
-
-        <li class="alert-item alert-item--critical">
-          <div class="alert-icon" aria-hidden="true">🔒</div>
-          <div class="alert-body">
-            <strong class="alert-title">Multiple Failed Logins</strong>
-            <span class="alert-meta">Source: 45.77.32.18</span>
-          </div>
-          <span class="alert-badge alert-badge--critical" aria-label="Severity: Critical">
-            Critical
-          </span>
-        </li>
-
-        <li class="alert-item alert-item--critical">
-          <div class="alert-icon" aria-hidden="true">⚠️</div>
-          <div class="alert-body">
-            <strong class="alert-title">Malicious File Detected</strong>
-            <span class="alert-meta">Endpoint: FILE-SRV-02</span>
-          </div>
-          <span class="alert-badge alert-badge--critical" aria-label="Severity: Critical">
-            Critical
-          </span>
-        </li>
-
-      </ul>
-    </section>
-
-    <!-- ── Recent Ticket Activity ── -->
-    <section class="dash-section" aria-labelledby="tickets-heading">
-      <h2 id="tickets-heading" class="dash-section-title">Recent Ticket Activity</h2>
-
-      <div class="table-scroll" role="region" aria-label="Recent ticket activity table" tabindex="0">
-        <table class="dash-table">
-          <thead>
-            <tr>
-              <th scope="col">Ticket ID</th>
-              <th scope="col">Title</th>
-              <th scope="col">Customer</th>
-              <th scope="col">Priority</th>
-              <th scope="col">Status</th>
-              <th scope="col">Assigned To</th>
-              <th scope="col">Updated</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr>
-              <td data-label="Ticket ID">TKT-000124</td>
-              <td data-label="Title">Disable SMBv1 on File Server</td>
-              <td data-label="Customer">Acme Manufacturing</td>
-              <td data-label="Priority">
-                <span class="priority-badge priority-badge--high">High</span>
-              </td>
-              <td data-label="Status">
-                <span class="status-badge status-badge--inprogress">In Progress</span>
-              </td>
-              <td data-label="Assigned To">Alex Johnson</td>
-              <td data-label="Updated">15m ago</td>
-            </tr>
-            <tr>
-              <td data-label="Ticket ID">TKT-000123</td>
-              <td data-label="Title">Patch Critical OpenSSL CVE</td>
-              <td data-label="Customer">Orlando Law Group</td>
-              <td data-label="Priority">
-                <span class="priority-badge priority-badge--high">High</span>
-              </td>
-              <td data-label="Status">
-                <span class="status-badge status-badge--inprogress">In Progress</span>
-              </td>
-              <td data-label="Assigned To">CyberBench SOC</td>
-              <td data-label="Updated">42m ago</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </section>
-
-    <!-- ── Integrations Status ── -->
-    <section class="dash-section" aria-labelledby="integrations-heading">
-      <h2 id="integrations-heading" class="dash-section-title">Integrations Status</h2>
-
-      <ul class="integrations-list" aria-label="Connected integrations">
-
-        <li class="integration-item">
-          <span class="integration-dot integration-dot--connected" aria-hidden="true"></span>
-          <strong class="integration-name">Wazuh</strong>
-          <span class="integration-status">Connected</span>
-        </li>
-
-        <li class="integration-item">
-          <span class="integration-dot integration-dot--connected" aria-hidden="true"></span>
-          <strong class="integration-name">Suricata</strong>
-          <span class="integration-status">Connected</span>
-        </li>
-
-        <li class="integration-item">
-          <span class="integration-dot integration-dot--connected" aria-hidden="true"></span>
-          <strong class="integration-name">Microsoft 365</strong>
-          <span class="integration-status">Connected</span>
-        </li>
-
-      </ul>
-    </section>
-
-  </main>
-
-  <!-- ============================================================
-       FOOTER
-  ============================================================ -->
-  <footer class="footer">
-    <div class="container">
-      <a href="/index.html" class="footer-logo" aria-label="CyberBench homepage">
-        <span class="logo" aria-hidden="true">X</span>
-        <span>CyberBench</span>
-      </a>
-
-      <nav class="footer-nav" aria-label="Footer Navigation">
-        <a href="/services.html">Services</a>
-        <a href="/about.html">About</a>
-        <a href="/blog.html">Blog</a>
-        <a href="/client-portal.html">Client Portal</a>
-        <a href="/consultant-portal.html">Consultant Portal</a>
+<div class="app">
+  <aside class="sidebar" id="dashboardSidebar">
+    <div class="brand">🛡️ CyberBench</span></div>
+    <nav class="nav">
+      <a href="dashboard.html">🏠 Dashboard</a>
+        <a href="/tickets">🎫 Tickets</a>
+        <a href="/alerts">⚠️ Alerts <span class="badge">23</span></a>
+        <a href="/assets">💻 Assets</a>
+        <a href="/remediation">🛠️ Remediation</a>
+        <a href="/playbooks">📘 Playbooks</a>
       </nav>
 
-      <div class="footer-contact">
-        <span>Support</span>
-        <a href="mailto:support@cyberbench.io">support@cyberbench.io</a>
+      <div class="sidebar-card">
+        <h4>Awesome SOC</h4>
+        <p>Enterprise Plan</p>
+        <a href="/settings"><button>View Settings</button></a>
+      </div>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <input class="search" placeholder="Search tickets, assets, alerts..." />
+        <div class="top-actions">
+          <span>🔔</span>
+          <span>❔</span>
+          <span>Admin User</span>
+          <button class="export-btn"onclick="window.location.href='/export-modal'">Export Report</button>
+        </div>
       </div>
 
-      <div class="footer-bottom">
-        &copy; <span id="year"></span> CyberBench. All rights reserved.
+      <div class="page-title">
+        <h1>Dashboard</h1>
+        <p>Executive overview of security operations and risk posture</p>
       </div>
-    </div>
-  </footer>
 
-  <!-- ============================================================
-       SCRIPTS
-  ============================================================ -->
+      <section class="cards">
+        <div class="card">
+          <h3>Open Tickets</h3>
+          <div class="value">48</div>
+          <div class="sub">↓ 12% vs last 7 days</div>
+          <div class="icon-circle">🎫</div>
+        </div>
 
-  <!-- Year stamp -->
+        <div class="card red">
+          <h3>Critical Alerts</h3>
+          <div class="value">7</div>
+          <div class="sub" style="color:#ff6b6b;">↓ 22% vs last 7 days</div>
+          <div class="icon-circle">🛡️</div>
+        </div>
+
+        <div class="card purple">
+          <h3>MTTR (Mean Time To Remediate)</h3>
+          <div class="value">4.2h</div>
+          <div class="sub">↓ 18% vs last 7 days</div>
+          <div class="icon-circle">🕒</div>
+        </div>
+
+        <div class="card orange">
+          <h3>Risk Score</h3>
+          <div class="value">68</div>
+          <div class="sub" style="color:#ffb84d;">Medium Risk</div>
+          <div class="icon-circle">📈</div>
+        </div>
+
+        <div class="card green">
+          <h3>Compliance Score</h3>
+          <div class="value">87%</div>
+          <div class="sub">↑ 5% vs last 7 days</div>
+          <div class="icon-circle">✅</div>
+        </div>
+      </section>
+
+      <section class="dashboard-grid">
+        <div class="panel">
+          <h3>Risk Score Over Time</h3>
+          <canvas id="riskChart"></canvas>
+        </div>
+
+        <div class="panel">
+          <h3>Tickets by Status</h3>
+          <canvas id="statusChart"></canvas>
+        </div>
+
+        <div class="panel">
+          <h3>Tickets by Priority</h3>
+          <canvas id="priorityChart"></canvas>
+        </div>
+      </section>
+
+      <section class="dashboard-grid-2">
+        <div class="panel">
+          <h3>Top Alert Categories</h3>
+          <canvas id="alertCategoryChart"></canvas>
+        </div>
+
+        <div class="panel">
+          <h3>Recent Critical Alerts</h3>
+          <ul class="alert-list">
+            <li>
+              <div><strong>Ransomware Activity Detected</strong><span>Endpoint: WS-CA-1432</span></div>
+              <span class="pill">Critical</span>
+            </li>
+            <li>
+              <div><strong>Privilege Escalation Attempt</strong><span>User: administrator</span></div>
+              <span class="pill">Critical</span>
+            </li>
+            <li>
+              <div><strong>Multiple Failed Logins</strong><span>Source: 45.77.32.18</span></div>
+              <span class="pill">Critical</span>
+            </li>
+            <li>
+              <div><strong>Malicious File Detected</strong><span>Endpoint: FILE-SRV-02</span></div>
+              <span class="pill">Critical</span>
+            </li>
+          </ul>
+        </div>
+
+        <div class="panel">
+          <h3>Remediation Progress</h3>
+          <canvas id="remediationChart"></canvas>
+        </div>
+      </section>
+
+      <section class="bottom-grid">
+        <div class="panel">
+          <h3>Recent Ticket Activity</h3>
+          <table>
+            <thead>
+              <tr>
+                <th>Ticket ID</th>
+                <th>Title</th>
+                <th>Customer</th>
+                <th>Priority</th>
+                <th>Status</th>
+                <th>Assigned To</th>
+                <th>Updated</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr>
+                <td>TKT-000124</td>
+                <td>Disable SMBv1 on File Server</td>
+                <td>Acme Manufacturing</td>
+                <td><span class="status high">High</span></td>
+                <td><span class="status progress">In Progress</span></td>
+                <td>Alex Johnson</td>
+                <td>15m ago</td>
+              </tr>
+              <tr>
+                <td>TKT-000123</td>
+                <td>Patch Critical OpenSSL CVE</td>
+                <td>Orlando Law Group</td>
+                <td><span class="status high">High</span></td>
+                <td><span class="status progress">In Progress</span></td>
+                <td>CyberBench SOC</td>
+                <td>42m ago</td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="panel">
+          <h3>Integrations Status</h3>
+          <div class="integration">
+            <strong>Wazuh</strong>
+            <span class="connected">● Connected</span>
+          </div>
+          <div class="integration">
+            <strong>Suricata</strong>
+            <span class="connected">● Connected</span>
+          </div>
+          <div class="integration">
+            <strong>Microsoft 365</strong>
+            <span class="connected">● Connected</span>
+          </div>
+        </div>
+      </section>
+    </main>
+  </div>
+
+
   <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
-  </script>
+    document.addEventListener("DOMContentLoaded", function () {
+      const sidebar = document.getElementById("dashboardSidebar");
+      const toggle = document.getElementById("dashboardMenuToggle");
+      const overlay = document.getElementById("dashboardOverlay");
 
-  <!-- Mobile navigation -->
-  <script>
-    (function () {
-      var nav    = document.getElementById("nav_links");
-      var toggle = document.querySelector(".nav_toggle");
+      if (!sidebar || !toggle || !overlay) return;
 
-      if (!nav || !toggle) return;
-
-      function closeMenu() {
-        nav.classList.remove("nav_open");
-        document.body.classList.remove("menu-open");
-        toggle.setAttribute("aria-expanded", "false");
-        toggle.setAttribute("aria-label", "Open navigation menu");
-      }
-
-      function openMenu() {
-        nav.classList.add("nav_open");
-        document.body.classList.add("menu-open");
+      function openDashboardMenu() {
+        sidebar.classList.add("mobile-open");
+        overlay.classList.add("show");
+        document.body.classList.add("dashboard-menu-open");
         toggle.setAttribute("aria-expanded", "true");
-        toggle.setAttribute("aria-label", "Close navigation menu");
+        toggle.setAttribute("aria-label", "Close dashboard menu");
       }
 
-      toggle.addEventListener("click", function (e) {
-        e.stopPropagation();
-        nav.classList.contains("nav_open") ? closeMenu() : openMenu();
+      function closeDashboardMenu() {
+        sidebar.classList.remove("mobile-open");
+        overlay.classList.remove("show");
+        document.body.classList.remove("dashboard-menu-open");
+        toggle.setAttribute("aria-expanded", "false");
+        toggle.setAttribute("aria-label", "Open dashboard menu");
+      }
+
+      toggle.addEventListener("click", function () {
+        if (sidebar.classList.contains("mobile-open")) {
+          closeDashboardMenu();
+        } else {
+          openDashboardMenu();
+        }
       });
 
-      nav.querySelectorAll("a").forEach(function (link) {
-        link.addEventListener("click", closeMenu);
+      overlay.addEventListener("click", closeDashboardMenu);
+
+      sidebar.querySelectorAll("a").forEach(function (link) {
+        link.addEventListener("click", closeDashboardMenu);
       });
 
-      document.addEventListener("click", function (e) {
-        if (!nav.contains(e.target) && !toggle.contains(e.target)) closeMenu();
-      });
-
-      document.addEventListener("keydown", function (e) {
-        if (e.key === "Escape") closeMenu();
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape") {
+          closeDashboardMenu();
+        }
       });
 
       window.addEventListener("resize", function () {
-        if (window.innerWidth > 768) closeMenu();
-      });
-    })();
-  </script>
-
-  <!-- Export report button -->
-  <script>
-    (function () {
-      var btn = document.getElementById("exportBtn");
-      if (!btn) return;
-      btn.addEventListener("click", function () {
-        btn.disabled    = true;
-        btn.textContent = "Preparing…";
-        setTimeout(function () {
-          btn.disabled    = false;
-          btn.textContent = "Export Report";
-          alert("Export feature coming soon. Contact support@cyberbench.io for a manual report.");
-        }, 1200);
-      });
-    })();
-  </script>
-
-  <!-- Notifications button -->
-  <script>
-    (function () {
-      var btn   = document.getElementById("notifBtn");
-      var badge = document.getElementById("notifBadge");
-      if (!btn) return;
-      btn.addEventListener("click", function () {
-        if (badge) {
-          badge.style.display = "none";
-          btn.setAttribute("aria-label", "Notifications — no new notifications");
+        if (window.innerWidth > 1200) {
+          closeDashboardMenu();
         }
-        alert("Notification panel coming soon.");
       });
-    })();
-  </script>
-
-  <!-- Help button -->
-  <script>
-    (function () {
-      var btn = document.getElementById("helpBtn");
-      if (!btn) return;
-      btn.addEventListener("click", function () {
-        window.location.href = "mailto:support@cyberbench.io";
-      });
-    })();
-  </script>
-
-  <!-- Charts (runs after Chart.js loads) -->
-  <script>
-    window.addEventListener("load", function () {
-      if (typeof Chart === "undefined") return;
-
-      var COLORS = {
-        red:    "#e74c3c",
-        orange: "#e67e22",
-        yellow: "#f1c40f",
-        green:  "#2ecc71",
-        blue:   "#3498db",
-        purple: "#9b59b6",
-        gray:   "#7f8c8d",
-        dark:   "#1a1a2e"
-      };
-
-      Chart.defaults.color          = "#aaa";
-      Chart.defaults.borderColor    = "rgba(255,255,255,0.08)";
-      Chart.defaults.font.family    = "inherit";
-
-      /* ── Risk Score Over Time ── */
-      var ctxRisk = document.getElementById("chartRisk");
-      if (ctxRisk) {
-        new Chart(ctxRisk, {
-          type: "line",
-          data: {
-            labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-            datasets: [{
-              label: "Risk Score",
-              data: [74, 71, 69, 72, 70, 68, 68],
-              borderColor: COLORS.red,
-              backgroundColor: "rgba(231,76,60,0.12)",
-              tension: 0.4,
-              fill: true,
-              pointBackgroundColor: COLORS.red
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { legend: { display: false } },
-            scales: {
-              y: { min: 50, max: 100, grid: { color: "rgba(255,255,255,0.05)" } },
-              x: { grid: { display: false } }
-            }
-          }
-        });
-      }
-
-      /* ── Tickets by Status ── */
-      var ctxStatus = document.getElementById("chartTicketStatus");
-      if (ctxStatus) {
-        new Chart(ctxStatus, {
-          type: "doughnut",
-          data: {
-            labels: ["Open", "In Progress", "Pending", "Resolved", "Closed"],
-            datasets: [{
-              data: [12, 18, 8, 7, 3],
-              backgroundColor: [
-                COLORS.red, COLORS.orange, COLORS.yellow,
-                COLORS.green, COLORS.gray
-              ],
-              borderWidth: 2,
-              borderColor: COLORS.dark
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: { position: "bottom", labels: { padding: 16 } }
-            }
-          }
-        });
-      }
-
-      /* ── Tickets by Priority ── */
-      var ctxPriority = document.getElementById("chartTicketPriority");
-      if (ctxPriority) {
-        new Chart(ctxPriority, {
-          type: "bar",
-          data: {
-            labels: ["Critical", "High", "Medium", "Low"],
-            datasets: [{
-              label: "Tickets",
-              data: [7, 18, 14, 9],
-              backgroundColor: [
-                COLORS.red, COLORS.orange, COLORS.yellow, COLORS.green
-              ],
-              borderRadius: 4
-            }]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { legend: { display: false } },
-            scales: {
-              y: { beginAtZero: true, grid: { color: "rgba(255,255,255,0.05)" } },
-              x: { grid: { display: false } }
-            }
-          }
-        });
-      }
-
-      /* ── Top Alert Categories ── */
-      var ctxAlerts = document.getElementById("chartAlertCats");
-      if (ctxAlerts) {
-        new Chart(ctxAlerts, {
-          type: "bar",
-          data: {
-            labels: [
-              "Ransomware", "Priv. Escalation",
-              "Failed Logins", "Malware", "Lateral Movement"
-            ],
-            datasets: [{
-              label: "Alerts",
-              data: [14, 11, 9, 8, 6],
-              backgroundColor: COLORS.red,
-              borderRadius: 4
-            }]
-          },
-          options: {
-            indexAxis: "y",
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: { legend: { display: false } },
-            scales: {
-              x: { beginAtZero: true, grid: { color: "rgba(255,255,255,0.05)" } },
-              y: { grid: { display: false } }
-            }
-          }
-        });
-      }
-
-      /* ── Remediation Progress ── */
-      var ctxRemediation = document.getElementById("chartRemediation");
-      if (ctxRemediation) {
-        new Chart(ctxRemediation, {
-          type: "bar",
-          data: {
-            labels: [
-              "Endpoint", "Network", "Identity",
-              "Cloud", "Application"
-            ],
-            datasets: [
-              {
-                label: "Resolved",
-                data: [22, 15, 18, 10, 12],
-                backgroundColor: COLORS.green,
-                borderRadius: 4
-              },
-              {
-                label: "In Progress",
-                data: [8, 6, 4, 5, 3],
-                backgroundColor: COLORS.orange,
-                borderRadius: 4
-              },
-              {
-                label: "Open",
-                data: [4, 3, 2, 3, 2],
-                backgroundColor: COLORS.red,
-                borderRadius: 4
-              }
-            ]
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: { position: "bottom", labels: { padding: 16 } }
-            },
-            scales: {
-              y: { beginAtZero: true, stacked: true, grid: { color: "rgba(255,255,255,0.05)" } },
-              x: { stacked: true, grid: { display: false } }
-            }
-          }
-        });
-      }
-
     });
   </script>
 
-  <!-- ============================================================
-       AI CHAT WIDGET
-  ============================================================ -->
-  <button
-    class="cb-chat-fab"
-    id="cbChatFab"
-    type="button"
-    aria-label="Open CyberBench AI chat"
-    aria-expanded="false"
-    aria-controls="cbChat"
-  >AI</button>
-
-  <div
-    class="cb-chat"
-    id="cbChat"
-    role="dialog"
-    aria-modal="true"
-    aria-label="CyberBench AI chat"
-    aria-hidden="true"
-  >
-    <div class="cb-chat-header">
-      <div class="cb-chat-title">
-        <div class="cb-chat-dot"></div>
-        <div>
-          <div class="cb-chat-name">CyberBench AI</div>
-          <div class="cb-chat-sub">Dashboard help &bull; Alerts &bull; Tickets</div>
-        </div>
-      </div>
-      <button
-        class="cb-chat-close"
-        id="cbChatClose"
-        type="button"
-        aria-label="Close CyberBench AI chat"
-      >&#x2715;</button>
-    </div>
-
-    <div class="cb-chat-body" id="cbChatBody" aria-live="polite"></div>
-
-    <form class="cb-chat-form" id="cbChatForm" novalidate>
-      <input
-        class="cb-chat-input"
-        id="cbChatInput"
-        type="text"
-        placeholder="Ask about tickets, alerts, risk score, or compliance…"
-        autocomplete="off"
-        aria-label="Chat message"
-        required
-      />
-      <button class="cb-chat-send" type="submit">Send</button>
-    </form>
-
-    <div class="cb-chat-footnote">Demo widget. Don&rsquo;t paste secrets.</div>
-  </div>
-
   <script>
-    (function () {
-      var fab   = document.getElementById("cbChatFab");
-      var chat  = document.getElementById("cbChat");
-      var close = document.getElementById("cbChatClose");
-      var form  = document.getElementById("cbChatForm");
-      var input = document.getElementById("cbChatInput");
-      var body  = document.getElementById("cbChatBody");
+    Chart.defaults.color = "#9fafc4";
+    Chart.defaults.borderColor = "rgba(255,255,255,0.08)";
 
-      if (!fab || !chat || !close || !form || !input || !body) return;
-
-      var responses = {
-        ticket:      "There are currently 48 open tickets. The most recent are TKT-000124 and TKT-000123, both high priority and in progress.",
-        alert:       "There are 7 active critical alerts including ransomware activity, privilege escalation, failed logins, and a malicious file detection.",
-        risk:        "The current risk score is 68, classified as Medium Risk. This is down 18% over the past 7 days, indicating positive remediation progress.",
-        compliance:  "The current compliance score is 87%, up 5% over the last 7 days. Keep up the strong remediation cadence.",
-        mttr:        "Mean Time To Remediate is currently 4.2 hours, down 18% vs the prior 7-day period.",
-        integration: "Wazuh, Suricata, and Microsoft 365 are all showing Connected status.",
-        export:      "Click the Export Report button at the top of the dashboard to generate a report. Full export functionality is coming soon.",
-        ransomware:  "Ransomware activity was detected on endpoint WS-CA-1432. This is a critical alert and should be triaged immediately.",
-        escalation:  "A privilege escalation attempt was detected for the administrator account. Investigate account activity and review access logs.",
-        login:       "Multiple failed login attempts were detected from source IP 45.77.32.18. Consider blocking this IP and reviewing authentication logs.",
-        default:     "I'm the CyberBench AI assistant. I can help with open tickets, critical alerts, risk score, compliance, MTTR, or integration status. What do you need?"
-      };
-
-      function getResponse(text) {
-        var t = text.toLowerCase();
-        if (t.includes("ticket") || t.includes("tkt"))                        return responses.ticket;
-        if (t.includes("alert") || t.includes("critical"))                    return responses.alert;
-        if (t.includes("risk") && !t.includes("compliance"))                  return responses.risk;
-        if (t.includes("compliance") || t.includes("score"))                  return responses.compliance;
-        if (t.includes("mttr") || t.includes("remediat") || t.includes("time")) return responses.mttr;
-        if (t.includes("integrat") || t.includes("wazuh") || t.includes("suricata") || t.includes("365")) return responses.integration;
-        if (t.includes("export") || t.includes("report"))                     return responses.export;
-        if (t.includes("ransomware"))                                          return responses.ransomware;
-        if (t.includes("escalat") || t.includes("privilege"))                 return responses.escalation;
-        if (t.includes("login") || t.includes("failed") || t.includes("brute")) return responses.login;
-        return responses.default;
-      }
-
-      function appendMessage(text, role) {
-        var msg = document.createElement("div");
-        msg.className   = "cb-chat-msg cb-chat-msg--" + role;
-        msg.textContent = text;
-        body.appendChild(msg);
-        body.scrollTop  = body.scrollHeight;
-      }
-
-      function openChat() {
-        chat.setAttribute("aria-hidden", "false");
-        chat.classList.add("cb-chat--open");
-        fab.setAttribute("aria-expanded", "true");
-        input.focus();
-        if (body.children.length === 0) {
-          appendMessage(
-            "Hi! I'm the CyberBench AI assistant. Ask me about open tickets, critical alerts, risk score, compliance, MTTR, or integration status.",
-            "bot"
-          );
+    new Chart(document.getElementById("riskChart"), {
+      type: "line",
+      data: {
+        labels: ["May 12", "May 13", "May 14", "May 15", "May 16", "May 17", "May 18"],
+        datasets: [{
+          label: "Risk Score",
+          data: [52, 61, 42, 57, 50, 63, 54],
+          borderColor: "#ff8f1f",
+          backgroundColor: "rgba(255,143,31,0.22)",
+          fill: true,
+          tension: 0.4,
+          pointRadius: 5,
+          pointBackgroundColor: "#ff8f1f"
+        }]
+      },
+      options: {
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { beginAtZero: true, max: 100 },
+          x: { grid: { display: false } }
         }
       }
+    });
 
-      function closeChat() {
-        chat.setAttribute("aria-hidden", "true");
-        chat.classList.remove("cb-chat--open");
-        fab.setAttribute("aria-expanded", "false");
-        fab.focus();
+    new Chart(document.getElementById("statusChart"), {
+      type: "doughnut",
+      data: {
+        labels: ["Open", "In Progress", "Pending Customer", "Resolved"],
+        datasets: [{
+          data: [28, 10, 6, 4],
+          backgroundColor: ["#1e9bff", "#ffbf2f", "#9b5cff", "#37d27f"],
+          borderWidth: 0
+        }]
+      },
+      options: {
+        cutout: "65%",
+        plugins: {
+          legend: {
+            position: "right",
+            labels: { boxWidth: 10, usePointStyle: true }
+          }
+        }
       }
+    });
 
-      fab.addEventListener("click", function () {
-        chat.getAttribute("aria-hidden") === "false" ? closeChat() : openChat();
-      });
+    new Chart(document.getElementById("priorityChart"), {
+      type: "doughnut",
+      data: {
+        labels: ["Critical", "High", "Medium", "Low"],
+        datasets: [{
+          data: [7, 18, 16, 7],
+          backgroundColor: ["#ff4055", "#ff8f1f", "#ffbf2f", "#37d27f"],
+          borderWidth: 0
+        }]
+      },
+      options: {
+        cutout: "65%",
+        plugins: {
+          legend: {
+            position: "right",
+            labels: { boxWidth: 10, usePointStyle: true }
+          }
+        }
+      }
+    });
 
-      close.addEventListener("click", closeChat);
+    new Chart(document.getElementById("alertCategoryChart"), {
+      type: "bar",
+      data: {
+        labels: ["Malware / Ransomware", "Vulnerability", "Brute Force / Auth", "Policy Violation", "Lateral Movement"],
+        datasets: [{
+          data: [23, 19, 14, 8, 6],
+          backgroundColor: ["#ff4055", "#ff8f1f", "#ffbf2f", "#37d27f", "#1e9bff"],
+          borderRadius: 4
+        }]
+      },
+      options: {
+        indexAxis: "y",
+        plugins: { legend: { display: false } },
+        scales: {
+          x: { beginAtZero: true },
+          y: { grid: { display: false } }
+        }
+      }
+    });
 
-      document.addEventListener("keydown", function (e) {
-        if (e.key === "Escape" && chat.getAttribute("aria-hidden") === "false") closeChat();
-      });
-
-      form.addEventListener("submit", function (e) {
-        e.preventDefault();
-        var text = input.value.trim();
-        if (!text) return;
-        appendMessage(text, "user");
-        input.value = "";
-        setTimeout(function () {
-          appendMessage(getResponse(text), "bot");
-        }, 400);
-      });
-    })();
+    new Chart(document.getElementById("remediationChart"), {
+      type: "bar",
+      data: {
+        labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+        datasets: [{
+          label: "Resolved",
+          data: [15, 13, 28, 35, 26, 8, 3],
+          backgroundColor: "#37d27f",
+          borderRadius: 4
+        }]
+      },
+      options: {
+        plugins: { legend: { display: false } },
+        scales: {
+          y: { display: false },
+          x: { grid: { display: false } }
+        }
+      }
+    });
   </script>
-
 </body>
 </html>
