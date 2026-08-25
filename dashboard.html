@@ -122,6 +122,16 @@
     }
     .cb-nav__export:hover { transform: translateY(-1px); box-shadow: 0 4px 16px rgba(0,212,255,0.3); }
 
+    /* ── MOBILE NAV TOGGLE ── */
+    .cb-nav__mobile-toggle {
+      display: none; width: 38px; height: 38px; border-radius: 8px;
+      background: rgba(255,255,255,0.05); border: 1px solid var(--card-border);
+      color: var(--text-muted); cursor: pointer;
+      align-items: center; justify-content: center; font-size: 1.2rem;
+      transition: all 0.2s;
+    }
+    .cb-nav__mobile-toggle:hover { border-color: var(--cyan); color: var(--cyan); }
+
     /* ── LAYOUT ── */
     .layout { display: flex; padding-top: var(--nav-h); min-height: 100vh; }
 
@@ -133,7 +143,14 @@
       position: fixed; top: var(--nav-h); left: 0; bottom: 0;
       overflow-y: auto; padding: 20px 12px;
       display: flex; flex-direction: column; gap: 4px; z-index: 100;
+      transition: transform 0.3s ease;
     }
+    .sidebar.mobile-open { transform: translateX(0) !important; }
+    .sidebar__overlay {
+      display: none; position: fixed; inset: 0; z-index: 99;
+      background: rgba(0,0,0,0.6); backdrop-filter: blur(2px);
+    }
+    .sidebar__overlay.active { display: block; }
     .sidebar__section-label {
       font-size: 0.68rem; font-weight: 700;
       color: var(--text-muted); text-transform: uppercase;
@@ -157,7 +174,7 @@
     }
 
     /* ── MAIN ── */
-    .main { margin-left: var(--sidebar-w); flex: 1; padding: 32px 28px 60px; min-width: 0; }
+    .main { margin-left: var(--sidebar-w); flex: 1; padding: 32px 28px 80px; min-width: 0; }
 
     /* ── PAGE HEADER ── */
     .page-header {
@@ -201,10 +218,10 @@
       content: ''; position: absolute;
       top: 0; left: 0; right: 0; height: 2px;
     }
-    .kpi-tickets::before  { background: var(--blue); }
-    .kpi-critical::before { background: var(--red); }
-    .kpi-mttr::before     { background: var(--purple); }
-    .kpi-risk::before     { background: var(--yellow); }
+    .kpi-tickets::before    { background: var(--blue); }
+    .kpi-critical::before   { background: var(--red); }
+    .kpi-mttr::before       { background: var(--purple); }
+    .kpi-risk::before       { background: var(--yellow); }
     .kpi-compliance::before { background: var(--green); }
     .kpi-card__header {
       display: flex; align-items: flex-start; justify-content: space-between;
@@ -219,10 +236,10 @@
       display: flex; align-items: center; justify-content: center;
       font-size: 1.1rem; flex-shrink: 0;
     }
-    .kpi-tickets .kpi-card__icon  { background: rgba(59,130,246,0.15); }
-    .kpi-critical .kpi-card__icon { background: rgba(239,68,68,0.15); }
-    .kpi-mttr .kpi-card__icon     { background: rgba(168,85,247,0.15); }
-    .kpi-risk .kpi-card__icon     { background: rgba(245,158,11,0.15); }
+    .kpi-tickets .kpi-card__icon    { background: rgba(59,130,246,0.15); }
+    .kpi-critical .kpi-card__icon   { background: rgba(239,68,68,0.15); }
+    .kpi-mttr .kpi-card__icon       { background: rgba(168,85,247,0.15); }
+    .kpi-risk .kpi-card__icon       { background: rgba(245,158,11,0.15); }
     .kpi-compliance .kpi-card__icon { background: rgba(34,197,94,0.15); }
     .kpi-card__value {
       font-size: 2rem; font-weight: 800; color: #fff;
@@ -543,14 +560,20 @@
       .charts-grid-3 { grid-template-columns: 1fr 1fr; }
     }
     @media (max-width: 900px) {
-      .sidebar { display: none; }
-      .main { margin-left: 0; padding: 20px 16px 48px; }
+      .sidebar {
+        transform: translateX(calc(-1 * var(--sidebar-w)));
+        box-shadow: 4px 0 24px rgba(0,0,0,0.4);
+      }
+      .main { margin-left: 0; padding: 20px 16px 80px; }
       .charts-grid-3 { grid-template-columns: 1fr; }
+      .cb-nav__mobile-toggle { display: flex; }
+      .cb-nav__search { max-width: 200px; }
     }
     @media (max-width: 600px) {
       .kpi-grid { grid-template-columns: 1fr 1fr; }
       .cb-nav__search { display: none; }
       .cb-nav__user-name { display: none; }
+      .cb-nav__export span { display: none; }
       .chat-widget { width: calc(100vw - 32px); right: 16px; bottom: 88px; }
       .chat-toggle { right: 16px; bottom: 16px; }
     }
@@ -579,6 +602,7 @@
       </svg>
       <span class="cb-nav__logo-text">CyberBench</span>
     </a>
+
     <div class="cb-nav__search">
       <svg class="cb-nav__search-icon" width="14" height="14" viewBox="0 0 24 24"
            fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true">
@@ -586,6 +610,7 @@
       </svg>
       <input type="text" placeholder="Search tickets, alerts…" aria-label="Search dashboard"/>
     </div>
+
     <div class="cb-nav__right">
       <button class="cb-nav__icon-btn" aria-label="Notifications">
         🔔
@@ -603,28 +628,34 @@
           <polyline points="7 10 12 15 17 10"/>
           <line x1="12" y1="15" x2="12" y2="3"/>
         </svg>
-        Export Report
+        <span>Export Report</span>
+      </button>
+      <button class="cb-nav__mobile-toggle" id="sidebarToggle" aria-label="Toggle navigation menu" aria-expanded="false">
+        ☰
       </button>
     </div>
   </div>
 </nav>
 
+<!-- Sidebar overlay for mobile -->
+<div class="sidebar__overlay" id="sidebarOverlay" aria-hidden="true"></div>
+
 <!-- ── LAYOUT ── -->
 <div class="layout">
 
   <!-- SIDEBAR -->
-  <aside class="sidebar" role="complementary" aria-label="Sidebar navigation">
+  <aside class="sidebar" id="sidebar" role="complementary" aria-label="Sidebar navigation">
     <span class="sidebar__section-label">Overview</span>
     <a href="dashboard.html" class="sidebar__link active" aria-current="page">
       <span class="sidebar__link-icon">📊</span> Dashboard
     </a>
     <a href="#" class="sidebar__link">
       <span class="sidebar__link-icon">🎫</span> Tickets
-      <span class="sidebar__badge">48</span>
+      <span class="sidebar__badge" aria-label="48 tickets">48</span>
     </a>
     <a href="#" class="sidebar__link">
       <span class="sidebar__link-icon">🚨</span> Alerts
-      <span class="sidebar__badge">7</span>
+      <span class="sidebar__badge" aria-label="7 alerts">7</span>
     </a>
     <span class="sidebar__section-label">Security</span>
     <a href="#" class="sidebar__link">
@@ -715,13 +746,13 @@
       <div class="chart-card">
         <h3><span class="chart-icon" aria-hidden="true">📉</span> Risk Score Over Time</h3>
         <div class="chart-wrap h-260">
-          <canvas id="chartRisk" aria-label="Risk score over time"></canvas>
+          <canvas id="chartRisk" aria-label="Risk score over time line chart"></canvas>
         </div>
       </div>
       <div class="chart-card">
         <h3><span class="chart-icon" aria-hidden="true">🎫</span> Tickets by Status</h3>
         <div class="chart-wrap h-260">
-          <canvas id="chartStatus" aria-label="Tickets by status"></canvas>
+          <canvas id="chartStatus" aria-label="Tickets by status doughnut chart"></canvas>
         </div>
       </div>
     </div>
@@ -731,19 +762,19 @@
       <div class="chart-card">
         <h3><span class="chart-icon" aria-hidden="true">🔺</span> Tickets by Priority</h3>
         <div class="chart-wrap h-220">
-          <canvas id="chartPriority" aria-label="Tickets by priority"></canvas>
+          <canvas id="chartPriority" aria-label="Tickets by priority bar chart"></canvas>
         </div>
       </div>
       <div class="chart-card">
         <h3><span class="chart-icon" aria-hidden="true">🚨</span> Top Alert Categories</h3>
         <div class="chart-wrap h-220">
-          <canvas id="chartAlerts" aria-label="Top alert categories"></canvas>
+          <canvas id="chartAlerts" aria-label="Top alert categories horizontal bar chart"></canvas>
         </div>
       </div>
       <div class="chart-card">
         <h3><span class="chart-icon" aria-hidden="true">🔧</span> Remediation Progress</h3>
         <div class="chart-wrap h-220">
-          <canvas id="chartRemediation" aria-label="Remediation progress"></canvas>
+          <canvas id="chartRemediation" aria-label="Remediation progress doughnut chart"></canvas>
         </div>
       </div>
     </div>
@@ -870,14 +901,16 @@
 <!-- ════════════════════════════════
      AI CHAT WIDGET
 ════════════════════════════════ -->
-<button class="chat-toggle" id="chatToggle" aria-label="Open AI assistant" aria-expanded="false" aria-controls="chatWidget">
+<button class="chat-toggle" id="chatToggle"
+        aria-label="Open AI assistant" aria-expanded="false" aria-controls="chatWidget">
   <svg id="chatIcon" width="24" height="24" viewBox="0 0 24 24" fill="none"
        stroke="#0a0e1a" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
     <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
   </svg>
 </button>
 
-<div class="chat-widget" id="chatWidget" role="dialog" aria-label="CyberBench AI Assistant" aria-hidden="true">
+<div class="chat-widget" id="chatWidget"
+     role="dialog" aria-label="CyberBench AI Assistant" aria-hidden="true" aria-modal="true">
   <div class="chat-header">
     <div class="chat-header__avatar" aria-hidden="true">🤖</div>
     <div class="chat-header__info">
@@ -917,7 +950,8 @@
   </div>
 
   <div class="chat-input-row">
-    <textarea class="chat-input" id="chatInput" placeholder="Ask about alerts, tickets, risk…"
+    <textarea class="chat-input" id="chatInput"
+              placeholder="Ask about alerts, tickets, risk…"
               rows="1" aria-label="Type your message" maxlength="500"></textarea>
     <button class="chat-send" id="chatSend" aria-label="Send message">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none"
@@ -1069,64 +1103,98 @@
   });
 
   /* ════════════════════════════════
+     MOBILE SIDEBAR TOGGLE
+  ════════════════════════════════ */
+  var sidebarToggle  = document.getElementById('sidebarToggle');
+  var sidebar        = document.getElementById('sidebar');
+  var sidebarOverlay = document.getElementById('sidebarOverlay');
+  var sidebarOpen    = false;
+
+  function openSidebar() {
+    sidebarOpen = true;
+    sidebar.classList.add('mobile-open');
+    sidebarOverlay.classList.add('active');
+    sidebarOverlay.setAttribute('aria-hidden', 'false');
+    sidebarToggle.setAttribute('aria-expanded', 'true');
+    sidebarToggle.textContent = '✕';
+  }
+
+  function closeSidebar() {
+    sidebarOpen = false;
+    sidebar.classList.remove('mobile-open');
+    sidebarOverlay.classList.remove('active');
+    sidebarOverlay.setAttribute('aria-hidden', 'true');
+    sidebarToggle.setAttribute('aria-expanded', 'false');
+    sidebarToggle.textContent = '☰';
+  }
+
+  sidebarToggle.addEventListener('click', function () {
+    sidebarOpen ? closeSidebar() : openSidebar();
+  });
+  sidebarOverlay.addEventListener('click', closeSidebar);
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape' && sidebarOpen) closeSidebar();
+  });
+
+  /* ════════════════════════════════
      AI CHAT WIDGET
   ════════════════════════════════ */
-  var toggle      = document.getElementById('chatToggle');
-  var widget      = document.getElementById('chatWidget');
-  var closeBtn    = document.getElementById('chatClose');
-  var messages    = document.getElementById('chatMessages');
-  var typingEl    = document.getElementById('chatTyping');
-  var suggestions = document.getElementById('chatSuggestions');
-  var input       = document.getElementById('chatInput');
-  var sendBtn     = document.getElementById('chatSend');
-  var isOpen      = false;
+  var chatToggle   = document.getElementById('chatToggle');
+  var chatWidget   = document.getElementById('chatWidget');
+  var chatClose    = document.getElementById('chatClose');
+  var chatMessages = document.getElementById('chatMessages');
+  var chatTyping   = document.getElementById('chatTyping');
+  var chatSuggs    = document.getElementById('chatSuggestions');
+  var chatInput    = document.getElementById('chatInput');
+  var chatSend     = document.getElementById('chatSend');
+  var chatIsOpen   = false;
 
   function openChat() {
-    isOpen = true;
-    widget.classList.add('open');
-    widget.setAttribute('aria-hidden', 'false');
-    toggle.classList.add('open');
-    toggle.setAttribute('aria-expanded', 'true');
-    toggle.setAttribute('aria-label', 'Close AI assistant');
-    input.focus();
+    chatIsOpen = true;
+    chatWidget.classList.add('open');
+    chatWidget.setAttribute('aria-hidden', 'false');
+    chatToggle.classList.add('open');
+    chatToggle.setAttribute('aria-expanded', 'true');
+    chatToggle.setAttribute('aria-label', 'Close AI assistant');
+    chatInput.focus();
   }
 
   function closeChat() {
-    isOpen = false;
-    widget.classList.remove('open');
-    widget.setAttribute('aria-hidden', 'true');
-    toggle.classList.remove('open');
-    toggle.setAttribute('aria-expanded', 'false');
-    toggle.setAttribute('aria-label', 'Open AI assistant');
-    toggle.focus();
+    chatIsOpen = false;
+    chatWidget.classList.remove('open');
+    chatWidget.setAttribute('aria-hidden', 'true');
+    chatToggle.classList.remove('open');
+    chatToggle.setAttribute('aria-expanded', 'false');
+    chatToggle.setAttribute('aria-label', 'Open AI assistant');
+    chatToggle.focus();
   }
 
-  toggle.addEventListener('click', function () {
-    isOpen ? closeChat() : openChat();
+  chatToggle.addEventListener('click', function () {
+    chatIsOpen ? closeChat() : openChat();
   });
-  closeBtn.addEventListener('click', closeChat);
+  chatClose.addEventListener('click', closeChat);
   document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && isOpen) closeChat();
+    if (e.key === 'Escape' && chatIsOpen) closeChat();
   });
 
   /* Auto-resize textarea */
-  input.addEventListener('input', function () {
+  chatInput.addEventListener('input', function () {
     this.style.height = 'auto';
     this.style.height = Math.min(this.scrollHeight, 100) + 'px';
   });
 
   /* Send on Enter (Shift+Enter = new line) */
-  input.addEventListener('keydown', function (e) {
+  chatInput.addEventListener('keydown', function (e) {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
       sendMessage();
     }
   });
 
-  sendBtn.addEventListener('click', sendMessage);
+  chatSend.addEventListener('click', function () { sendMessage(); });
 
   /* Suggestion chips */
-  suggestions.querySelectorAll('.chat-suggestion').forEach(function (btn) {
+  chatSuggs.querySelectorAll('.chat-suggestion').forEach(function (btn) {
     btn.addEventListener('click', function () {
       sendMessage(this.getAttribute('data-msg'));
     });
@@ -1146,19 +1214,19 @@
         '<div class="msg__bubble">' + text + '</div>' +
         '<div class="msg__time">' + getTime() + '</div>' +
       '</div>';
-    messages.appendChild(div);
-    messages.scrollTop = messages.scrollHeight;
+    chatMessages.appendChild(div);
+    chatMessages.scrollTop = chatMessages.scrollHeight;
   }
 
   function showTyping() {
-    typingEl.style.display = 'flex';
-    typingEl.setAttribute('aria-hidden', 'false');
-    messages.scrollTop = messages.scrollHeight;
+    chatTyping.style.display = 'flex';
+    chatTyping.setAttribute('aria-hidden', 'false');
+    chatMessages.scrollTop = chatMessages.scrollHeight;
   }
 
   function hideTyping() {
-    typingEl.style.display = 'none';
-    typingEl.setAttribute('aria-hidden', 'true');
+    chatTyping.style.display = 'none';
+    chatTyping.setAttribute('aria-hidden', 'true');
   }
 
   function getResponse(msg) {
@@ -1244,16 +1312,16 @@
   }
 
   function sendMessage(overrideText) {
-    var text = (overrideText || input.value).trim();
+    var text = (overrideText !== undefined ? overrideText : chatInput.value).trim();
     if (!text) return;
 
     /* Hide suggestions after first interaction */
-    suggestions.style.display = 'none';
+    chatSuggs.style.display = 'none';
 
     appendMessage(text, 'user');
-    input.value = '';
-    input.style.height = 'auto';
-    sendBtn.disabled = true;
+    chatInput.value = '';
+    chatInput.style.height = 'auto';
+    chatSend.disabled = true;
 
     showTyping();
 
@@ -1261,8 +1329,8 @@
     setTimeout(function () {
       hideTyping();
       appendMessage(getResponse(text), 'bot');
-      sendBtn.disabled = false;
-      input.focus();
+      chatSend.disabled = false;
+      chatInput.focus();
     }, delay);
   }
 
