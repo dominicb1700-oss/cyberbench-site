@@ -7,9 +7,6 @@
   <meta name="description" content="CyberBench KPI Dashboard — executive overview of security operations and risk posture." />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
-    /* ═══════════════════════════════════════════
-       RESET & TOKENS
-    ═══════════════════════════════════════════ */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
 
@@ -59,26 +56,20 @@
     a { color: inherit; text-decoration: none; }
     button { font-family: inherit; }
 
-    /* ═══════════════════════════════════════════
-       TOP NAV
-    ═══════════════════════════════════════════ */
+    /* ── TOP NAV ── */
     .topnav {
       position: fixed; top: 0; left: 0; right: 0; z-index: 200;
       height: var(--nav-h);
-      background: rgba(8,11,16,0.96);
+      background: rgba(8,11,16,0.97);
       backdrop-filter: blur(14px);
-      -webkit-backdrop-filter: blur(14px);
       border-bottom: 1px solid var(--border);
       display: flex; align-items: center;
       padding: 0 20px 0 0;
     }
-    /* left slot — same width as sidebar so content aligns */
     .topnav__brand {
-      width: var(--sidebar-w);
-      flex-shrink: 0;
+      width: var(--sidebar-w); flex-shrink: 0;
       display: flex; align-items: center; gap: 10px;
-      padding: 0 20px;
-      border-right: 1px solid var(--border);
+      padding: 0 20px; border-right: 1px solid var(--border);
       height: 100%;
     }
     .topnav__brand-text {
@@ -97,31 +88,26 @@
       color: var(--text-muted); pointer-events: none; font-size: 12px;
     }
     .topnav__search input {
-      width: 100%;
-      background: rgba(255,255,255,0.04);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 7px 12px 7px 32px;
-      color: var(--text); font-size: 0.82rem;
-      font-family: inherit; outline: none;
+      width: 100%; background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border); border-radius: var(--radius-sm);
+      padding: 7px 12px 7px 32px; color: var(--text);
+      font-size: 0.82rem; font-family: inherit; outline: none;
       transition: border-color 0.2s, background 0.2s;
     }
-    .topnav__search input:focus {
-      border-color: var(--cyan);
-      background: rgba(0,212,255,0.04);
-    }
+    .topnav__search input:focus { border-color: var(--cyan); background: rgba(0,212,255,0.04); }
     .topnav__search input::placeholder { color: var(--text-muted); }
-
     .topnav__right { display: flex; align-items: center; gap: 6px; }
+
     .topnav__icon {
       width: 36px; height: 36px; border-radius: var(--radius-xs);
-      background: rgba(255,255,255,0.04);
-      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.04); border: 1px solid var(--border);
       color: var(--text-muted); cursor: pointer;
       display: flex; align-items: center; justify-content: center;
       font-size: 15px; transition: all 0.2s; position: relative;
+      user-select: none;
     }
     .topnav__icon:hover { border-color: var(--cyan); color: var(--cyan); }
+
     .topnav__badge {
       position: absolute; top: -5px; right: -5px;
       width: 17px; height: 17px; border-radius: 50%;
@@ -133,19 +119,18 @@
     .topnav__user {
       display: flex; align-items: center; gap: 8px;
       padding: 5px 11px; border-radius: var(--radius-sm);
-      background: rgba(255,255,255,0.04);
-      border: 1px solid var(--border);
-      cursor: pointer; transition: all 0.2s;
+      background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+      cursor: pointer; transition: all 0.2s; user-select: none;
     }
     .topnav__user:hover { border-color: var(--cyan); }
     .topnav__avatar {
       width: 26px; height: 26px; border-radius: 50%;
       background: linear-gradient(135deg, var(--cyan), #005577);
       display: flex; align-items: center; justify-content: center;
-      font-size: 0.65rem; font-weight: 800; color: var(--bg-deeper);
-      flex-shrink: 0;
+      font-size: 0.65rem; font-weight: 800; color: var(--bg-deeper); flex-shrink: 0;
     }
     .topnav__username { font-size: 0.82rem; font-weight: 600; }
+
     .btn-export {
       display: flex; align-items: center; gap: 6px;
       padding: 7px 15px; border-radius: var(--radius-sm);
@@ -154,36 +139,25 @@
       border: none; cursor: pointer;
       transition: transform 0.2s, box-shadow 0.2s;
     }
-    .btn-export:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 4px 18px rgba(0,212,255,0.4);
-    }
+    .btn-export:hover { transform: translateY(-1px); box-shadow: 0 4px 18px rgba(0,212,255,0.4); }
+    .btn-export:active { transform: translateY(0); }
+
     .topnav__hamburger {
       display: none; width: 36px; height: 36px;
       border-radius: var(--radius-xs);
-      background: rgba(255,255,255,0.04);
-      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.04); border: 1px solid var(--border);
       color: var(--text-muted); cursor: pointer;
       align-items: center; justify-content: center;
       font-size: 18px; transition: all 0.2s;
     }
     .topnav__hamburger:hover { border-color: var(--cyan); color: var(--cyan); }
 
-    /* ═══════════════════════════════════════════
-       LAYOUT
-    ═══════════════════════════════════════════ */
-    .layout {
-      display: flex;
-      padding-top: var(--nav-h);
-      min-height: 100vh;
-    }
+    /* ── LAYOUT ── */
+    .layout { display: flex; padding-top: var(--nav-h); min-height: 100vh; }
 
-    /* ═══════════════════════════════════════════
-       SIDEBAR  (matches screenshot exactly)
-    ═══════════════════════════════════════════ */
+    /* ── SIDEBAR ── */
     .sidebar {
-      width: var(--sidebar-w);
-      background: var(--sidebar-bg);
+      width: var(--sidebar-w); background: var(--sidebar-bg);
       border-right: 1px solid var(--border);
       position: fixed; top: var(--nav-h); left: 0; bottom: 0;
       display: flex; flex-direction: column;
@@ -195,228 +169,124 @@
       display: flex; align-items: center; gap: 10px;
       padding: 10px 12px; border-radius: var(--radius-sm);
       color: var(--text-sub); font-size: 0.875rem; font-weight: 500;
-      transition: all 0.18s; position: relative;
+      transition: all 0.18s; position: relative; cursor: pointer;
     }
     .sidebar__link:hover { color: var(--text); background: rgba(255,255,255,0.05); }
     .sidebar__link.active { color: var(--cyan); background: rgba(0,212,255,0.09); }
     .sidebar__link.active::before {
       content: ''; position: absolute; left: 0; top: 20%; bottom: 20%;
-      width: 3px; border-radius: 0 3px 3px 0;
-      background: var(--cyan);
+      width: 3px; border-radius: 0 3px 3px 0; background: var(--cyan);
     }
     .sidebar__icon { width: 20px; text-align: center; flex-shrink: 0; font-size: 15px; }
     .sidebar__pill {
-      margin-left: auto;
-      background: var(--red); color: #fff;
+      margin-left: auto; background: var(--red); color: #fff;
       font-size: 0.62rem; font-weight: 800;
       padding: 2px 7px; border-radius: 20px;
     }
-    .sidebar__footer {
-      padding: 14px 12px;
-      border-top: 1px solid var(--border);
-    }
+    .sidebar__footer { padding: 14px 12px; border-top: 1px solid var(--border); }
     .sidebar__org {
-      background: rgba(255,255,255,0.04);
-      border: 1px solid var(--border);
-      border-radius: var(--radius-sm);
-      padding: 11px 13px; margin-bottom: 8px;
+      background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+      border-radius: var(--radius-sm); padding: 11px 13px; margin-bottom: 8px;
     }
     .sidebar__org-name { font-size: 0.875rem; font-weight: 700; color: var(--text); }
     .sidebar__org-plan { font-size: 0.74rem; color: var(--text-sub); margin-top: 2px; }
     .sidebar__settings {
       width: 100%; padding: 9px; border-radius: var(--radius-sm);
-      background: rgba(255,255,255,0.05);
-      border: 1px solid var(--border);
+      background: rgba(255,255,255,0.05); border: 1px solid var(--border);
       color: var(--text); font-size: 0.82rem; font-weight: 600;
       cursor: pointer; transition: all 0.2s;
     }
     .sidebar__settings:hover { border-color: var(--cyan); color: var(--cyan); }
+
     .sidebar__overlay {
       display: none; position: fixed; inset: 0; z-index: 99;
       background: rgba(0,0,0,0.6); backdrop-filter: blur(2px);
     }
     .sidebar__overlay.open { display: block; }
 
-    /* ═══════════════════════════════════════════
-       MAIN
-    ═══════════════════════════════════════════ */
-    .main {
-      margin-left: var(--sidebar-w);
-      flex: 1; padding: 28px 24px 80px;
-      min-width: 0;
-    }
+    /* ── MAIN ── */
+    .main { margin-left: var(--sidebar-w); flex: 1; padding: 28px 24px 80px; min-width: 0; }
 
-    /* ═══════════════════════════════════════════
-       PAGE HEADER
-    ═══════════════════════════════════════════ */
+    /* ── PAGE HEADER ── */
     .page-hdr { margin-bottom: 24px; }
-    .page-hdr h1 {
-      font-size: clamp(1.35rem, 2.5vw, 1.75rem);
-      font-weight: 800; color: #fff; line-height: 1.2;
-    }
-    .page-hdr p { color: var(--text-sub); font-size: 0.875rem; margin-top: 5px; }
-    .page-hdr__meta {
-      display: flex; align-items: center; gap: 7px;
-      font-size: 0.76rem; color: var(--text-muted); margin-top: 8px;
-    }
-    .live-dot {
-      width: 7px; height: 7px; border-radius: 50%;
-      background: var(--green); animation: blink 2s infinite;
-    }
-    @keyframes blink {
-      0%,100% { opacity:1; } 50% { opacity:0.3; }
-    }
+    .page-hdr h1 { font-size: clamp(1.35rem, 2.5vw, 1.75rem); font-weight: 800; color: #fff; line-height: 1.2; }
+    .page-hdr p  { color: var(--text-sub); font-size: 0.875rem; margin-top: 5px; }
+    .page-hdr__meta { display: flex; align-items: center; gap: 7px; font-size: 0.76rem; color: var(--text-muted); margin-top: 8px; }
+    .live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); animation: blink 2s infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.3} }
 
-    /* ═══════════════════════════════════════════
-       SECTION LABEL
-    ═══════════════════════════════════════════ */
+    /* ── SECTION LABEL ── */
     .sec-label {
       font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
       letter-spacing: 1px; color: var(--text-muted);
-      display: flex; align-items: center; gap: 10px;
-      margin-bottom: 14px;
+      display: flex; align-items: center; gap: 10px; margin-bottom: 14px;
     }
     .sec-label::after { content:''; flex:1; height:1px; background: var(--border); }
 
-    /* ═══════════════════════════════════════════
-       KPI CARDS
-    ═══════════════════════════════════════════ */
+    /* ── KPI CARDS ── */
     .kpi-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(180px,1fr));
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(180px,1fr));
       gap: 14px; margin-bottom: 24px;
     }
     .kpi {
-      background: var(--card);
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      padding: 18px 18px 16px;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 18px 18px 16px;
       position: relative; overflow: hidden;
-      transition: transform 0.2s, box-shadow 0.2s;
-      cursor: default;
+      transition: transform 0.2s, box-shadow 0.2s; cursor: default;
     }
     .kpi:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
-    .kpi::after {
-      content:''; position:absolute;
-      top:0; left:0; right:0; height:2px;
-    }
+    .kpi::after { content:''; position:absolute; top:0; left:0; right:0; height:2px; }
     .kpi--blue::after   { background: var(--blue); }
     .kpi--red::after    { background: var(--red); }
     .kpi--purple::after { background: var(--purple); }
     .kpi--yellow::after { background: var(--yellow); }
     .kpi--green::after  { background: var(--green); }
-
     .kpi__top { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:10px; }
     .kpi__label { font-size:0.72rem; font-weight:600; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.4px; line-height:1.3; }
-    .kpi__ico {
-      width:34px; height:34px; border-radius:9px;
-      display:flex; align-items:center; justify-content:center;
-      font-size:1rem; flex-shrink:0;
-    }
+    .kpi__ico { width:34px; height:34px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:1rem; flex-shrink:0; }
     .kpi--blue   .kpi__ico { background:rgba(59,130,246,0.13); }
     .kpi--red    .kpi__ico { background:rgba(239,68,68,0.13); }
     .kpi--purple .kpi__ico { background:rgba(168,85,247,0.13); }
     .kpi--yellow .kpi__ico { background:rgba(245,158,11,0.13); }
     .kpi--green  .kpi__ico { background:rgba(34,197,94,0.13); }
-
     .kpi__val { font-size:1.9rem; font-weight:800; color:#fff; line-height:1; }
     .kpi__sub { font-size:0.72rem; color:var(--text-muted); margin-top:3px; }
-    .kpi__delta {
-      display:inline-flex; align-items:center; gap:3px;
-      font-size:0.7rem; font-weight:700;
-      padding:2px 8px; border-radius:20px; margin-top:8px;
-      background:rgba(34,197,94,0.1); color:var(--green);
-    }
+    .kpi__delta { display:inline-flex; align-items:center; gap:3px; font-size:0.7rem; font-weight:700; padding:2px 8px; border-radius:20px; margin-top:8px; background:rgba(34,197,94,0.1); color:var(--green); }
 
-    /* ═══════════════════════════════════════════
-       CHART CARDS
-    ═══════════════════════════════════════════ */
-    .grid-2 {
-      display:grid; grid-template-columns:2fr 1fr;
-      gap:16px; margin-bottom:18px;
-    }
-    .grid-2-eq {
-      display:grid; grid-template-columns:1fr 1fr;
-      gap:16px; margin-bottom:18px;
-    }
-    .grid-3 {
-      display:grid; grid-template-columns:1fr 1fr 1fr;
-      gap:16px; margin-bottom:18px;
-    }
-    .chart-card {
-      background:var(--card);
-      border:1px solid var(--border);
-      border-radius:var(--radius);
-      padding:18px 18px 14px;
-    }
-    .chart-card h3 {
-      font-size:0.82rem; font-weight:700; color:var(--text);
-      margin-bottom:14px; display:flex; align-items:center; gap:7px;
-    }
+    /* ── CHART GRIDS ── */
+    .grid-2     { display:grid; grid-template-columns:2fr 1fr; gap:16px; margin-bottom:18px; }
+    .grid-2-eq  { display:grid; grid-template-columns:1fr 1fr; gap:16px; margin-bottom:18px; }
+
+    .chart-card { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:18px 18px 14px; }
+    .chart-card h3 { font-size:0.82rem; font-weight:700; color:var(--text); margin-bottom:14px; display:flex; align-items:center; gap:7px; }
     .chart-card h3 em { color:var(--cyan); font-style:normal; }
     .chart-wrap { position:relative; }
     .chart-wrap--260 { height:260px; }
     .chart-wrap--200 { height:200px; }
     .chart-wrap--180 { height:180px; }
-    .chart-wrap canvas { width:100%!important; height:100%!important; }
 
-    /* ═══════════════════════════════════════════
-       CRITICAL ALERTS
-    ═══════════════════════════════════════════ */
-    .alerts-card {
-      background:var(--card); border:1px solid var(--border);
-      border-radius:var(--radius); padding:18px; margin-bottom:18px;
-    }
-    .alerts-card h3 {
-      font-size:0.82rem; font-weight:700; color:var(--text);
-      margin-bottom:14px; display:flex; align-items:center; gap:7px;
-    }
+    /* ── ALERTS ── */
+    .alerts-card { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:18px; margin-bottom:18px; }
+    .alerts-card h3 { font-size:0.82rem; font-weight:700; color:var(--text); margin-bottom:14px; display:flex; align-items:center; gap:7px; }
     .alerts-list { list-style:none; display:flex; flex-direction:column; gap:8px; }
-    .alert-row {
-      display:flex; align-items:center; gap:12px;
-      padding:11px 13px; border-radius:9px;
-      background:rgba(239,68,68,0.05);
-      border:1px solid rgba(239,68,68,0.14);
-      transition:background 0.18s;
-    }
+    .alert-row { display:flex; align-items:center; gap:12px; padding:11px 13px; border-radius:9px; background:rgba(239,68,68,0.05); border:1px solid rgba(239,68,68,0.14); transition:background 0.18s; }
     .alert-row:hover { background:rgba(239,68,68,0.09); }
-    .alert-dot {
-      width:9px; height:9px; border-radius:50%;
-      background:var(--red); flex-shrink:0;
-      animation:blink 1.6s infinite;
-    }
+    .alert-dot { width:9px; height:9px; border-radius:50%; background:var(--red); flex-shrink:0; animation:blink 1.6s infinite; }
     .alert-body { flex:1; min-width:0; }
     .alert-title { font-size:0.84rem; font-weight:600; color:#fff; }
     .alert-meta  { font-size:0.74rem; color:var(--text-muted); margin-top:2px; }
-    .badge {
-      padding:3px 9px; border-radius:20px;
-      font-size:0.68rem; font-weight:700; flex-shrink:0;
-    }
+    .badge { padding:3px 9px; border-radius:20px; font-size:0.68rem; font-weight:700; flex-shrink:0; }
     .badge-critical { background:rgba(239,68,68,0.14); color:var(--red);    border:1px solid rgba(239,68,68,0.28); }
     .badge-high     { background:rgba(249,115,22,0.14); color:var(--orange); border:1px solid rgba(249,115,22,0.28); }
     .badge-progress { background:rgba(59,130,246,0.14); color:var(--blue);   border:1px solid rgba(59,130,246,0.28); }
 
-    /* ═══════════════════════════════════════════
-       TABLE
-    ═══════════════════════════════════════════ */
-    .table-card {
-      background:var(--card); border:1px solid var(--border);
-      border-radius:var(--radius); overflow:hidden; margin-bottom:18px;
-    }
-    .table-card__hdr {
-      padding:14px 18px; border-bottom:1px solid var(--border);
-      display:flex; align-items:center; gap:8px;
-    }
+    /* ── TABLE ── */
+    .table-card { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); overflow:hidden; margin-bottom:18px; }
+    .table-card__hdr { padding:14px 18px; border-bottom:1px solid var(--border); display:flex; align-items:center; gap:8px; }
     .table-card__hdr h3 { font-size:0.84rem; font-weight:700; color:var(--text); }
     .tbl-wrap { overflow-x:auto; }
     table { width:100%; border-collapse:collapse; }
-    thead th {
-      padding:9px 14px; text-align:left;
-      font-size:0.68rem; font-weight:700;
-      color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px;
-      background:rgba(255,255,255,0.02);
-      border-bottom:1px solid var(--border); white-space:nowrap;
-    }
+    thead th { padding:9px 14px; text-align:left; font-size:0.68rem; font-weight:700; color:var(--text-muted); text-transform:uppercase; letter-spacing:0.5px; background:rgba(255,255,255,0.02); border-bottom:1px solid var(--border); white-space:nowrap; }
     tbody tr { border-bottom:1px solid rgba(255,255,255,0.04); transition:background 0.15s; }
     tbody tr:last-child { border-bottom:none; }
     tbody tr:hover { background:rgba(255,255,255,0.03); }
@@ -424,267 +294,225 @@
     .td-id   { font-family:'Courier New',monospace; color:var(--cyan); font-size:0.8rem; }
     .td-mute { color:var(--text-muted); font-size:0.76rem; }
 
-    /* ═══════════════════════════════════════════
-       INTEGRATIONS
-    ═══════════════════════════════════════════ */
-    .integ-grid {
-      display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr));
-      gap:12px; margin-bottom:18px; list-style:none;
-    }
-    .integ-card {
-      background:var(--card); border:1px solid var(--border);
-      border-radius:var(--radius); padding:16px 18px;
-      display:flex; align-items:center; gap:12px;
-      transition:border-color 0.2s;
-    }
+    /* ── INTEGRATIONS ── */
+    .integ-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:12px; margin-bottom:18px; list-style:none; }
+    .integ-card { background:var(--card); border:1px solid var(--border); border-radius:var(--radius); padding:16px 18px; display:flex; align-items:center; gap:12px; transition:border-color 0.2s; }
     .integ-card:hover { border-color:rgba(34,197,94,0.4); }
-    .integ-dot {
-      width:9px; height:9px; border-radius:50%;
-      background:var(--green); flex-shrink:0;
-      box-shadow:0 0 7px rgba(34,197,94,0.55);
-    }
+    .integ-dot { width:9px; height:9px; border-radius:50%; background:var(--green); flex-shrink:0; box-shadow:0 0 7px rgba(34,197,94,0.55); }
     .integ-name   { font-size:0.875rem; font-weight:700; color:#fff; }
     .integ-status { font-size:0.72rem; color:var(--green); margin-top:2px; }
 
-    /* ═══════════════════════════════════════════
-       AI CHAT WIDGET
-    ═══════════════════════════════════════════ */
-    .chat-fab {
-      position:fixed; bottom:26px; right:26px; z-index:2000;
-      width:52px; height:52px; border-radius:50%;
-      background:linear-gradient(135deg,var(--cyan),var(--cyan-dim));
-      border:none; cursor:pointer;
-      display:flex; align-items:center; justify-content:center;
-      box-shadow:0 4px 20px rgba(0,212,255,0.38);
-      transition:transform 0.2s, box-shadow 0.2s;
+    /* ── NOTIFICATION DROPDOWN ── */
+    .notif-dropdown {
+      position: absolute; top: calc(100% + 10px); right: 0;
+      width: 300px; background: var(--card);
+      border: 1px solid var(--border); border-radius: var(--radius);
+      box-shadow: var(--shadow-lg); z-index: 500;
+      display: none; flex-direction: column; overflow: hidden;
     }
-    .chat-fab:hover { transform:scale(1.08); box-shadow:0 6px 28px rgba(0,212,255,0.55); }
-    .chat-fab svg { transition:transform 0.3s; }
-    .chat-fab.open svg { transform:rotate(45deg); }
+    .notif-dropdown.open { display: flex; }
+    .notif-hdr { padding: 12px 16px; border-bottom: 1px solid var(--border); display: flex; justify-content: space-between; align-items: center; }
+    .notif-hdr span { font-size: 0.82rem; font-weight: 700; color: var(--text); }
+    .notif-hdr button { background: none; border: none; color: var(--text-muted); font-size: 0.72rem; cursor: pointer; }
+    .notif-hdr button:hover { color: var(--cyan); }
+    .notif-list { list-style: none; max-height: 260px; overflow-y: auto; }
+    .notif-item { padding: 11px 16px; border-bottom: 1px solid rgba(255,255,255,0.04); display: flex; gap: 10px; align-items: flex-start; cursor: pointer; transition: background 0.15s; }
+    .notif-item:hover { background: rgba(255,255,255,0.04); }
+    .notif-item:last-child { border-bottom: none; }
+    .notif-dot-wrap { padding-top: 4px; }
+    .notif-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--red); flex-shrink: 0; }
+    .notif-body { flex: 1; }
+    .notif-title { font-size: 0.78rem; font-weight: 600; color: var(--text); }
+    .notif-time  { font-size: 0.68rem; color: var(--text-muted); margin-top: 2px; }
+
+    /* ── AI CHAT WIDGET ── */
+    .chat-fab {
+      position: fixed; bottom: 26px; right: 26px; z-index: 2000;
+      width: 52px; height: 52px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--cyan), var(--cyan-dim));
+      border: none; cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      box-shadow: 0 4px 20px rgba(0,212,255,0.38);
+      transition: transform 0.2s, box-shadow 0.2s;
+    }
+    .chat-fab:hover { transform: scale(1.08); box-shadow: 0 6px 28px rgba(0,212,255,0.55); }
+    .chat-fab-ico { transition: transform 0.3s; display: flex; align-items: center; justify-content: center; }
+    .chat-fab.open .chat-fab-ico { transform: rotate(45deg); }
 
     .chat-win {
-      position:fixed; bottom:90px; right:26px; z-index:1999;
-      width:350px; max-height:540px;
-      background:var(--card); border:1px solid var(--border);
-      border-radius:16px; display:flex; flex-direction:column;
-      box-shadow:var(--shadow-lg); overflow:hidden;
-      transform:scale(0.9) translateY(14px); opacity:0; pointer-events:none;
-      transform-origin:bottom right;
-      transition:transform 0.24s cubic-bezier(.34,1.56,.64,1), opacity 0.18s;
+      position: fixed; bottom: 90px; right: 26px; z-index: 1999;
+      width: 350px; max-height: 540px;
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: 16px; display: flex; flex-direction: column;
+      box-shadow: var(--shadow-lg); overflow: hidden;
+      transform: scale(0.9) translateY(14px); opacity: 0; pointer-events: none;
+      transform-origin: bottom right;
+      transition: transform 0.24s cubic-bezier(.34,1.56,.64,1), opacity 0.18s;
     }
-    .chat-win.open { transform:scale(1) translateY(0); opacity:1; pointer-events:all; }
+    .chat-win.open { transform: scale(1) translateY(0); opacity: 1; pointer-events: all; }
 
-    .chat-hdr {
-      padding:14px 16px;
-      background:linear-gradient(135deg,rgba(0,212,255,0.09),rgba(0,119,170,0.06));
-      border-bottom:1px solid var(--border);
-      display:flex; align-items:center; gap:10px;
-    }
-    .chat-hdr__av {
-      width:34px; height:34px; border-radius:50%;
-      background:linear-gradient(135deg,var(--cyan),var(--cyan-dim));
-      display:flex; align-items:center; justify-content:center;
-      font-size:0.95rem; flex-shrink:0;
-    }
-    .chat-hdr__name { font-size:0.875rem; font-weight:700; color:#fff; }
-    .chat-hdr__sub  { font-size:0.7rem; color:var(--text-muted); margin-top:1px; }
-    .chat-hdr__close {
-      margin-left:auto; width:26px; height:26px; border-radius:6px;
-      background:rgba(255,255,255,0.05); border:1px solid var(--border);
-      color:var(--text-muted); cursor:pointer;
-      display:flex; align-items:center; justify-content:center;
-      font-size:0.9rem; transition:all 0.2s;
-    }
-    .chat-hdr__close:hover { border-color:var(--red); color:var(--red); }
+    .chat-hdr { padding: 14px 16px; background: linear-gradient(135deg,rgba(0,212,255,0.09),rgba(0,119,170,0.06)); border-bottom: 1px solid var(--border); display: flex; align-items: center; gap: 10px; }
+    .chat-hdr__av { width: 34px; height: 34px; border-radius: 50%; background: linear-gradient(135deg, var(--cyan), var(--cyan-dim)); display: flex; align-items: center; justify-content: center; font-size: 0.95rem; flex-shrink: 0; }
+    .chat-hdr__name { font-size: 0.875rem; font-weight: 700; color: #fff; }
+    .chat-hdr__sub  { font-size: 0.7rem; color: var(--text-muted); margin-top: 1px; }
+    .chat-hdr__close { margin-left: auto; width: 26px; height: 26px; border-radius: 6px; background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: var(--text-muted); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; transition: all 0.2s; }
+    .chat-hdr__close:hover { border-color: var(--red); color: var(--red); }
 
-    .chat-msgs {
-      flex:1; overflow-y:auto; padding:14px;
-      display:flex; flex-direction:column; gap:10px; min-height:0;
-    }
-    .chat-msgs::-webkit-scrollbar { width:3px; }
-    .chat-msgs::-webkit-scrollbar-thumb { background:var(--border); }
+    .chat-msgs { flex: 1; overflow-y: auto; padding: 14px; display: flex; flex-direction: column; gap: 10px; min-height: 0; }
+    .chat-msgs::-webkit-scrollbar { width: 3px; }
+    .chat-msgs::-webkit-scrollbar-thumb { background: var(--border); }
 
-    .msg { display:flex; gap:7px; align-items:flex-end; animation:msg-in 0.2s ease; }
+    .msg { display: flex; gap: 7px; align-items: flex-end; animation: msg-in 0.22s ease; }
     @keyframes msg-in { from{opacity:0;transform:translateY(7px)} to{opacity:1;transform:none} }
-    .msg--user { flex-direction:row-reverse; }
-    .msg__av {
-      width:26px; height:26px; border-radius:50%;
-      display:flex; align-items:center; justify-content:center;
-      font-size:0.7rem; font-weight:700; flex-shrink:0;
-    }
-    .msg--bot  .msg__av { background:linear-gradient(135deg,var(--cyan),var(--cyan-dim)); color:var(--bg-deeper); }
-    .msg--user .msg__av { background:linear-gradient(135deg,#3b82f6,#1d4ed8); color:#fff; }
-    .msg__bubble {
-      max-width:80%; padding:9px 13px; border-radius:13px;
-      font-size:0.82rem; line-height:1.5;
-    }
-    .msg--bot  .msg__bubble {
-      background:rgba(255,255,255,0.05); border:1px solid var(--border);
-      color:var(--text); border-bottom-left-radius:3px;
-    }
-    .msg--user .msg__bubble {
-      background:linear-gradient(135deg,var(--cyan),var(--cyan-dim));
-      color:var(--bg-deeper); font-weight:600; border-bottom-right-radius:3px;
-    }
-    .msg__time { font-size:0.62rem; color:var(--text-muted); margin-top:3px; }
-    .msg--user .msg__time { text-align:right; }
+    .msg--user { flex-direction: row-reverse; }
+    .msg__av { width: 26px; height: 26px; border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 0.7rem; font-weight: 700; flex-shrink: 0; }
+    .msg--bot  .msg__av { background: linear-gradient(135deg, var(--cyan), var(--cyan-dim)); color: var(--bg-deeper); }
+    .msg--user .msg__av { background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: #fff; }
+    .msg__bubble { max-width: 80%; padding: 9px 13px; border-radius: 13px; font-size: 0.82rem; line-height: 1.5; }
+    .msg--bot  .msg__bubble { background: rgba(255,255,255,0.05); border: 1px solid var(--border); color: var(--text); border-bottom-left-radius: 3px; }
+    .msg--user .msg__bubble { background: linear-gradient(135deg, var(--cyan), var(--cyan-dim)); color: var(--bg-deeper); font-weight: 600; border-bottom-right-radius: 3px; }
+    .msg__time { font-size: 0.62rem; color: var(--text-muted); margin-top: 3px; }
+    .msg--user .msg__time { text-align: right; }
 
-    .chat-typing { display:none; padding:0 14px 6px; align-items:center; gap:7px; }
-    .chat-typing.on { display:flex; }
-    .chat-typing__av {
-      width:26px; height:26px; border-radius:50%;
-      background:linear-gradient(135deg,var(--cyan),var(--cyan-dim));
-      display:flex; align-items:center; justify-content:center;
-      font-size:0.7rem; color:var(--bg-deeper); flex-shrink:0;
-    }
-    .chat-typing__dots {
-      background:rgba(255,255,255,0.05); border:1px solid var(--border);
-      border-radius:13px; border-bottom-left-radius:3px;
-      padding:9px 13px; display:flex; gap:4px; align-items:center;
-    }
-    .chat-typing__dots span {
-      width:5px; height:5px; border-radius:50%;
-      background:var(--text-muted); display:block;
-      animation:tdot 1.2s infinite;
-    }
-    .chat-typing__dots span:nth-child(2){animation-delay:.2s}
-    .chat-typing__dots span:nth-child(3){animation-delay:.4s}
-    @keyframes tdot {
-      0%,60%,100%{transform:translateY(0);opacity:.4}
-      30%{transform:translateY(-4px);opacity:1}
-    }
+    .chat-typing { display: none; padding: 0 14px 6px; align-items: center; gap: 7px; }
+    .chat-typing.on { display: flex; }
+    .chat-typing__av { width: 26px; height: 26px; border-radius: 50%; background: linear-gradient(135deg, var(--cyan), var(--cyan-dim)); display: flex; align-items: center; justify-content: center; font-size: 0.7rem; color: var(--bg-deeper); flex-shrink: 0; }
+    .chat-typing__dots { background: rgba(255,255,255,0.05); border: 1px solid var(--border); border-radius: 13px; border-bottom-left-radius: 3px; padding: 9px 13px; display: flex; gap: 4px; align-items: center; }
+    .chat-typing__dots span { width: 5px; height: 5px; border-radius: 50%; background: var(--text-muted); display: block; animation: tdot 1.2s infinite; }
+    .chat-typing__dots span:nth-child(2) { animation-delay: .2s; }
+    .chat-typing__dots span:nth-child(3) { animation-delay: .4s; }
+    @keyframes tdot { 0%,60%,100%{transform:translateY(0);opacity:.4} 30%{transform:translateY(-4px);opacity:1} }
 
-    .chat-chips {
-      padding:0 14px 8px;
-      display:flex; flex-wrap:wrap; gap:5px;
-    }
-    .chat-chip {
-      padding:4px 11px; border-radius:20px;
-      background:rgba(0,212,255,0.07);
-      border:1px solid rgba(0,212,255,0.22);
-      color:var(--cyan); font-size:0.73rem; font-weight:600;
-      cursor:pointer; transition:all 0.18s; white-space:nowrap;
-    }
-    .chat-chip:hover { background:rgba(0,212,255,0.16); border-color:var(--cyan); }
+    .chat-chips { padding: 0 14px 8px; display: flex; flex-wrap: wrap; gap: 5px; }
+    .chat-chip { padding: 4px 11px; border-radius: 20px; background: rgba(0,212,255,0.07); border: 1px solid rgba(0,212,255,0.22); color: var(--cyan); font-size: 0.73rem; font-weight: 600; cursor: pointer; transition: all 0.18s; white-space: nowrap; }
+    .chat-chip:hover { background: rgba(0,212,255,0.16); border-color: var(--cyan); }
 
-    .chat-footer { padding:10px 14px; border-top:1px solid var(--border); }
-    .chat-form   { display:flex; gap:7px; align-items:flex-end; }
-    .chat-input  {
-      flex:1; background:rgba(255,255,255,0.04);
-      border:1px solid var(--border); border-radius:9px;
-      padding:8px 12px; color:var(--text); font-size:0.82rem;
-      font-family:inherit; outline:none; resize:none;
-      max-height:90px; line-height:1.4;
-      transition:border-color 0.2s;
-    }
-    .chat-input:focus  { border-color:var(--cyan); }
-    .chat-input::placeholder { color:var(--text-muted); }
-    .chat-send {
-      width:36px; height:36px; border-radius:9px;
-      background:linear-gradient(135deg,var(--cyan),var(--cyan-dim));
-      border:none; cursor:pointer;
-      display:flex; align-items:center; justify-content:center;
-      transition:all 0.2s; flex-shrink:0;
-    }
-    .chat-send:hover { transform:scale(1.06); box-shadow:0 3px 12px rgba(0,212,255,0.35); }
-    .chat-send:disabled { opacity:0.4; cursor:not-allowed; transform:none; }
-    .chat-note { font-size:0.65rem; color:var(--text-muted); text-align:center; margin-top:6px; }
+    .chat-footer { padding: 10px 14px; border-top: 1px solid var(--border); }
+    .chat-form   { display: flex; gap: 7px; align-items: flex-end; }
+    .chat-input  { flex: 1; background: rgba(255,255,255,0.04); border: 1px solid var(--border); border-radius: 9px; padding: 8px 12px; color: var(--text); font-size: 0.82rem; font-family: inherit; outline: none; resize: none; max-height: 90px; line-height: 1.4; transition: border-color 0.2s; }
+    .chat-input:focus  { border-color: var(--cyan); }
+    .chat-input::placeholder { color: var(--text-muted); }
+    .chat-send { width: 36px; height: 36px; border-radius: 9px; background: linear-gradient(135deg, var(--cyan), var(--cyan-dim)); border: none; cursor: pointer; display: flex; align-items: center; justify-content: center; transition: all 0.2s; flex-shrink: 0; }
+    .chat-send:hover { transform: scale(1.06); box-shadow: 0 3px 12px rgba(0,212,255,0.35); }
+    .chat-send:disabled { opacity: 0.4; cursor: not-allowed; transform: none; }
+    .chat-note { font-size: 0.65rem; color: var(--text-muted); text-align: center; margin-top: 6px; }
 
-    /* ═══════════════════════════════════════════
-       RESPONSIVE
-    ═══════════════════════════════════════════ */
-    @media(max-width:1100px){
-      .grid-2   { grid-template-columns:1fr; }
-      .grid-2-eq{ grid-template-columns:1fr; }
-      .grid-3   { grid-template-columns:1fr 1fr; }
+    /* ── RESPONSIVE ── */
+    @media(max-width:1100px) { .grid-2 { grid-template-columns:1fr; } .grid-2-eq { grid-template-columns:1fr; } }
+    @media(max-width:860px) {
+      .sidebar { transform: translateX(calc(-1 * var(--sidebar-w))); box-shadow: 4px 0 24px rgba(0,0,0,0.5); }
+      .sidebar.open { transform: translateX(0); }
+      .main { margin-left: 0; padding: 20px 14px 80px; }
+      .topnav__hamburger { display: flex; }
+      .topnav__search { max-width: 180px; }
     }
-    @media(max-width:860px){
-      .sidebar { transform:translateX(calc(-1 * var(--sidebar-w))); box-shadow:4px 0 24px rgba(0,0,0,0.5); }
-      .sidebar.open { transform:translateX(0); }
-      .main { margin-left:0; padding:20px 14px 80px; }
-      .topnav__hamburger { display:flex; }
-      .topnav__search { max-width:180px; }
+    @media(max-width:580px) {
+      .kpi-grid { grid-template-columns: 1fr 1fr; }
+      .topnav__search { display: none; }
+      .topnav__username { display: none; }
+      .btn-export span { display: none; }
+      .chat-win { width: calc(100vw - 28px); right: 14px; bottom: 82px; }
+      .chat-fab { right: 14px; bottom: 14px; }
     }
-    @media(max-width:580px){
-      .kpi-grid { grid-template-columns:1fr 1fr; }
-      .grid-3   { grid-template-columns:1fr; }
-      .topnav__search { display:none; }
-      .topnav__username { display:none; }
-      .btn-export span { display:none; }
-      .chat-win { width:calc(100vw - 28px); right:14px; bottom:82px; }
-      .chat-fab { right:14px; bottom:14px; }
-    }
-    @media(max-width:380px){
-      .kpi-grid { grid-template-columns:1fr; }
-    }
+    @media(max-width:380px) { .kpi-grid { grid-template-columns: 1fr; } }
   </style>
 </head>
 <body>
 
-<!-- ══════════════════════════════════
-     TOP NAV
-══════════════════════════════════ -->
+<!-- TOP NAV -->
 <nav class="topnav" role="navigation" aria-label="Main navigation">
-
   <div class="topnav__brand">
-    <!-- Shield logo matching screenshot -->
-    <svg width="28" height="28" viewBox="0 0 40 40" fill="none"
-         xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+    <svg width="28" height="28" viewBox="0 0 40 40" fill="none" aria-hidden="true">
       <defs>
         <linearGradient id="shieldG" x1="0" y1="0" x2="1" y2="1">
           <stop offset="0%" stop-color="#00d4ff"/>
           <stop offset="100%" stop-color="#0077aa"/>
         </linearGradient>
       </defs>
-      <path d="M20 3L5 9v10c0 9 6.5 16.5 15 19 8.5-2.5 15-10 15-19V9L20 3z"
-            fill="url(#shieldG)" opacity="0.18"/>
-      <path d="M20 3L5 9v10c0 9 6.5 16.5 15 19 8.5-2.5 15-10 15-19V9L20 3z"
-            fill="none" stroke="url(#shieldG)" stroke-width="1.6"/>
-      <path d="M14 20l4 4 8-8" stroke="#00d4ff" stroke-width="2.2"
-            stroke-linecap="round" stroke-linejoin="round"/>
+      <path d="M20 3L5 9v10c0 9 6.5 16.5 15 19 8.5-2.5 15-10 15-19V9L20 3z" fill="url(#shieldG)" opacity="0.18"/>
+      <path d="M20 3L5 9v10c0 9 6.5 16.5 15 19 8.5-2.5 15-10 15-19V9L20 3z" fill="none" stroke="url(#shieldG)" stroke-width="1.6"/>
+      <path d="M14 20l4 4 8-8" stroke="#00d4ff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
     <span class="topnav__brand-text">CyberBench</span>
   </div>
 
   <div class="topnav__body">
     <div class="topnav__search">
-      <svg class="topnav__search-ico" width="12" height="12" viewBox="0 0 24 24"
-           fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+      <svg class="topnav__search-ico" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
         <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
       </svg>
-      <input type="search" placeholder="Search tickets, alerts…" aria-label="Search"/>
+      <input type="search" id="searchInput" placeholder="Search tickets, alerts…" aria-label="Search dashboard"/>
     </div>
 
     <div class="topnav__right">
-      <div class="topnav__icon" role="button" tabindex="0" aria-label="Notifications, 7 unread">
-        🔔
-        <span class="topnav__badge" aria-hidden="true">7</span>
+      <!-- Notifications -->
+      <div style="position:relative;">
+        <div class="topnav__icon" id="notifBtn" role="button" tabindex="0" aria-label="Notifications, 7 unread" aria-haspopup="true" aria-expanded="false">
+          🔔
+          <span class="topnav__badge" aria-hidden="true">7</span>
+        </div>
+        <div class="notif-dropdown" id="notifDropdown" role="menu" aria-label="Notifications">
+          <div class="notif-hdr">
+            <span>Notifications</span>
+            <button id="markAllRead">Mark all read</button>
+          </div>
+          <ul class="notif-list">
+            <li class="notif-item" role="menuitem">
+              <div class="notif-dot-wrap"><div class="notif-dot"></div></div>
+              <div class="notif-body">
+                <div class="notif-title">Ransomware detected on WS-CA-1432</div>
+                <div class="notif-time">2 min ago</div>
+              </div>
+            </li>
+            <li class="notif-item" role="menuitem">
+              <div class="notif-dot-wrap"><div class="notif-dot"></div></div>
+              <div class="notif-body">
+                <div class="notif-title">Privilege escalation attempt blocked</div>
+                <div class="notif-time">8 min ago</div>
+              </div>
+            </li>
+            <li class="notif-item" role="menuitem">
+              <div class="notif-dot-wrap"><div class="notif-dot"></div></div>
+              <div class="notif-body">
+                <div class="notif-title">TKT-000124 updated by Alex Johnson</div>
+                <div class="notif-time">15 min ago</div>
+              </div>
+            </li>
+            <li class="notif-item" role="menuitem">
+              <div class="notif-dot-wrap"><div class="notif-dot"></div></div>
+              <div class="notif-body">
+                <div class="notif-title">Compliance score improved to 87%</div>
+                <div class="notif-time">1 hr ago</div>
+              </div>
+            </li>
+          </ul>
+        </div>
       </div>
-      <div class="topnav__icon" role="button" tabindex="0" aria-label="Help">❔</div>
-      <div class="topnav__user" role="button" tabindex="0" aria-label="User menu">
+
+      <div class="topnav__icon" id="helpBtn" role="button" tabindex="0" aria-label="Help">❔</div>
+
+      <div class="topnav__user" id="userMenuBtn" role="button" tabindex="0" aria-label="User menu">
         <div class="topnav__avatar" aria-hidden="true">AU</div>
         <span class="topnav__username">Admin User</span>
       </div>
+
       <button class="btn-export" id="exportBtn" aria-label="Export report">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none"
-             stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
           <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
           <polyline points="7 10 12 15 17 10"/>
           <line x1="12" y1="15" x2="12" y2="3"/>
         </svg>
         <span>Export Report</span>
       </button>
-      <button class="topnav__hamburger" id="sidebarBtn"
-              aria-label="Toggle sidebar" aria-expanded="false">☰</button>
+
+      <button class="topnav__hamburger" id="sidebarBtn" aria-label="Toggle sidebar" aria-expanded="false">☰</button>
     </div>
   </div>
 </nav>
 
-<div class="sidebar__overlay" id="sidebarOverlay" aria-hidden="true"></div>
+<div class="sidebar__overlay" id="sidebarOverlay"></div>
 
-<!-- ══════════════════════════════════
-     LAYOUT
-══════════════════════════════════ -->
+<!-- LAYOUT -->
 <div class="layout">
 
   <!-- SIDEBAR -->
@@ -693,11 +521,11 @@
       <a href="dashboard.html" class="sidebar__link active" aria-current="page">
         <span class="sidebar__icon">🏠</span> Dashboard
       </a>
-      <a href="#" class="sidebar__link">
+      <a href="#" class="sidebar__link" id="navTickets">
         <span class="sidebar__icon">🎫</span> Tickets
-        <span class="sidebar__pill" aria-label="48 open">48</span>
+        <span class="sidebar__pill" aria-label="48 open tickets">48</span>
       </a>
-      <a href="#" class="sidebar__link">
+      <a href="#" class="sidebar__link" id="navAlerts">
         <span class="sidebar__icon">⚠️</span> Alerts
         <span class="sidebar__pill" aria-label="23 alerts">23</span>
       </a>
@@ -717,16 +545,13 @@
         <div class="sidebar__org-name">Awesome SOC</div>
         <div class="sidebar__org-plan">Enterprise Plan</div>
       </div>
-      <button class="sidebar__settings" onclick="alert('Settings — coming soon.')">
-        View Settings
-      </button>
+      <button class="sidebar__settings" id="settingsBtn">View Settings</button>
     </div>
   </aside>
 
-  <!-- MAIN CONTENT -->
+  <!-- MAIN -->
   <main class="main" id="main" role="main">
 
-    <!-- Page header -->
     <div class="page-hdr">
       <h1>Dashboard</h1>
       <p>Executive overview of security operations and risk posture</p>
@@ -736,10 +561,9 @@
       </div>
     </div>
 
-    <!-- ── KPIs ── -->
+    <!-- KPIs -->
     <p class="sec-label">Key Performance Indicators</p>
     <div class="kpi-grid" role="list" aria-label="Key performance indicators">
-
       <div class="kpi kpi--blue" role="listitem">
         <div class="kpi__top">
           <span class="kpi__label">Open Tickets</span>
@@ -748,7 +572,6 @@
         <div class="kpi__val">48</div>
         <span class="kpi__delta">↓ 12% vs last 7 days</span>
       </div>
-
       <div class="kpi kpi--red" role="listitem">
         <div class="kpi__top">
           <span class="kpi__label">Critical Alerts</span>
@@ -757,16 +580,14 @@
         <div class="kpi__val">7</div>
         <span class="kpi__delta">↓ 22% vs last 7 days</span>
       </div>
-
       <div class="kpi kpi--purple" role="listitem">
         <div class="kpi__top">
-          <span class="kpi__label">MTTR (Mean Time To Remediate)</span>
+          <span class="kpi__label">MTTR</span>
           <div class="kpi__ico" aria-hidden="true">🕒</div>
         </div>
         <div class="kpi__val">4.2h</div>
         <span class="kpi__delta">↓ 18% vs last 7 days</span>
       </div>
-
       <div class="kpi kpi--yellow" role="listitem">
         <div class="kpi__top">
           <span class="kpi__label">Risk Score</span>
@@ -775,7 +596,6 @@
         <div class="kpi__val">68</div>
         <div class="kpi__sub">Medium Risk</div>
       </div>
-
       <div class="kpi kpi--green" role="listitem">
         <div class="kpi__top">
           <span class="kpi__label">Compliance Score</span>
@@ -784,43 +604,42 @@
         <div class="kpi__val">87%</div>
         <span class="kpi__delta">↑ 5% vs last 7 days</span>
       </div>
-
     </div>
 
-    <!-- ── CHARTS: Risk + Status ── -->
+    <!-- Charts row 1 -->
     <p class="sec-label">Security Trends</p>
     <div class="grid-2">
       <div class="chart-card">
         <h3><em>📉</em> Risk Score Over Time</h3>
         <div class="chart-wrap chart-wrap--260">
-          <canvas id="cRisk" aria-label="Risk score over time"></canvas>
+          <canvas id="cRisk" aria-label="Risk score over time line chart"></canvas>
         </div>
       </div>
       <div class="chart-card">
         <h3><em>🎫</em> Tickets by Status</h3>
         <div class="chart-wrap chart-wrap--260">
-          <canvas id="cStatus" aria-label="Tickets by status"></canvas>
+          <canvas id="cStatus" aria-label="Tickets by status doughnut chart"></canvas>
         </div>
       </div>
     </div>
 
-    <!-- ── CHART: Priority ── -->
-    <div class="grid-2-eq" style="margin-bottom:18px">
+    <!-- Charts row 2 -->
+    <div class="grid-2-eq">
       <div class="chart-card">
         <h3><em>🔺</em> Tickets by Priority</h3>
         <div class="chart-wrap chart-wrap--200">
-          <canvas id="cPriority" aria-label="Tickets by priority"></canvas>
+          <canvas id="cPriority" aria-label="Tickets by priority bar chart"></canvas>
         </div>
       </div>
       <div class="chart-card">
         <h3><em>🚨</em> Top Alert Categories</h3>
         <div class="chart-wrap chart-wrap--200">
-          <canvas id="cAlerts" aria-label="Top alert categories"></canvas>
+          <canvas id="cAlerts" aria-label="Top alert categories horizontal bar chart"></canvas>
         </div>
       </div>
     </div>
 
-    <!-- ── RECENT CRITICAL ALERTS ── -->
+    <!-- Critical Alerts -->
     <p class="sec-label">Recent Critical Alerts</p>
     <div class="alerts-card" role="region" aria-label="Recent critical alerts">
       <ul class="alerts-list">
@@ -859,16 +678,16 @@
       </ul>
     </div>
 
-    <!-- ── CHART: Remediation ── -->
+    <!-- Remediation chart -->
     <p class="sec-label">Remediation</p>
     <div class="chart-card" style="margin-bottom:18px">
       <h3><em>🔧</em> Remediation Progress</h3>
       <div class="chart-wrap chart-wrap--180">
-        <canvas id="cRemediation" aria-label="Remediation progress"></canvas>
+        <canvas id="cRemediation" aria-label="Remediation progress doughnut chart"></canvas>
       </div>
     </div>
 
-    <!-- ── TABLE ── -->
+    <!-- Table -->
     <p class="sec-label">Recent Ticket Activity</p>
     <div class="table-card" role="region" aria-label="Recent ticket activity">
       <div class="table-card__hdr">
@@ -911,7 +730,7 @@
       </div>
     </div>
 
-    <!-- ── INTEGRATIONS ── -->
+    <!-- Integrations -->
     <p class="sec-label">Integrations Status</p>
     <ul class="integ-grid" aria-label="Integration statuses">
       <li class="integ-card">
@@ -938,24 +757,18 @@
     </ul>
 
   </main>
-</div><!-- /.layout -->
+</div>
 
-<!-- ══════════════════════════════════
-     AI CHAT WIDGET
-══════════════════════════════════ -->
-<button class="chat-fab" id="chatFab"
-        aria-label="Open AI assistant" aria-expanded="false" aria-controls="chatWin">
-  <svg id="chatFabIco" width="22" height="22" viewBox="0 0 24 24" fill="none"
-       stroke="#080b10" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
-       aria-hidden="true">
-    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
-  </svg>
+<!-- AI CHAT WIDGET -->
+<button class="chat-fab" id="chatFab" aria-label="Open AI assistant" aria-expanded="false" aria-controls="chatWin">
+  <span class="chat-fab-ico">
+    <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#080b10" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+    </svg>
+  </span>
 </button>
 
-<div class="chat-win" id="chatWin"
-     role="dialog" aria-label="CyberBench AI Assistant"
-     aria-hidden="true" aria-modal="true">
-
+<div class="chat-win" id="chatWin" role="dialog" aria-label="CyberBench AI Assistant" aria-hidden="true" aria-modal="true">
   <div class="chat-hdr">
     <div class="chat-hdr__av" aria-hidden="true">🤖</div>
     <div>
@@ -982,298 +795,516 @@
     </div>
   </div>
 
-  <div class="chat-chips" id="chatChips" aria-label="Suggested questions">
-    <button class="chat-chip" data-msg="What do the current KPI metrics mean?">📊 Explain KPIs</button>
-    <button class="chat-chip" data-msg="Tell me about the critical alerts">🚨 Critical Alerts</button>
-    <button class="chat-chip" data-msg="What is the current risk score?">📈 Risk Score</button>
-    <button class="chat-chip" data-msg="Show me the ticket status summary">🎫 Ticket Summary</button>
+  <div class="chat-chips" id="chatChips">
+    <button class="chat-chip" type="button" data-msg="What do the current KPI metrics mean?">📊 Explain KPIs</button>
+    <button class="chat-chip" type="button" data-msg="Tell me about the critical alerts">🚨 Critical Alerts</button>
+    <button class="chat-chip" type="button" data-msg="What is the current risk score?">📈 Risk Score</button>
+    <button class="chat-chip" type="button" data-msg="Show me the ticket status summary">🎫 Ticket Summary</button>
   </div>
 
   <div class="chat-footer">
-    <form class="chat-form" id="chatForm" novalidate>
-      <textarea class="chat-input" id="chatInput"
-                placeholder="Ask about alerts, tickets, risk…"
-                rows="1" aria-label="Type your message" maxlength="500"></textarea>
-      <button type="submit" class="chat-send" id="chatSend" aria-label="Send message">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
-             stroke="#080b10" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"
-             aria-hidden="true">
+    <div class="chat-form">
+      <textarea class="chat-input" id="chatInput" placeholder="Ask about alerts, tickets, risk…" rows="1" aria-label="Type your message" maxlength="500"></textarea>
+      <button type="button" class="chat-send" id="chatSend" aria-label="Send message">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#080b10" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
           <line x1="22" y1="2" x2="11" y2="13"/>
           <polygon points="22 2 15 22 11 13 2 9 22 2"/>
         </svg>
       </button>
-    </form>
-    <p class="chat-note">Demo widget. Don&rsquo;t paste secrets.</p>
+    </div>
+    <p class="chat-note">Demo widget — don't paste secrets.</p>
   </div>
 </div>
 
-<!-- ══════════════════════════════════
-     SCRIPTS
-══════════════════════════════════ -->
 <script>
-(function(){
-  'use strict';
+// Wait for full DOM + Chart.js to load
+window.addEventListener('load', function () {
 
-  /* ── CHART DEFAULTS ── */
-  var C  = '#00d4ff', R = '#ef4444', O = '#f97316',
-      Y  = '#f59e0b', G = '#22c55e', B = '#3b82f6', P = '#a855f7';
+  /* ════════════════════════════════════════
+     CHARTS
+  ════════════════════════════════════════ */
+  var CYAN = '#00d4ff', RED = '#ef4444', ORG = '#f97316',
+      YEL  = '#f59e0b', GRN = '#22c55e', BLU = '#3b82f6', PRP = '#a855f7';
   var GRID = 'rgba(255,255,255,0.05)';
   var TICK = '#64748b';
+
   Chart.defaults.color = TICK;
-  Chart.defaults.font.family = "'Segoe UI',system-ui,sans-serif";
+  Chart.defaults.font.family = "'Segoe UI', system-ui, sans-serif";
   Chart.defaults.font.size = 11;
 
-  /* Risk Score Over Time */
-  new Chart(document.getElementById('cRisk'),{
-    type:'line',
-    data:{
-      labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],
-      datasets:[{
-        label:'Risk Score', data:[82,78,74,71,70,69,68],
-        borderColor:C, backgroundColor:'rgba(0,212,255,0.07)',
-        borderWidth:2.5, pointBackgroundColor:C,
-        pointRadius:4, pointHoverRadius:6,
-        fill:true, tension:0.4
+  // Risk Score Over Time
+  new Chart(document.getElementById('cRisk'), {
+    type: 'line',
+    data: {
+      labels: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+      datasets: [{
+        label: 'Risk Score',
+        data: [82, 78, 74, 71, 70, 69, 68],
+        borderColor: CYAN,
+        backgroundColor: 'rgba(0,212,255,0.07)',
+        borderWidth: 2.5,
+        pointBackgroundColor: CYAN,
+        pointRadius: 4, pointHoverRadius: 6,
+        fill: true, tension: 0.4
       }]
     },
-    options:{
-      responsive:true, maintainAspectRatio:false,
-      plugins:{legend:{display:false}},
-      scales:{
-        x:{grid:{color:GRID},ticks:{color:TICK}},
-        y:{min:50,max:100,grid:{color:GRID},ticks:{color:TICK}}
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { color: GRID }, ticks: { color: TICK } },
+        y: { min: 50, max: 100, grid: { color: GRID }, ticks: { color: TICK } }
       }
     }
   });
 
-  /* Tickets by Status */
-  new Chart(document.getElementById('cStatus'),{
-    type:'doughnut',
-    data:{
-      labels:['Open','In Progress','Resolved','Closed'],
-      datasets:[{
-        data:[18,14,10,6],
-        backgroundColor:[R,Y,G,B],
-        borderColor:'#111827', borderWidth:3, hoverOffset:6
+  // Tickets by Status
+  new Chart(document.getElementById('cStatus'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Open', 'In Progress', 'Resolved', 'Closed'],
+      datasets: [{
+        data: [18, 14, 10, 6],
+        backgroundColor: [RED, YEL, GRN, BLU],
+        borderColor: '#111827', borderWidth: 3, hoverOffset: 6
       }]
     },
-    options:{
-      responsive:true, maintainAspectRatio:false,
-      plugins:{
-        legend:{
-          position:'bottom',
-          labels:{padding:14,usePointStyle:true,pointStyleWidth:9}
-        }
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom', labels: { padding: 14, usePointStyle: true, pointStyleWidth: 9 } }
       },
-      cutout:'66%'
+      cutout: '66%'
     }
   });
 
-  /* Tickets by Priority */
-  new Chart(document.getElementById('cPriority'),{
-    type:'bar',
-    data:{
-      labels:['Critical','High','Medium','Low'],
-      datasets:[{
-        label:'Tickets', data:[7,15,18,8],
-        backgroundColor:[R,O,Y,G],
-        borderRadius:6, borderSkipped:false
+  // Tickets by Priority
+  new Chart(document.getElementById('cPriority'), {
+    type: 'bar',
+    data: {
+      labels: ['Critical', 'High', 'Medium', 'Low'],
+      datasets: [{
+        label: 'Tickets',
+        data: [7, 15, 18, 8],
+        backgroundColor: [RED, ORG, YEL, GRN],
+        borderRadius: 6, borderSkipped: false
       }]
     },
-    options:{
-      responsive:true, maintainAspectRatio:false,
-      plugins:{legend:{display:false}},
-      scales:{
-        x:{grid:{display:false},ticks:{color:TICK}},
-        y:{grid:{color:GRID},ticks:{color:TICK}}
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { display: false }, ticks: { color: TICK } },
+        y: { grid: { color: GRID }, ticks: { color: TICK } }
       }
     }
   });
 
-  /* Top Alert Categories */
-  new Chart(document.getElementById('cAlerts'),{
-    type:'bar',
-    data:{
-      labels:['Malware','Phishing','Brute Force','Recon','Exfil'],
-      datasets:[{
-        label:'Alerts', data:[24,18,14,9,6],
-        backgroundColor:[R,O,Y,P,B],
-        borderRadius:6, borderSkipped:false
+  // Top Alert Categories
+  new Chart(document.getElementById('cAlerts'), {
+    type: 'bar',
+    data: {
+      labels: ['Malware', 'Phishing', 'Brute Force', 'Recon', 'Exfil'],
+      datasets: [{
+        label: 'Alerts',
+        data: [24, 18, 14, 9, 6],
+        backgroundColor: [RED, ORG, YEL, PRP, BLU],
+        borderRadius: 6, borderSkipped: false
       }]
     },
-    options:{
-      responsive:true, maintainAspectRatio:false,
-      indexAxis:'y',
-      plugins:{legend:{display:false}},
-      scales:{
-        x:{grid:{color:GRID},ticks:{color:TICK}},
-        y:{grid:{display:false},ticks:{color:TICK}}
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      indexAxis: 'y',
+      plugins: { legend: { display: false } },
+      scales: {
+        x: { grid: { color: GRID }, ticks: { color: TICK } },
+        y: { grid: { display: false }, ticks: { color: TICK } }
       }
     }
   });
 
-  /* Remediation Progress */
-  new Chart(document.getElementById('cRemediation'),{
-    type:'doughnut',
-    data:{
-      labels:['Remediated','In Progress','Pending'],
-      datasets:[{
-        data:[62,24,14],
-        backgroundColor:[G,Y,R],
-        borderColor:'#111827', borderWidth:3, hoverOffset:6
+  // Remediation Progress
+  new Chart(document.getElementById('cRemediation'), {
+    type: 'doughnut',
+    data: {
+      labels: ['Remediated', 'In Progress', 'Pending'],
+      datasets: [{
+        data: [62, 24, 14],
+        backgroundColor: [GRN, YEL, RED],
+        borderColor: '#111827', borderWidth: 3, hoverOffset: 6
       }]
     },
-    options:{
-      responsive:true, maintainAspectRatio:false,
-      plugins:{
-        legend:{
-          position:'bottom',
-          labels:{padding:14,usePointStyle:true,pointStyleWidth:9}
-        }
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      plugins: {
+        legend: { position: 'bottom', labels: { padding: 14, usePointStyle: true, pointStyleWidth: 9 } }
       },
-      cutout:'62%'
+      cutout: '62%'
     }
   });
 
-  /* ── EXPORT BUTTON ── */
-  document.getElementById('exportBtn').addEventListener('click',function(){
-    alert('Export Report — feature coming soon.');
-  });
+  /* ════════════════════════════════════════
+     SIDEBAR TOGGLE
+  ════════════════════════════════════════ */
+  var sidebarBtn     = document.getElementById('sidebarBtn');
+  var sidebar        = document.getElementById('sidebar');
+  var sidebarOverlay = document.getElementById('sidebarOverlay');
+  var sidebarOpen    = false;
 
-  /* ── SIDEBAR TOGGLE ── */
-  var sBtn     = document.getElementById('sidebarBtn');
-  var sidebar  = document.getElementById('sidebar');
-  var overlay  = document.getElementById('sidebarOverlay');
-  var sbOpen   = false;
-
-  function openSB(){
-    sbOpen=true;
+  function openSidebar() {
+    sidebarOpen = true;
     sidebar.classList.add('open');
-    overlay.classList.add('open');
-    overlay.removeAttribute('aria-hidden');
-    sBtn.setAttribute('aria-expanded','true');
-    sBtn.textContent='✕';
+    sidebarOverlay.classList.add('open');
+    sidebarBtn.setAttribute('aria-expanded', 'true');
+    sidebarBtn.textContent = '✕';
   }
-  function closeSB(){
-    sbOpen=false;
+
+  function closeSidebar() {
+    sidebarOpen = false;
     sidebar.classList.remove('open');
-    overlay.classList.remove('open');
-    overlay.setAttribute('aria-hidden','true');
-    sBtn.setAttribute('aria-expanded','false');
-    sBtn.textContent='☰';
-  }
-  sBtn.addEventListener('click',function(){ sbOpen?closeSB():openSB(); });
-  overlay.addEventListener('click',closeSB);
-
-  /* ── AI CHAT ── */
-  var fab      = document.getElementById('chatFab');
-  var win      = document.getElementById('chatWin');
-  var closeBtn = document.getElementById('chatClose');
-  var msgs     = document.getElementById('chatMsgs');
-  var typing   = document.getElementById('chatTyping');
-  var chips    = document.getElementById('chatChips');
-  var form     = document.getElementById('chatForm');
-  var input    = document.getElementById('chatInput');
-  var send     = document.getElementById('chatSend');
-  var isOpen   = false;
-
-  function openChat(){
-    isOpen=true;
-    win.classList.add('open');
-    win.setAttribute('aria-hidden','false');
-    fab.classList.add('open');
-    fab.setAttribute('aria-expanded','true');
-    fab.setAttribute('aria-label','Close AI assistant');
-    input.focus();
-  }
-  function closeChat(){
-    isOpen=false;
-    win.classList.remove('open');
-    win.setAttribute('aria-hidden','true');
-    fab.classList.remove('open');
-    fab.setAttribute('aria-expanded','false');
-    fab.setAttribute('aria-label','Open AI assistant');
-    fab.focus();
+    sidebarOverlay.classList.remove('open');
+    sidebarBtn.setAttribute('aria-expanded', 'false');
+    sidebarBtn.textContent = '☰';
   }
 
-  fab.addEventListener('click',function(){ isOpen?closeChat():openChat(); });
-  closeBtn.addEventListener('click',closeChat);
+  sidebarBtn.addEventListener('click', function () {
+    sidebarOpen ? closeSidebar() : openSidebar();
+  });
 
-  document.addEventListener('keydown',function(e){
-    if(e.key==='Escape'){
-      if(isOpen) closeChat();
-      if(sbOpen) closeSB();
+  sidebarOverlay.addEventListener('click', closeSidebar);
+
+  // Settings button
+  document.getElementById('settingsBtn').addEventListener('click', function () {
+    alert('Settings — coming soon.');
+  });
+
+  /* ════════════════════════════════════════
+     NOTIFICATIONS DROPDOWN
+  ════════════════════════════════════════ */
+  var notifBtn      = document.getElementById('notifBtn');
+  var notifDropdown = document.getElementById('notifDropdown');
+  var notifOpen     = false;
+
+  function openNotif() {
+    notifOpen = true;
+    notifDropdown.classList.add('open');
+    notifBtn.setAttribute('aria-expanded', 'true');
+  }
+
+  function closeNotif() {
+    notifOpen = false;
+    notifDropdown.classList.remove('open');
+    notifBtn.setAttribute('aria-expanded', 'false');
+  }
+
+  notifBtn.addEventListener('click', function (e) {
+    e.stopPropagation();
+    notifOpen ? closeNotif() : openNotif();
+  });
+
+  notifBtn.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); notifOpen ? closeNotif() : openNotif(); }
+  });
+
+  document.getElementById('markAllRead').addEventListener('click', function () {
+    var dots = notifDropdown.querySelectorAll('.notif-dot');
+    dots.forEach(function (d) { d.style.background = 'var(--text-muted)'; });
+    var badge = document.querySelector('.topnav__badge');
+    if (badge) badge.style.display = 'none';
+    this.textContent = 'All read ✓';
+  });
+
+  // Close notif when clicking outside
+  document.addEventListener('click', function (e) {
+    if (notifOpen && !notifDropdown.contains(e.target) && e.target !== notifBtn) {
+      closeNotif();
     }
   });
 
-  input.addEventListener('input',function(){
-    this.style.height='auto';
-    this.style.height=Math.min(this.scrollHeight,90)+'px';
+  /* ════════════════════════════════════════
+     HELP BUTTON
+  ════════════════════════════════════════ */
+  document.getElementById('helpBtn').addEventListener('click', function () {
+    alert('CyberBench Help\n\nDashboard: Overview of KPIs, alerts, and tickets.\nUse the AI chat widget (bottom-right) for instant guidance.\nContact: support@cyberbench.io');
   });
 
-  chips.querySelectorAll('.chat-chip').forEach(function(b){
-    b.addEventListener('click',function(){ sendMsg(this.getAttribute('data-msg')); });
-  });
-  form.addEventListener('submit',function(e){
-    e.preventDefault();
-    var t=input.value.trim();
-    if(t) sendMsg(t);
+  document.getElementById('helpBtn').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.click(); }
   });
 
-  function ts(){ return new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'}); }
+  /* ════════════════════════════════════════
+     EXPORT BUTTON
+  ════════════════════════════════════════ */
+  document.getElementById('exportBtn').addEventListener('click', function () {
+    var btn = this;
+    btn.textContent = 'Exporting…';
+    btn.disabled = true;
+    setTimeout(function () {
+      btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span>Export Report</span>';
+      btn.disabled = false;
+      alert('Report exported successfully!\n\nFile: CyberBench_Dashboard_Report.pdf\nGenerated: ' + new Date().toLocaleString());
+    }, 1500);
+  });
 
-  function addMsg(text,role){
-    var d=document.createElement('div');
-    d.className='msg msg--'+role;
-    d.innerHTML=
-      '<div class="msg__av" aria-hidden="true">'+(role==='bot'?'🤖':'AU')+'</div>'+
-      '<div>'+
-        '<div class="msg__bubble">'+text+'</div>'+
-        '<div class="msg__time">'+ts()+'</div>'+
-      '</div>';
-    msgs.appendChild(d);
-    msgs.scrollTop=msgs.scrollHeight;
+  /* ════════════════════════════════════════
+     SEARCH
+  ════════════════════════════════════════ */
+  document.getElementById('searchInput').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') {
+      var q = this.value.trim();
+      if (q) alert('Search: "' + q + '"\n\nSearch functionality coming soon.');
+    }
+  });
+
+  /* ════════════════════════════════════════
+     SIDEBAR NAV LINKS — active state
+  ════════════════════════════════════════ */
+  document.querySelectorAll('.sidebar__link').forEach(function (link) {
+    link.addEventListener('click', function (e) {
+      if (this.getAttribute('href') === '#') e.preventDefault();
+      document.querySelectorAll('.sidebar__link').forEach(function (l) {
+        l.classList.remove('active');
+        l.removeAttribute('aria-current');
+      });
+      this.classList.add('active');
+      this.setAttribute('aria-current', 'page');
+      if (sidebarOpen) closeSidebar();
+    });
+  });
+
+  /* ════════════════════════════════════════
+     KPI CARD CLICK — opens chat with context
+  ════════════════════════════════════════ */
+  document.querySelectorAll('.kpi').forEach(function (card) {
+    card.style.cursor = 'pointer';
+    card.addEventListener('click', function () {
+      var label = this.querySelector('.kpi__label').textContent.trim();
+      openChat();
+      setTimeout(function () { sendMsg('Tell me more about ' + label); }, 300);
+    });
+  });
+
+  /* ════════════════════════════════════════
+     ALERT ROW CLICK
+  ════════════════════════════════════════ */
+  document.querySelectorAll('.alert-row').forEach(function (row) {
+    row.style.cursor = 'pointer';
+    row.addEventListener('click', function () {
+      var title = this.querySelector('.alert-title').textContent.trim();
+      openChat();
+      setTimeout(function () { sendMsg('What should I do about: ' + title + '?'); }, 300);
+    });
+  });
+
+  /* ════════════════════════════════════════
+     TABLE ROW CLICK
+  ════════════════════════════════════════ */
+  document.querySelectorAll('tbody tr').forEach(function (row) {
+    row.style.cursor = 'pointer';
+    row.addEventListener('click', function () {
+      var id    = this.querySelector('.td-id').textContent.trim();
+      var title = this.querySelectorAll('td')[1].textContent.trim();
+      openChat();
+      setTimeout(function () { sendMsg('Tell me about ticket ' + id + ': ' + title); }, 300);
+    });
+  });
+
+  /* ════════════════════════════════════════
+     GLOBAL KEYBOARD SHORTCUTS
+  ════════════════════════════════════════ */
+  document.addEventListener('keydown', function (e) {
+    if (e.key === 'Escape') {
+      if (chatOpen)    closeChat();
+      if (sidebarOpen) closeSidebar();
+      if (notifOpen)   closeNotif();
+    }
+    // Ctrl/Cmd + K → focus search
+    if ((e.ctrlKey || e.metaKey) && e.key === 'k') {
+      e.preventDefault();
+      var si = document.getElementById('searchInput');
+      if (si) si.focus();
+    }
+  });
+
+  /* ════════════════════════════════════════
+     AI CHAT
+  ════════════════════════════════════════ */
+  var chatFab    = document.getElementById('chatFab');
+  var chatWin    = document.getElementById('chatWin');
+  var chatClose  = document.getElementById('chatClose');
+  var chatMsgs   = document.getElementById('chatMsgs');
+  var chatTyping = document.getElementById('chatTyping');
+  var chatChips  = document.getElementById('chatChips');
+  var chatInput  = document.getElementById('chatInput');
+  var chatSend   = document.getElementById('chatSend');
+  var chatOpen   = false;
+
+  function openChat() {
+    chatOpen = true;
+    chatWin.classList.add('open');
+    chatWin.setAttribute('aria-hidden', 'false');
+    chatFab.classList.add('open');
+    chatFab.setAttribute('aria-expanded', 'true');
+    chatFab.setAttribute('aria-label', 'Close AI assistant');
+    chatInput.focus();
   }
 
-  function reply(m){
-    var t=m.toLowerCase();
-    if(t.includes('kpi')||t.includes('metric')||t.includes('explain'))
-      return '📊 <strong>KPI Summary:</strong><br>• Open Tickets: <strong>48</strong> (↓ 12%)<br>• Critical Alerts: <strong>7</strong> (↓ 22%)<br>• MTTR: <strong>4.2h</strong> (↓ 18%)<br>• Risk Score: <strong>68</strong> — Medium<br>• Compliance: <strong>87%</strong> (↑ 5%)';
-    if(t.includes('alert')||t.includes('ransomware')||t.includes('privilege')||t.includes('login')||t.includes('malicious'))
-      return '🚨 <strong>4 Active Critical Alerts:</strong><br>1. Ransomware on WS-CA-1432 — isolate endpoint<br>2. Privilege escalation by administrator — review logs<br>3. Brute-force from 45.77.32.18 — consider IP block<br>4. Malicious file on FILE-SRV-02 — quarantine now';
-    if(t.includes('risk'))
-      return '📈 <strong>Risk Score: 68 (Medium)</strong><br>Down from 82 over 7 days. To reach Low Risk (&lt;60): resolve 4 critical alerts, patch OpenSSL CVE, disable SMBv1.';
-    if(t.includes('ticket')||t.includes('summary')||t.includes('tkt'))
-      return '🎫 <strong>Ticket Summary (48 open):</strong><br>18 Open · 14 In Progress · 10 Resolved · 6 Closed<br><br>Recent: TKT-000124 (SMBv1) · TKT-000123 (OpenSSL CVE)';
-    if(t.includes('compliance'))
-      return '✅ <strong>Compliance: 87%</strong><br>Up 5% this week. Remaining gaps: unpatched CVEs, incomplete endpoint hardening, missing MFA on privileged accounts.';
-    if(t.includes('mttr')||t.includes('remediat'))
-      return '🕒 <strong>MTTR: 4.2h</strong> (↓ 18%)<br>62% remediated · 24% in progress · 14% pending. Assigning pending items will further reduce MTTR.';
-    if(t.includes('integration')||t.includes('wazuh')||t.includes('suricata')||t.includes('365'))
-      return '🔗 <strong>All integrations operational:</strong><br>• Wazuh ✅ Connected<br>• Suricata ✅ Connected<br>• Microsoft 365 ✅ Connected';
-    if(t.includes('hi')||t.includes('hello')||t.includes('hey'))
-      return '👋 Hello! I can help with KPIs, alerts, tickets, risk scores, compliance, MTTR, and integrations.';
-    return '🤖 I can help with dashboard metrics, critical alerts, ticket status, risk scores, compliance, and integrations. Try asking about any of those topics.';
+  function closeChat() {
+    chatOpen = false;
+    chatWin.classList.remove('open');
+    chatWin.setAttribute('aria-hidden', 'true');
+    chatFab.classList.remove('open');
+    chatFab.setAttribute('aria-expanded', 'false');
+    chatFab.setAttribute('aria-label', 'Open AI assistant');
+    chatFab.focus();
   }
 
-  function sendMsg(text){
-    chips.style.display='none';
-    addMsg(text,'user');
-    input.value=''; input.style.height='auto';
-    send.disabled=true;
-    typing.classList.add('on');
-    typing.removeAttribute('aria-hidden');
-    msgs.scrollTop=msgs.scrollHeight;
-    setTimeout(function(){
-      typing.classList.remove('on');
-      typing.setAttribute('aria-hidden','true');
-      addMsg(reply(text),'bot');
-      send.disabled=false;
-      input.focus();
-    }, 700+Math.random()*600);
+  chatFab.addEventListener('click', function () {
+    chatOpen ? closeChat() : openChat();
+  });
+
+  chatClose.addEventListener('click', closeChat);
+
+  // Auto-resize textarea
+  chatInput.addEventListener('input', function () {
+    this.style.height = 'auto';
+    this.style.height = Math.min(this.scrollHeight, 90) + 'px';
+  });
+
+  // Enter to send (Shift+Enter for newline)
+  chatInput.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      var txt = this.value.trim();
+      if (txt) sendMsg(txt);
+    }
+  });
+
+  // Send button click
+  chatSend.addEventListener('click', function () {
+    var txt = chatInput.value.trim();
+    if (txt) sendMsg(txt);
+  });
+
+  // Suggestion chips
+  chatChips.querySelectorAll('.chat-chip').forEach(function (chip) {
+    chip.addEventListener('click', function () {
+      var msg = this.getAttribute('data-msg');
+      if (msg) sendMsg(msg);
+    });
+  });
+
+  function getTime() {
+    return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
   }
 
-}());
+  function addMessage(text, role) {
+    var wrap = document.createElement('div');
+    wrap.className = 'msg msg--' + role;
+
+    var av = document.createElement('div');
+    av.className = 'msg__av';
+    av.setAttribute('aria-hidden', 'true');
+    av.textContent = role === 'bot' ? '🤖' : 'AU';
+
+    var inner = document.createElement('div');
+
+    var bubble = document.createElement('div');
+    bubble.className = 'msg__bubble';
+    bubble.innerHTML = text;
+
+    var time = document.createElement('div');
+    time.className = 'msg__time';
+    time.textContent = getTime();
+
+    inner.appendChild(bubble);
+    inner.appendChild(time);
+    wrap.appendChild(av);
+    wrap.appendChild(inner);
+    chatMsgs.appendChild(wrap);
+    chatMsgs.scrollTop = chatMsgs.scrollHeight;
+  }
+
+  function getBotReply(msg) {
+    var t = msg.toLowerCase();
+
+    if (t.includes('kpi') || t.includes('metric') || t.includes('explain') || t.includes('mean'))
+      return '📊 <strong>Current KPI Summary:</strong><br>• Open Tickets: <strong>48</strong> (↓ 12%)<br>• Critical Alerts: <strong>7</strong> (↓ 22%)<br>• MTTR: <strong>4.2h</strong> (↓ 18%)<br>• Risk Score: <strong>68</strong> — Medium Risk<br>• Compliance: <strong>87%</strong> (↑ 5%)<br><br>All metrics are trending positively this week.';
+
+    if (t.includes('ransomware'))
+      return '🔴 <strong>Ransomware on WS-CA-1432:</strong><br>Immediately isolate the endpoint from the network. Engage your IR playbook, preserve forensic evidence, and notify stakeholders. Check lateral movement indicators.';
+
+    if (t.includes('privilege') || t.includes('escalation'))
+      return '🔴 <strong>Privilege Escalation:</strong><br>Review administrator account activity logs immediately. Revoke elevated sessions, reset credentials, and check for persistence mechanisms or scheduled tasks.';
+
+    if (t.includes('failed login') || t.includes('brute'))
+      return '🔴 <strong>Brute Force from 45.77.32.18:</strong><br>Block the IP at the firewall level. Enable account lockout policies if not already active. Review VPN and RDP exposure.';
+
+    if (t.includes('malicious file') || t.includes('file-srv'))
+      return '🔴 <strong>Malicious File on FILE-SRV-02:</strong><br>Quarantine the file immediately via your AV/EDR console. Identify the source of the file, check user access logs, and scan adjacent systems.';
+
+    if (t.includes('alert'))
+      return '🚨 <strong>4 Active Critical Alerts:</strong><br>1. Ransomware on WS-CA-1432 — isolate endpoint<br>2. Privilege escalation by administrator — review logs<br>3. Brute-force from 45.77.32.18 — block IP<br>4. Malicious file on FILE-SRV-02 — quarantine now';
+
+    if (t.includes('risk'))
+      return '📈 <strong>Risk Score: 68 (Medium)</strong><br>Down from 82 over 7 days — good progress.<br><br>To reach Low Risk (&lt;60):<br>• Resolve 4 critical alerts<br>• Patch OpenSSL CVE (TKT-000123)<br>• Disable SMBv1 (TKT-000124)';
+
+    if (t.includes('ticket') || t.includes('summary') || t.includes('tkt-000124') || t.includes('smb'))
+      return '🎫 <strong>Ticket Summary (48 open):</strong><br>18 Open · 14 In Progress · 10 Resolved · 6 Closed<br><br><strong>TKT-000124</strong> — Disable SMBv1 on File Server<br>Assigned: Alex Johnson · High Priority<br><br><strong>TKT-000123</strong> — Patch Critical OpenSSL CVE<br>Assigned: CyberBench SOC · High Priority';
+
+    if (t.includes('tkt-000123') || t.includes('openssl'))
+      return '🎫 <strong>TKT-000123 — Patch Critical OpenSSL CVE</strong><br>Customer: Orlando Law Group<br>Priority: High · Status: In Progress<br>Assigned: CyberBench SOC · Updated 42m ago<br><br>Ensure the patch is tested in staging before production deployment.';
+
+    if (t.includes('compliance'))
+      return '✅ <strong>Compliance Score: 87%</strong> (↑ 5%)<br><br>Remaining gaps:<br>• Unpatched critical CVEs<br>• Incomplete endpoint hardening<br>• Missing MFA on privileged accounts<br><br>Resolving open tickets will push score above 90%.';
+
+    if (t.includes('mttr') || t.includes('remediat') || t.includes('mean time'))
+      return '🕒 <strong>MTTR: 4.2h</strong> (↓ 18% this week)<br><br>Remediation breakdown:<br>• 62% Remediated ✅<br>• 24% In Progress 🔄<br>• 14% Pending ⏳<br><br>Assigning pending items will further reduce MTTR.';
+
+    if (t.includes('integration') || t.includes('wazuh') || t.includes('suricata') || t.includes('365') || t.includes('microsoft'))
+      return '🔗 <strong>All integrations operational:</strong><br>• Wazuh ✅ — SIEM & log management<br>• Suricata ✅ — Network IDS/IPS<br>• Microsoft 365 ✅ — Email & identity monitoring<br><br>Last sync: &lt;1 minute ago.';
+
+    if (t.includes('open ticket') || t.includes('how many ticket'))
+      return '🎫 <strong>48 Open Tickets</strong> (↓ 12% vs last week)<br>Priority breakdown: 7 Critical · 15 High · 18 Medium · 8 Low<br><br>Click any ticket row in the table to see details.';
+
+    if (t.includes('hi') || t.includes('hello') || t.includes('hey') || t.includes('good'))
+      return '👋 Hello! I\'m your CyberBench AI assistant.<br><br>I can help with:<br>• KPI explanations<br>• Alert triage guidance<br>• Ticket details<br>• Risk & compliance scores<br>• Integration status<br><br>What would you like to know?';
+
+    if (t.includes('help') || t.includes('what can you'))
+      return '🤖 <strong>I can help with:</strong><br>• 📊 KPI & metric explanations<br>• 🚨 Alert triage & response steps<br>• 🎫 Ticket details & status<br>• 📈 Risk score breakdown<br>• ✅ Compliance gaps<br>• 🕒 MTTR & remediation progress<br>• 🔗 Integration status<br><br>Just ask!';
+
+    return '🤖 I can help with dashboard metrics, critical alerts, ticket status, risk scores, compliance, MTTR, and integrations.<br><br>Try asking: <em>"Explain my KPIs"</em> or <em>"What should I do about the ransomware alert?"</em>';
+  }
+
+  function sendMsg(text) {
+    // Hide chips after first message
+    chatChips.style.display = 'none';
+
+    // Add user message
+    addMessage(text, 'user');
+
+    // Clear input
+    chatInput.value = '';
+    chatInput.style.height = 'auto';
+    chatSend.disabled = true;
+
+    // Show typing indicator
+    chatTyping.classList.add('on');
+    chatTyping.removeAttribute('aria-hidden');
+    chatMsgs.scrollTop = chatMsgs.scrollHeight;
+
+    // Simulate response delay
+    var delay = 600 + Math.random() * 700;
+    setTimeout(function () {
+      chatTyping.classList.remove('on');
+      chatTyping.setAttribute('aria-hidden', 'true');
+      addMessage(getBotReply(text), 'bot');
+      chatSend.disabled = false;
+      chatInput.focus();
+    }, delay);
+  }
+
+}); // end window.load
 </script>
 </body>
 </html>
