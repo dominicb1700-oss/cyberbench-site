@@ -1,463 +1,432 @@
 <!DOCTYPE html>
 <html>
 <head>
-<meta>
+<meta charset="UTF-8">
 <title>CyberBench KPI Dashboard</title>
 
 <style>
-  /* ── CHAT WIDGET ONLY ── */
-  :root {
-    --bg:        #0d1117;
-    --card:      #111827;
-    --border:    #1e2d45;
-    --cyan:      #00d4ff;
-    --cyan-dim:  #0099bb;
-    --text:      #e2e8f0;
-    --text-muted:#64748b;
-    --text-sub:  #94a3b8;
-    --red:       #ef4444;
-    --green:     #22c55e;
-    --bg-deeper: #080b10;
-    --shadow-lg: 0 8px 40px rgba(0,0,0,0.55);
-    --radius:    12px;
-    --radius-sm: 8px;
-  }
+/* ── LOGO STYLES ── */
+.cb-logo {
+  display: inline-flex;
+  align-items: center;
+  gap: 10px;
+  text-decoration: none;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  margin: 12px 0 16px 0;
+}
+.cb-logo-text {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #00d4ff;
+  letter-spacing: 0.3px;
+}
 
-  /* ── LOGO ONLY (matches other pages) ── */
-  .cb-logo {
-    display: inline-flex;
-    align-items: center;
-    gap: 10px;
-    font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
-    text-decoration: none;
-  }
-  .cb-logo__text {
-    font-size: 1.15rem;
-    font-weight: 800;
-    color: var(--cyan);
-    letter-spacing: 0.3px;
-  }
+/* ── CHAT FAB BUTTON ── */
+#chatFab {
+  position: fixed;
+  bottom: 26px;
+  right: 26px;
+  z-index: 9999;
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #00d4ff, #0077aa);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(0,212,255,0.45);
+  transition: transform 0.2s, box-shadow 0.2s;
+}
+#chatFab:hover {
+  transform: scale(1.09);
+  box-shadow: 0 6px 28px rgba(0,212,255,0.6);
+}
+#chatFabIcon {
+  transition: transform 0.28s;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#chatFab.cb-open #chatFabIcon {
+  transform: rotate(45deg);
+}
 
-  /* ── CHAT FAB BUTTON ── */
-  .chat-fab {
-    position: fixed;
-    bottom: 26px;
-    right: 26px;
-    z-index: 2000;
-    width: 52px;
-    height: 52px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--cyan), var(--cyan-dim));
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    box-shadow: 0 4px 20px rgba(0,212,255,0.38);
-    transition: transform 0.2s, box-shadow 0.2s;
-  }
-  .chat-fab:hover {
-    transform: scale(1.08);
-    box-shadow: 0 6px 28px rgba(0,212,255,0.55);
-  }
-  .chat-fab__ico {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.3s;
-  }
-  .chat-fab.is-open .chat-fab__ico {
-    transform: rotate(45deg);
-  }
+/* ── CHAT WINDOW ── */
+#chatWin {
+  position: fixed;
+  bottom: 92px;
+  right: 26px;
+  z-index: 9998;
+  width: 350px;
+  max-height: 540px;
+  background: #111827;
+  border: 1px solid #1e2d45;
+  border-radius: 16px;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+  overflow: hidden;
+  /* CLOSED */
+  transform: scale(0.88) translateY(16px);
+  opacity: 0;
+  pointer-events: none;
+  transform-origin: bottom right;
+  transition: transform 0.26s cubic-bezier(.34,1.56,.64,1), opacity 0.2s;
+}
+#chatWin.cb-open {
+  transform: scale(1) translateY(0);
+  opacity: 1;
+  pointer-events: all;
+}
 
-  /* ── CHAT WINDOW ── */
-  .chat-win {
-    position: fixed;
-    bottom: 90px;
-    right: 26px;
-    z-index: 1999;
-    width: 350px;
-    max-height: 540px;
-    background: var(--card);
-    border: 1px solid var(--border);
-    border-radius: 16px;
-    display: flex;
-    flex-direction: column;
-    box-shadow: var(--shadow-lg);
-    overflow: hidden;
-    /* closed state */
-    transform: scale(0.9) translateY(14px);
-    opacity: 0;
-    pointer-events: none;
-    transform-origin: bottom right;
-    transition: transform 0.24s cubic-bezier(.34,1.56,.64,1), opacity 0.18s;
-  }
-  .chat-win.is-open {
-    transform: scale(1) translateY(0);
-    opacity: 1;
-    pointer-events: all;
-  }
+/* ── CHAT HEADER ── */
+#chatHdr {
+  padding: 14px 16px;
+  background: linear-gradient(135deg, rgba(0,212,255,0.1), rgba(0,119,170,0.07));
+  border-bottom: 1px solid #1e2d45;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-shrink: 0;
+}
+.cb-hdr-av {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, #00d4ff, #0077aa);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  flex-shrink: 0;
+}
+.cb-hdr-name {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-size: 0.875rem;
+  font-weight: 700;
+  color: #ffffff;
+}
+.cb-hdr-sub {
+  font-family: 'Segoe UI', Arial, sans-serif;
+  font-size: 0.69rem;
+  color: #64748b;
+  margin-top: 1px;
+}
+#chatClose {
+  margin-left: auto;
+  width: 28px;
+  height: 28px;
+  border-radius: 6px;
+  background: rgba(255,255,255,0.05);
+  border: 1px solid #1e2d45;
+  color: #64748b;
+  cursor: pointer;
+  font-size: 0.9rem;
+  font-family: inherit;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.2s, color 0.2s;
+}
+#chatClose:hover {
+  border-color: #ef4444;
+  color: #ef4444;
+}
 
-  /* ── CHAT HEADER ── */
-  .chat-hdr {
-    padding: 14px 16px;
-    background: linear-gradient(135deg, rgba(0,212,255,0.09), rgba(0,119,170,0.06));
-    border-bottom: 1px solid var(--border);
-    display: flex;
-    align-items: center;
-    gap: 10px;
-    flex-shrink: 0;
-  }
-  .chat-hdr__av {
-    width: 34px;
-    height: 34px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--cyan), var(--cyan-dim));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.95rem;
-    flex-shrink: 0;
-  }
-  .chat-hdr__name {
-    font-family: 'Segoe UI', system-ui, sans-serif;
-    font-size: 0.875rem;
-    font-weight: 700;
-    color: #fff;
-  }
-  .chat-hdr__sub {
-    font-family: 'Segoe UI', system-ui, sans-serif;
-    font-size: 0.7rem;
-    color: var(--text-muted);
-    margin-top: 1px;
-  }
-  .chat-hdr__close {
-    margin-left: auto;
-    width: 26px;
-    height: 26px;
-    border-radius: 6px;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid var(--border);
-    color: var(--text-muted);
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.9rem;
-    font-family: inherit;
-    transition: border-color 0.2s, color 0.2s;
-  }
-  .chat-hdr__close:hover {
-    border-color: var(--red);
-    color: var(--red);
-  }
+/* ── MESSAGES AREA ── */
+#chatMsgs {
+  flex: 1;
+  overflow-y: auto;
+  padding: 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  min-height: 0;
+}
+#chatMsgs::-webkit-scrollbar { width: 3px; }
+#chatMsgs::-webkit-scrollbar-thumb {
+  background: #1e2d45;
+  border-radius: 4px;
+}
 
-  /* ── CHAT MESSAGES ── */
-  .chat-msgs {
-    flex: 1;
-    overflow-y: auto;
-    padding: 14px;
-    display: flex;
-    flex-direction: column;
-    gap: 10px;
-    min-height: 0;
-  }
-  .chat-msgs::-webkit-scrollbar { width: 3px; }
-  .chat-msgs::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+/* ── MESSAGE ROWS ── */
+.cb-msg {
+  display: flex;
+  gap: 7px;
+  align-items: flex-end;
+  animation: cbMsgIn 0.22s ease;
+}
+@keyframes cbMsgIn {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: none; }
+}
+.cb-msg-user { flex-direction: row-reverse; }
 
-  /* ── SINGLE MESSAGE ── */
-  .msg {
-    display: flex;
-    gap: 7px;
-    align-items: flex-end;
-    animation: msg-in 0.22s ease;
-  }
-  @keyframes msg-in {
-    from { opacity: 0; transform: translateY(7px); }
-    to   { opacity: 1; transform: none; }
-  }
-  .msg--user { flex-direction: row-reverse; }
+.cb-msg-av {
+  width: 27px;
+  height: 27px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  font-weight: 700;
+  flex-shrink: 0;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+.cb-msg-bot  .cb-msg-av { background: linear-gradient(135deg,#00d4ff,#0077aa); color:#080b10; }
+.cb-msg-user .cb-msg-av { background: linear-gradient(135deg,#3b82f6,#1d4ed8); color:#fff; }
 
-  .msg__av {
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.7rem;
-    font-weight: 700;
-    flex-shrink: 0;
-    font-family: 'Segoe UI', system-ui, sans-serif;
-  }
-  .msg--bot  .msg__av { background: linear-gradient(135deg, var(--cyan), var(--cyan-dim)); color: var(--bg-deeper); }
-  .msg--user .msg__av { background: linear-gradient(135deg, #3b82f6, #1d4ed8); color: #fff; }
+.cb-msg-inner { display: flex; flex-direction: column; max-width: 80%; }
 
-  .msg__bubble {
-    max-width: 80%;
-    padding: 9px 13px;
-    border-radius: 13px;
-    font-size: 0.82rem;
-    line-height: 1.55;
-    font-family: 'Segoe UI', system-ui, sans-serif;
-  }
-  .msg--bot  .msg__bubble {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid var(--border);
-    color: var(--text);
-    border-bottom-left-radius: 3px;
-  }
-  .msg--user .msg__bubble {
-    background: linear-gradient(135deg, var(--cyan), var(--cyan-dim));
-    color: var(--bg-deeper);
-    font-weight: 600;
-    border-bottom-right-radius: 3px;
-  }
-  .msg__time {
-    font-size: 0.62rem;
-    color: var(--text-muted);
-    margin-top: 3px;
-    font-family: 'Segoe UI', system-ui, sans-serif;
-  }
-  .msg--user .msg__time { text-align: right; }
+.cb-bubble {
+  padding: 9px 13px;
+  border-radius: 13px;
+  font-size: 0.815rem;
+  line-height: 1.56;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+.cb-msg-bot  .cb-bubble {
+  background: rgba(255,255,255,0.055);
+  border: 1px solid #1e2d45;
+  color: #e2e8f0;
+  border-bottom-left-radius: 3px;
+}
+.cb-msg-user .cb-bubble {
+  background: linear-gradient(135deg,#00d4ff,#0077aa);
+  color: #080b10;
+  font-weight: 600;
+  border-bottom-right-radius: 3px;
+}
+.cb-msg-time {
+  font-size: 0.62rem;
+  color: #64748b;
+  margin-top: 3px;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+.cb-msg-user .cb-msg-time { text-align: right; }
 
-  /* ── TYPING INDICATOR ── */
-  .chat-typing {
-    display: none;
-    padding: 0 14px 6px;
-    align-items: center;
-    gap: 7px;
-    flex-shrink: 0;
-  }
-  .chat-typing.is-on { display: flex; }
-  .chat-typing__av {
-    width: 26px;
-    height: 26px;
-    border-radius: 50%;
-    background: linear-gradient(135deg, var(--cyan), var(--cyan-dim));
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-size: 0.7rem;
-    color: var(--bg-deeper);
-    flex-shrink: 0;
-  }
-  .chat-typing__dots {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid var(--border);
-    border-radius: 13px;
-    border-bottom-left-radius: 3px;
-    padding: 9px 13px;
-    display: flex;
-    gap: 4px;
-    align-items: center;
-  }
-  .chat-typing__dots span {
-    width: 5px;
-    height: 5px;
-    border-radius: 50%;
-    background: var(--text-muted);
-    display: block;
-    animation: tdot 1.2s infinite;
-  }
-  .chat-typing__dots span:nth-child(2) { animation-delay: 0.2s; }
-  .chat-typing__dots span:nth-child(3) { animation-delay: 0.4s; }
-  @keyframes tdot {
-    0%,60%,100% { transform: translateY(0);    opacity: 0.4; }
-    30%          { transform: translateY(-4px); opacity: 1;   }
-  }
+/* ── TYPING INDICATOR ── */
+#chatTyping {
+  padding: 0 14px 8px;
+  display: none;
+  align-items: center;
+  gap: 7px;
+  flex-shrink: 0;
+}
+#chatTyping.cb-on { display: flex; }
+.cb-typing-av {
+  width: 27px;
+  height: 27px;
+  border-radius: 50%;
+  background: linear-gradient(135deg,#00d4ff,#0077aa);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 0.7rem;
+  color: #080b10;
+  flex-shrink: 0;
+}
+.cb-typing-dots {
+  background: rgba(255,255,255,0.055);
+  border: 1px solid #1e2d45;
+  border-radius: 13px;
+  border-bottom-left-radius: 3px;
+  padding: 9px 13px;
+  display: flex;
+  gap: 4px;
+  align-items: center;
+}
+.cb-typing-dots span {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: #64748b;
+  display: block;
+  animation: cbDot 1.2s infinite;
+}
+.cb-typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+.cb-typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+@keyframes cbDot {
+  0%,60%,100% { transform: translateY(0);    opacity: 0.4; }
+  30%          { transform: translateY(-5px); opacity: 1;   }
+}
 
-  /* ── SUGGESTION CHIPS ── */
-  .chat-chips {
-    padding: 0 14px 8px;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 5px;
-    flex-shrink: 0;
-  }
-  .chat-chip {
-    padding: 4px 11px;
-    border-radius: 20px;
-    background: rgba(0,212,255,0.07);
-    border: 1px solid rgba(0,212,255,0.22);
-    color: var(--cyan);
-    font-size: 0.73rem;
-    font-weight: 600;
-    cursor: pointer;
-    transition: background 0.18s, border-color 0.18s;
-    white-space: nowrap;
-    font-family: 'Segoe UI', system-ui, sans-serif;
-  }
-  .chat-chip:hover {
-    background: rgba(0,212,255,0.16);
-    border-color: var(--cyan);
-  }
+/* ── SUGGESTION CHIPS ── */
+#chatChips {
+  padding: 0 14px 8px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+  flex-shrink: 0;
+}
+.cb-chip {
+  padding: 4px 11px;
+  border-radius: 20px;
+  background: rgba(0,212,255,0.07);
+  border: 1px solid rgba(0,212,255,0.25);
+  color: #00d4ff;
+  font-size: 0.72rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.18s, border-color 0.18s;
+  white-space: nowrap;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
+.cb-chip:hover {
+  background: rgba(0,212,255,0.18);
+  border-color: #00d4ff;
+}
 
-  /* ── CHAT FOOTER / INPUT ── */
-  .chat-footer {
-    padding: 10px 14px;
-    border-top: 1px solid var(--border);
-    flex-shrink: 0;
-  }
-  .chat-form {
-    display: flex;
-    gap: 7px;
-    align-items: flex-end;
-  }
-  .chat-input {
-    flex: 1;
-    background: rgba(255,255,255,0.04);
-    border: 1px solid var(--border);
-    border-radius: 9px;
-    padding: 8px 12px;
-    color: var(--text);
-    font-size: 0.82rem;
-    font-family: 'Segoe UI', system-ui, sans-serif;
-    outline: none;
-    resize: none;
-    max-height: 90px;
-    line-height: 1.4;
-    transition: border-color 0.2s;
-  }
-  .chat-input:focus { border-color: var(--cyan); }
-  .chat-input::placeholder { color: var(--text-muted); }
-  .chat-send {
-    width: 36px;
-    height: 36px;
-    border-radius: 9px;
-    background: linear-gradient(135deg, var(--cyan), var(--cyan-dim));
-    border: none;
-    cursor: pointer;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: transform 0.2s, box-shadow 0.2s;
-    flex-shrink: 0;
-  }
-  .chat-send:hover {
-    transform: scale(1.06);
-    box-shadow: 0 3px 12px rgba(0,212,255,0.35);
-  }
-  .chat-send:disabled {
-    opacity: 0.4;
-    cursor: not-allowed;
-    transform: none;
-  }
-  .chat-note {
-    font-size: 0.65rem;
-    color: var(--text-muted);
-    text-align: center;
-    margin-top: 6px;
-    font-family: 'Segoe UI', system-ui, sans-serif;
-  }
+/* ── INPUT FOOTER ── */
+#chatFooter {
+  padding: 10px 14px 12px;
+  border-top: 1px solid #1e2d45;
+  flex-shrink: 0;
+}
+#chatForm {
+  display: flex;
+  gap: 7px;
+  align-items: flex-end;
+}
+#chatInput {
+  flex: 1;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid #1e2d45;
+  border-radius: 9px;
+  padding: 8px 12px;
+  color: #e2e8f0;
+  font-size: 0.82rem;
+  font-family: 'Segoe UI', Arial, sans-serif;
+  outline: none;
+  resize: none;
+  max-height: 90px;
+  line-height: 1.45;
+  transition: border-color 0.2s;
+  overflow-y: auto;
+}
+#chatInput:focus { border-color: #00d4ff; }
+#chatInput::placeholder { color: #64748b; }
+#chatSend {
+  width: 37px;
+  height: 37px;
+  border-radius: 9px;
+  background: linear-gradient(135deg,#00d4ff,#0077aa);
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s, box-shadow 0.2s;
+  flex-shrink: 0;
+}
+#chatSend:hover {
+  transform: scale(1.07);
+  box-shadow: 0 3px 12px rgba(0,212,255,0.4);
+}
+#chatSend:disabled {
+  opacity: 0.38;
+  cursor: not-allowed;
+  transform: none;
+  box-shadow: none;
+}
+#chatNote {
+  font-size: 0.64rem;
+  color: #64748b;
+  text-align: center;
+  margin-top: 6px;
+  font-family: 'Segoe UI', Arial, sans-serif;
+}
 
-  /* ── MOBILE ── */
-  @media (max-width: 580px) {
-    .chat-win {
-      width: calc(100vw - 28px);
-      right: 14px;
-      bottom: 82px;
-    }
-    .chat-fab {
-      right: 14px;
-      bottom: 14px;
-    }
+/* ── RESPONSIVE ── */
+@media (max-width: 520px) {
+  #chatWin {
+    width: calc(100vw - 24px);
+    right: 12px;
+    bottom: 84px;
   }
+  #chatFab {
+    right: 12px;
+    bottom: 14px;
+  }
+}
 </style>
-
 </head>
 <body>
 
-<!-- ═══════════════════════════════════════════
-     CONSISTENT CYBERBENCH LOGO
-     (same SVG shield + wordmark used on all pages)
-════════════════════════════════════════════ -->
+<!-- ══════════════════════════════════════
+     CYBERBENCH LOGO  (matches all pages)
+══════════════════════════════════════ -->
 <a class="cb-logo" href="dashboard.html" aria-label="CyberBench home">
-  <svg width="28" height="28" viewBox="0 0 40 40" fill="none" aria-hidden="true">
+  <svg width="30" height="30" viewBox="0 0 40 40" fill="none"
+       xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
     <defs>
-      <linearGradient id="shieldGrad" x1="0" y1="0" x2="1" y2="1">
+      <linearGradient id="cbShield" x1="0" y1="0" x2="1" y2="1">
         <stop offset="0%"   stop-color="#00d4ff"/>
         <stop offset="100%" stop-color="#0077aa"/>
       </linearGradient>
     </defs>
-    <!-- shield body -->
-    <path
-      d="M20 3L5 9v10c0 9 6.5 16.5 15 19 8.5-2.5 15-10 15-19V9L20 3z"
-      fill="url(#shieldGrad)"
-      opacity="0.18"/>
-    <!-- shield outline -->
-    <path
-      d="M20 3L5 9v10c0 9 6.5 16.5 15 19 8.5-2.5 15-10 15-19V9L20 3z"
-      fill="none"
-      stroke="url(#shieldGrad)"
-      stroke-width="1.6"/>
-    <!-- checkmark -->
-    <path
-      d="M14 20l4 4 8-8"
-      stroke="#00d4ff"
-      stroke-width="2.2"
-      stroke-linecap="round"
-      stroke-linejoin="round"/>
+    <path d="M20 3L5 9v10c0 9 6.5 16.5 15 19 8.5-2.5 15-10 15-19V9L20 3z"
+          fill="url(#cbShield)" opacity="0.18"/>
+    <path d="M20 3L5 9v10c0 9 6.5 16.5 15 19 8.5-2.5 15-10 15-19V9L20 3z"
+          fill="none" stroke="url(#cbShield)" stroke-width="1.7"/>
+    <path d="M13 20l5 5 9-9"
+          stroke="#00d4ff" stroke-width="2.3"
+          stroke-linecap="round" stroke-linejoin="round"/>
   </svg>
-  <span class="cb-logo__text">CyberBench</span>
+  <span class="cb-logo-text">CyberBench</span>
 </a>
 
-<!-- ═══════════════════════════════════════════
+<!-- ══════════════════════════════════════
      ORIGINAL PAGE CONTENT — UNTOUCHED
-════════════════════════════════════════════ -->
+══════════════════════════════════════ -->
 <input>
 🔔
 ❔
 Admin User
 <button>Export Report</button>
-<h1>Dashboard
-<p>Executive overview of security operations and risk posture
-<h3>Open Tickets
+<h1>Dashboard</h1>
+<p>Executive overview of security operations and risk posture</p>
+<h3>Open Tickets</h3>
 48
 ↓ 12% vs last 7 days
 🎫
-<h3>Critical Alerts
+<h3>Critical Alerts</h3>
 7
 ↓ 22% vs last 7 days
 🛡️
-<h3>MTTR (Mean Time To Remediate)
+<h3>MTTR (Mean Time To Remediate)</h3>
 4.2h
 ↓ 18% vs last 7 days
 🕒
-<h3>Risk Score
+<h3>Risk Score</h3>
 68
 Medium Risk
 📈
-<h3>Compliance Score
+<h3>Compliance Score</h3>
 87%
 ↑ 5% vs last 7 days
 ✅
-<h3>Risk Score Over Time
+<h3>Risk Score Over Time</h3>
 <canvas id="cRisk"></canvas>
-<h3>Tickets by Status
+<h3>Tickets by Status</h3>
 <canvas id="cStatus"></canvas>
-<h3>Tickets by Priority
+<h3>Tickets by Priority</h3>
 <canvas id="cPriority"></canvas>
-<h3>Top Alert Categories
+<h3>Top Alert Categories</h3>
 <canvas id="cAlerts"></canvas>
-<h3>Recent Critical Alerts
+<h3>Recent Critical Alerts</h3>
 <ul>
-<li>
-<strong>Ransomware Activity Detected</strong>Endpoint: WS-CA-1432
-Critical
-<li>
-<strong>Privilege Escalation Attempt</strong>User: administrator
-Critical
-<li>
-<strong>Multiple Failed Logins</strong>Source: 45.77.32.18
-Critical
-<li>
-<strong>Malicious File Detected</strong>Endpoint: FILE-SRV-02
-Critical
+<li><strong>Ransomware Activity Detected</strong> Endpoint: WS-CA-1432 Critical</li>
+<li><strong>Privilege Escalation Attempt</strong> User: administrator Critical</li>
+<li><strong>Multiple Failed Logins</strong> Source: 45.77.32.18 Critical</li>
+<li><strong>Malicious File Detected</strong> Endpoint: FILE-SRV-02 Critical</li>
 </ul>
-<h3>Remediation Progress
+<h3>Remediation Progress</h3>
 <canvas id="cRemediation"></canvas>
-<h3>Recent Ticket Activity
+<h3>Recent Ticket Activity</h3>
 <table>
 <thead>
 <tr>
@@ -468,6 +437,7 @@ Critical
 <th>Status</th>
 <th>Assigned To</th>
 <th>Updated</th>
+</tr>
 </thead>
 <tbody>
 <tr>
@@ -478,6 +448,7 @@ Critical
 <td>In Progress</td>
 <td>Alex Johnson</td>
 <td>15m ago</td>
+</tr>
 <tr>
 <td>TKT-000123</td>
 <td>Patch Critical OpenSSL CVE</td>
@@ -486,98 +457,88 @@ Critical
 <td>In Progress</td>
 <td>CyberBench SOC</td>
 <td>42m ago</td>
+</tr>
 </tbody>
 </table>
-<h3>Integrations Status
-<strong>Wazuh</strong>
-● Connected
-<strong>Suricata</strong>
-● Connected
-<strong>Microsoft 365</strong>
-● Connected
+<h3>Integrations Status</h3>
+<strong>Wazuh</strong> ● Connected<br>
+<strong>Suricata</strong> ● Connected<br>
+<strong>Microsoft 365</strong> ● Connected<br>
 
 
-<!-- ═══════════════════════════════════════════
+<!-- ══════════════════════════════════════
      AI CHAT WIDGET
-════════════════════════════════════════════ -->
+══════════════════════════════════════ -->
 
-<!-- FAB Toggle Button -->
-<button
-  class="chat-fab"
-  id="chatFab"
-  aria-label="Open AI assistant"
-  aria-expanded="false"
-  aria-controls="chatWin">
-  <span class="chat-fab__ico" aria-hidden="true">
-    <svg width="22" height="22" viewBox="0 0 24 24" fill="none"
-         stroke="#080b10" stroke-width="2.5"
+<!-- FAB -->
+<button id="chatFab"
+        aria-label="Open AI assistant"
+        aria-expanded="false"
+        aria-controls="chatWin">
+  <span id="chatFabIcon" aria-hidden="true">
+    <!-- chat bubble icon -->
+    <svg width="23" height="23" viewBox="0 0 24 24" fill="none"
+         stroke="#080b10" stroke-width="2.4"
          stroke-linecap="round" stroke-linejoin="round">
-      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
+      <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5
+               a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
     </svg>
   </span>
 </button>
 
 <!-- Chat Window -->
-<div
-  class="chat-win"
-  id="chatWin"
-  role="dialog"
-  aria-label="CyberBench AI Assistant"
-  aria-hidden="true"
-  aria-modal="true">
+<div id="chatWin"
+     role="dialog"
+     aria-label="CyberBench AI Assistant"
+     aria-hidden="true"
+     aria-modal="true">
 
   <!-- Header -->
-  <div class="chat-hdr">
-    <div class="chat-hdr__av" aria-hidden="true">🤖</div>
+  <div id="chatHdr">
+    <div class="cb-hdr-av" aria-hidden="true">🤖</div>
     <div>
-      <div class="chat-hdr__name">CyberBench AI</div>
-      <div class="chat-hdr__sub">Dashboard help · Alerts · Tickets</div>
+      <div class="cb-hdr-name">CyberBench AI</div>
+      <div class="cb-hdr-sub">Dashboard · Alerts · Tickets · Risk</div>
     </div>
-    <button class="chat-hdr__close" id="chatClose" aria-label="Close AI assistant">✕</button>
+    <button id="chatClose" aria-label="Close AI assistant">✕</button>
   </div>
 
   <!-- Messages -->
-  <div class="chat-msgs"
-       id="chatMsgs"
+  <div id="chatMsgs"
        role="log"
        aria-live="polite"
        aria-label="Chat messages">
-    <!-- Welcome message injected by JS -->
   </div>
 
   <!-- Typing indicator -->
-  <div class="chat-typing" id="chatTyping" aria-hidden="true">
-    <div class="chat-typing__av" aria-hidden="true">🤖</div>
-    <div class="chat-typing__dots">
+  <div id="chatTyping" aria-hidden="true">
+    <div class="cb-typing-av" aria-hidden="true">🤖</div>
+    <div class="cb-typing-dots">
       <span></span><span></span><span></span>
     </div>
   </div>
 
   <!-- Suggestion chips -->
-  <div class="chat-chips" id="chatChips">
-    <button class="chat-chip" type="button" data-msg="What do the current KPI metrics mean?">📊 Explain KPIs</button>
-    <button class="chat-chip" type="button" data-msg="Tell me about the critical alerts">🚨 Critical Alerts</button>
-    <button class="chat-chip" type="button" data-msg="What is the current risk score?">📈 Risk Score</button>
-    <button class="chat-chip" type="button" data-msg="Show me the ticket status summary">🎫 Ticket Summary</button>
+  <div id="chatChips">
+    <button class="cb-chip" data-q="What do the current KPI metrics mean?">📊 Explain KPIs</button>
+    <button class="cb-chip" data-q="Tell me about the critical alerts">🚨 Critical Alerts</button>
+    <button class="cb-chip" data-q="What is the current risk score?">📈 Risk Score</button>
+    <button class="cb-chip" data-q="Show me the ticket summary">🎫 Tickets</button>
+    <button class="cb-chip" data-q="What is the compliance score?">✅ Compliance</button>
+    <button class="cb-chip" data-q="What is the MTTR?">🕒 MTTR</button>
   </div>
 
-  <!-- Input footer -->
-  <div class="chat-footer">
-    <div class="chat-form">
-      <textarea
-        class="chat-input"
-        id="chatInput"
-        placeholder="Ask about alerts, tickets, risk…"
-        rows="1"
-        aria-label="Type your message"
-        maxlength="500"></textarea>
-      <button
-        type="button"
-        class="chat-send"
-        id="chatSend"
-        aria-label="Send message">
+  <!-- Input -->
+  <div id="chatFooter">
+    <div id="chatForm">
+      <textarea id="chatInput"
+                rows="1"
+                placeholder="Ask about alerts, tickets, risk…"
+                aria-label="Type your message"
+                maxlength="500"></textarea>
+      <button id="chatSend" type="button" aria-label="Send message">
         <svg width="15" height="15" viewBox="0 0 24 24" fill="none"
-             stroke="#080b10" stroke-width="2.5"
+             stroke="#080b10" stroke-width="2.6"
              stroke-linecap="round" stroke-linejoin="round"
              aria-hidden="true">
           <line x1="22" y1="2" x2="11" y2="13"/>
@@ -585,303 +546,269 @@ Critical
         </svg>
       </button>
     </div>
-    <p class="chat-note">Demo widget — don't paste secrets.</p>
+    <p id="chatNote">AI assistant — do not share passwords or secrets.</p>
   </div>
 </div>
 
 
-<!-- ═══════════════════════════════════════════
-     CHAT JAVASCRIPT — self-contained
-════════════════════════════════════════════ -->
+<!-- ══════════════════════════════════════
+     CHAT SCRIPT
+══════════════════════════════════════ -->
 <script>
 (function () {
-  'use strict';
 
-  /* ── DOM refs ── */
-  var fab     = document.getElementById('chatFab');
-  var win     = document.getElementById('chatWin');
-  var closeBtn= document.getElementById('chatClose');
-  var msgs    = document.getElementById('chatMsgs');
-  var typing  = document.getElementById('chatTyping');
-  var chips   = document.getElementById('chatChips');
-  var input   = document.getElementById('chatInput');
-  var sendBtn = document.getElementById('chatSend');
+  /* ── grab elements ── */
+  var fab      = document.getElementById('chatFab');
+  var win      = document.getElementById('chatWin');
+  var closeBtn = document.getElementById('chatClose');
+  var msgsBox  = document.getElementById('chatMsgs');
+  var typingEl = document.getElementById('chatTyping');
+  var chipsEl  = document.getElementById('chatChips');
+  var inputEl  = document.getElementById('chatInput');
+  var sendBtn  = document.getElementById('chatSend');
 
-  /* ── State ── */
-  var isOpen       = false;
-  var isBusy       = false;
-  var chipsVisible = true;
+  /* ── state ── */
+  var open     = false;
+  var busy     = false;
+  var chipsOn  = true;
 
-  /* ── Helpers ── */
-  function nowTime() {
-    return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  /* ── helpers ── */
+  function ts() {
+    return new Date().toLocaleTimeString([], {hour:'2-digit',minute:'2-digit'});
   }
 
-  function scrollBottom() {
-    msgs.scrollTop = msgs.scrollHeight;
+  function scrollEnd() {
+    msgsBox.scrollTop = msgsBox.scrollHeight;
   }
 
-  /* ── Add a message bubble ── */
-  function addMsg(html, role) {
-    var wrap   = document.createElement('div');
-    wrap.className = 'msg msg--' + role;
+  /* ── render a message ── */
+  function addMsg(html, who) {
+    var row    = document.createElement('div');
+    row.className = 'cb-msg cb-msg-' + who;
 
     var av = document.createElement('div');
-    av.className = 'msg__av';
-    av.setAttribute('aria-hidden', 'true');
-    av.textContent = role === 'bot' ? '🤖' : 'AU';
+    av.className = 'cb-msg-av';
+    av.setAttribute('aria-hidden','true');
+    av.textContent = who === 'bot' ? '🤖' : 'AU';
 
     var inner  = document.createElement('div');
+    inner.className = 'cb-msg-inner';
+
     var bubble = document.createElement('div');
-    bubble.className = 'msg__bubble';
+    bubble.className = 'cb-bubble';
     bubble.innerHTML = html;
 
     var time = document.createElement('div');
-    time.className = 'msg__time';
-    time.textContent = nowTime();
+    time.className = 'cb-msg-time';
+    time.textContent = ts();
 
     inner.appendChild(bubble);
     inner.appendChild(time);
-    wrap.appendChild(av);
-    wrap.appendChild(inner);
-    msgs.appendChild(wrap);
-    scrollBottom();
+    row.appendChild(av);
+    row.appendChild(inner);
+    msgsBox.appendChild(row);
+    scrollEnd();
   }
 
-  /* ── Bot reply logic ── */
+  /* ── bot reply map ── */
   function getReply(raw) {
     var t = raw.toLowerCase();
 
-    /* KPIs / metrics */
-    if (t.match(/kpi|metric|explain|what do|mean/))
-      return '📊 <strong>Current KPI Summary:</strong><br>'
-           + '• Open Tickets: <strong>48</strong> (↓ 12%)<br>'
-           + '• Critical Alerts: <strong>7</strong> (↓ 22%)<br>'
-           + '• MTTR: <strong>4.2 h</strong> (↓ 18%)<br>'
-           + '• Risk Score: <strong>68</strong> — Medium Risk<br>'
-           + '• Compliance: <strong>87 %</strong> (↑ 5%)<br><br>'
-           + 'All metrics are trending positively this week.';
+    if (/kpi|metric|explain|what do|overview/.test(t))
+      return '📊 <strong>KPI Overview:</strong><br>'
+           + '• Open Tickets: <strong>48</strong> ↓12%<br>'
+           + '• Critical Alerts: <strong>7</strong> ↓22%<br>'
+           + '• MTTR: <strong>4.2 h</strong> ↓18%<br>'
+           + '• Risk Score: <strong>68</strong> — Medium<br>'
+           + '• Compliance: <strong>87%</strong> ↑5%<br><br>'
+           + 'All metrics are trending in the right direction this week.';
 
-    /* Ransomware */
-    if (t.match(/ransomware|ws-ca/))
-      return '🔴 <strong>Ransomware on WS-CA-1432:</strong><br>'
-           + 'Immediately isolate the endpoint from the network. '
-           + 'Engage your IR playbook, preserve forensic evidence, '
-           + 'and notify stakeholders. Check for lateral movement.';
+    if (/ransomware|ws-ca/.test(t))
+      return '🔴 <strong>Ransomware — WS-CA-1432:</strong><br>'
+           + 'Isolate the endpoint immediately. Trigger your IR playbook, '
+           + 'preserve disk images for forensics, notify stakeholders, '
+           + 'and scan for lateral movement across the network.';
 
-    /* Privilege escalation */
-    if (t.match(/privilege|escalat/))
+    if (/privilege|escalat/.test(t))
       return '🔴 <strong>Privilege Escalation:</strong><br>'
-           + 'Review administrator account activity logs immediately. '
-           + 'Revoke elevated sessions, reset credentials, and check '
-           + 'for persistence mechanisms or scheduled tasks.';
+           + 'Revoke all elevated sessions for the administrator account. '
+           + 'Reset credentials, audit recent sudo/admin commands, '
+           + 'and check for new scheduled tasks or persistence mechanisms.';
 
-    /* Brute force / failed logins */
-    if (t.match(/failed login|brute|45\.77/))
-      return '🔴 <strong>Brute Force from 45.77.32.18:</strong><br>'
-           + 'Block the IP at the firewall. Enable account lockout '
-           + 'policies if not already active. Review VPN and RDP exposure.';
+    if (/failed login|brute|45\.77/.test(t))
+      return '🔴 <strong>Brute-Force from 45.77.32.18:</strong><br>'
+           + 'Block the IP at the perimeter firewall and WAF. '
+           + 'Enable account lockout policies, review RDP/VPN exposure, '
+           + 'and check if any accounts were successfully compromised.';
 
-    /* Malicious file */
-    if (t.match(/malicious file|file-srv/))
-      return '🔴 <strong>Malicious File on FILE-SRV-02:</strong><br>'
-           + 'Quarantine the file via your AV/EDR console. Identify '
-           + 'the source, check user access logs, and scan adjacent systems.';
+    if (/malicious file|file-srv/.test(t))
+      return '🔴 <strong>Malicious File — FILE-SRV-02:</strong><br>'
+           + 'Quarantine the file via EDR/AV console. Identify the upload '
+           + 'source, audit file-share access logs, and scan adjacent '
+           + 'systems for the same IOC.';
 
-    /* Alerts general */
-    if (t.match(/alert/))
+    if (/alert/.test(t))
       return '🚨 <strong>4 Active Critical Alerts:</strong><br>'
            + '1. Ransomware on WS-CA-1432 — isolate endpoint<br>'
-           + '2. Privilege escalation by administrator — review logs<br>'
+           + '2. Privilege escalation by administrator — revoke sessions<br>'
            + '3. Brute-force from 45.77.32.18 — block IP<br>'
            + '4. Malicious file on FILE-SRV-02 — quarantine now';
 
-    /* Risk score */
-    if (t.match(/risk/))
+    if (/risk/.test(t))
       return '📈 <strong>Risk Score: 68 (Medium)</strong><br>'
-           + 'Down from 82 over 7 days — good progress.<br><br>'
-           + 'To reach Low Risk (&lt;60):<br>'
-           + '• Resolve 4 critical alerts<br>'
-           + '• Patch OpenSSL CVE (TKT-000123)<br>'
-           + '• Disable SMBv1 (TKT-000124)';
+           + 'Improved from 82 last week. To reach Low Risk (&lt;60):<br>'
+           + '• Resolve all 4 critical alerts<br>'
+           + '• Close TKT-000123 (OpenSSL patch)<br>'
+           + '• Close TKT-000124 (SMBv1 disable)';
 
-    /* Tickets / TKT-000124 / SMBv1 */
-    if (t.match(/ticket|summary|tkt-000124|smb/))
-      return '🎫 <strong>Ticket Summary (48 open):</strong><br>'
+    if (/ticket|summary|tkt|smb|openssl/.test(t))
+      return '🎫 <strong>Ticket Summary — 48 Open:</strong><br>'
            + '18 Open · 14 In Progress · 10 Resolved · 6 Closed<br><br>'
            + '<strong>TKT-000124</strong> — Disable SMBv1 on File Server<br>'
-           + 'Assigned: Alex Johnson · High Priority<br><br>'
+           + 'Assigned: Alex Johnson · High · 15m ago<br><br>'
            + '<strong>TKT-000123</strong> — Patch Critical OpenSSL CVE<br>'
-           + 'Assigned: CyberBench SOC · High Priority';
+           + 'Assigned: CyberBench SOC · High · 42m ago';
 
-    /* TKT-000123 / OpenSSL */
-    if (t.match(/tkt-000123|openssl/))
-      return '🎫 <strong>TKT-000123 — Patch Critical OpenSSL CVE</strong><br>'
-           + 'Customer: Orlando Law Group<br>'
-           + 'Priority: High · Status: In Progress<br>'
-           + 'Assigned: CyberBench SOC · Updated 42 m ago<br><br>'
-           + 'Test the patch in staging before production deployment.';
-
-    /* Compliance */
-    if (t.match(/compliance/))
-      return '✅ <strong>Compliance Score: 87 %</strong> (↑ 5%)<br><br>'
-           + 'Remaining gaps:<br>'
+    if (/compliance/.test(t))
+      return '✅ <strong>Compliance Score: 87%</strong> ↑5%<br><br>'
+           + 'Open gaps:<br>'
            + '• Unpatched critical CVEs<br>'
            + '• Incomplete endpoint hardening<br>'
            + '• Missing MFA on privileged accounts<br><br>'
-           + 'Resolving open tickets will push the score above 90 %.';
+           + 'Resolving open tickets will push the score above 90%.';
 
-    /* MTTR / remediation */
-    if (t.match(/mttr|remediat|mean time/))
-      return '🕒 <strong>MTTR: 4.2 h</strong> (↓ 18% this week)<br><br>'
+    if (/mttr|remediat|mean time/.test(t))
+      return '🕒 <strong>MTTR: 4.2 h</strong> ↓18% this week<br><br>'
            + 'Remediation breakdown:<br>'
-           + '• 62 % Remediated ✅<br>'
-           + '• 24 % In Progress 🔄<br>'
-           + '• 14 % Pending ⏳<br><br>'
-           + 'Assigning pending items will further reduce MTTR.';
+           + '• 62% Remediated ✅<br>'
+           + '• 24% In Progress 🔄<br>'
+           + '• 14% Pending ⏳<br><br>'
+           + 'Assigning pending items will reduce MTTR further.';
 
-    /* Integrations */
-    if (t.match(/integrat|wazuh|suricata|365|microsoft/))
+    if (/integrat|wazuh|suricata|365|microsoft/.test(t))
       return '🔗 <strong>All integrations operational:</strong><br>'
            + '• Wazuh ✅ — SIEM &amp; log management<br>'
            + '• Suricata ✅ — Network IDS/IPS<br>'
-           + '• Microsoft 365 ✅ — Email &amp; identity monitoring<br><br>'
+           + '• Microsoft 365 ✅ — Email &amp; identity<br><br>'
            + 'Last sync: &lt;1 minute ago.';
 
-    /* Greetings */
-    if (t.match(/^(hi|hello|hey|good\s)/))
+    if (/^(hi|hello|hey|good\s)/.test(t))
       return '👋 Hello! I\'m your CyberBench AI assistant.<br><br>'
-           + 'I can help with:<br>'
-           + '• KPI explanations<br>'
-           + '• Alert triage guidance<br>'
-           + '• Ticket details<br>'
-           + '• Risk &amp; compliance scores<br>'
-           + '• Integration status';
+           + 'I can help with KPIs, alert triage, ticket details, '
+           + 'risk scores, compliance, MTTR, and integration status.';
 
-    /* Help */
-    if (t.match(/help|what can you/))
+    if (/help|what can/.test(t))
       return '🤖 <strong>I can help with:</strong><br>'
-           + '• 📊 KPI &amp; metric explanations<br>'
-           + '• 🚨 Alert triage &amp; response steps<br>'
-           + '• 🎫 Ticket details &amp; status<br>'
+           + '• 📊 KPI explanations<br>'
+           + '• 🚨 Alert triage steps<br>'
+           + '• 🎫 Ticket details<br>'
            + '• 📈 Risk score breakdown<br>'
            + '• ✅ Compliance gaps<br>'
-           + '• 🕒 MTTR &amp; remediation progress<br>'
-           + '• 🔗 Integration status<br><br>'
-           + 'Just ask!';
+           + '• 🕒 MTTR &amp; remediation<br>'
+           + '• 🔗 Integration status';
 
-    /* Fallback */
-    return '🤖 I can help with dashboard metrics, critical alerts, '
-         + 'ticket status, risk scores, compliance, MTTR, and integrations.<br><br>'
+    return '🤖 I can help with dashboard metrics, alerts, tickets, '
+         + 'risk scores, compliance, MTTR, and integrations.<br><br>'
          + 'Try: <em>"Explain my KPIs"</em> or '
-         + '<em>"What should I do about the ransomware alert?"</em>';
+         + '<em>"Tell me about the critical alerts"</em>';
   }
 
-  /* ── Send a message ── */
-  function sendMsg(text) {
-    text = text.trim();
-    if (!text || isBusy) return;
-    isBusy = true;
+  /* ── send flow ── */
+  function send(text) {
+    text = text.replace(/^\s+|\s+$/g, '');
+    if (!text || busy) return;
+    busy = true;
 
-    /* Hide chips after first send */
-    if (chipsVisible) {
-      chips.style.display = 'none';
-      chipsVisible = false;
+    if (chipsOn) {
+      chipsEl.style.display = 'none';
+      chipsOn = false;
     }
 
     addMsg(text, 'user');
-    input.value = '';
-    input.style.height = 'auto';
+    inputEl.value = '';
+    inputEl.style.height = 'auto';
     sendBtn.disabled = true;
 
-    /* Show typing */
-    typing.classList.add('is-on');
-    typing.removeAttribute('aria-hidden');
-    scrollBottom();
+    typingEl.classList.add('cb-on');
+    typingEl.removeAttribute('aria-hidden');
+    scrollEnd();
 
-    /* Simulate delay */
-    var delay = 600 + Math.random() * 700;
+    var delay = 600 + Math.floor(Math.random() * 700);
     setTimeout(function () {
-      typing.classList.remove('is-on');
-      typing.setAttribute('aria-hidden', 'true');
+      typingEl.classList.remove('cb-on');
+      typingEl.setAttribute('aria-hidden','true');
       addMsg(getReply(text), 'bot');
       sendBtn.disabled = false;
-      isBusy = false;
-      input.focus();
+      busy = false;
+      inputEl.focus();
     }, delay);
   }
 
-  /* ── Open / close chat ── */
+  /* ── open / close ── */
   function openChat() {
-    isOpen = true;
-    win.classList.add('is-open');
-    win.setAttribute('aria-hidden', 'false');
-    fab.classList.add('is-open');
-    fab.setAttribute('aria-expanded', 'true');
-    fab.setAttribute('aria-label', 'Close AI assistant');
-    input.focus();
+    open = true;
+    win.classList.add('cb-open');
+    win.setAttribute('aria-hidden','false');
+    fab.classList.add('cb-open');
+    fab.setAttribute('aria-expanded','true');
+    fab.setAttribute('aria-label','Close AI assistant');
+    inputEl.focus();
   }
 
   function closeChat() {
-    isOpen = false;
-    win.classList.remove('is-open');
-    win.setAttribute('aria-hidden', 'true');
-    fab.classList.remove('is-open');
-    fab.setAttribute('aria-expanded', 'false');
-    fab.setAttribute('aria-label', 'Open AI assistant');
+    open = false;
+    win.classList.remove('cb-open');
+    win.setAttribute('aria-hidden','true');
+    fab.classList.remove('cb-open');
+    fab.setAttribute('aria-expanded','false');
+    fab.setAttribute('aria-label','Open AI assistant');
     fab.focus();
   }
 
-  /* ── Event listeners ── */
-
-  /* FAB */
+  /* ── wire events ── */
   fab.addEventListener('click', function () {
-    isOpen ? closeChat() : openChat();
+    open ? closeChat() : openChat();
   });
 
-  /* Close button inside window */
   closeBtn.addEventListener('click', closeChat);
 
-  /* Send button */
   sendBtn.addEventListener('click', function () {
-    sendMsg(input.value);
+    send(inputEl.value);
   });
 
-  /* Enter key (Shift+Enter = newline) */
-  input.addEventListener('keydown', function (e) {
+  inputEl.addEventListener('keydown', function (e) {
     if (e.key === 'Enter' && !e.shiftKey) {
       e.preventDefault();
-      sendMsg(input.value);
+      send(inputEl.value);
     }
   });
 
-  /* Auto-resize textarea */
-  input.addEventListener('input', function () {
+  inputEl.addEventListener('input', function () {
     this.style.height = 'auto';
     this.style.height = Math.min(this.scrollHeight, 90) + 'px';
   });
 
-  /* Suggestion chips */
-  chips.querySelectorAll('.chat-chip').forEach(function (chip) {
-    chip.addEventListener('click', function () {
-      var msg = this.getAttribute('data-msg');
-      if (msg) sendMsg(msg);
+  /* chips */
+  var chipBtns = chipsEl.querySelectorAll('.cb-chip');
+  for (var i = 0; i < chipBtns.length; i++) {
+    chipBtns[i].addEventListener('click', function () {
+      send(this.getAttribute('data-q'));
     });
-  });
+  }
 
-  /* Escape key closes chat */
+  /* Escape closes */
   document.addEventListener('keydown', function (e) {
-    if (e.key === 'Escape' && isOpen) closeChat();
+    if (e.key === 'Escape' && open) closeChat();
   });
 
-  /* ── Inject welcome message on load ── */
+  /* ── welcome message ── */
   addMsg(
-    '👋 Hi! I\'m your CyberBench AI assistant. '
-    + 'Ask me about dashboard metrics, alerts, tickets, or risk scores.',
+    '👋 Hi! I\'m your CyberBench AI assistant.<br>'
+    + 'Ask me about metrics, alerts, tickets, or risk scores.',
     'bot'
   );
 
-})();
+}());
 </script>
 
 </body>
