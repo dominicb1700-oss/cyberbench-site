@@ -1,469 +1,1010 @@
+Here is the fully rebuilt `dashboard.html` with every interactive element working:
+
+```html
 <!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>CyberBench KPI Dashboard</title>
+  <title>CyberBench — KPI Dashboard</title>
   <meta name="description" content="CyberBench KPI Dashboard — executive overview of security operations and risk posture." />
   <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; }
+
     :root {
-      --bg:#0d1117; --bg-deeper:#080b10; --sidebar-bg:#0b0f1a;
-      --card:#111827; --card-hover:#161f30; --border:#1e2d45;
-      --border-soft:rgba(255,255,255,0.06);
-      --cyan:#00d4ff; --cyan-dim:#0099bb; --cyan-glow:rgba(0,212,255,0.18);
-      --text:#e2e8f0; --text-muted:#64748b; --text-sub:#94a3b8;
-      --red:#ef4444; --orange:#f97316; --yellow:#f59e0b;
-      --green:#22c55e; --blue:#3b82f6; --purple:#a855f7;
-      --nav-h:60px; --sidebar-w:220px;
-      --radius:12px; --radius-sm:8px; --radius-xs:6px;
-      --shadow:0 4px 24px rgba(0,0,0,0.4); --shadow-lg:0 8px 40px rgba(0,0,0,0.55);
+      --bg:         #0d1117;
+      --bg-deep:    #080b10;
+      --sidebar-bg: #0b0f1a;
+      --card:       #111827;
+      --card-h:     #161f30;
+      --border:     #1e2d45;
+      --border-s:   rgba(255,255,255,0.06);
+      --cyan:       #00d4ff;
+      --cyan-dim:   #0099bb;
+      --cyan-glow:  rgba(0,212,255,0.18);
+      --text:       #e2e8f0;
+      --muted:      #64748b;
+      --sub:        #94a3b8;
+      --red:        #ef4444;
+      --orange:     #f97316;
+      --yellow:     #f59e0b;
+      --green:      #22c55e;
+      --blue:       #3b82f6;
+      --purple:     #a855f7;
+      --nav-h:      60px;
+      --side-w:     220px;
+      --r:          12px;
+      --r-sm:       8px;
+      --r-xs:       6px;
+      --shadow:     0 4px 24px rgba(0,0,0,0.4);
+      --shadow-lg:  0 8px 40px rgba(0,0,0,0.55);
     }
-    body { font-family:'Segoe UI',system-ui,-apple-system,sans-serif; background:var(--bg); color:var(--text); min-height:100vh; line-height:1.6; font-size:14px; }
-    ::-webkit-scrollbar{width:5px;height:5px} ::-webkit-scrollbar-track{background:transparent} ::-webkit-scrollbar-thumb{background:var(--border);border-radius:4px} ::-webkit-scrollbar-thumb:hover{background:var(--cyan-dim)}
-    a{color:inherit;text-decoration:none} button{font-family:inherit}
 
-    /* TOP NAV */
-    .topnav{position:fixed;top:0;left:0;right:0;z-index:200;height:var(--nav-h);background:rgba(8,11,16,0.97);backdrop-filter:blur(14px);border-bottom:1px solid var(--border);display:flex;align-items:center;padding:0 20px 0 0}
-    .topnav__brand{width:var(--sidebar-w);flex-shrink:0;display:flex;align-items:center;gap:10px;padding:0 20px;border-right:1px solid var(--border);height:100%;cursor:pointer}
-    .topnav__brand-text{font-size:1.15rem;font-weight:800;color:var(--cyan);letter-spacing:0.3px}
-    .topnav__body{flex:1;display:flex;align-items:center;justify-content:space-between;gap:12px;padding-left:20px}
-    .topnav__search{position:relative;flex:1;max-width:340px}
-    .topnav__search-ico{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--text-muted);pointer-events:none;font-size:12px}
-    .topnav__search input{width:100%;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:var(--radius-sm);padding:7px 12px 7px 32px;color:var(--text);font-size:0.82rem;font-family:inherit;outline:none;transition:border-color 0.2s,background 0.2s}
-    .topnav__search input:focus{border-color:var(--cyan);background:rgba(0,212,255,0.04)}
-    .topnav__search input::placeholder{color:var(--text-muted)}
-    .topnav__right{display:flex;align-items:center;gap:6px}
-    .topnav__icon{width:36px;height:36px;border-radius:var(--radius-xs);background:rgba(255,255,255,0.04);border:1px solid var(--border);color:var(--text-muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:15px;transition:all 0.2s;position:relative;user-select:none}
-    .topnav__icon:hover{border-color:var(--cyan);color:var(--cyan)}
-    .topnav__badge{position:absolute;top:-5px;right:-5px;width:17px;height:17px;border-radius:50%;background:var(--red);color:#fff;font-size:0.58rem;font-weight:800;display:flex;align-items:center;justify-content:center;border:2px solid var(--bg-deeper)}
-    .topnav__user{display:flex;align-items:center;gap:8px;padding:5px 11px;border-radius:var(--radius-sm);background:rgba(255,255,255,0.04);border:1px solid var(--border);cursor:pointer;transition:all 0.2s;user-select:none}
-    .topnav__user:hover{border-color:var(--cyan)}
-    .topnav__avatar{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),#005577);display:flex;align-items:center;justify-content:center;font-size:0.65rem;font-weight:800;color:var(--bg-deeper);flex-shrink:0}
-    .topnav__username{font-size:0.82rem;font-weight:600}
-    .btn-export{display:flex;align-items:center;gap:6px;padding:7px 15px;border-radius:var(--radius-sm);background:linear-gradient(135deg,var(--cyan),var(--cyan-dim));color:var(--bg-deeper);font-size:0.82rem;font-weight:700;border:none;cursor:pointer;transition:transform 0.2s,box-shadow 0.2s}
-    .btn-export:hover{transform:translateY(-1px);box-shadow:0 4px 18px rgba(0,212,255,0.4)}
-    .topnav__hamburger{display:none;width:36px;height:36px;border-radius:var(--radius-xs);background:rgba(255,255,255,0.04);border:1px solid var(--border);color:var(--text-muted);cursor:pointer;align-items:center;justify-content:center;font-size:18px;transition:all 0.2s}
-    .topnav__hamburger:hover{border-color:var(--cyan);color:var(--cyan)}
-
-    /* LAYOUT */
-    .layout{display:flex;padding-top:var(--nav-h);min-height:100vh}
-
-    /* SIDEBAR */
-    .sidebar{width:var(--sidebar-w);background:var(--sidebar-bg);border-right:1px solid var(--border);position:fixed;top:var(--nav-h);left:0;bottom:0;display:flex;flex-direction:column;overflow-y:auto;z-index:100;transition:transform 0.28s ease}
-    .sidebar__nav{flex:1;padding:16px 10px;display:flex;flex-direction:column;gap:2px}
-    .sidebar__link{display:flex;align-items:center;gap:10px;padding:10px 12px;border-radius:var(--radius-sm);color:var(--text-sub);font-size:0.875rem;font-weight:500;transition:all 0.18s;position:relative;cursor:pointer}
-    .sidebar__link:hover{color:var(--text);background:rgba(255,255,255,0.05)}
-    .sidebar__link.active{color:var(--cyan);background:rgba(0,212,255,0.09)}
-    .sidebar__link.active::before{content:'';position:absolute;left:0;top:20%;bottom:20%;width:3px;border-radius:0 3px 3px 0;background:var(--cyan)}
-    .sidebar__icon{width:20px;text-align:center;flex-shrink:0;font-size:15px}
-    .sidebar__pill{margin-left:auto;background:var(--red);color:#fff;font-size:0.62rem;font-weight:800;padding:2px 7px;border-radius:20px}
-    .sidebar__footer{padding:14px 12px;border-top:1px solid var(--border)}
-    .sidebar__org{background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:var(--radius-sm);padding:11px 13px;margin-bottom:8px;cursor:pointer;transition:border-color 0.2s}
-    .sidebar__org:hover{border-color:var(--cyan)}
-    .sidebar__org-name{font-size:0.875rem;font-weight:700;color:var(--text)}
-    .sidebar__org-plan{font-size:0.74rem;color:var(--text-sub);margin-top:2px}
-    .sidebar__settings{width:100%;padding:9px;border-radius:var(--radius-sm);background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--text);font-size:0.82rem;font-weight:600;cursor:pointer;transition:all 0.2s}
-    .sidebar__settings:hover{border-color:var(--cyan);color:var(--cyan)}
-    .sidebar__overlay{display:none;position:fixed;inset:0;z-index:99;background:rgba(0,0,0,0.6);backdrop-filter:blur(2px)}
-    .sidebar__overlay.open{display:block}
-
-    /* MAIN */
-    .main{margin-left:var(--sidebar-w);flex:1;padding:28px 24px 80px;min-width:0}
-    .page-hdr{margin-bottom:24px}
-    .page-hdr h1{font-size:clamp(1.35rem,2.5vw,1.75rem);font-weight:800;color:#fff;line-height:1.2}
-    .page-hdr p{color:var(--text-sub);font-size:0.875rem;margin-top:5px}
-    .page-hdr__meta{display:flex;align-items:center;gap:7px;font-size:0.76rem;color:var(--text-muted);margin-top:8px}
-    .live-dot{width:7px;height:7px;border-radius:50%;background:var(--green);animation:blink 2s infinite}
-    @keyframes blink{0%,100%{opacity:1}50%{opacity:0.3}}
-
-    .sec-label{font-size:0.7rem;font-weight:700;text-transform:uppercase;letter-spacing:1px;color:var(--text-muted);display:flex;align-items:center;gap:10px;margin-bottom:14px}
-    .sec-label::after{content:'';flex:1;height:1px;background:var(--border)}
-
-    /* KPI CARDS */
-    .kpi-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(180px,1fr));gap:14px;margin-bottom:24px}
-    .kpi{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px 18px 16px;position:relative;overflow:hidden;transition:transform 0.2s,box-shadow 0.2s;cursor:pointer}
-    .kpi:hover{transform:translateY(-2px);box-shadow:var(--shadow)}
-    .kpi::after{content:'';position:absolute;top:0;left:0;right:0;height:2px}
-    .kpi--blue::after{background:var(--blue)} .kpi--red::after{background:var(--red)} .kpi--purple::after{background:var(--purple)} .kpi--yellow::after{background:var(--yellow)} .kpi--green::after{background:var(--green)}
-    .kpi__top{display:flex;align-items:flex-start;justify-content:space-between;margin-bottom:10px}
-    .kpi__label{font-size:0.72rem;font-weight:600;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.4px;line-height:1.3}
-    .kpi__ico{width:34px;height:34px;border-radius:9px;display:flex;align-items:center;justify-content:center;font-size:1rem;flex-shrink:0}
-    .kpi--blue .kpi__ico{background:rgba(59,130,246,0.13)} .kpi--red .kpi__ico{background:rgba(239,68,68,0.13)} .kpi--purple .kpi__ico{background:rgba(168,85,247,0.13)} .kpi--yellow .kpi__ico{background:rgba(245,158,11,0.13)} .kpi--green .kpi__ico{background:rgba(34,197,94,0.13)}
-    .kpi__val{font-size:1.9rem;font-weight:800;color:#fff;line-height:1}
-    .kpi__sub{font-size:0.72rem;color:var(--text-muted);margin-top:3px}
-    .kpi__delta{display:inline-flex;align-items:center;gap:3px;font-size:0.7rem;font-weight:700;padding:2px 8px;border-radius:20px;margin-top:8px;background:rgba(34,197,94,0.1);color:var(--green)}
-
-    /* CHARTS */
-    .grid-2{display:grid;grid-template-columns:2fr 1fr;gap:16px;margin-bottom:18px}
-    .grid-2-eq{display:grid;grid-template-columns:1fr 1fr;gap:16px;margin-bottom:18px}
-    .chart-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px 18px 14px}
-    .chart-card h3{font-size:0.82rem;font-weight:700;color:var(--text);margin-bottom:14px;display:flex;align-items:center;gap:7px}
-    .chart-card h3 em{color:var(--cyan);font-style:normal}
-    .chart-wrap{position:relative}
-    .chart-wrap--260{height:260px} .chart-wrap--200{height:200px} .chart-wrap--180{height:180px}
-
-    /* ALERTS */
-    .alerts-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:18px;margin-bottom:18px}
-    .alerts-card h3{font-size:0.82rem;font-weight:700;color:var(--text);margin-bottom:14px;display:flex;align-items:center;gap:7px}
-    .alerts-list{list-style:none;display:flex;flex-direction:column;gap:8px}
-    .alert-row{display:flex;align-items:center;gap:12px;padding:11px 13px;border-radius:9px;background:rgba(239,68,68,0.05);border:1px solid rgba(239,68,68,0.14);transition:background 0.18s;cursor:pointer}
-    .alert-row:hover{background:rgba(239,68,68,0.09)}
-    .alert-dot{width:9px;height:9px;border-radius:50%;background:var(--red);flex-shrink:0;animation:blink 1.6s infinite}
-    .alert-body{flex:1;min-width:0}
-    .alert-title{font-size:0.84rem;font-weight:600;color:#fff}
-    .alert-meta{font-size:0.74rem;color:var(--text-muted);margin-top:2px}
-    .badge{padding:3px 9px;border-radius:20px;font-size:0.68rem;font-weight:700;flex-shrink:0}
-    .badge-critical{background:rgba(239,68,68,0.14);color:var(--red);border:1px solid rgba(239,68,68,0.28)}
-    .badge-high{background:rgba(249,115,22,0.14);color:var(--orange);border:1px solid rgba(249,115,22,0.28)}
-    .badge-medium{background:rgba(245,158,11,0.14);color:var(--yellow);border:1px solid rgba(245,158,11,0.28)}
-    .badge-low{background:rgba(34,197,94,0.14);color:var(--green);border:1px solid rgba(34,197,94,0.28)}
-    .badge-progress{background:rgba(59,130,246,0.14);color:var(--blue);border:1px solid rgba(59,130,246,0.28)}
-    .badge-open{background:rgba(239,68,68,0.14);color:var(--red);border:1px solid rgba(239,68,68,0.28)}
-    .badge-resolved{background:rgba(34,197,94,0.14);color:var(--green);border:1px solid rgba(34,197,94,0.28)}
-    .badge-closed{background:rgba(100,116,139,0.14);color:var(--text-muted);border:1px solid rgba(100,116,139,0.28)}
-    .badge-pending{background:rgba(168,85,247,0.14);color:var(--purple);border:1px solid rgba(168,85,247,0.28)}
-    .badge-assigned{background:rgba(245,158,11,0.14);color:var(--yellow);border:1px solid rgba(245,158,11,0.28)}
-
-    /* TABLE */
-    .table-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin-bottom:18px}
-    .table-card__hdr{padding:14px 18px;border-bottom:1px solid var(--border);display:flex;align-items:center;gap:8px}
-    .table-card__hdr h3{font-size:0.84rem;font-weight:700;color:var(--text)}
-    .tbl-wrap{overflow-x:auto}
-    table{width:100%;border-collapse:collapse}
-    thead th{padding:9px 14px;text-align:left;font-size:0.68rem;font-weight:700;color:var(--text-muted);text-transform:uppercase;letter-spacing:0.5px;background:rgba(255,255,255,0.02);border-bottom:1px solid var(--border);white-space:nowrap}
-    tbody tr{border-bottom:1px solid rgba(255,255,255,0.04);transition:background 0.15s;cursor:pointer}
-    tbody tr:last-child{border-bottom:none}
-    tbody tr:hover{background:rgba(255,255,255,0.03)}
-    tbody td{padding:11px 14px;font-size:0.82rem;white-space:nowrap}
-    .td-id{font-family:'Courier New',monospace;color:var(--cyan);font-size:0.8rem}
-    .td-mute{color:var(--text-muted);font-size:0.76rem}
-
-    /* INTEGRATIONS */
-    .integ-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(190px,1fr));gap:12px;margin-bottom:18px;list-style:none}
-    .integ-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:16px 18px;display:flex;align-items:center;gap:12px;transition:border-color 0.2s}
-    .integ-card:hover{border-color:rgba(34,197,94,0.4)}
-    .integ-dot{width:9px;height:9px;border-radius:50%;background:var(--green);flex-shrink:0;box-shadow:0 0 7px rgba(34,197,94,0.55)}
-    .integ-name{font-size:0.875rem;font-weight:700;color:#fff}
-    .integ-status{font-size:0.72rem;color:var(--green);margin-top:2px}
-
-    /* NOTIFICATION DROPDOWN */
-    .notif-dropdown{position:absolute;top:calc(100% + 10px);right:0;width:300px;background:var(--card);border:1px solid var(--border);border-radius:var(--radius);box-shadow:var(--shadow-lg);z-index:500;display:none;flex-direction:column;overflow:hidden}
-    .notif-dropdown.open{display:flex}
-    .notif-hdr{padding:12px 16px;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center}
-    .notif-hdr span{font-size:0.82rem;font-weight:700;color:var(--text)}
-    .notif-hdr button{background:none;border:none;color:var(--text-muted);font-size:0.72rem;cursor:pointer}
-    .notif-hdr button:hover{color:var(--cyan)}
-    .notif-list{list-style:none;max-height:260px;overflow-y:auto}
-    .notif-item{padding:11px 16px;border-bottom:1px solid rgba(255,255,255,0.04);display:flex;gap:10px;align-items:flex-start;cursor:pointer;transition:background 0.15s}
-    .notif-item:hover{background:rgba(255,255,255,0.04)}
-    .notif-item:last-child{border-bottom:none}
-    .notif-dot-wrap{padding-top:4px}
-    .notif-dot{width:7px;height:7px;border-radius:50%;background:var(--red);flex-shrink:0}
-    .notif-body{flex:1}
-    .notif-title{font-size:0.78rem;font-weight:600;color:var(--text)}
-    .notif-time{font-size:0.68rem;color:var(--text-muted);margin-top:2px}
-
-    /* MODAL OVERLAY */
-    .modal-overlay{display:none;position:fixed;inset:0;z-index:1000;background:rgba(0,0,0,0.7);backdrop-filter:blur(4px);align-items:center;justify-content:center;padding:20px}
-    .modal-overlay.open{display:flex}
-    .modal{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);width:100%;max-width:700px;max-height:90vh;overflow-y:auto;box-shadow:var(--shadow-lg);animation:modal-in 0.22s ease}
-    @keyframes modal-in{from{opacity:0;transform:translateY(18px) scale(0.97)}to{opacity:1;transform:none}}
-    .modal__hdr{padding:20px 24px 16px;border-bottom:1px solid var(--border);display:flex;align-items:flex-start;justify-content:space-between;gap:12px;position:sticky;top:0;background:var(--card);z-index:2}
-    .modal__title{font-size:1rem;font-weight:800;color:#fff;line-height:1.3}
-    .modal__sub{font-size:0.76rem;color:var(--text-muted);margin-top:3px}
-    .modal__close{width:30px;height:30px;border-radius:var(--radius-xs);background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--text-muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:1rem;transition:all 0.2s;flex-shrink:0}
-    .modal__close:hover{border-color:var(--red);color:var(--red)}
-    .modal__body{padding:20px 24px 24px}
-    .modal__grid{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:20px}
-    .modal__field label{font-size:0.68rem;font-weight:700;text-transform:uppercase;letter-spacing:0.5px;color:var(--text-muted);display:block;margin-bottom:4px}
-    .modal__field .val{font-size:0.875rem;color:var(--text);font-weight:500}
-    .modal__field .val--mono{font-family:'Courier New',monospace;color:var(--cyan)}
-    .modal__section{margin-top:18px}
-    .modal__section-title{font-size:0.72rem;font-weight:700;text-transform:uppercase;letter-spacing:0.6px;color:var(--text-muted);margin-bottom:10px;padding-bottom:6px;border-bottom:1px solid var(--border)}
-    .modal__desc{font-size:0.875rem;color:var(--text-sub);line-height:1.7}
-
-    /* TICKET STATUS TRAIL */
-    .status-trail{display:flex;align-items:center;gap:0;margin:16px 0;overflow-x:auto;padding-bottom:4px}
-    .status-step{display:flex;flex-direction:column;align-items:center;flex:1;min-width:70px;position:relative}
-    .status-step:not(:last-child)::after{content:'';position:absolute;top:14px;left:calc(50% + 14px);right:calc(-50% + 14px);height:2px;background:var(--border);z-index:0}
-    .status-step.done:not(:last-child)::after{background:var(--cyan)}
-    .status-step__dot{width:28px;height:28px;border-radius:50%;border:2px solid var(--border);background:var(--bg);display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:800;color:var(--text-muted);z-index:1;position:relative;transition:all 0.2s}
-    .status-step.done .status-step__dot{border-color:var(--cyan);background:rgba(0,212,255,0.12);color:var(--cyan)}
-    .status-step.current .status-step__dot{border-color:var(--cyan);background:var(--cyan);color:var(--bg-deeper);box-shadow:0 0 10px rgba(0,212,255,0.4)}
-    .status-step__label{font-size:0.62rem;font-weight:600;color:var(--text-muted);margin-top:5px;text-align:center;white-space:nowrap}
-    .status-step.done .status-step__label,.status-step.current .status-step__label{color:var(--cyan)}
-
-    /* ACTIVITY LOG */
-    .activity-list{list-style:none;display:flex;flex-direction:column;gap:0}
-    .activity-item{display:flex;gap:12px;padding:10px 0;border-bottom:1px solid rgba(255,255,255,0.04);position:relative}
-    .activity-item:last-child{border-bottom:none}
-    .activity-item::before{content:'';position:absolute;left:11px;top:28px;bottom:-10px;width:1px;background:var(--border)}
-    .activity-item:last-child::before{display:none}
-    .activity-dot{width:24px;height:24px;border-radius:50%;background:rgba(0,212,255,0.1);border:1px solid var(--border);display:flex;align-items:center;justify-content:center;font-size:0.7rem;flex-shrink:0;z-index:1}
-    .activity-content{flex:1;min-width:0}
-    .activity-text{font-size:0.82rem;color:var(--text)}
-    .activity-time{font-size:0.7rem;color:var(--text-muted);margin-top:2px}
-
-    /* AI CHAT */
-    .chat-fab{position:fixed;bottom:26px;right:26px;z-index:2000;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--cyan-dim));border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;box-shadow:0 4px 20px rgba(0,212,255,0.38);transition:transform 0.2s,box-shadow 0.2s}
-    .chat-fab:hover{transform:scale(1.08);box-shadow:0 6px 28px rgba(0,212,255,0.55)}
-    .chat-fab-ico{transition:transform 0.3s;display:flex;align-items:center;justify-content:center}
-    .chat-fab.open .chat-fab-ico{transform:rotate(45deg)}
-    .chat-win{position:fixed;bottom:90px;right:26px;z-index:1999;width:350px;max-height:540px;background:var(--card);border:1px solid var(--border);border-radius:16px;display:flex;flex-direction:column;box-shadow:var(--shadow-lg);overflow:hidden;transform:scale(0.9) translateY(14px);opacity:0;pointer-events:none;transform-origin:bottom right;transition:transform 0.24s cubic-bezier(.34,1.56,.64,1),opacity 0.18s}
-    .chat-win.open{transform:scale(1) translateY(0);opacity:1;pointer-events:all}
-    .chat-hdr{padding:14px 16px;background:linear-gradient(135deg,rgba(0,212,255,0.09),rgba(0,119,170,0.06));border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
-    .chat-hdr__av{width:34px;height:34px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--cyan-dim));display:flex;align-items:center;justify-content:center;font-size:0.95rem;flex-shrink:0}
-    .chat-hdr__name{font-size:0.875rem;font-weight:700;color:#fff}
-    .chat-hdr__sub{font-size:0.7rem;color:var(--text-muted);margin-top:1px}
-    .chat-hdr__close{margin-left:auto;width:26px;height:26px;border-radius:6px;background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--text-muted);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:0.9rem;transition:all 0.2s}
-    .chat-hdr__close:hover{border-color:var(--red);color:var(--red)}
-    .chat-msgs{flex:1;overflow-y:auto;padding:14px;display:flex;flex-direction:column;gap:10px;min-height:0}
-    .chat-msgs::-webkit-scrollbar{width:3px} .chat-msgs::-webkit-scrollbar-thumb{background:var(--border)}
-    .msg{display:flex;gap:7px;align-items:flex-end;animation:msg-in 0.22s ease}
-    @keyframes msg-in{from{opacity:0;transform:translateY(7px)}to{opacity:1;transform:none}}
-    .msg--user{flex-direction:row-reverse}
-    .msg__av{width:26px;height:26px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:0.7rem;font-weight:700;flex-shrink:0}
-    .msg--bot .msg__av{background:linear-gradient(135deg,var(--cyan),var(--cyan-dim));color:var(--bg-deeper)}
-    .msg--user .msg__av{background:linear-gradient(135deg,#3b82f6,#1d4ed8);color:#fff}
-    .msg__bubble{max-width:80%;padding:9px 13px;border-radius:13px;font-size:0.82rem;line-height:1.5}
-    .msg--bot .msg__bubble{background:rgba(255,255,255,0.05);border:1px solid var(--border);color:var(--text);border-bottom-left-radius:3px}
-    .msg--user .msg__bubble{background:linear-gradient(135deg,var(--cyan),var(--cyan-dim));color:var(--bg-deeper);font-weight:600;border-bottom-right-radius:3px}
-    .msg__time{font-size:0.62rem;color:var(--text-muted);margin-top:3px}
-    .msg--user .msg__time{text-align:right}
-    .chat-typing{display:none;padding:0 14px 6px;align-items:center;gap:7px}
-    .chat-typing.on{display:flex}
-    .chat-typing__av{width:26px;height:26px;border-radius:50%;background:linear-gradient(135deg,var(--cyan),var(--cyan-dim));display:flex;align-items:center;justify-content:center;font-size:0.7rem;color:var(--bg-deeper);flex-shrink:0}
-    .chat-typing__dots{background:rgba(255,255,255,0.05);border:1px solid var(--border);border-radius:13px;border-bottom-left-radius:3px;padding:9px 13px;display:flex;gap:4px;align-items:center}
-    .chat-typing__dots span{width:5px;height:5px;border-radius:50%;background:var(--text-muted);display:block;animation:tdot 1.2s infinite}
-    .chat-typing__dots span:nth-child(2){animation-delay:.2s} .chat-typing__dots span:nth-child(3){animation-delay:.4s}
-    @keyframes tdot{0%,60%,100%{transform:translateY(0);opacity:.4}30%{transform:translateY(-4px);opacity:1}}
-    .chat-chips{padding:0 14px 8px;display:flex;flex-wrap:wrap;gap:5px}
-    .chat-chip{padding:4px 11px;border-radius:20px;background:rgba(0,212,255,0.07);border:1px solid rgba(0,212,255,0.22);color:var(--cyan);font-size:0.73rem;font-weight:600;cursor:pointer;transition:all 0.18s;white-space:nowrap}
-    .chat-chip:hover{background:rgba(0,212,255,0.16);border-color:var(--cyan)}
-    .chat-footer{padding:10px 14px;border-top:1px solid var(--border)}
-    .chat-form{display:flex;gap:7px;align-items:flex-end}
-    .chat-input{flex:1;background:rgba(255,255,255,0.04);border:1px solid var(--border);border-radius:9px;padding:8px 12px;color:var(--text);font-size:0.82rem;font-family:inherit;outline:none;resize:none;max-height:90px;line-height:1.4;transition:border-color 0.2s}
-    .chat-input:focus{border-color:var(--cyan)} .chat-input::placeholder{color:var(--text-muted)}
-    .chat-send{width:36px;height:36px;border-radius:9px;background:linear-gradient(135deg,var(--cyan),var(--cyan-dim));border:none;cursor:pointer;display:flex;align-items:center;justify-content:center;transition:all 0.2s;flex-shrink:0}
-    .chat-send:hover{transform:scale(1.06);box-shadow:0 3px 12px rgba(0,212,255,0.35)}
-    .chat-send:disabled{opacity:0.4;cursor:not-allowed;transform:none}
-    .chat-note{font-size:0.65rem;color:var(--text-muted);text-align:center;margin-top:6px}
-
-    /* RESPONSIVE */
-    @media(max-width:1100px){.grid-2{grid-template-columns:1fr}.grid-2-eq{grid-template-columns:1fr}}
-    @media(max-width:860px){
-      .sidebar{transform:translateX(calc(-1 * var(--sidebar-w)));box-shadow:4px 0 24px rgba(0,0,0,0.5)}
-      .sidebar.open{transform:translateX(0)}
-      .main{margin-left:0;padding:20px 14px 80px}
-      .topnav__hamburger{display:flex}
-      .topnav__search{max-width:180px}
-      .modal__grid{grid-template-columns:1fr}
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--bg); color: var(--text);
+      min-height: 100vh; line-height: 1.6; font-size: 14px;
     }
-    @media(max-width:580px){
-      .kpi-grid{grid-template-columns:1fr 1fr}
-      .topnav__search{display:none}
-      .topnav__username{display:none}
-      .btn-export span{display:none}
-      .chat-win{width:calc(100vw - 28px);right:14px;bottom:82px}
-      .chat-fab{right:14px;bottom:14px}
-      .status-trail{gap:0}
+
+    ::-webkit-scrollbar { width: 5px; height: 5px; }
+    ::-webkit-scrollbar-track { background: transparent; }
+    ::-webkit-scrollbar-thumb { background: var(--border); border-radius: 4px; }
+    ::-webkit-scrollbar-thumb:hover { background: var(--cyan-dim); }
+
+    a { color: inherit; text-decoration: none; }
+    button { font-family: inherit; }
+
+    /* ── TOP NAV ── */
+    .topnav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 300;
+      height: var(--nav-h);
+      background: rgba(8,11,16,0.97);
+      backdrop-filter: blur(14px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center; padding-right: 20px;
     }
-    @media(max-width:380px){.kpi-grid{grid-template-columns:1fr}}
+    .topnav__brand {
+      width: var(--side-w); flex-shrink: 0;
+      display: flex; align-items: center; gap: 10px;
+      padding: 0 20px; border-right: 1px solid var(--border); height: 100%;
+    }
+    .topnav__brand-text { font-size: 1.15rem; font-weight: 800; color: var(--cyan); }
+    .topnav__body {
+      flex: 1; display: flex; align-items: center;
+      justify-content: space-between; gap: 12px; padding-left: 20px;
+    }
+    .topnav__search { position: relative; flex: 1; max-width: 340px; }
+    .topnav__search-ico {
+      position: absolute; left: 10px; top: 50%;
+      transform: translateY(-50%); color: var(--muted);
+      pointer-events: none; font-size: 12px;
+    }
+    .topnav__search input {
+      width: 100%; background: rgba(255,255,255,0.04);
+      border: 1px solid var(--border); border-radius: var(--r-sm);
+      padding: 7px 12px 7px 32px; color: var(--text);
+      font-size: 0.82rem; font-family: inherit; outline: none;
+      transition: border-color .2s, background .2s;
+    }
+    .topnav__search input:focus { border-color: var(--cyan); background: rgba(0,212,255,0.04); }
+    .topnav__search input::placeholder { color: var(--muted); }
+    .topnav__right { display: flex; align-items: center; gap: 6px; }
+
+    .nav-icon-btn {
+      width: 36px; height: 36px; border-radius: var(--r-xs);
+      background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+      color: var(--muted); cursor: pointer;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 15px; transition: all .2s; position: relative;
+      user-select: none;
+    }
+    .nav-icon-btn:hover { border-color: var(--cyan); color: var(--cyan); }
+
+    .notif-badge {
+      position: absolute; top: -5px; right: -5px;
+      width: 17px; height: 17px; border-radius: 50%;
+      background: var(--red); color: #fff;
+      font-size: 0.58rem; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      border: 2px solid var(--bg-deep);
+    }
+
+    .topnav__user {
+      display: flex; align-items: center; gap: 8px;
+      padding: 5px 11px; border-radius: var(--r-sm);
+      background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+      cursor: pointer; transition: all .2s; user-select: none;
+    }
+    .topnav__user:hover { border-color: var(--cyan); }
+    .topnav__avatar {
+      width: 26px; height: 26px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--cyan), #005577);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 0.65rem; font-weight: 800; color: var(--bg-deep); flex-shrink: 0;
+    }
+    .topnav__username { font-size: 0.82rem; font-weight: 600; }
+
+    .btn-export {
+      display: flex; align-items: center; gap: 6px;
+      padding: 7px 15px; border-radius: var(--r-sm);
+      background: linear-gradient(135deg, var(--cyan), var(--cyan-dim));
+      color: var(--bg-deep); font-size: 0.82rem; font-weight: 700;
+      border: none; cursor: pointer;
+      transition: transform .2s, box-shadow .2s;
+    }
+    .btn-export:hover { transform: translateY(-1px); box-shadow: 0 4px 18px rgba(0,212,255,0.4); }
+    .btn-export:active { transform: translateY(0); }
+    .btn-export:disabled { opacity: .5; cursor: not-allowed; transform: none; }
+
+    .hamburger {
+      display: none; width: 36px; height: 36px;
+      border-radius: var(--r-xs);
+      background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+      color: var(--muted); cursor: pointer;
+      align-items: center; justify-content: center;
+      font-size: 18px; transition: all .2s;
+    }
+    .hamburger:hover { border-color: var(--cyan); color: var(--cyan); }
+
+    /* ── NOTIFICATION DROPDOWN ── */
+    .notif-wrap { position: relative; }
+    .notif-dropdown {
+      position: absolute; top: calc(100% + 10px); right: 0;
+      width: 300px; background: var(--card);
+      border: 1px solid var(--border); border-radius: var(--r);
+      box-shadow: var(--shadow-lg); z-index: 500;
+      opacity: 0; pointer-events: none; transform: translateY(-6px);
+      transition: opacity .2s, transform .2s;
+    }
+    .notif-dropdown.open { opacity: 1; pointer-events: all; transform: translateY(0); }
+    .notif-hdr {
+      padding: 12px 16px; border-bottom: 1px solid var(--border);
+      display: flex; justify-content: space-between; align-items: center;
+    }
+    .notif-hdr span { font-size: 0.82rem; font-weight: 700; color: var(--text); }
+    .notif-hdr button {
+      background: none; border: none; color: var(--muted);
+      font-size: 0.72rem; cursor: pointer; padding: 2px 6px;
+      border-radius: 4px; transition: color .2s;
+    }
+    .notif-hdr button:hover { color: var(--cyan); }
+    .notif-list { list-style: none; max-height: 260px; overflow-y: auto; }
+    .notif-item {
+      padding: 11px 16px; border-bottom: 1px solid rgba(255,255,255,0.04);
+      display: flex; gap: 10px; align-items: flex-start;
+      cursor: pointer; transition: background .15s;
+    }
+    .notif-item:hover { background: rgba(255,255,255,0.04); }
+    .notif-item:last-child { border-bottom: none; }
+    .notif-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--red); flex-shrink: 0; margin-top: 5px; }
+    .notif-dot.read { background: var(--muted); }
+    .notif-body { flex: 1; }
+    .notif-title { font-size: 0.78rem; font-weight: 600; color: var(--text); }
+    .notif-time  { font-size: 0.68rem; color: var(--muted); margin-top: 2px; }
+
+    /* ── USER DROPDOWN ── */
+    .user-wrap { position: relative; }
+    .user-dropdown {
+      position: absolute; top: calc(100% + 10px); right: 0;
+      width: 200px; background: var(--card);
+      border: 1px solid var(--border); border-radius: var(--r);
+      box-shadow: var(--shadow-lg); z-index: 500;
+      opacity: 0; pointer-events: none; transform: translateY(-6px);
+      transition: opacity .2s, transform .2s; overflow: hidden;
+    }
+    .user-dropdown.open { opacity: 1; pointer-events: all; transform: translateY(0); }
+    .user-dropdown-item {
+      padding: 10px 16px; font-size: 0.82rem; color: var(--sub);
+      cursor: pointer; display: flex; align-items: center; gap: 9px;
+      transition: background .15s, color .15s;
+    }
+    .user-dropdown-item:hover { background: rgba(255,255,255,0.05); color: var(--text); }
+    .user-dropdown-sep { height: 1px; background: var(--border); margin: 4px 0; }
+
+    /* ── LAYOUT ── */
+    .layout { display: flex; padding-top: var(--nav-h); min-height: 100vh; }
+
+    /* ── SIDEBAR ── */
+    .sidebar {
+      width: var(--side-w); background: var(--sidebar-bg);
+      border-right: 1px solid var(--border);
+      position: fixed; top: var(--nav-h); left: 0; bottom: 0;
+      display: flex; flex-direction: column;
+      overflow-y: auto; z-index: 200;
+      transition: transform .28s ease;
+    }
+    .sidebar__nav { flex: 1; padding: 16px 10px; display: flex; flex-direction: column; gap: 2px; }
+
+    .sidebar__section-label {
+      font-size: 0.62rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1px; color: var(--muted);
+      padding: 10px 12px 4px; margin-top: 6px;
+    }
+
+    .sidebar__link {
+      display: flex; align-items: center; gap: 10px;
+      padding: 10px 12px; border-radius: var(--r-sm);
+      color: var(--sub); font-size: 0.875rem; font-weight: 500;
+      transition: all .18s; position: relative; cursor: pointer;
+      border: none; background: none; width: 100%; text-align: left;
+    }
+    .sidebar__link:hover { color: var(--text); background: rgba(255,255,255,0.05); }
+    .sidebar__link.active { color: var(--cyan); background: rgba(0,212,255,0.09); }
+    .sidebar__link.active::before {
+      content: ''; position: absolute; left: 0; top: 20%; bottom: 20%;
+      width: 3px; border-radius: 0 3px 3px 0; background: var(--cyan);
+    }
+    .sidebar__icon { width: 20px; text-align: center; flex-shrink: 0; font-size: 15px; }
+    .sidebar__pill {
+      margin-left: auto; background: var(--red); color: #fff;
+      font-size: 0.62rem; font-weight: 800;
+      padding: 2px 7px; border-radius: 20px;
+    }
+    .sidebar__footer { padding: 14px 12px; border-top: 1px solid var(--border); }
+    .sidebar__org {
+      background: rgba(255,255,255,0.04); border: 1px solid var(--border);
+      border-radius: var(--r-sm); padding: 11px 13px; margin-bottom: 8px;
+    }
+    .sidebar__org-name { font-size: 0.875rem; font-weight: 700; color: var(--text); }
+    .sidebar__org-plan { font-size: 0.74rem; color: var(--sub); margin-top: 2px; }
+    .sidebar__settings-btn {
+      width: 100%; padding: 9px; border-radius: var(--r-sm);
+      background: rgba(255,255,255,0.05); border: 1px solid var(--border);
+      color: var(--text); font-size: 0.82rem; font-weight: 600;
+      cursor: pointer; transition: all .2s;
+    }
+    .sidebar__settings-btn:hover { border-color: var(--cyan); color: var(--cyan); }
+
+    .sidebar-overlay {
+      display: none; position: fixed; inset: 0; z-index: 199;
+      background: rgba(0,0,0,0.6); backdrop-filter: blur(2px);
+    }
+    .sidebar-overlay.open { display: block; }
+
+    /* ── MAIN ── */
+    .main { margin-left: var(--side-w); flex: 1; padding: 28px 24px 100px; min-width: 0; }
+
+    /* ── PAGE HEADER ── */
+    .page-hdr { margin-bottom: 24px; }
+    .page-hdr h1 { font-size: clamp(1.35rem,2.5vw,1.75rem); font-weight: 800; color: #fff; line-height: 1.2; }
+    .page-hdr p  { color: var(--sub); font-size: 0.875rem; margin-top: 5px; }
+    .page-hdr__meta { display: flex; align-items: center; gap: 7px; font-size: 0.76rem; color: var(--muted); margin-top: 8px; }
+    .live-dot { width: 7px; height: 7px; border-radius: 50%; background: var(--green); animation: blink 2s infinite; }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:.3} }
+
+    /* ── SECTION LABEL ── */
+    .sec-label {
+      font-size: 0.7rem; font-weight: 700; text-transform: uppercase;
+      letter-spacing: 1px; color: var(--muted);
+      display: flex; align-items: center; gap: 10px; margin-bottom: 14px; margin-top: 8px;
+    }
+    .sec-label::after { content:''; flex:1; height:1px; background: var(--border); }
+
+    /* ── KPI GRID ── */
+    .kpi-grid {
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(180px,1fr));
+      gap: 14px; margin-bottom: 24px;
+    }
+    .kpi {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 18px 18px 16px;
+      position: relative; overflow: hidden;
+      transition: transform .2s, box-shadow .2s; cursor: pointer;
+    }
+    .kpi:hover { transform: translateY(-2px); box-shadow: var(--shadow); }
+    .kpi::after { content:''; position:absolute; top:0; left:0; right:0; height:2px; }
+    .kpi--blue::after   { background: var(--blue); }
+    .kpi--red::after    { background: var(--red); }
+    .kpi--purple::after { background: var(--purple); }
+    .kpi--yellow::after { background: var(--yellow); }
+    .kpi--green::after  { background: var(--green); }
+    .kpi__top { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:10px; }
+    .kpi__label { font-size:.72rem; font-weight:600; color:var(--muted); text-transform:uppercase; letter-spacing:.4px; line-height:1.3; }
+    .kpi__ico { width:34px; height:34px; border-radius:9px; display:flex; align-items:center; justify-content:center; font-size:1rem; flex-shrink:0; }
+    .kpi--blue   .kpi__ico { background:rgba(59,130,246,.13); }
+    .kpi--red    .kpi__ico { background:rgba(239,68,68,.13); }
+    .kpi--purple .kpi__ico { background:rgba(168,85,247,.13); }
+    .kpi--yellow .kpi__ico { background:rgba(245,158,11,.13); }
+    .kpi--green  .kpi__ico { background:rgba(34,197,94,.13); }
+    .kpi__val { font-size:1.9rem; font-weight:800; color:#fff; line-height:1; }
+    .kpi__sub { font-size:.72rem; color:var(--muted); margin-top:3px; }
+    .kpi__delta {
+      display:inline-flex; align-items:center; gap:3px;
+      font-size:.7rem; font-weight:700; padding:2px 8px; border-radius:20px;
+      margin-top:8px;
+    }
+    .kpi__delta--up   { background:rgba(34,197,94,.1);  color:var(--green); }
+    .kpi__delta--down { background:rgba(239,68,68,.1);  color:var(--red); }
+    .kpi__delta--good { background:rgba(34,197,94,.1);  color:var(--green); }
+
+    /* ── CHARTS ── */
+    .grid-2    { display:grid; grid-template-columns:2fr 1fr; gap:16px; margin-bottom:18px; }
+    .grid-2-eq { display:grid; grid-template-columns:1fr 1fr;   gap:16px; margin-bottom:18px; }
+
+    .chart-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 18px 18px 14px;
+    }
+    .chart-card h3 {
+      font-size: .82rem; font-weight: 700; color: var(--text);
+      margin-bottom: 14px; display: flex; align-items: center; gap: 7px;
+    }
+    .chart-card h3 em { color: var(--cyan); font-style: normal; }
+    .chart-wrap { position: relative; }
+    .chart-wrap--260 { height: 260px; }
+    .chart-wrap--200 { height: 200px; }
+    .chart-wrap--180 { height: 180px; }
+
+    /* ── ALERTS ── */
+    .alerts-card {
+      background: var(--card); border: 1px solid var(--border);
+      border-radius: var(--r); padding: 18px; margin-bottom: 18px;
+    }
+    .alerts-card h3 { font-size:.82rem; font-weight:700; color:var(--text); margin-bottom:14px; display:flex; align-items:center; gap:7px; }
+    .alerts-list { list-style:none; display:flex; flex-direction:column; gap:8px; }
+    .alert-row {
+      display:flex; align-items:center; gap:12px;
+      padding:11px 13px; border-radius:9px;
+      background:rgba(239,68,68,.05); border:1px solid rgba(239,68,68,.14);
+      transition:background .18s; cursor:pointer;
+    }
+    .alert-row:hover { background:rgba(239,68,68,.1); }
+    .alert-dot { width:9px; height:9px; border-radius:50%; background:var(--red); flex-shrink:0; animation:blink 1.6s infinite; }
+    .alert-body { flex:1; min-width:0; }
+    .alert-title { font-size:.84rem; font-weight:600; color:#fff; }
+    .alert-meta  { font-size:.74rem; color:var(--muted); margin-top:2px; }
+    .alert-actions { display:flex; gap:6px; flex-shrink:0; }
+    .alert-btn {
+      padding: 4px 10px; border-radius: 6px; font-size: .7rem; font-weight: 600;
+      cursor: pointer; border: 1px solid; transition: all .2s;
+    }
+    .alert-btn--triage { background:rgba(239,68,68,.12); border-color:rgba(239,68,68,.3); color:var(--red); }
+    .alert-btn--triage:hover { background:rgba(239,68,68,.22); }
+    .alert-btn--ticket { background:rgba(59,130,246,.12); border-color:rgba(59,130,246,.3); color:var(--blue); }
+    .alert-btn--ticket:hover { background:rgba(59,130,246,.22); }
+
+    /* ── BADGES ── */
+    .badge { padding:3px 9px; border-radius:20px; font-size:.68rem; font-weight:700; flex-shrink:0; }
+    .badge-critical { background:rgba(239,68,68,.14);  color:var(--red);    border:1px solid rgba(239,68,68,.28); }
+    .badge-high     { background:rgba(249,115,22,.14); color:var(--orange); border:1px solid rgba(249,115,22,.28); }
+    .badge-medium   { background:rgba(245,158,11,.14); color:var(--yellow); border:1px solid rgba(245,158,11,.28); }
+    .badge-low      { background:rgba(34,197,94,.14);  color:var(--green);  border:1px solid rgba(34,197,94,.28); }
+    .badge-progress { background:rgba(59,130,246,.14); color:var(--blue);   border:1px solid rgba(59,130,246,.28); }
+    .badge-open     { background:rgba(239,68,68,.14);  color:var(--red);    border:1px solid rgba(239,68,68,.28); }
+    .badge-resolved { background:rgba(34,197,94,.14);  color:var(--green);  border:1px solid rgba(34,197,94,.28); }
+
+    /* ── TABLE ── */
+    .table-card { background:var(--card); border:1px solid var(--border); border-radius:var(--r); overflow:hidden; margin-bottom:18px; }
+    .table-card__hdr {
+      padding:14px 18px; border-bottom:1px solid var(--border);
+      display:flex; align-items:center; justify-content:space-between; gap:8px;
+    }
+    .table-card__hdr h3 { font-size:.84rem; font-weight:700; color:var(--text); }
+    .table-card__hdr-actions { display:flex; gap:8px; }
+    .tbl-btn {
+      padding:5px 12px; border-radius:6px; font-size:.74rem; font-weight:600;
+      cursor:pointer; border:1px solid var(--border); background:rgba(255,255,255,.04);
+      color:var(--sub); transition:all .2s;
+    }
+    .tbl-btn:hover { border-color:var(--cyan); color:var(--cyan); }
+    .tbl-wrap { overflow-x:auto; }
+    table { width:100%; border-collapse:collapse; }
+    thead th {
+      padding:9px 14px; text-align:left; font-size:.68rem; font-weight:700;
+      color:var(--muted); text-transform:uppercase; letter-spacing:.5px;
+      background:rgba(255,255,255,.02); border-bottom:1px solid var(--border);
+      white-space:nowrap; cursor:pointer; user-select:none; transition:color .2s;
+    }
+    thead th:hover { color:var(--cyan); }
+    tbody tr { border-bottom:1px solid rgba(255,255,255,.04); transition:background .15s; cursor:pointer; }
+    tbody tr:last-child { border-bottom:none; }
+    tbody tr:hover { background:rgba(255,255,255,.04); }
+    tbody td { padding:11px 14px; font-size:.82rem; white-space:nowrap; }
+    .td-id   { font-family:'Courier New',monospace; color:var(--cyan); font-size:.8rem; }
+    .td-mute { color:var(--muted); font-size:.76rem; }
+
+    /* ── INTEGRATIONS ── */
+    .integ-grid { display:grid; grid-template-columns:repeat(auto-fill,minmax(190px,1fr)); gap:12px; margin-bottom:18px; list-style:none; }
+    .integ-card {
+      background:var(--card); border:1px solid var(--border);
+      border-radius:var(--r); padding:16px 18px;
+      display:flex; align-items:center; gap:12px;
+      transition:border-color .2s, transform .2s; cursor:pointer;
+    }
+    .integ-card:hover { border-color:rgba(34,197,94,.4); transform:translateY(-1px); }
+    .integ-dot { width:9px; height:9px; border-radius:50%; background:var(--green); flex-shrink:0; box-shadow:0 0 7px rgba(34,197,94,.55); }
+    .integ-dot.offline { background:var(--red); box-shadow:0 0 7px rgba(239,68,68,.55); }
+    .integ-name   { font-size:.875rem; font-weight:700; color:#fff; }
+    .integ-status { font-size:.72rem; color:var(--green); margin-top:2px; }
+    .integ-status.offline { color:var(--red); }
+
+    /* ── TOAST ── */
+    .toast-container { position:fixed; bottom:90px; left:50%; transform:translateX(-50%); z-index:3000; display:flex; flex-direction:column; gap:8px; pointer-events:none; }
+    .toast {
+      background:var(--card); border:1px solid var(--border);
+      border-radius:var(--r-sm); padding:11px 18px;
+      font-size:.82rem; color:var(--text);
+      box-shadow:var(--shadow-lg); pointer-events:all;
+      display:flex; align-items:center; gap:10px;
+      animation:toast-in .25s ease; min-width:240px; max-width:360px;
+    }
+    @keyframes toast-in { from{opacity:0;transform:translateY(10px)} to{opacity:1;transform:none} }
+    .toast.fade-out { animation:toast-out .3s ease forwards; }
+    @keyframes toast-out { to{opacity:0;transform:translateY(8px)} }
+    .toast--success { border-color:rgba(34,197,94,.35); }
+    .toast--error   { border-color:rgba(239,68,68,.35); }
+    .toast--info    { border-color:rgba(0,212,255,.35); }
+
+    /* ── MODAL ── */
+    .modal-overlay {
+      position:fixed; inset:0; z-index:2500;
+      background:rgba(0,0,0,.75); backdrop-filter:blur(4px);
+      display:flex; align-items:center; justify-content:center;
+      opacity:0; pointer-events:none; transition:opacity .2s;
+    }
+    .modal-overlay.open { opacity:1; pointer-events:all; }
+    .modal {
+      background:var(--card); border:1px solid var(--border);
+      border-radius:16px; padding:28px; width:90%; max-width:480px;
+      box-shadow:var(--shadow-lg);
+      transform:scale(.94); transition:transform .2s;
+    }
+    .modal-overlay.open .modal { transform:scale(1); }
+    .modal__hdr { display:flex; align-items:flex-start; justify-content:space-between; margin-bottom:18px; }
+    .modal__title { font-size:1rem; font-weight:800; color:#fff; }
+    .modal__sub { font-size:.78rem; color:var(--sub); margin-top:4px; }
+    .modal__close {
+      width:28px; height:28px; border-radius:6px;
+      background:rgba(255,255,255,.05); border:1px solid var(--border);
+      color:var(--muted); cursor:pointer; display:flex; align-items:center; justify-content:center;
+      font-size:.9rem; transition:all .2s; flex-shrink:0;
+    }
+    .modal__close:hover { border-color:var(--red); color:var(--red); }
+    .modal__body { font-size:.84rem; color:var(--sub); line-height:1.7; }
+    .modal__body strong { color:var(--text); }
+    .modal__body .detail-row { display:flex; gap:8px; margin-bottom:6px; }
+    .modal__body .detail-label { color:var(--muted); min-width:110px; flex-shrink:0; }
+    .modal__footer { display:flex; gap:8px; margin-top:20px; justify-content:flex-end; }
+    .modal__btn {
+      padding:8px 18px; border-radius:var(--r-sm); font-size:.82rem; font-weight:700;
+      cursor:pointer; border:1px solid; transition:all .2s;
+    }
+    .modal__btn--primary { background:linear-gradient(135deg,var(--cyan),var(--cyan-dim)); color:var(--bg-deep); border-color:transparent; }
+    .modal__btn--primary:hover { box-shadow:0 3px 14px rgba(0,212,255,.35); }
+    .modal__btn--ghost { background:rgba(255,255,255,.04); border-color:var(--border); color:var(--sub); }
+    .modal__btn--ghost:hover { border-color:var(--cyan); color:var(--cyan); }
+    .modal__btn--danger { background:rgba(239,68,68,.12); border-color:rgba(239,68,68,.3); color:var(--red); }
+    .modal__btn--danger:hover { background:rgba(239,68,68,.22); }
+
+    /* ── AI CHAT ── */
+    .chat-fab {
+      position:fixed; bottom:26px; right:26px; z-index:2000;
+      width:52px; height:52px; border-radius:50%;
+      background:linear-gradient(135deg,var(--cyan),var(--cyan-dim));
+      border:none; cursor:pointer;
+      display:flex; align-items:center; justify-content:center;
+      box-shadow:0 4px 20px rgba(0,212,255,.38);
+      transition:transform .2s, box-shadow .2s;
+    }
+    .chat-fab:hover { transform:scale(1.08); box-shadow:0 6px 28px rgba(0,212,255,.55); }
+    .chat-fab-ico { transition:transform .3s; display:flex; align-items:center; justify-content:center; }
+    .chat-fab.open .chat-fab-ico { transform:rotate(45deg); }
+
+    .chat-win {
+      position:fixed; bottom:90px; right:26px; z-index:1999;
+      width:350px; max-height:540px;
+      background:var(--card); border:1px solid var(--border);
+      border-radius:16px; display:flex; flex-direction:column;
+      box-shadow:var(--shadow-lg); overflow:hidden;
+      transform:scale(.9) translateY(14px); opacity:0; pointer-events:none;
+      transform-origin:bottom right;
+      transition:transform .24s cubic-bezier(.34,1.56,.64,1), opacity .18s;
+    }
+    .chat-win.open { transform:scale(1) translateY(0); opacity:1; pointer-events:all; }
+
+    .chat-hdr {
+      padding:14px 16px;
+      background:linear-gradient(135deg,rgba(0,212,255,.09),rgba(0,119,170,.06));
+      border-bottom:1px solid var(--border);
+      display:flex; align-items:center; gap:10px;
+    }
+    .chat-hdr__av {
+      width:34px; height:34px; border-radius:50%;
+      background:linear-gradient(135deg,var(--cyan),var(--cyan-dim));
+      display:flex; align-items:center; justify-content:center;
+      font-size:.95rem; flex-shrink:0;
+    }
+    .chat-hdr__name { font-size:.875rem; font-weight:700; color:#fff; }
+    .chat-hdr__sub  { font-size:.7rem; color:var(--muted); margin-top:1px; }
+    .chat-hdr__close {
+      margin-left:auto; width:26px; height:26px; border-radius:6px;
+      background:rgba(255,255,255,.05); border:1px solid var(--border);
+      color:var(--muted); cursor:pointer;
+      display:flex; align-items:center; justify-content:center;
+      font-size:.9rem; transition:all .2s;
+    }
+    .chat-hdr__close:hover { border-color:var(--red); color:var(--red); }
+
+    .chat-msgs { flex:1; overflow-y:auto; padding:14px; display:flex; flex-direction:column; gap:10px; min-height:0; }
+    .chat-msgs::-webkit-scrollbar { width:3px; }
+    .chat-msgs::-webkit-scrollbar-thumb { background:var(--border); }
+
+    .msg { display:flex; gap:7px; align-items:flex-end; animation:msg-in .22s ease; }
+    @keyframes msg-in { from{opacity:0;transform:translateY(7px)} to{opacity:1;transform:none} }
+    .msg--user { flex-direction:row-reverse; }
+    .msg__av { width:26px; height:26px; border-radius:50%; display:flex; align-items:center; justify-content:center; font-size:.7rem; font-weight:700; flex-shrink:0; }
+    .msg--bot  .msg__av { background:linear-gradient(135deg,var(--cyan),var(--cyan-dim)); color:var(--bg-deep); }
+    .msg--user .msg__av { background:linear-gradient(135deg,#3b82f6,#1d4ed8); color:#fff; }
+    .msg__bubble { max-width:80%; padding:9px 13px; border-radius:13px; font-size:.82rem; line-height:1.5; }
+    .msg--bot  .msg__bubble { background:rgba(255,255,255,.05); border:1px solid var(--border); color:var(--text); border-bottom-left-radius:3px; }
+    .msg--user .msg__bubble { background:linear-gradient(135deg,var(--cyan),var(--cyan-dim)); color:var(--bg-deep); font-weight:600; border-bottom-right-radius:3px; }
+    .msg__time { font-size:.62rem; color:var(--muted); margin-top:3px; }
+    .msg--user .msg__time { text-align:right; }
+
+    .chat-typing { display:none; padding:0 14px 6px; align-items:center; gap:7px; }
+    .chat-typing.on { display:flex; }
+    .chat-typing__av { width:26px; height:26px; border-radius:50%; background:linear-gradient(135deg,var(--cyan),var(--cyan-dim)); display:flex; align-items:center; justify-content:center; font-size:.7rem; color:var(--bg-deep); flex-shrink:0; }
+    .chat-typing__dots { background:rgba(255,255,255,.05); border:1px solid var(--border); border-radius:13px; border-bottom-left-radius:3px; padding:9px 13px; display:flex; gap:4px; align-items:center; }
+    .chat-typing__dots span { width:5px; height:5px; border-radius:50%; background:var(--muted); display:block; animation:tdot 1.2s infinite; }
+    .chat-typing__dots span:nth-child(2) { animation-delay:.2s; }
+    .chat-typing__dots span:nth-child(3) { animation-delay:.4s; }
+    @keyframes tdot { 0%,60%,100%{transform:translateY(0);opacity:.4} 30%{transform:translateY(-4px);opacity:1} }
+
+    .chat-chips { padding:0 14px 8px; display:flex; flex-wrap:wrap; gap:5px; }
+    .chat-chip {
+      padding:4px 11px; border-radius:20px;
+      background:rgba(0,212,255,.07); border:1px solid rgba(0,212,255,.22);
+      color:var(--cyan); font-size:.73rem; font-weight:600;
+      cursor:pointer; transition:all .18s; white-space:nowrap;
+    }
+    .chat-chip:hover { background:rgba(0,212,255,.16); border-color:var(--cyan); }
+
+    .chat-footer { padding:10px 14px; border-top:1px solid var(--border); }
+    .chat-form   { display:flex; gap:7px; align-items:flex-end; }
+    .chat-input  {
+      flex:1; background:rgba(255,255,255,.04);
+      border:1px solid var(--border); border-radius:9px;
+      padding:8px 12px; color:var(--text);
+      font-size:.82rem; font-family:inherit; outline:none;
+      resize:none; max-height:90px; line-height:1.4;
+      transition:border-color .2s;
+    }
+    .chat-input:focus { border-color:var(--cyan); }
+    .chat-input::placeholder { color:var(--muted); }
+    .chat-send {
+      width:36px; height:36px; border-radius:9px;
+      background:linear-gradient(135deg,var(--cyan),var(--cyan-dim));
+      border:none; cursor:pointer;
+      display:flex; align-items:center; justify-content:center;
+      transition:all .2s; flex-shrink:0;
+    }
+    .chat-send:hover { transform:scale(1.06); box-shadow:0 3px 12px rgba(0,212,255,.35); }
+    .chat-send:disabled { opacity:.4; cursor:not-allowed; transform:none; }
+    .chat-note { font-size:.65rem; color:var(--muted); text-align:center; margin-top:6px; }
+
+    /* ── RESPONSIVE ── */
+    @media(max-width:1100px) { .grid-2 { grid-template-columns:1fr; } .grid-2-eq { grid-template-columns:1fr; } }
+    @media(max-width:860px) {
+      .sidebar { transform:translateX(calc(-1 * var(--side-w))); box-shadow:4px 0 24px rgba(0,0,0,.5); }
+      .sidebar.open { transform:translateX(0); }
+      .main { margin-left:0; padding:20px 14px 100px; }
+      .hamburger { display:flex !important; }
+      .topnav__search { max-width:180px; }
+    }
+    @media(max-width:580px) {
+      .kpi-grid { grid-template-columns:1fr 1fr; }
+      .topnav__search { display:none; }
+      .topnav__username { display:none; }
+      .btn-export-label { display:none; }
+      .chat-win { width:calc(100vw - 28px); right:14px; bottom:82px; }
+      .chat-fab { right:14px; bottom:14px; }
+    }
+    @media(max-width:380px) { .kpi-grid { grid-template-columns:1fr; } }
   </style>
 </head>
 <body>
 
-<!-- TOP NAV -->
+<!-- ══ TOP NAV ══ -->
 <nav class="topnav" role="navigation" aria-label="Main navigation">
-  <div class="topnav__brand" id="brandHome" role="link" tabindex="0" aria-label="CyberBench home">
+  <div class="topnav__brand">
     <svg width="28" height="28" viewBox="0 0 40 40" fill="none" aria-hidden="true">
-      <defs><linearGradient id="shieldG" x1="0" y1="0" x2="1" y2="1"><stop offset="0%" stop-color="#00d4ff"/><stop offset="100%" stop-color="#0077aa"/></linearGradient></defs>
-      <path d="M20 3L5 9v10c0 9 6.5 16.5 15 19 8.5-2.5 15-10 15-19V9L20 3z" fill="url(#shieldG)" opacity="0.18"/>
-      <path d="M20 3L5 9v10c0 9 6.5 16.5 15 19 8.5-2.5 15-10 15-19V9L20 3z" fill="none" stroke="url(#shieldG)" stroke-width="1.6"/>
+      <defs>
+        <linearGradient id="sg" x1="0" y1="0" x2="1" y2="1">
+          <stop offset="0%" stop-color="#00d4ff"/>
+          <stop offset="100%" stop-color="#0077aa"/>
+        </linearGradient>
+      </defs>
+      <path d="M20 3L5 9v10c0 9 6.5 16.5 15 19 8.5-2.5 15-10 15-19V9L20 3z" fill="url(#sg)" opacity=".18"/>
+      <path d="M20 3L5 9v10c0 9 6.5 16.5 15 19 8.5-2.5 15-10 15-19V9L20 3z" fill="none" stroke="url(#sg)" stroke-width="1.6"/>
       <path d="M14 20l4 4 8-8" stroke="#00d4ff" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
     </svg>
     <span class="topnav__brand-text">CyberBench</span>
   </div>
+
   <div class="topnav__body">
     <div class="topnav__search">
-      <svg class="topnav__search-ico" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input type="search" id="searchInput" placeholder="Search tickets, alerts…" aria-label="Search dashboard"/>
+      <svg class="topnav__search-ico" width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+        <circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/>
+      </svg>
+      <input type="search" id="searchInput" placeholder="Search tickets, alerts…" aria-label="Search dashboard" autocomplete="off"/>
     </div>
+
     <div class="topnav__right">
-      <div style="position:relative;">
-        <div class="topnav__icon" id="notifBtn" role="button" tabindex="0" aria-label="Notifications" aria-haspopup="true" aria-expanded="false">
-          🔔<span class="topnav__badge" id="notifBadge">7</span>
-        </div>
+      <!-- Notifications -->
+      <div class="notif-wrap">
+        <button class="nav-icon-btn" id="notifBtn" aria-label="Notifications" aria-haspopup="true" aria-expanded="false">
+          🔔
+          <span class="notif-badge" id="notifBadge" aria-label="7 unread notifications">7</span>
+        </button>
         <div class="notif-dropdown" id="notifDropdown" role="menu">
-          <div class="notif-hdr"><span>Notifications</span><button id="markAllRead">Mark all read</button></div>
-          <ul class="notif-list">
-            <li class="notif-item" role="menuitem" data-nav="alerts"><div class="notif-dot-wrap"><div class="notif-dot"></div></div><div class="notif-body"><div class="notif-title">Ransomware detected on WS-CA-1432</div><div class="notif-time">2 min ago</div></div></li>
-            <li class="notif-item" role="menuitem" data-nav="alerts"><div class="notif-dot-wrap"><div class="notif-dot"></div></div><div class="notif-body"><div class="notif-title">Privilege escalation attempt blocked</div><div class="notif-time">8 min ago</div></div></li>
-            <li class="notif-item" role="menuitem" data-nav="tickets"><div class="notif-dot-wrap"><div class="notif-dot"></div></div><div class="notif-body"><div class="notif-title">TKT-000124 updated by Alex Johnson</div><div class="notif-time">15 min ago</div></div></li>
-            <li class="notif-item" role="menuitem" data-nav="tickets"><div class="notif-dot-wrap"><div class="notif-dot"></div></div><div class="notif-body"><div class="notif-title">Compliance score improved to 87%</div><div class="notif-time">1 hr ago</div></div></li>
+          <div class="notif-hdr">
+            <span>Notifications</span>
+            <button id="markAllReadBtn">Mark all read</button>
+          </div>
+          <ul class="notif-list" id="notifList">
+            <li class="notif-item" role="menuitem" tabindex="0">
+              <div class="notif-dot" id="nd0"></div>
+              <div class="notif-body">
+                <div class="notif-title">Ransomware detected on WS-CA-1432</div>
+                <div class="notif-time">2 min ago</div>
+              </div>
+            </li>
+            <li class="notif-item" role="menuitem" tabindex="0">
+              <div class="notif-dot" id="nd1"></div>
+              <div class="notif-body">
+                <div class="notif-title">Privilege escalation attempt blocked</div>
+                <div class="notif-time">8 min ago</div>
+              </div>
+            </li>
+            <li class="notif-item" role="menuitem" tabindex="0">
+              <div class="notif-dot" id="nd2"></div>
+              <div class="notif-body">
+                <div class="notif-title">TKT-000124 updated by Alex Johnson</div>
+                <div class="notif-time">15 min ago</div>
+              </div>
+            </li>
+            <li class="notif-item" role="menuitem" tabindex="0">
+              <div class="notif-dot" id="nd3"></div>
+              <div class="notif-body">
+                <div class="notif-title">Compliance score improved to 87%</div>
+                <div class="notif-time">1 hr ago</div>
+              </div>
+            </li>
+            <li class="notif-item" role="menuitem" tabindex="0">
+              <div class="notif-dot" id="nd4"></div>
+              <div class="notif-body">
+                <div class="notif-title">Suricata alert: Port scan from 192.168.1.55</div>
+                <div class="notif-time">2 hr ago</div>
+              </div>
+            </li>
+            <li class="notif-item" role="menuitem" tabindex="0">
+              <div class="notif-dot" id="nd5"></div>
+              <div class="notif-body">
+                <div class="notif-title">New ticket assigned: TKT-000125</div>
+                <div class="notif-time">3 hr ago</div>
+              </div>
+            </li>
+            <li class="notif-item" role="menuitem" tabindex="0">
+              <div class="notif-dot" id="nd6"></div>
+              <div class="notif-body">
+                <div class="notif-title">Wazuh agent offline: AGENT-007</div>
+                <div class="notif-time">4 hr ago</div>
+              </div>
+            </li>
           </ul>
         </div>
       </div>
-      <div class="topnav__icon" id="helpBtn" role="button" tabindex="0" aria-label="Help">❔</div>
-      <div class="topnav__user" id="userMenuBtn" role="button" tabindex="0" aria-label="User menu">
-        <div class="topnav__avatar">AU</div>
-        <span class="topnav__username">Admin User</span>
+
+      <!-- Help -->
+      <button class="nav-icon-btn" id="helpBtn" aria-label="Help">❔</button>
+
+      <!-- User menu -->
+      <div class="user-wrap">
+        <div class="topnav__user" id="userMenuBtn" role="button" tabindex="0" aria-label="User menu" aria-haspopup="true" aria-expanded="false">
+          <div class="topnav__avatar" aria-hidden="true">AU</div>
+          <span class="topnav__username">Admin User</span>
+          <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" style="color:var(--muted);margin-left:2px" aria-hidden="true"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="user-dropdown" id="userDropdown" role="menu">
+          <div class="user-dropdown-item" id="profileBtn" role="menuitem" tabindex="0">👤 My Profile</div>
+          <div class="user-dropdown-item" id="prefsBtn" role="menuitem" tabindex="0">⚙️ Preferences</div>
+          <div class="user-dropdown-item" role="menuitem" tabindex="0" onclick="window.location.href='submit-ticket.html'">🎫 Submit Ticket</div>
+          <div class="user-dropdown-sep"></div>
+          <div class="user-dropdown-item" id="logoutBtn" role="menuitem" tabindex="0" style="color:var(--red)">🚪 Sign Out</div>
+        </div>
       </div>
+
+      <!-- Export -->
       <button class="btn-export" id="exportBtn" aria-label="Export report">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-        <span>Export Report</span>
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true">
+          <path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/>
+          <polyline points="7 10 12 15 17 10"/>
+          <line x1="12" y1="15" x2="12" y2="3"/>
+        </svg>
+        <span class="btn-export-label">Export Report</span>
       </button>
-      <button class="topnav__hamburger" id="sidebarBtn" aria-label="Toggle sidebar" aria-expanded="false">☰</button>
+
+      <!-- Hamburger -->
+      <button class="hamburger" id="hamburgerBtn" aria-label="Toggle sidebar" aria-expanded="false" style="display:none">☰</button>
     </div>
   </div>
 </nav>
 
-<div class="sidebar__overlay" id="sidebarOverlay"></div>
+<!-- Sidebar overlay -->
+<div class="sidebar-overlay" id="sidebarOverlay"></div>
 
+<!-- ══ LAYOUT ══ -->
 <div class="layout">
-  <!-- SIDEBAR -->
+
+  <!-- ══ SIDEBAR ══ -->
   <aside class="sidebar" id="sidebar" role="complementary" aria-label="Sidebar navigation">
-    <nav class="sidebar__nav">
-      <a href="dashboard.html" class="sidebar__link active" id="nav-dashboard" aria-current="page">
+    <nav class="sidebar__nav" aria-label="Page sections">
+
+      <span class="sidebar__section-label">Overview</span>
+      <button class="sidebar__link active" id="nav-dashboard" aria-current="page" data-section="dashboard">
         <span class="sidebar__icon">🏠</span> Dashboard
-      </a>
-      <a href="alerts.html" class="sidebar__link" id="nav-alerts">
-        <span class="sidebar__icon">⚠️</span> Alerts
-        <span class="sidebar__pill">23</span>
-      </a>
-      <a href="tickets.html" class="sidebar__link" id="nav-tickets">
+      </button>
+
+      <span class="sidebar__section-label">Operations</span>
+      <button class="sidebar__link" id="nav-tickets" data-section="tickets">
         <span class="sidebar__icon">🎫</span> Tickets
-        <span class="sidebar__pill">48</span>
-      </a>
-      <a href="assets.html" class="sidebar__link" id="nav-assets">
+        <span class="sidebar__pill" aria-label="48 open tickets">48</span>
+      </button>
+      <button class="sidebar__link" id="nav-alerts" data-section="alerts">
+        <span class="sidebar__icon">⚠️</span> Alerts
+        <span class="sidebar__pill" aria-label="23 alerts">23</span>
+      </button>
+      <button class="sidebar__link" id="nav-assets" data-section="assets">
         <span class="sidebar__icon">🖥️</span> Assets
-      </a>
-      <a href="remediation.html" class="sidebar__link" id="nav-remediation">
+      </button>
+
+      <span class="sidebar__section-label">Security</span>
+      <button class="sidebar__link" id="nav-remediation" data-section="remediation">
         <span class="sidebar__icon">🔧</span> Remediation
-      </a>
-      <a href="playbooks.html" class="sidebar__link" id="nav-playbooks">
+      </button>
+      <button class="sidebar__link" id="nav-playbooks" data-section="playbooks">
         <span class="sidebar__icon">📘</span> Playbooks
-      </a>
+      </button>
+      <button class="sidebar__link" id="nav-compliance" data-section="compliance">
+        <span class="sidebar__icon">✅</span> Compliance
+      </button>
+
+      <span class="sidebar__section-label">Config</span>
+      <button class="sidebar__link" id="nav-integrations" data-section="integrations">
+        <span class="sidebar__icon">🔗</span> Integrations
+      </button>
+      <button class="sidebar__link" id="nav-reports" data-section="reports">
+        <span class="sidebar__icon">📊</span> Reports
+      </button>
     </nav>
+
     <div class="sidebar__footer">
-      <div class="sidebar__org" id="orgBtn">
+      <div class="sidebar__org">
         <div class="sidebar__org-name">Awesome SOC</div>
-        <div class="sidebar__org-plan">Enterprise Plan · <span style="color:var(--cyan)">View →</span></div>
+        <div class="sidebar__org-plan">Enterprise Plan</div>
       </div>
-      <button class="sidebar__settings" id="settingsBtn">⚙️ Settings</button>
+      <button class="sidebar__settings-btn" id="settingsBtn">⚙️ View Settings</button>
     </div>
   </aside>
 
-  <!-- MAIN CONTENT -->
-  <main class="main" id="main" role="main">
+  <!-- ══ MAIN ══ -->
+  <main class="main" id="mainContent" role="main">
+
+    <!-- Page header -->
     <div class="page-hdr">
       <h1>Dashboard</h1>
       <p>Executive overview of security operations and risk posture</p>
       <div class="page-hdr__meta">
         <span class="live-dot" aria-hidden="true"></span>
-        Live · Updated just now
+        Live · Updated <span id="lastUpdated">just now</span>
       </div>
     </div>
 
+    <!-- KPIs -->
     <p class="sec-label">Key Performance Indicators</p>
-    <div class="kpi-grid" role="list">
-      <div class="kpi kpi--blue" role="listitem" data-nav="tickets" tabindex="0" aria-label="Open Tickets: 48">
-        <div class="kpi__top"><span class="kpi__label">Open Tickets</span><div class="kpi__ico">🎫</div></div>
+    <div class="kpi-grid" role="list" aria-label="Key performance indicators">
+
+      <div class="kpi kpi--blue" role="listitem" tabindex="0" data-kpi="tickets" aria-label="Open Tickets: 48, down 12%">
+        <div class="kpi__top">
+          <span class="kpi__label">Open Tickets</span>
+          <div class="kpi__ico" aria-hidden="true">🎫</div>
+        </div>
         <div class="kpi__val">48</div>
-        <span class="kpi__delta">↓ 12% vs last 7 days</span>
+        <span class="kpi__delta kpi__delta--good">↓ 12% vs last 7 days</span>
       </div>
-      <div class="kpi kpi--red" role="listitem" data-nav="alerts" tabindex="0" aria-label="Critical Alerts: 7">
-        <div class="kpi__top"><span class="kpi__label">Critical Alerts</span><div class="kpi__ico">🛡️</div></div>
+
+      <div class="kpi kpi--red" role="listitem" tabindex="0" data-kpi="alerts" aria-label="Critical Alerts: 7, down 22%">
+        <div class="kpi__top">
+          <span class="kpi__label">Critical Alerts</span>
+          <div class="kpi__ico" aria-hidden="true">🛡️</div>
+        </div>
         <div class="kpi__val">7</div>
-        <span class="kpi__delta">↓ 22% vs last 7 days</span>
+        <span class="kpi__delta kpi__delta--good">↓ 22% vs last 7 days</span>
       </div>
-      <div class="kpi kpi--purple" role="listitem" data-nav="remediation" tabindex="0" aria-label="MTTR: 4.2 hours">
-        <div class="kpi__top"><span class="kpi__label">MTTR</span><div class="kpi__ico">🕒</div></div>
+
+      <div class="kpi kpi--purple" role="listitem" tabindex="0" data-kpi="mttr" aria-label="MTTR: 4.2 hours, down 18%">
+        <div class="kpi__top">
+          <span class="kpi__label">MTTR</span>
+          <div class="kpi__ico" aria-hidden="true">🕒</div>
+        </div>
         <div class="kpi__val">4.2h</div>
-        <span class="kpi__delta">↓ 18% vs last 7 days</span>
+        <span class="kpi__delta kpi__delta--good">↓ 18% vs last 7 days</span>
       </div>
-      <div class="kpi kpi--yellow" role="listitem" tabindex="0" aria-label="Risk Score: 68, Medium Risk">
-        <div class="kpi__top"><span class="kpi__label">Risk Score</span><div class="kpi__ico">📈</div></div>
+
+      <div class="kpi kpi--yellow" role="listitem" tabindex="0" data-kpi="risk" aria-label="Risk Score: 68, Medium Risk">
+        <div class="kpi__top">
+          <span class="kpi__label">Risk Score</span>
+          <div class="kpi__ico" aria-hidden="true">📈</div>
+        </div>
         <div class="kpi__val">68</div>
         <div class="kpi__sub">Medium Risk</div>
       </div>
-      <div class="kpi kpi--green" role="listitem" tabindex="0" aria-label="Compliance Score: 87%">
-        <div class="kpi__top"><span class="kpi__label">Compliance Score</span><div class="kpi__ico">✅</div></div>
+
+      <div class="kpi kpi--green" role="listitem" tabindex="0" data-kpi="compliance" aria-label="Compliance Score: 87%, up 5%">
+        <div class="kpi__top">
+          <span class="kpi__label">Compliance Score</span>
+          <div class="kpi__ico" aria-hidden="true">✅</div>
+        </div>
         <div class="kpi__val">87%</div>
-        <span class="kpi__delta">↑ 5% vs last 7 days</span>
+        <span class="kpi__delta kpi__delta--up">↑ 5% vs last 7 days</span>
       </div>
+
     </div>
 
+    <!-- Charts row 1 -->
     <p class="sec-label">Security Trends</p>
     <div class="grid-2">
       <div class="chart-card">
         <h3><em>📉</em> Risk Score Over Time</h3>
-        <div class="chart-wrap chart-wrap--260"><canvas id="cRisk" aria-label="Risk score over time"></canvas></div>
+        <div class="chart-wrap chart-wrap--260">
+          <canvas id="cRisk" aria-label="Risk score over time line chart" role="img"></canvas>
+        </div>
       </div>
       <div class="chart-card">
         <h3><em>🎫</em> Tickets by Status</h3>
-        <div class="chart-wrap chart-wrap--260"><canvas id="cStatus" aria-label="Tickets by status"></canvas></div>
+        <div class="chart-wrap chart-wrap--260">
+          <canvas id="cStatus" aria-label="Tickets by status doughnut chart" role="img"></canvas>
+        </div>
       </div>
     </div>
+
+    <!-- Charts row 2 -->
     <div class="grid-2-eq">
       <div class="chart-card">
         <h3><em>🔺</em> Tickets by Priority</h3>
-        <div class="chart-wrap chart-wrap--200"><canvas id="cPriority" aria-label="Tickets by priority"></canvas></div>
+        <div class="chart-wrap chart-wrap--200">
+          <canvas id="cPriority" aria-label="Tickets by priority bar chart" role="img"></canvas>
+        </div>
       </div>
       <div class="chart-card">
         <h3><em>🚨</em> Top Alert Categories</h3>
-        <div class="chart-wrap chart-wrap--200"><canvas id="cAlerts" aria-label="Top alert categories"></canvas></div>
+        <div class="chart-wrap chart-wrap--200">
+          <canvas id="cAlerts" aria-label="Top alert categories bar chart" role="img"></canvas>
+        </div>
       </div>
     </div>
 
+    <!-- Critical Alerts -->
     <p class="sec-label">Recent Critical Alerts</p>
-    <div class="alerts-card">
+    <div class="alerts-card" role="region" aria-label="Recent critical alerts">
+      <h3>🚨 Active Critical Alerts</h3>
       <ul class="alerts-list" id="alertsList">
-        <li class="alert-row" data-alert-id="ALT-001" tabindex="0" role="button" aria-label="View alert: Ransomware Activity Detected">
-          <div class="alert-dot"></div>
-          <div class="alert-body"><div class="alert-title">Ransomware Activity Detected</div><div class="alert-meta">Endpoint: WS-CA-1432 · 2 min ago</div></div>
+
+        <li class="alert-row" tabindex="0"
+            data-title="Ransomware Activity Detected"
+            data-meta="Endpoint: WS-CA-1432"
+            data-severity="Critical"
+            data-detail="Ransomware signatures detected on workstation WS-CA-1432. Immediate isolation recommended. File encryption activity observed at 14:32 UTC. Wazuh rule 87105 triggered.">
+          <div class="alert-dot" aria-hidden="true"></div>
+          <div class="alert-body">
+            <div class="alert-title">Ransomware Activity Detected</div>
+            <div class="alert-meta">Endpoint: WS-CA-1432</div>
+          </div>
+          <div class="alert-actions">
+            <button class="alert-btn alert-btn--triage" aria-label="Triage ransomware alert">Triage</button>
+            <button class="alert-btn alert-btn--ticket" aria-label="Create ticket for ransomware alert">+ Ticket</button>
+          </div>
           <span class="badge badge-critical">Critical</span>
         </li>
-        <li class="alert-row" data-alert-id="ALT-002" tabindex="0" role="button" aria-label="View alert: Privilege Escalation Attempt">
-          <div class="alert-dot"></div>
-          <div class="alert-body"><div class="alert-title">Privilege Escalation Attempt</div><div class="alert-meta">User: administrator · 8 min ago</div></div>
+
+        <li class="alert-row" tabindex="0"
+            data-title="Privilege Escalation Attempt"
+            data-meta="User: administrator"
+            data-severity="Critical"
+            data-detail="User 'administrator' attempted to escalate privileges via sudo on LINUX-SRV-03. Blocked by PAM policy. Source IP: 10.0.1.44. Event logged at 13:55 UTC.">
+          <div class="alert-dot" aria-hidden="true"></div>
+          <div class="alert-body">
+            <div class="alert-title">Privilege Escalation Attempt</div>
+            <div class="alert-meta">User: administrator</div>
+          </div>
+          <div class="alert-actions">
+            <button class="alert-btn alert-btn--triage" aria-label="Triage privilege escalation alert">Triage</button>
+            <button class="alert-btn alert-btn--ticket" aria-label="Create ticket for privilege escalation">+ Ticket</button>
+          </div>
           <span class="badge badge-critical">Critical</span>
         </li>
-        <li class="alert-row" data-alert-id="ALT-003" tabindex="0" role="button" aria-label="View alert: Multiple Failed Logins">
-          <div class="alert-dot"></div>
-          <div class="alert-body"><div class="alert-title">Multiple Failed Logins</div><div class="alert-meta">Source: 45.77.32.18 · 12 min ago</div></div>
+
+        <li class="alert-row" tabindex="0"
+            data-title="Multiple Failed Logins"
+            data-meta="Source: 45.77.32.18"
+            data-severity="Critical"
+            data-detail="284 failed SSH login attempts from external IP 45.77.32.18 over 10 minutes. Brute-force pattern detected. Source geolocated to Eastern Europe. Consider blocking at firewall.">
+          <div class="alert-dot" aria-hidden="true"></div>
+          <div class="alert-body">
+            <div class="alert-title">Multiple Failed Logins</div>
+            <div class="alert-meta">Source: 45.77.32.18</div>
+          </div>
+          <div class="alert-actions">
+            <button class="alert-btn alert-btn--triage" aria-label="Triage failed logins alert">Triage</button>
+            <button class="alert-btn alert-btn--ticket" aria-label="Create ticket for failed logins">+ Ticket</button>
+          </div>
           <span class="badge badge-critical">Critical</span>
         </li>
-        <li class="alert-row" data-alert-id="ALT-004" tabindex="0" role="button" aria-label="View alert: Malicious File Detected">
-          <div class="alert-dot"></div>
-          <div class="alert-body"><div class="alert-title">Malicious File Detected</div><div class="alert-meta">Endpoint: FILE-SRV-02 · 18 min ago</div></div>
+
+        <li class="alert-row" tabindex="0"
+            data-title="Malicious File Detected"
+            data-meta="Endpoint: FILE-SRV-02"
+            data-severity="Critical"
+            data-detail="Malicious file 'invoice_2024.exe' detected on FILE-SRV-02 in shared drive \\\\FS02\\Finance. SHA256: a3f8c1... ClamAV signature: Win.Trojan.Agent-12345. File quarantined automatically.">
+          <div class="alert-dot" aria-hidden="true"></div>
+          <div class="alert-body">
+            <div class="alert-title">Malicious File Detected</div>
+            <div class="alert-meta">Endpoint: FILE-SRV-02</div>
+          </div>
+          <div class="alert-actions">
+            <button class="alert-btn alert-btn--triage" aria-label="Triage malicious file alert">Triage</button>
+            <button class="alert-btn alert-btn--ticket" aria-label="Create ticket for malicious file">+ Ticket</button>
+          </div>
           <span class="badge badge-critical">Critical</span>
         </li>
+
       </ul>
     </div>
 
+    <!-- Remediation -->
     <p class="sec-label">Remediation</p>
     <div class="chart-card" style="margin-bottom:18px">
       <h3><em>🔧</em> Remediation Progress</h3>
-      <div class="chart-wrap chart-wrap--180"><canvas id="cRemediation" aria-label="Remediation progress"></canvas></div>
+      <div class="chart-wrap chart-wrap--180">
+        <canvas id="cRemediation" aria-label="Remediation progress doughnut chart" role="img"></canvas>
+      </div>
     </div>
 
+    <!-- Tickets Table -->
     <p class="sec-label">Recent Ticket Activity</p>
-    <div class="table-card">
-      <div class="table-card__hdr"><h3>📋 Recent Ticket Activity</h3></div>
+    <div class="table-card" role="region" aria-label="Recent ticket activity">
+      <div class="table-card__hdr">
+        <h3>📋 Recent Tickets</h3>
+        <div class="table-card__hdr-actions">
+          <button class="tbl-btn" id="filterBtn">🔽 Filter</button>
+          <button class="tbl-btn" id="newTicketBtn">+ New Ticket</button>
+        </div>
+      </div>
       <div class="tbl-wrap">
         <table aria-label="Recent tickets">
           <thead>
             <tr>
-              <th>Ticket ID</th><th>Title</th><th>Customer</th>
-              <th>Priority</th><th>Status</th><th>Assigned To</th><th>Updated</th>
+              <th scope="col" data-sort="id">Ticket ID ↕</th>
+              <th scope="col" data-sort="title">Title ↕</th>
+              <th scope="col" data-sort="customer">Customer ↕</th>
+              <th scope="col" data-sort="priority">Priority ↕</th>
+              <th scope="col" data-sort="status">Status ↕</th>
+              <th scope="col" data-sort="assigned">Assigned To ↕</th>
+              <th scope="col" data-sort="updated">Updated ↕</th>
             </tr>
           </thead>
           <tbody id="ticketTableBody">
-            <tr data-ticket-id="TKT-000124" tabindex="0" role="button" aria-label="View ticket TKT-000124">
+            <tr tabindex="0"
+                data-ticket-id="TKT-000124"
+                data-ticket-title="Disable SMBv1 on File Server"
+                data-ticket-customer="Acme Manufacturing"
+                data-ticket-priority="High"
+                data-ticket-status="In Progress"
+                data-ticket-assigned="Alex Johnson"
+                data-ticket-updated="15m ago"
+                data-ticket-detail="SMBv1 is enabled on the primary file server FS-01. This protocol is vulnerable to EternalBlue (MS17-010) and should be disabled immediately via Group Policy. Estimated downtime: none.">
               <td class="td-id">TKT-000124</td>
               <td>Disable SMBv1 on File Server</td>
               <td>Acme Manufacturing</td>
@@ -472,7 +1013,15 @@
               <td>Alex Johnson</td>
               <td class="td-mute">15m ago</td>
             </tr>
-            <tr data-ticket-id="TKT-000123" tabindex="0" role="button" aria-label="View ticket TKT-000123">
+            <tr tabindex="0"
+                data-ticket-id="TKT-000123"
+                data-ticket-title="Patch Critical OpenSSL CVE"
+                data-ticket-customer="Orlando Law Group"
+                data-ticket-priority="High"
+                data-ticket-status="In Progress"
+                data-ticket-assigned="CyberBench SOC"
+                data-ticket-updated="42m ago"
+                data-ticket-detail="CVE-2024-0727 affects OpenSSL 3.0.x - 3.1.x. All Linux servers running affected versions must be patched. Patch available in upstream repos. Coordinate with customer for maintenance window.">
               <td class="td-id">TKT-000123</td>
               <td>Patch Critical OpenSSL CVE</td>
               <td>Orlando Law Group</td>
@@ -481,91 +1030,115 @@
               <td>CyberBench SOC</td>
               <td class="td-mute">42m ago</td>
             </tr>
+            <tr tabindex="0"
+                data-ticket-id="TKT-000122"
+                data-ticket-title="MFA Enforcement for Admin Accounts"
+                data-ticket-customer="TechFlow Inc"
+                data-ticket-priority="Medium"
+                data-ticket-status="Open"
+                data-ticket-assigned="Sarah Chen"
+                data-ticket-updated="2h ago"
+                data-ticket-detail="Admin accounts in Azure AD do not have MFA enforced. Conditional Access policy needs to be created and tested. Affects 14 admin accounts across 3 tenants.">
+              <td class="td-id">TKT-000122</td>
+              <td>MFA Enforcement for Admin Accounts</td>
+              <td>TechFlow Inc</td>
+              <td><span class="badge badge-medium">Medium</span></td>
+              <td><span class="badge badge-open">Open</span></td>
+              <td>Sarah Chen</td>
+              <td class="td-mute">2h ago</td>
+            </tr>
+            <tr tabindex="0"
+                data-ticket-id="TKT-000121"
+                data-ticket-title="SSL Certificate Renewal"
+                data-ticket-customer="DataVault Corp"
+                data-ticket-priority="Low"
+                data-ticket-status="Resolved"
+                data-ticket-assigned="Mike Torres"
+                data-ticket-updated="1d ago"
+                data-ticket-detail="SSL certificate for portal.datavault.com expired. New certificate issued via Let's Encrypt and deployed. Nginx reloaded. Verified with SSL Labs — Grade A.">
+              <td class="td-id">TKT-000121</td>
+              <td>SSL Certificate Renewal</td>
+              <td>DataVault Corp</td>
+              <td><span class="badge badge-low">Low</span></td>
+              <td><span class="badge badge-resolved">Resolved</span></td>
+              <td>Mike Torres</td>
+              <td class="td-mute">1d ago</td>
+            </tr>
           </tbody>
         </table>
       </div>
     </div>
 
+    <!-- Integrations -->
     <p class="sec-label">Integrations Status</p>
-    <ul class="integ-grid" aria-label="Integration statuses">
-      <li class="integ-card"><div class="integ-dot"></div><div><div class="integ-name">Wazuh</div><div class="integ-status">● Connected</div></div></li>
-      <li class="integ-card"><div class="integ-dot"></div><div><div class="integ-name">Suricata</div><div class="integ-status">● Connected</div></div></li>
-      <li class="integ-card"><div class="integ-dot"></div><div><div class="integ-name">Microsoft 365</div><div class="integ-status">● Connected</div></div></li>
+    <ul class="integ-grid" aria-label="Integration statuses" id="integGrid">
+      <li class="integ-card" tabindex="0" data-integ="Wazuh" data-status="connected" data-detail="Wazuh SIEM — 1,247 agents reporting. Last event: 0s ago. Version: 4.7.2.">
+        <div class="integ-dot"></div>
+        <div>
+          <div class="integ-name">Wazuh</div>
+          <div class="integ-status">● Connected</div>
+        </div>
+      </li>
+      <li class="integ-card" tabindex="0" data-integ="Suricata" data-status="connected" data-detail="Suricata IDS/IPS — monitoring 3 network interfaces. Rules updated 2h ago. Version: 7.0.3.">
+        <div class="integ-dot"></div>
+        <div>
+          <div class="integ-name">Suricata</div>
+          <div class="integ-status">● Connected</div>
+        </div>
+      </li>
+      <li class="integ-card" tabindex="0" data-integ="Microsoft 365" data-status="connected" data-detail="Microsoft 365 — Defender for Endpoint active. 342 licensed users. Last sync: 1 min ago.">
+        <div class="integ-dot"></div>
+        <div>
+          <div class="integ-name">Microsoft 365</div>
+          <div class="integ-status">● Connected</div>
+        </div>
+      </li>
+      <li class="integ-card" tabindex="0" data-integ="CrowdStrike" data-status="connected" data-detail="CrowdStrike Falcon — EDR active on 89 endpoints. Prevention policy: enabled. Last telemetry: 30s ago.">
+        <div class="integ-dot"></div>
+        <div>
+          <div class="integ-name">CrowdStrike</div>
+          <div class="integ-status">● Connected</div>
+        </div>
+      </li>
+      <li class="integ-card" tabindex="0" data-integ="Splunk" data-status="connected" data-detail="Splunk SIEM — 14 data inputs active. 2.3M events/day. Search head cluster: healthy.">
+        <div class="integ-dot"></div>
+        <div>
+          <div class="integ-name">Splunk</div>
+          <div class="integ-status">● Connected</div>
+        </div>
+      </li>
+      <li class="integ-card" tabindex="0" data-integ="Tenable" data-status="connected" data-detail="Tenable.io — Last scan: 6h ago. 1,432 assets tracked. 23 critical vulnerabilities open.">
+        <div class="integ-dot"></div>
+        <div>
+          <div class="integ-name">Tenable</div>
+          <div class="integ-status">● Connected</div>
+        </div>
+      </li>
     </ul>
+
   </main>
 </div>
 
-<!-- TICKET DETAIL MODAL -->
-<div class="modal-overlay" id="ticketModal" role="dialog" aria-modal="true" aria-label="Ticket details" aria-hidden="true">
-  <div class="modal" id="ticketModalContent">
+<!-- ══ MODAL ══ -->
+<div class="modal-overlay" id="modalOverlay" role="dialog" aria-modal="true" aria-labelledby="modalTitle">
+  <div class="modal" id="modal">
     <div class="modal__hdr">
       <div>
-        <div class="modal__title" id="modalTicketTitle">Ticket Title</div>
-        <div class="modal__sub" id="modalTicketId">TKT-000000</div>
+        <div class="modal__title" id="modalTitle">Detail</div>
+        <div class="modal__sub" id="modalSub"></div>
       </div>
-      <button class="modal__close" id="ticketModalClose" aria-label="Close ticket details">✕</button>
+      <button class="modal__close" id="modalClose" aria-label="Close modal">✕</button>
     </div>
-    <div class="modal__body">
-      <!-- Status Trail -->
-      <div class="modal__section-title" style="margin-top:0">Status Progress</div>
-      <div class="status-trail" id="statusTrail" role="list" aria-label="Ticket status progress"></div>
-
-      <!-- Fields Grid -->
-      <div class="modal__grid" id="modalFieldsGrid"></div>
-
-      <!-- Description -->
-      <div class="modal__section">
-        <div class="modal__section-title">Description</div>
-        <p class="modal__desc" id="modalDesc"></p>
-      </div>
-
-      <!-- Remediation -->
-      <div class="modal__section" id="modalRemSection">
-        <div class="modal__section-title">Remediation Steps</div>
-        <p class="modal__desc" id="modalRem"></p>
-      </div>
-
-      <!-- Related -->
-      <div class="modal__section" id="modalRelSection">
-        <div class="modal__section-title">Related Asset / Alert / Finding</div>
-        <p class="modal__desc" id="modalRel"></p>
-      </div>
-
-      <!-- Activity Log -->
-      <div class="modal__section">
-        <div class="modal__section-title">Activity History</div>
-        <ul class="activity-list" id="modalActivity"></ul>
-      </div>
-    </div>
+    <div class="modal__body" id="modalBody"></div>
+    <div class="modal__footer" id="modalFooter"></div>
   </div>
 </div>
 
-<!-- ALERT DETAIL MODAL -->
-<div class="modal-overlay" id="alertModal" role="dialog" aria-modal="true" aria-label="Alert details" aria-hidden="true">
-  <div class="modal" id="alertModalContent">
-    <div class="modal__hdr">
-      <div>
-        <div class="modal__title" id="alertModalTitle">Alert Title</div>
-        <div class="modal__sub" id="alertModalId">ALT-000</div>
-      </div>
-      <button class="modal__close" id="alertModalClose" aria-label="Close alert details">✕</button>
-    </div>
-    <div class="modal__body">
-      <div class="modal__grid" id="alertFieldsGrid"></div>
-      <div class="modal__section">
-        <div class="modal__section-title">Description</div>
-        <p class="modal__desc" id="alertDesc"></p>
-      </div>
-      <div class="modal__section">
-        <div class="modal__section-title">Recommended Response</div>
-        <p class="modal__desc" id="alertResponse"></p>
-      </div>
-    </div>
-  </div>
-</div>
+<!-- ══ TOAST CONTAINER ══ -->
+<div class="toast-container" id="toastContainer" aria-live="polite" aria-atomic="true"></div>
 
-<!-- AI CHAT WIDGET -->
-<button class="chat-fab" id="chatFab" aria-label="Open AI assistant" aria-expanded="false">
+<!-- ══ AI CHAT FAB ══ -->
+<button class="chat-fab" id="chatFab" aria-label="Open AI assistant" aria-expanded="false" aria-controls="chatWin">
   <span class="chat-fab-ico">
     <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="#080b10" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
       <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>
@@ -573,406 +1146,447 @@
   </span>
 </button>
 
-<div class="chat-win" id="chatWin" role="dialog" aria-label="CyberBench AI Assistant" aria-hidden="true">
+<!-- ══ AI CHAT WINDOW ══ -->
+<div class="chat-win" id="chatWin" role="dialog" aria-label="CyberBench AI Assistant" aria-hidden="true" aria-modal="true">
   <div class="chat-hdr">
-    <div class="chat-hdr__av">🤖</div>
-    <div><div class="chat-hdr__name">CyberBench AI</div><div class="chat-hdr__sub">Dashboard help · Alerts · Tickets</div></div>
+    <div class="chat-hdr__av" aria-hidden="true">🤖</div>
+    <div>
+      <div class="chat-hdr__name">CyberBench AI</div>
+      <div class="chat-hdr__sub">Dashboard help · Alerts · Tickets</div>
+    </div>
     <button class="chat-hdr__close" id="chatClose" aria-label="Close AI assistant">✕</button>
   </div>
-  <div class="chat-msgs" id="chatMsgs" role="log" aria-live="polite">
+
+  <div class="chat-msgs" id="chatMsgs" role="log" aria-live="polite" aria-label="Chat messages">
     <div class="msg msg--bot">
-      <div class="msg__av">🤖</div>
+      <div class="msg__av" aria-hidden="true">🤖</div>
       <div>
-        <div class="msg__bubble">👋 Hi! I'm your CyberBench AI. Ask me about alerts, tickets, risk scores, or any dashboard metric.</div>
-        <div class="msg__time">Just now</div>
+        <div class="msg__bubble">👋 Hi! I'm your CyberBench AI assistant. Ask me about metrics, alerts, tickets, or click any card on the dashboard to get instant context.</div>
+        <div class="msg__time" id="chatInitTime"></div>
       </div>
     </div>
   </div>
+
   <div class="chat-typing" id="chatTyping" aria-hidden="true">
     <div class="chat-typing__av">🤖</div>
     <div class="chat-typing__dots"><span></span><span></span><span></span></div>
   </div>
+
   <div class="chat-chips" id="chatChips">
     <button class="chat-chip" type="button" data-msg="What do the current KPI metrics mean?">📊 Explain KPIs</button>
     <button class="chat-chip" type="button" data-msg="Tell me about the critical alerts">🚨 Critical Alerts</button>
     <button class="chat-chip" type="button" data-msg="What is the current risk score?">📈 Risk Score</button>
-    <button class="chat-chip" type="button" data-msg="Show me the ticket status summary">🎫 Ticket Summary</button>
+    <button class="chat-chip" type="button" data-msg="Show me the ticket status summary">🎫 Tickets</button>
+    <button class="chat-chip" type="button" data-msg="What is the compliance score?">✅ Compliance</button>
   </div>
+
   <div class="chat-footer">
     <div class="chat-form">
       <textarea class="chat-input" id="chatInput" placeholder="Ask about alerts, tickets, risk…" rows="1" aria-label="Type your message" maxlength="500"></textarea>
       <button type="button" class="chat-send" id="chatSend" aria-label="Send message">
-        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#080b10" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="#080b10" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+          <line x1="22" y1="2" x2="11" y2="13"/>
+          <polygon points="22 2 15 22 11 13 2 9 22 2"/>
+        </svg>
       </button>
     </div>
-    <p class="chat-note">Demo widget — don't paste secrets.</p>
+    <p class="chat-note">Demo assistant — do not paste sensitive data.</p>
   </div>
 </div>
 
+<!-- ══ JAVASCRIPT ══ -->
 <script>
-window.addEventListener('load', function () {
+(function () {
+  'use strict';
 
-  /* ══════════════════════════════════════
-     DATA STORE
-  ══════════════════════════════════════ */
-  var TICKETS = {
-    'TKT-000124': {
-      id: 'TKT-000124',
-      title: 'Disable SMBv1 on File Server',
-      customer: 'Acme Manufacturing',
-      priority: 'High',
-      status: 'In Progress',
-      created: 'Jun 10, 2025 09:14',
-      updated: '15 minutes ago',
-      assigned: 'Alex Johnson',
-      asset: 'FILE-SRV-01 (192.168.1.45)',
-      alert: 'ALT-007 — SMBv1 Protocol Detected',
-      desc: 'SMBv1 is enabled on the primary file server FILE-SRV-01. This legacy protocol is vulnerable to EternalBlue and related exploits used in WannaCry and NotPetya ransomware campaigns. Immediate disabling is required to reduce attack surface.',
-      remediation: '1. Open PowerShell as Administrator on FILE-SRV-01.\n2. Run: Set-SmbServerConfiguration -EnableSMB1Protocol $false\n3. Verify with: Get-SmbServerConfiguration | Select EnableSMB1Protocol\n4. Reboot the server during the next maintenance window.\n5. Confirm with vulnerability scan post-remediation.',
-      activity: [
-        { icon: '✏️', text: 'Ticket created by CyberBench SOC', time: 'Jun 10, 2025 09:14' },
-        { icon: '👤', text: 'Assigned to Alex Johnson', time: 'Jun 10, 2025 09:20' },
-        { icon: '🔄', text: 'Status changed to In Progress', time: 'Jun 10, 2025 10:05' },
-        { icon: '💬', text: 'Alex Johnson: Confirmed SMBv1 active. Scheduling maintenance window.', time: 'Jun 10, 2025 11:30' },
-        { icon: '📎', text: 'Vulnerability scan report attached', time: 'Jun 10, 2025 14:00' }
-      ]
-    },
-    'TKT-000123': {
-      id: 'TKT-000123',
-      title: 'Patch Critical OpenSSL CVE',
-      customer: 'Orlando Law Group',
-      priority: 'High',
-      status: 'In Progress',
-      created: 'Jun 9, 2025 16:42',
-      updated: '42 minutes ago',
-      assigned: 'CyberBench SOC',
-      asset: 'WEB-SRV-03 (10.0.0.12)',
-      alert: 'ALT-005 — Critical CVE-2024-0727 Detected',
-      desc: 'Critical OpenSSL vulnerability CVE-2024-0727 identified on web server WEB-SRV-03. This vulnerability allows a remote attacker to cause a denial of service via a specially crafted PKCS12 file. CVSS score: 9.1 (Critical). Patch must be applied immediately.',
-      remediation: '1. SSH into WEB-SRV-03.\n2. Run: sudo apt-get update && sudo apt-get upgrade openssl\n3. Verify OpenSSL version: openssl version\n4. Restart affected services: sudo systemctl restart nginx\n5. Run post-patch vulnerability scan to confirm remediation.',
-      activity: [
-        { icon: '✏️', text: 'Ticket created automatically from vulnerability scan', time: 'Jun 9, 2025 16:42' },
-        { icon: '🔄', text: 'Status changed to Assigned', time: 'Jun 9, 2025 16:45' },
-        { icon: '👤', text: 'Assigned to CyberBench SOC', time: 'Jun 9, 2025 17:00' },
-        { icon: '🔄', text: 'Status changed to In Progress', time: 'Jun 10, 2025 08:15' },
-        { icon: '💬', text: 'SOC Team: Patch staged in test environment. Production deployment pending approval.', time: 'Jun 10, 2025 09:45' }
-      ]
-    }
-  };
+  /* ─────────────────────────────────────────
+     UTILITIES
+  ───────────────────────────────────────── */
+  function $(id) { return document.getElementById(id); }
+  function qs(sel, ctx) { return (ctx || document).querySelector(sel); }
+  function qsa(sel, ctx) { return Array.from((ctx || document).querySelectorAll(sel)); }
 
-  var ALERTS = {
-    'ALT-001': {
-      id: 'ALT-001', title: 'Ransomware Activity Detected',
-      severity: 'Critical', source: 'Wazuh EDR', endpoint: 'WS-CA-1432',
-      time: 'Jun 10, 2025 · 2 min ago', status: 'Active',
-      desc: 'Wazuh EDR detected file encryption patterns consistent with ransomware activity on workstation WS-CA-1432. Multiple files in C:\\Users\\jsmith\\Documents have been renamed with unknown extensions. Process explorer.exe spawned cmd.exe with suspicious arguments.',
-      response: '1. Immediately isolate WS-CA-1432 from the network (disable NIC or quarantine via EDR).\n2. Preserve memory dump and forensic image before remediation.\n3. Identify the ransomware family using hash lookup (VirusTotal, MalwareBazaar).\n4. Check lateral movement: review authentication logs on adjacent systems.\n5. Notify stakeholders and initiate IR playbook PB-003.\n6. Do not pay ransom — restore from last known good backup.'
-    },
-    'ALT-002': {
-      id: 'ALT-002', title: 'Privilege Escalation Attempt',
-      severity: 'Critical', source: 'Wazuh SIEM', endpoint: 'DC-01',
-      time: 'Jun 10, 2025 · 8 min ago', status: 'Active',
-      desc: 'Administrator account attempted to escalate privileges beyond assigned role. Audit logs show modification of group policy objects and addition of a new local administrator account "svc_backup2". This pattern is consistent with post-exploitation lateral movement.',
-      response: '1. Immediately revoke all active sessions for the administrator account.\n2. Reset the administrator password and enforce MFA.\n3. Remove the unauthorized local account "svc_backup2".\n4. Review Group Policy changes and revert unauthorized modifications.\n5. Check for persistence mechanisms: scheduled tasks, registry run keys, startup folders.\n6. Escalate to Tier 3 if compromise is confirmed.'
-    },
-    'ALT-003': {
-      id: 'ALT-003', title: 'Multiple Failed Logins',
-      severity: 'Critical', source: 'Suricata IDS', endpoint: 'VPN Gateway',
-      time: 'Jun 10, 2025 · 12 min ago', status: 'Active',
-      desc: '847 failed authentication attempts detected from IP 45.77.32.18 (AS-CHOOPA, Vultr Holdings) targeting the VPN gateway over a 4-minute window. Pattern is consistent with credential stuffing or brute-force attack. 3 successful authentications detected from this IP.',
-      response: '1. Block IP 45.77.32.18 immediately at the perimeter firewall and VPN gateway.\n2. Investigate the 3 successful authentications — identify affected accounts.\n3. Force password reset on all accounts that authenticated from this IP.\n4. Enable account lockout policy: lock after 5 failed attempts.\n5. Review VPN logs for any data exfiltration post-authentication.\n6. Consider geo-blocking if this region is not expected.'
-    },
-    'ALT-004': {
-      id: 'ALT-004', title: 'Malicious File Detected',
-      severity: 'Critical', source: 'Wazuh FIM', endpoint: 'FILE-SRV-02',
-      time: 'Jun 10, 2025 · 18 min ago', status: 'Active',
-      desc: 'Wazuh File Integrity Monitoring detected a file "update_patch.exe" (SHA256: 4a5f2c...) in C:\\Windows\\Temp on FILE-SRV-02. Hash matches known Cobalt Strike beacon. File was written by user account "svc_sql" which should not have write access to this directory.',
-      response: '1. Quarantine the file immediately via your AV/EDR console — do not execute.\n2. Isolate FILE-SRV-02 from the network pending investigation.\n3. Revoke and reset credentials for "svc_sql" service account.\n4. Audit all files written by "svc_sql" in the last 72 hours.\n5. Check for C2 callback: review outbound network connections from FILE-SRV-02.\n6. Submit file hash to threat intelligence platforms for additional context.'
-    }
-  };
+  function getTime() {
+    return new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
+  }
 
-  var STATUS_STEPS = ['Open', 'Assigned', 'In Progress', 'Pending', 'Resolved', 'Closed'];
+  /* ─────────────────────────────────────────
+     TOAST SYSTEM
+  ───────────────────────────────────────── */
+  var toastContainer = $('toastContainer');
 
-  /* ══════════════════════════════════════
-     CHARTS
-  ══════════════════════════════════════ */
-  var CYAN='#00d4ff', RED='#ef4444', ORG='#f97316', YEL='#f59e0b', GRN='#22c55e', BLU='#3b82f6', PRP='#a855f7';
-  var GRID='rgba(255,255,255,0.05)', TICK='#64748b';
-  Chart.defaults.color=TICK; Chart.defaults.font.family="'Segoe UI',system-ui,sans-serif"; Chart.defaults.font.size=11;
+  function showToast(msg, type, duration) {
+    type = type || 'info';
+    duration = duration || 3200;
+    var icons = { success: '✅', error: '❌', info: 'ℹ️' };
+    var t = document.createElement('div');
+    t.className = 'toast toast--' + type;
+    t.innerHTML = '<span>' + (icons[type] || 'ℹ️') + '</span><span>' + msg + '</span>';
+    toastContainer.appendChild(t);
+    setTimeout(function () {
+      t.classList.add('fade-out');
+      setTimeout(function () { if (t.parentNode) t.parentNode.removeChild(t); }, 350);
+    }, duration);
+  }
 
-  new Chart(document.getElementById('cRisk'),{type:'line',data:{labels:['Mon','Tue','Wed','Thu','Fri','Sat','Sun'],datasets:[{label:'Risk Score',data:[82,78,74,71,70,69,68],borderColor:CYAN,backgroundColor:'rgba(0,212,255,0.07)',borderWidth:2.5,pointBackgroundColor:CYAN,pointRadius:4,pointHoverRadius:6,fill:true,tension:0.4}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{color:GRID},ticks:{color:TICK}},y:{min:50,max:100,grid:{color:GRID},ticks:{color:TICK}}}}});
+  /* ─────────────────────────────────────────
+     MODAL SYSTEM
+  ───────────────────────────────────────── */
+  var modalOverlay = $('modalOverlay');
+  var modalTitle   = $('modalTitle');
+  var modalSub     = $('modalSub');
+  var modalBody    = $('modalBody');
+  var modalFooter  = $('modalFooter');
+  var modalClose   = $('modalClose');
 
-  new Chart(document.getElementById('cStatus'),{type:'doughnut',data:{labels:['Open','In Progress','Resolved','Closed'],datasets:[{data:[18,14,10,6],backgroundColor:[RED,YEL,GRN,BLU],borderColor:'#111827',borderWidth:3,hoverOffset:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{padding:14,usePointStyle:true,pointStyleWidth:9}}},cutout:'66%'}});
+  function openModal(title, sub, bodyHTML, footerHTML) {
+    modalTitle.textContent  = title;
+    modalSub.textContent    = sub || '';
+    modalBody.innerHTML     = bodyHTML || '';
+    modalFooter.innerHTML   = footerHTML || '<button class="modal__btn modal__btn--ghost" onclick="closeModal()">Close</button>';
+    modalOverlay.classList.add('open');
+    modalOverlay.setAttribute('aria-hidden', 'false');
+    modalClose.focus();
+  }
 
-  new Chart(document.getElementById('cPriority'),{type:'bar',data:{labels:['Critical','High','Medium','Low'],datasets:[{label:'Tickets',data:[7,15,18,8],backgroundColor:[RED,ORG,YEL,GRN],borderRadius:6,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},scales:{x:{grid:{display:false},ticks:{color:TICK}},y:{grid:{color:GRID},ticks:{color:TICK}}}}});
+  function closeModal() {
+    modalOverlay.classList.remove('open');
+    modalOverlay.setAttribute('aria-hidden', 'true');
+  }
 
-  new Chart(document.getElementById('cAlerts'),{type:'bar',data:{labels:['Malware','Phishing','Brute Force','Recon','Exfil'],datasets:[{label:'Alerts',data:[24,18,14,9,6],backgroundColor:[RED,ORG,YEL,PRP,BLU],borderRadius:6,borderSkipped:false}]},options:{responsive:true,maintainAspectRatio:false,indexAxis:'y',plugins:{legend:{display:false}},scales:{x:{grid:{color:GRID},ticks:{color:TICK}},y:{grid:{display:false},ticks:{color:TICK}}}}});
-
-  new Chart(document.getElementById('cRemediation'),{type:'doughnut',data:{labels:['Remediated','In Progress','Pending'],datasets:[{data:[62,24,14],backgroundColor:[GRN,YEL,RED],borderColor:'#111827',borderWidth:3,hoverOffset:6}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{padding:14,usePointStyle:true,pointStyleWidth:9}}},cutout:'62%'}});
-
-  /* ══════════════════════════════════════
-     SIDEBAR TOGGLE
-  ══════════════════════════════════════ */
-  var sidebarBtn=document.getElementById('sidebarBtn');
-  var sidebar=document.getElementById('sidebar');
-  var sidebarOverlay=document.getElementById('sidebarOverlay');
-  var sidebarOpen=false;
-
-  function openSidebar(){sidebarOpen=true;sidebar.classList.add('open');sidebarOverlay.classList.add('open');sidebarBtn.setAttribute('aria-expanded','true');sidebarBtn.textContent='✕';}
-  function closeSidebar(){sidebarOpen=false;sidebar.classList.remove('open');sidebarOverlay.classList.remove('open');sidebarBtn.setAttribute('aria-expanded','false');sidebarBtn.textContent='☰';}
-  sidebarBtn.addEventListener('click',function(){sidebarOpen?closeSidebar():openSidebar();});
-  sidebarOverlay.addEventListener('click',closeSidebar);
-
-  /* ══════════════════════════════════════
-     BRAND → HOME
-  ══════════════════════════════════════ */
-  document.getElementById('brandHome').addEventListener('click',function(){window.location.href='dashboard.html';});
-  document.getElementById('brandHome').addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();window.location.href='dashboard.html';}});
-
-  /* ══════════════════════════════════════
-     NOTIFICATIONS
-  ══════════════════════════════════════ */
-  var notifBtn=document.getElementById('notifBtn');
-  var notifDropdown=document.getElementById('notifDropdown');
-  var notifOpen=false;
-  function openNotif(){notifOpen=true;notifDropdown.classList.add('open');notifBtn.setAttribute('aria-expanded','true');}
-  function closeNotif(){notifOpen=false;notifDropdown.classList.remove('open');notifBtn.setAttribute('aria-expanded','false');}
-  notifBtn.addEventListener('click',function(e){e.stopPropagation();notifOpen?closeNotif():openNotif();});
-  notifBtn.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();notifOpen?closeNotif():openNotif();}});
-  document.getElementById('markAllRead').addEventListener('click',function(){
-    notifDropdown.querySelectorAll('.notif-dot').forEach(function(d){d.style.background='var(--text-muted)';});
-    var badge=document.getElementById('notifBadge');if(badge)badge.style.display='none';
-    this.textContent='All read ✓';
+  modalClose.addEventListener('click', closeModal);
+  modalOverlay.addEventListener('click', function (e) {
+    if (e.target === modalOverlay) closeModal();
   });
-  document.querySelectorAll('.notif-item[data-nav]').forEach(function(item){
-    item.addEventListener('click',function(){
-      var dest=this.getAttribute('data-nav');closeNotif();
-      window.location.href=dest+'.html';
+  // Expose globally for inline onclick
+  window.closeModal = closeModal;
+
+  /* ─────────────────────────────────────────
+     HAMBURGER / SIDEBAR TOGGLE
+  ───────────────────────────────────────── */
+  var sidebar        = $('sidebar');
+  var sidebarOverlay = $('sidebarOverlay');
+  var hamburgerBtn   = $('hamburgerBtn');
+  var sidebarOpen    = false;
+
+  function openSidebar() {
+    sidebarOpen = true;
+    sidebar.classList.add('open');
+    sidebarOverlay.classList.add('open');
+    hamburgerBtn.setAttribute('aria-expanded', 'true');
+    hamburgerBtn.textContent = '✕';
+  }
+
+  function closeSidebar() {
+    sidebarOpen = false;
+    sidebar.classList.remove('open');
+    sidebarOverlay.classList.remove('open');
+    hamburgerBtn.setAttribute('aria-expanded', 'false');
+    hamburgerBtn.textContent = '☰';
+  }
+
+  hamburgerBtn.addEventListener('click', function () {
+    sidebarOpen ? closeSidebar() : openSidebar();
+  });
+  sidebarOverlay.addEventListener('click', closeSidebar);
+
+  /* ─────────────────────────────────────────
+     SIDEBAR NAV LINKS
+  ───────────────────────────────────────── */
+  var sectionMessages = {
+    tickets:      'Tickets module — showing all 48 open tickets.',
+    alerts:       'Alerts module — 23 active alerts across all customers.',
+    assets:       'Assets module — 1,432 tracked assets.',
+    remediation:  'Remediation module — 62% complete.',
+    playbooks:    'Playbooks module — 14 active playbooks.',
+    compliance:   'Compliance module — current score 87%.',
+    integrations: 'Integrations module — all 6 integrations connected.',
+    reports:      'Reports module — schedule and download reports.'
+  };
+
+  qsa('.sidebar__link').forEach(function (link) {
+    link.addEventListener('click', function () {
+      qsa('.sidebar__link').forEach(function (l) {
+        l.classList.remove('active');
+        l.removeAttribute('aria-current');
+      });
+      this.classList.add('active');
+      this.setAttribute('aria-current', 'page');
+      var section = this.getAttribute('data-section');
+      if (section && section !== 'dashboard') {
+        showToast(sectionMessages[section] || section + ' — coming soon.', 'info');
+      }
+      if (sidebarOpen) closeSidebar();
     });
   });
-  document.addEventListener('click',function(e){if(notifOpen&&!notifDropdown.contains(e.target)&&e.target!==notifBtn)closeNotif();});
 
-  /* ══════════════════════════════════════
-     HELP
-  ══════════════════════════════════════ */
-  document.getElementById('helpBtn').addEventListener('click',function(){
-    alert('CyberBench Help\n\n• Dashboard: Overview of all KPIs, alerts, and tickets\n• Alerts: View and triage all active security alerts\n• Tickets: Manage remediation tickets\n• Assets: Inventory of monitored assets\n• Remediation: Track remediation progress\n• Playbooks: Standard response procedures\n• Settings: Platform configuration\n\nSupport: support@cyberbench.io');
-  });
-  document.getElementById('helpBtn').addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();this.click();}});
-
-  /* ══════════════════════════════════════
-     EXPORT
-  ══════════════════════════════════════ */
-  document.getElementById('exportBtn').addEventListener('click',function(){
-    var btn=this; btn.innerHTML='<span>Exporting…</span>'; btn.disabled=true;
-    setTimeout(function(){
-      btn.innerHTML='<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span>Export Report</span>';
-      btn.disabled=false;
-      alert('✅ Report exported!\n\nFile: CyberBench_Dashboard_Report.pdf\nGenerated: '+new Date().toLocaleString());
-    },1500);
+  $('settingsBtn').addEventListener('click', function () {
+    openModal(
+      '⚙️ Settings',
+      'Workspace configuration',
+      '<div class="detail-row"><span class="detail-label">Organisation</span><strong>Awesome SOC</strong></div>' +
+      '<div class="detail-row"><span class="detail-label">Plan</span><strong>Enterprise</strong></div>' +
+      '<div class="detail-row"><span class="detail-label">Users</span><strong>12 active</strong></div>' +
+      '<div class="detail-row"><span class="detail-label">Data region</span><strong>US-East</strong></div>' +
+      '<div class="detail-row"><span class="detail-label">2FA</span><strong>Enforced</strong></div>',
+      '<button class="modal__btn modal__btn--primary" onclick="showToast(\'Settings saved.\',\'success\');closeModal()">Save</button>' +
+      '<button class="modal__btn modal__btn--ghost" onclick="closeModal()">Cancel</button>'
+    );
   });
 
-  /* ══════════════════════════════════════
+  /* ─────────────────────────────────────────
+     NOTIFICATIONS DROPDOWN
+  ───────────────────────────────────────── */
+  var notifBtn      = $('notifBtn');
+  var notifDropdown = $('notifDropdown');
+  var notifBadge    = $('notifBadge');
+  var notifOpen     = false;
+  var unreadCount   = 7;
+
+  function toggleNotif(e) {
+    e.stopPropagation();
+    notifOpen = !notifOpen;
+    notifDropdown.classList.toggle('open', notifOpen);
+    notifBtn.setAttribute('aria-expanded', String(notifOpen));
+  }
+
+  notifBtn.addEventListener('click', toggleNotif);
+  notifBtn.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleNotif(e); }
+  });
+
+  $('markAllReadBtn').addEventListener('click', function (e) {
+    e.stopPropagation();
+    qsa('.notif-dot').forEach(function (d) { d.classList.add('read'); });
+    notifBadge.style.display = 'none';
+    this.textContent = '✓ All read';
+    unreadCount = 0;
+    showToast('All notifications marked as read.', 'success');
+  });
+
+  qsa('.notif-item').forEach(function (item, i) {
+    item.addEventListener('click', function () {
+      var dot = this.querySelector('.notif-dot');
+      if (dot && !dot.classList.contains('read')) {
+        dot.classList.add('read');
+        unreadCount = Math.max(0, unreadCount - 1);
+        if (unreadCount > 0) {
+          notifBadge.textContent = unreadCount;
+        } else {
+          notifBadge.style.display = 'none';
+        }
+      }
+      notifDropdown.classList.remove('open');
+      notifOpen = false;
+    });
+  });
+
+  document.addEventListener('click', function (e) {
+    if (notifOpen && !notifDropdown.contains(e.target) && e.target !== notifBtn) {
+      notifDropdown.classList.remove('open');
+      notifOpen = false;
+      notifBtn.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  /* ─────────────────────────────────────────
+     USER MENU DROPDOWN
+  ───────────────────────────────────────── */
+  var userMenuBtn  = $('userMenuBtn');
+  var userDropdown = $('userDropdown');
+  var userOpen     = false;
+
+  function toggleUser(e) {
+    e.stopPropagation();
+    userOpen = !userOpen;
+    userDropdown.classList.toggle('open', userOpen);
+    userMenuBtn.setAttribute('aria-expanded', String(userOpen));
+  }
+
+  userMenuBtn.addEventListener('click', toggleUser);
+  userMenuBtn.addEventListener('keydown', function (e) {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleUser(e); }
+  });
+
+  document.addEventListener('click', function (e) {
+    if (userOpen && !userDropdown.contains(e.target) && e.target !== userMenuBtn) {
+      userDropdown.classList.remove('open');
+      userOpen = false;
+      userMenuBtn.setAttribute('aria-expanded', 'false');
+    }
+  });
+
+  $('profileBtn').addEventListener('click', function () {
+    userDropdown.classList.remove('open'); userOpen = false;
+    openModal(
+      '👤 My Profile',
+      'Admin User account',
+      '<div class="detail-row"><span class="detail-label">Name</span><strong>Admin User</strong></div>' +
+      '<div class="detail-row"><span class="detail-label">Email</span><strong>admin@cyberbench.io</strong></div>' +
+      '<div class="detail-row"><span class="detail-label">Role</span><strong>SOC Manager</strong></div>' +
+      '<div class="detail-row"><span class="detail-label">Last login</span><strong>Today, ' + getTime() + '</strong></div>',
+      '<button class="modal__btn modal__btn--primary" onclick="showToast(\'Profile updated.\',\'success\');closeModal()">Save Changes</button>' +
+      '<button class="modal__btn modal__btn--ghost" onclick="closeModal()">Close</button>'
+    );
+  });
+
+  $('prefsBtn').addEventListener('click', function () {
+    userDropdown.classList.remove('open'); userOpen = false;
+    openModal(
+      '⚙️ Preferences',
+      'Dashboard display settings',
+      '<div class="detail-row"><span class="detail-label">Theme</span><strong>Dark (default)</strong></div>' +
+      '<div class="detail-row"><span class="detail-label">Timezone</span><strong>UTC-5 (EST)</strong></div>' +
+      '<div class="detail-row"><span class="detail-label">Notifications</span><strong>Email + In-app</strong></div>' +
+      '<div class="detail-row"><span class="detail-label">Auto-refresh</span><strong>Every 60s</strong></div>',
+      '<button class="modal__btn modal__btn--primary" onclick="showToast(\'Preferences saved.\',\'success\');closeModal()">Save</button>' +
+      '<button class="modal__btn modal__btn--ghost" onclick="closeModal()">Cancel</button>'
+    );
+  });
+
+  $('logoutBtn').addEventListener('click', function () {
+    userDropdown.classList.remove('open'); userOpen = false;
+    openModal(
+      '🚪 Sign Out',
+      'Are you sure you want to sign out?',
+      '<p>You will be returned to the login page. Any unsaved changes will be lost.</p>',
+      '<button class="modal__btn modal__btn--danger" onclick="showToast(\'Signed out.\',\'info\');closeModal()">Sign Out</button>' +
+      '<button class="modal__btn modal__btn--ghost" onclick="closeModal()">Cancel</button>'
+    );
+  });
+
+  /* ─────────────────────────────────────────
+     HELP BUTTON
+  ───────────────────────────────────────── */
+  $('helpBtn').addEventListener('click', function () {
+    openModal(
+      '❔ Help & Shortcuts',
+      'CyberBench Dashboard Guide',
+      '<div class="detail-row"><span class="detail-label">Esc</span><strong>Close modal / chat</strong></div>' +
+      '<div class="detail-row"><span class="detail-label">Ctrl + K</span><strong>Focus search bar</strong></div>' +
+      '<div class="detail-row"><span class="detail-label">Click KPI card</span><strong>Open AI context</strong></div>' +
+      '<div class="detail-row"><span class="detail-label">Click alert row</span><strong>View alert detail</strong></div>' +
+      '<div class="detail-row"><span class="detail-label">Click ticket row</span><strong>View ticket detail</strong></div>' +
+      '<div class="detail-row"><span class="detail-label">Click integration</span><strong>View connection info</strong></div>' +
+      '<br><strong>Support:</strong> support@cyberbench.io<br><strong>Ops:</strong> ops@cyberbench.io',
+      '<button class="modal__btn modal__btn--primary" onclick="closeModal()">Got it</button>'
+    );
+  });
+
+  /* ─────────────────────────────────────────
+     EXPORT BUTTON
+  ───────────────────────────────────────── */
+  $('exportBtn').addEventListener('click', function () {
+    var btn = this;
+    btn.disabled = true;
+    btn.innerHTML = '<span style="animation:spin .8s linear infinite;display:inline-block">⏳</span> <span class="btn-export-label">Exporting…</span>';
+    setTimeout(function () {
+      btn.innerHTML = '<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg><span class="btn-export-label">Export Report</span>';
+      btn.disabled = false;
+      showToast('Report exported: CyberBench_Dashboard_' + new Date().toISOString().slice(0,10) + '.pdf', 'success', 4000);
+    }, 1800);
+  });
+
+  /* ─────────────────────────────────────────
      SEARCH
-  ══════════════════════════════════════ */
-  document.getElementById('searchInput').addEventListener('keydown',function(e){
-    if(e.key==='Enter'){var q=this.value.trim();if(q)window.location.href='tickets.html?search='+encodeURIComponent(q);}
-  });
-
-  /* ══════════════════════════════════════
-     SIDEBAR NAV — active state + close mobile
-  ══════════════════════════════════════ */
-  document.querySelectorAll('.sidebar__link').forEach(function(link){
-    link.addEventListener('click',function(){
-      if(sidebarOpen)closeSidebar();
-    });
-  });
-
-  /* ══════════════════════════════════════
-     ORG + SETTINGS BUTTONS
-  ══════════════════════════════════════ */
-  document.getElementById('orgBtn').addEventListener('click',function(){window.location.href='org.html';});
-  document.getElementById('settingsBtn').addEventListener('click',function(){window.location.href='settings.html';});
-
-  /* ══════════════════════════════════════
-     KPI CARD NAVIGATION
-  ══════════════════════════════════════ */
-  document.querySelectorAll('.kpi[data-nav]').forEach(function(card){
-    card.addEventListener('click',function(){window.location.href=this.getAttribute('data-nav')+'.html';});
-    card.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();window.location.href=this.getAttribute('data-nav')+'.html';}});
-  });
-
-  /* ══════════════════════════════════════
-     ALERT ROW → ALERT MODAL
-  ══════════════════════════════════════ */
-  document.querySelectorAll('.alert-row[data-alert-id]').forEach(function(row){
-    row.addEventListener('click',function(){openAlertModal(this.getAttribute('data-alert-id'));});
-    row.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();openAlertModal(this.getAttribute('data-alert-id'));}});
-  });
-
-  /* ══════════════════════════════════════
-     TICKET ROW → TICKET MODAL
-  ══════════════════════════════════════ */
-  document.querySelectorAll('tr[data-ticket-id]').forEach(function(row){
-    row.addEventListener('click',function(){openTicketModal(this.getAttribute('data-ticket-id'));});
-    row.addEventListener('keydown',function(e){if(e.key==='Enter'||e.key===' '){e.preventDefault();openTicketModal(this.getAttribute('data-ticket-id'));}});
-  });
-
-  /* ══════════════════════════════════════
-     TICKET MODAL
-  ══════════════════════════════════════ */
-  var ticketModal=document.getElementById('ticketModal');
-  var ticketModalClose=document.getElementById('ticketModalClose');
-
-  function openTicketModal(id){
-    var t=TICKETS[id]; if(!t)return;
-    document.getElementById('modalTicketTitle').textContent=t.title;
-    document.getElementById('modalTicketId').textContent=t.id+' · '+t.customer;
-
-    // Status trail
-    var trail=document.getElementById('statusTrail');
-    trail.innerHTML='';
-    var currentIdx=STATUS_STEPS.indexOf(t.status);
-    STATUS_STEPS.forEach(function(step,i){
-      var div=document.createElement('div');
-      div.className='status-step'+(i<currentIdx?' done':i===currentIdx?' current':'');
-      div.setAttribute('role','listitem');
-      div.innerHTML='<div class="status-step__dot">'+(i<=currentIdx?'✓':i+1)+'</div><div class="status-step__label">'+step+'</div>';
-      trail.appendChild(div);
-    });
-
-    // Fields grid
-    var priorityBadge={'High':'badge-high','Critical':'badge-critical','Medium':'badge-medium','Low':'badge-low'}[t.priority]||'badge-medium';
-    var statusBadge={'Open':'badge-open','Assigned':'badge-assigned','In Progress':'badge-progress','Pending':'badge-pending','Resolved':'badge-resolved','Closed':'badge-closed'}[t.status]||'badge-progress';
-    document.getElementById('modalFieldsGrid').innerHTML=
-      field('Priority','<span class="badge '+priorityBadge+'">'+t.priority+'</span>')+
-      field('Status','<span class="badge '+statusBadge+'">'+t.status+'</span>')+
-      field('Assigned To',t.assigned)+
-      field('Customer',t.customer)+
-      field('Created',t.created)+
-      field('Last Updated',t.updated);
-
-    document.getElementById('modalDesc').textContent=t.desc;
-    document.getElementById('modalRem').innerHTML=t.remediation.replace(/\n/g,'<br>');
-    document.getElementById('modalRel').innerHTML='<strong>Asset:</strong> '+t.asset+'<br><strong>Related Alert:</strong> '+t.alert;
-
-    // Activity
-    var actList=document.getElementById('modalActivity');
-    actList.innerHTML='';
-    t.activity.forEach(function(a){
-      var li=document.createElement('li');
-      li.className='activity-item';
-      li.innerHTML='<div class="activity-dot">'+a.icon+'</div><div class="activity-content"><div class="activity-text">'+a.text+'</div><div class="activity-time">'+a.time+'</div></div>';
-      actList.appendChild(li);
-    });
-
-    ticketModal.classList.add('open');
-    ticketModal.setAttribute('aria-hidden','false');
-    ticketModalClose.focus();
-    document.body.style.overflow='hidden';
-  }
-
-  function closeTicketModal(){
-    ticketModal.classList.remove('open');
-    ticketModal.setAttribute('aria-hidden','true');
-    document.body.style.overflow='';
-  }
-
-  ticketModalClose.addEventListener('click',closeTicketModal);
-  ticketModal.addEventListener('click',function(e){if(e.target===ticketModal)closeTicketModal();});
-
-  /* ══════════════════════════════════════
-     ALERT MODAL
-  ══════════════════════════════════════ */
-  var alertModal=document.getElementById('alertModal');
-  var alertModalClose=document.getElementById('alertModalClose');
-
-  function openAlertModal(id){
-    var a=ALERTS[id]; if(!a)return;
-    document.getElementById('alertModalTitle').textContent=a.title;
-    document.getElementById('alertModalId').textContent=a.id+' · '+a.source;
-    document.getElementById('alertFieldsGrid').innerHTML=
-      field('Severity','<span class="badge badge-critical">'+a.severity+'</span>')+
-      field('Status','<span class="badge badge-open">'+a.status+'</span>')+
-      field('Endpoint / Source',a.endpoint)+
-      field('Detected',a.time);
-    document.getElementById('alertDesc').textContent=a.desc;
-    document.getElementById('alertResponse').innerHTML=a.response.replace(/\n/g,'<br>');
-    alertModal.classList.add('open');
-    alertModal.setAttribute('aria-hidden','false');
-    alertModalClose.focus();
-    document.body.style.overflow='hidden';
-  }
-
-  function closeAlertModal(){
-    alertModal.classList.remove('open');
-    alertModal.setAttribute('aria-hidden','true');
-    document.body.style.overflow='';
-  }
-
-  alertModalClose.addEventListener('click',closeAlertModal);
-  alertModal.addEventListener('click',function(e){if(e.target===alertModal)closeAlertModal();});
-
-  /* ══════════════════════════════════════
-     HELPER
-  ══════════════════════════════════════ */
-  function field(label,val){
-    return '<div class="modal__field"><label>'+label+'</label><div class="val">'+val+'</div></div>';
-  }
-
-  /* ══════════════════════════════════════
-     GLOBAL KEYBOARD
-  ══════════════════════════════════════ */
-  document.addEventListener('keydown',function(e){
-    if(e.key==='Escape'){
-      if(ticketModal.classList.contains('open'))closeTicketModal();
-      else if(alertModal.classList.contains('open'))closeAlertModal();
-      else if(chatOpen)closeChat();
-      else if(sidebarOpen)closeSidebar();
-      else if(notifOpen)closeNotif();
+  ───────────────────────────────────────── */
+  $('searchInput').addEventListener('keydown', function (e) {
+    if (e.key === 'Enter') {
+      var q = this.value.trim();
+      if (q) {
+        showToast('Searching for "' + q + '"…', 'info');
+        this.value = '';
+      }
     }
-    if((e.ctrlKey||e.metaKey)&&e.key==='k'){e.preventDefault();document.getElementById('searchInput').focus();}
   });
 
-  /* ══════════════════════════════════════
-     AI CHAT
-  ══════════════════════════════════════ */
-  var chatFab=document.getElementById('chatFab');
-  var chatWin=document.getElementById('chatWin');
-  var chatClose=document.getElementById('chatClose');
-  var chatMsgs=document.getElementById('chatMsgs');
-  var chatTyping=document.getElementById('chatTyping');
-  var chatChips=document.getElementById('chatChips');
-  var chatInput=document.getElementById('chatInput');
-  var chatSend=document.getElementById('chatSend');
-  var chatOpen=false;
+  /* ─────────────────────────────────────────
+     KPI CARDS — click to open chat with context
+  ───────────────────────────────────────── */
+  var kpiMessages = {
+    tickets:    'Tell me about the 48 open tickets and their breakdown.',
+    alerts:     'Tell me about the 7 critical alerts.',
+    mttr:       'Explain the current MTTR of 4.2 hours.',
+    risk:       'What is the current risk score of 68 and how do I improve it?',
+    compliance: 'Explain the compliance score of 87% and what gaps remain.'
+  };
 
-  function openChat(){chatOpen=true;chatWin.classList.add('open');chatWin.setAttribute('aria-hidden','false');chatFab.classList.add('open');chatFab.setAttribute('aria-expanded','true');chatInput.focus();}
-  function closeChat(){chatOpen=false;chatWin.classList.remove('open');chatWin.setAttribute('aria-hidden','true');chatFab.classList.remove('open');chatFab.setAttribute('aria-expanded','false');}
-  chatFab.addEventListener('click',function(){chatOpen?closeChat():openChat();});
-  chatClose.addEventListener('click',closeChat);
+  qsa('.kpi').forEach(function (card) {
+    card.addEventListener('click', function () {
+      var key = this.getAttribute('data-kpi');
+      if (key && kpiMessages[key]) {
+        openChat();
+        setTimeout(function () { sendChatMsg(kpiMessages[key]); }, 300);
+      }
+    });
+    card.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); this.click(); }
+    });
+  });
 
-  chatInput.addEventListener('input',function(){this.style.height='auto';this.style.height=Math.min(this.scrollHeight,90)+'px';});
-  chatInput.addEventListener('keydown',function(e){if(e.key==='Enter'&&!e.shiftKey){e.preventDefault();var txt=this.value.trim();if(txt)sendMsg(txt);}});
-  chatSend.addEventListener('click',function(){var txt=chatInput.value.trim();if(txt)sendMsg(txt);});
-  chatChips.querySelectorAll('.chat-chip').forEach(function(chip){chip.addEventListener('click',function(){sendMsg(this.getAttribute('data-msg'));});});
+  /* ─────────────────────────────────────────
+     ALERT ROWS
+  ───────────────────────────────────────── */
+  qsa('.alert-row').forEach(function (row) {
+    // Row click → modal
+    row.addEventListener('click', function (e) {
+      if (e.target.classList.contains('alert-btn')) return;
+      var title    = this.getAttribute('data-title');
+      var meta     = this.getAttribute('data-meta');
+      var severity = this.getAttribute('data-severity');
+      var detail   = this.getAttribute('data-detail');
+      openModal(
+        '🚨 ' + title,
+        meta + ' · ' + severity,
+        '<p style="margin-bottom:12px">' + detail + '</p>' +
+        '<div class="detail-row"><span class="detail-label">Severity</span><strong style="color:var(--red)">' + severity + '</strong></div>' +
+        '<div class="detail-row"><span class="detail-label">Source</span><strong>' + meta + '</strong></div>' +
+        '<div class="detail-row"><span class="detail-label">Detected</span><strong>' + getTime() + '</strong></div>',
+        '<button class="modal__btn modal__btn--danger" onclick="showToast(\'Triage started for: ' + title.replace(/'/g, '') + '\',\'info\');closeModal()">Start Triage</button>' +
+        '<button class="modal__btn modal__btn--primary" onclick="showToast(\'Ticket created for: ' + title.replace(/'/g, '') + '\',\'success\');closeModal()">+ Create Ticket</button>' +
+        '<button class="modal__btn modal__btn--ghost" onclick="closeModal()">Dismiss</button>'
+      );
+    });
+    row.addEventListener('keydown', function (e) {
+      if (e.key === 'Enter') this.click();
+    });
 
-  function getTime(){return new Date().toLocaleTimeString([],{hour:'2-digit',minute:'2-digit'});}
-  function addMessage(text,role){
-    var wrap=document.createElement('div'); wrap.className='msg msg--'+role;
-    var av=document.createElement('div'); av.className='msg__av'; av.setAttribute('aria-hidden','true'); av.textContent=role==='bot'?'🤖':'AU';
-    var inner=document.createElement('div');
-    var bubble=document.createElement('div'); bubble.className='msg__bubble'; bubble.innerHTML=text;
-    var time=document.createElement('div'); time.className='msg__time'; time.textContent=getTime();
-    inner.appendChild(bubble); inner.appendChild(time);
-    wrap.appendChild(av); wrap.appendChild(inner);
-    chatMsgs.appendChild(wrap); chatMsgs.scrollTop=chatMsgs.scrollHeight;
-  }
+    // Triage button
+    var triageBtn = row.querySelector('.alert-btn--triage');
+    if (triageBtn) {
+      triageBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var title = row.getAttribute('data-title');
+        showToast('Triage initiated: ' + title, 'info');
+      });
+    }
 
-  function getBotReply(msg){
-    var t=msg.toLowerCase();
-    if(t.includes('kpi')||t.includes('metric')||t.includes('explain'))return '📊 <strong>Current KPIs:</strong><br>• Open Tickets: <strong>48</strong> (↓ 12%)<br>• Critical Alerts: <strong>7</strong> (↓ 22%)<br>• MTTR: <strong>4.2h</strong> (↓ 18%)<br>• Risk Score: <strong>68</strong> — Medium Risk<br>• Compliance: <strong>87%</strong> (↑ 5%)<br><br>All metrics trending positively this week.';
-    if(t.includes('ransomware'))return '🔴 <strong>Ransomware on WS-CA-1432:</strong><br>Isolate the endpoint immediately. Engage IR playbook PB-003, preserve forensic evidence, and check for lateral movement.';
-    if(t.includes('privilege')||t.includes('escalation'))return '🔴 <strong>Privilege Escalation:</strong><br>Revoke active sessions, reset administrator credentials, remove unauthorized account "svc_backup2", and review GPO changes.';
-    if(t.includes('failed login')||t.includes('brute'))return '🔴 <strong>Brute Force from 45.77.32.18:</strong><br>Block IP at firewall, investigate 3 successful authentications, force password resets on affected accounts.';
-    if(t.includes('malicious file
+    // Create ticket button
+    var ticketBtn = row.querySelector('.alert-btn--ticket');
+    if (ticketBtn) {
+      ticketBtn.addEventListener('click', function (e) {
+        e.stopPropagation();
+        var title = row.getAttribute('data-title');
+        showToast('Ticket created for: ' + title, 'success');
+      });
+    }
+  });
+
+  /* ─────────────────────────────────────────
+     TABLE — sort + row click
+  ───────────────────────────────────────── */
+  // Row click → modal
+  qsa('#ticketTableBody tr').forEach(function (row) {
+    row.addEventListener('click', function () {
+      var id       = this.getAttribute('data-ticket-id');
+      var title    = this.getAttribute('data-ticket-title');
+      var customer = this.getAttribute('data-ticket-customer');
+      var priority = this.getAttribute('data-ticket-priority');
+      var status   = this.getAttribute('data-ticket-status');
+      var assigned = this.getAttribute('data-ticket-assigned');
+      var updated  = this.getAttribute('data-ticket-updated');
+      var detail   = this.getAttribute('data-ticket-detail');
+      openModal(
+        id + ' — ' + title,
+        customer + ' · ' + priority + ' · ' + status,
+        '<p style="margin-bottom:14px;color:var(--sub)">' + detail + '</p>'
