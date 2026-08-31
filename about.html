@@ -13,7 +13,7 @@
     html { scroll-behavior: smooth; }
     body {
       font-family: 'Inter', sans-serif;
-      background: #0a0f1e;
+      background: #06111f;
       color: #e2e8f0;
       line-height: 1.6;
       overflow-x: hidden;
@@ -25,13 +25,13 @@
 
     /* ── CSS Variables ── */
     :root {
-      --primary: #3b82f6;
-      --primary-dark: #2563eb;
-      --primary-glow: rgba(59,130,246,0.25);
-      --accent: #06b6d4;
-      --surface: #111827;
-      --surface-2: #1f2937;
-      --surface-3: #374151;
+      --primary: #1597f6;
+      --primary-dark: #176ee8;
+      --primary-glow: rgba(21,151,246,0.25);
+      --accent: #22d3ee;
+      --surface: #0b1a2b;
+      --surface-2: #102238;
+      --surface-3: #18324c;
       --border: rgba(255,255,255,0.08);
       --text-muted: #9ca3af;
       --text-dim: #6b7280;
@@ -62,7 +62,7 @@
       font-size: 1.15rem;
       font-weight: 800;
       letter-spacing: -0.02em;
-      background: linear-gradient(135deg, #ffffff 0%, #93c5fd 60%, #3b82f6 100%);
+      background: linear-gradient(135deg, #ffffff 0%, #93c5fd 60%, #1597f6 100%);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
       background-clip: text;
@@ -86,7 +86,7 @@
       position: fixed;
       top: 0; left: 0; right: 0;
       height: var(--nav-h);
-      background: rgba(10,15,30,0.92);
+      background: rgba(5,15,28,0.96);
       backdrop-filter: blur(16px);
       -webkit-backdrop-filter: blur(16px);
       border-bottom: 1px solid var(--border);
@@ -174,7 +174,7 @@
       position: fixed;
       top: var(--nav-h);
       left: 0; right: 0;
-      background: rgba(10,15,30,0.98);
+      background: rgba(5,15,28,0.98);
       backdrop-filter: blur(20px);
       border-bottom: 1px solid var(--border);
       padding: 20px 24px 28px;
@@ -203,9 +203,9 @@
     /* ── Hero ── */
     .hero {
       background: radial-gradient(ellipse 80% 60% at 50% 0%,
-        rgba(59,130,246,0.12) 0%, transparent 70%),
+        rgba(21,151,246,0.12) 0%, transparent 70%),
         radial-gradient(ellipse 40% 40% at 80% 50%,
-        rgba(6,182,212,0.07) 0%, transparent 60%), #0a0f1e;
+        rgba(34,211,238,0.07) 0%, transparent 60%), #0a0f1e;
       padding: 80px 24px 60px;
       position: relative;
       overflow: hidden;
@@ -223,8 +223,8 @@
       display: inline-flex;
       align-items: center;
       gap: 8px;
-      background: rgba(59,130,246,0.12);
-      border: 1px solid rgba(59,130,246,0.3);
+      background: rgba(21,151,246,0.12);
+      border: 1px solid rgba(21,151,246,0.3);
       border-radius: 100px;
       padding: 6px 16px;
       font-size: 0.78rem;
@@ -384,15 +384,15 @@
       transition: border-color 0.2s, transform 0.2s;
     }
     .mission-card:hover {
-      border-color: rgba(59,130,246,0.35);
+      border-color: rgba(21,151,246,0.35);
       transform: translateX(4px);
     }
     .mission-card__icon {
       width: 42px;
       height: 42px;
       border-radius: 10px;
-      background: rgba(59,130,246,0.12);
-      border: 1px solid rgba(59,130,246,0.2);
+      background: rgba(21,151,246,0.12);
+      border: 1px solid rgba(21,151,246,0.2);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -439,9 +439,9 @@
     }
     .diff-card:hover::before { transform: scaleX(1); }
     .diff-card:hover {
-      border-color: rgba(59,130,246,0.35);
+      border-color: rgba(21,151,246,0.35);
       transform: translateY(-4px);
-      box-shadow: 0 12px 36px rgba(59,130,246,0.12);
+      box-shadow: 0 12px 36px rgba(21,151,246,0.12);
     }
     .diff-card__badge {
       display: inline-block;
@@ -450,8 +450,8 @@
       letter-spacing: 0.12em;
       text-transform: uppercase;
       color: var(--accent);
-      background: rgba(6,182,212,0.1);
-      border: 1px solid rgba(6,182,212,0.25);
+      background: rgba(34,211,238,0.1);
+      border: 1px solid rgba(34,211,238,0.25);
       border-radius: 100px;
       padding: 3px 10px;
       margin-bottom: 14px;
@@ -460,8 +460,8 @@
       width: 48px;
       height: 48px;
       border-radius: 12px;
-      background: rgba(59,130,246,0.12);
-      border: 1px solid rgba(59,130,246,0.2);
+      background: rgba(21,151,246,0.12);
+      border: 1px solid rgba(21,151,246,0.2);
       display: flex;
       align-items: center;
       justify-content: center;
@@ -483,9 +483,9 @@
     /* ── CTA Banner ── */
     .cta-banner {
       background: linear-gradient(135deg,
-        rgba(59,130,246,0.15) 0%,
-        rgba(6,182,212,0.08) 100%);
-      border: 1px solid rgba(59,130,246,0.2);
+        rgba(21,151,246,0.15) 0%,
+        rgba(34,211,238,0.08) 100%);
+      border: 1px solid rgba(21,151,246,0.2);
       border-radius: 20px;
       padding: 64px 48px;
       text-align: center;
@@ -579,11 +579,11 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      box-shadow: 0 4px 24px rgba(59,130,246,0.5);
+      box-shadow: 0 4px 24px rgba(21,151,246,0.5);
       z-index: 2000;
       transition: transform 0.2s, box-shadow 0.2s;
     }
-    .chat-toggle:hover { transform: scale(1.08); box-shadow: 0 6px 32px rgba(59,130,246,0.65); }
+    .chat-toggle:hover { transform: scale(1.08); box-shadow: 0 6px 32px rgba(21,151,246,0.65); }
     .chat-toggle__badge {
       position: absolute;
       top: -4px; right: -4px;
@@ -626,7 +626,7 @@
       align-items: center;
       gap: 12px;
       padding: 18px 20px;
-      background: linear-gradient(135deg, rgba(59,130,246,0.15), rgba(6,182,212,0.08));
+      background: linear-gradient(135deg, rgba(21,151,246,0.15), rgba(34,211,238,0.08));
       border-bottom: 1px solid var(--border);
       flex-shrink: 0;
     }
@@ -743,8 +743,8 @@
       padding: 0 20px 12px;
     }
     .quick-reply {
-      background: rgba(59,130,246,0.1);
-      border: 1px solid rgba(59,130,246,0.25);
+      background: rgba(21,151,246,0.1);
+      border: 1px solid rgba(21,151,246,0.25);
       border-radius: 100px;
       padding: 5px 12px;
       font-size: 0.75rem;
@@ -754,7 +754,7 @@
       transition: all 0.2s;
       white-space: nowrap;
     }
-    .quick-reply:hover { background: rgba(59,130,246,0.2); border-color: var(--primary); color: #fff; }
+    .quick-reply:hover { background: rgba(21,151,246,0.2); border-color: var(--primary); color: #fff; }
     .chat-widget__input {
       padding: 14px 16px;
       border-top: 1px solid var(--border);
@@ -824,7 +824,26 @@
       .stats-row { grid-template-columns: 1fr 1fr; }
       .btn-row { flex-direction: column; align-items: center; }
     }
-  </style>
+  
+/* ===== CYBERBENCH SITE COLOR CONSISTENCY ===== */
+body{
+  background:
+    radial-gradient(circle at 80% 6%,rgba(21,151,246,.07),transparent 28%),
+    #06111f;
+}
+.nav{border-bottom-color:#142b43}
+.hero{
+  background:
+    radial-gradient(ellipse 80% 60% at 50% 0%,rgba(21,151,246,.12) 0%,transparent 70%),
+    radial-gradient(ellipse 40% 40% at 80% 50%,rgba(34,211,238,.07) 0%,transparent 60%),
+    #06111f;
+}
+.mission,.footer{background:#0b1a2b}
+.mission-card,.diff-card,.chat-widget{background:#102238;border-color:#203b58}
+.cta-banner{border-color:rgba(21,151,246,.25)}
+.footer{border-top-color:#142b43}
+
+</style>
 </head>
 <body>
 
@@ -837,8 +856,8 @@
         <svg viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
           <defs>
             <linearGradient id="sg-a" x1="0" y1="0" x2="38" y2="38" gradientUnits="userSpaceOnUse">
-              <stop offset="0%" stop-color="#3b82f6"/>
-              <stop offset="100%" stop-color="#06b6d4"/>
+              <stop offset="0%" stop-color="#1597f6"/>
+              <stop offset="100%" stop-color="#22d3ee"/>
             </linearGradient>
             <linearGradient id="ig-a" x1="0" y1="0" x2="38" y2="38" gradientUnits="userSpaceOnUse">
               <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9"/>
@@ -851,7 +870,7 @@
                 stroke="url(#sg-a)" stroke-width="1.5" fill="none"/>
           <text x="10" y="24" font-family="Inter,sans-serif" font-weight="800"
                 font-size="13" fill="url(#ig-a)" letter-spacing="-1">CB</text>
-          <path d="M13 20l3 3 6-6" stroke="#06b6d4" stroke-width="1.8"
+          <path d="M13 20l3 3 6-6" stroke="#22d3ee" stroke-width="1.8"
                 stroke-linecap="round" stroke-linejoin="round"/>
         </svg>
       </span>
@@ -871,7 +890,6 @@
     </ul>
 
     <div class="nav__actions">
-      <a href="/login.html" class="btn btn-ghost">Log In</a>
       <a href="/submit-ticket.html" class="btn btn-primary">Submit Ticket</a>
     </div>
 
@@ -890,7 +908,6 @@
   <a href="/client-portal.html">Client Portal</a>
   <a href="/consultant-portal.html">Consultant Portal</a>
   <div class="mobile-actions">
-    <a href="/login.html" class="btn btn-ghost">Log In</a>
     <a href="/submit-ticket.html" class="btn btn-primary">Submit Ticket</a>
   </div>
 </div>
@@ -1109,8 +1126,8 @@
             <svg viewBox="0 0 38 38" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
               <defs>
                 <linearGradient id="sg-af" x1="0" y1="0" x2="38" y2="38" gradientUnits="userSpaceOnUse">
-                  <stop offset="0%" stop-color="#3b82f6"/>
-                  <stop offset="100%" stop-color="#06b6d4"/>
+                  <stop offset="0%" stop-color="#1597f6"/>
+                  <stop offset="100%" stop-color="#22d3ee"/>
                 </linearGradient>
                 <linearGradient id="ig-af" x1="0" y1="0" x2="38" y2="38" gradientUnits="userSpaceOnUse">
                   <stop offset="0%" stop-color="#ffffff" stop-opacity="0.9"/>
@@ -1123,7 +1140,7 @@
                     stroke="url(#sg-af)" stroke-width="1.5" fill="none"/>
               <text x="10" y="24" font-family="Inter,sans-serif" font-weight="800"
                     font-size="13" fill="url(#ig-af)" letter-spacing="-1">CB</text>
-              <path d="M13 20l3 3 6-6" stroke="#06b6d4" stroke-width="1.8"
+              <path d="M13 20l3 3 6-6" stroke="#22d3ee" stroke-width="1.8"
                     stroke-linecap="round" stroke-linejoin="round"/>
             </svg>
           </span>
@@ -1158,7 +1175,6 @@
         <ul>
           <li><a href="/client-portal.html">Client Portal</a></li>
           <li><a href="/submit-ticket.html">Submit Ticket</a></li>
-          <li><a href="/login.html">Login</a></li>
           <li><a href="mailto:support@cyberbench.io">Support</a></li>
         </ul>
       </div>
