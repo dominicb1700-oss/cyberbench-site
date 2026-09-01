@@ -829,6 +829,73 @@ body{
   .article-title{font-size:38px!important}
 }
 
+
+/* ===== SINGLE-COLOR CYBERBENCH PAGE ===== */
+:root{
+  --cb-one-bg:#06111f;
+}
+
+html,
+body,
+.nav,
+.article-shell,
+.article-hero-grid,
+.content-grid,
+.article-content,
+.article-sidebar,
+.hero-card,
+.topic-card,
+.side-card,
+.cta,
+.footer,
+footer{
+  background:var(--cb-one-bg)!important;
+  background-image:none!important;
+}
+
+/* Remove the darker center-column / section-block appearance */
+body::before,
+body::after,
+.article-shell::before,
+.article-shell::after{
+  background:none!important;
+}
+
+/* Keep structure visible without introducing another fill color */
+.hero-card,
+.topic-card,
+.side-card,
+.cta{
+  border-color:#203b58!important;
+  box-shadow:none!important;
+}
+
+/* Keep brand accents, but not large alternate background fills */
+.article-callout{
+  background:var(--cb-one-bg)!important;
+  background-image:none!important;
+  border:1px solid #203b58!important;
+  border-left:4px solid #22d3ee!important;
+}
+
+.share-btn{
+  background:var(--cb-one-bg)!important;
+}
+
+.hero-symbol,
+.topic-icon,
+.cta-icon,
+.check,
+.nav_links .btn,
+.nav_links .btn-primary{
+  /* Small branded controls can retain CyberBench blue/cyan accents. */
+}
+
+/* AI popup remains visually separated when opened */
+.cb-ai-panel{
+  background:#07111f!important;
+}
+
 </style>
 </head>
 
