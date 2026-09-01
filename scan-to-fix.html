@@ -171,6 +171,20 @@ body{
  .cb-ai-panel{position:fixed;left:12px;right:12px;bottom:94px;width:auto;height:min(560px,calc(100vh - 120px))}
 }
 
+
+.share button.share-btn{
+  appearance:none;
+  -webkit-appearance:none;
+  padding:0;
+  color:#fff;
+  cursor:pointer;
+  font:inherit;
+}
+.share button.share-btn.copied{
+  border-color:#22d3ee!important;
+  color:#7fe3ff!important;
+}
+
 </style>
 </head>
 <body>
@@ -199,7 +213,30 @@ body{
   </section>
   <section class="content-grid">
     <article class="article">
-      <div class="share"><span>Share this article:</span><a class="share-btn" href="#">in</a><a class="share-btn" href="#">𝕏</a><a class="share-btn" href="#">f</a><a class="share-btn" href="#">🔗</a></div>
+      
+<div class="share">
+  <span>Share this article:</span>
+  <a class="share-btn" id="shareLinkedIn"
+     href="https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fcyberbench.io%2Fscan-to-fix.html"
+     target="_blank" rel="noopener noreferrer"
+     aria-label="Share on LinkedIn">in</a>
+
+  <a class="share-btn" id="shareX"
+     href="https://twitter.com/intent/tweet?url=https%3A%2F%2Fcyberbench.io%2Fscan-to-fix.html&text=Scan%20to%20Fix%20is%20Broken%20%7C%20CyberBench"
+     target="_blank" rel="noopener noreferrer"
+     aria-label="Share on X">𝕏</a>
+
+  <a class="share-btn" id="shareFacebook"
+     href="https://www.facebook.com/sharer/sharer.php?u=https%3A%2F%2Fcyberbench.io%2Fscan-to-fix.html"
+     target="_blank" rel="noopener noreferrer"
+     aria-label="Share on Facebook">f</a>
+
+  <button class="share-btn" id="copyArticleLink"
+          type="button"
+          aria-label="Copy article link"
+          title="Copy article link">🔗</button>
+</div>
+
       <p>Security teams generate thousands of findings every month. Critical CVEs flood dashboards, tickets get assigned, spreadsheets get exported, and remediation timelines are created. Yet despite all of this activity, many organizations still experience ransomware, breaches, exposed systems, and unresolved critical risk.</p>
       <p>The problem is not visibility. The problem is execution.</p>
       <div class="callout"><div class="callout-icon">🛡️</div><strong>Vulnerability scanning alone does not reduce exposure. Operational ownership and remediation discipline do.</strong></div>
@@ -316,6 +353,62 @@ body{
  f.onsubmit=e=>{e.preventDefault();const q=i.value.trim();if(!q)return;add(q,"user");i.value="";setTimeout(()=>add(reply(q),"bot"),250)};
  document.querySelectorAll(".cb-ai-suggestion").forEach(b=>b.onclick=()=>{const q=b.textContent.trim();add(q,"user");setTimeout(()=>add(reply(q),"bot"),250)});
  document.addEventListener("keydown",e=>{if(e.key==="Escape")p.classList.remove("open")});
+})();
+</script>
+
+
+<script>
+(function(){
+  const fallbackUrl = "https://cyberbench.io/scan-to-fix.html";
+  const pageUrl = /^https?:$/i.test(window.location.protocol)
+    ? window.location.href.split("#")[0]
+    : fallbackUrl;
+
+  const title = "Scan to Fix is Broken | CyberBench";
+
+  const linkedIn = document.getElementById("shareLinkedIn");
+  const x = document.getElementById("shareX");
+  const facebook = document.getElementById("shareFacebook");
+  const copy = document.getElementById("copyArticleLink");
+
+  if(linkedIn){
+    linkedIn.href =
+      "https://www.linkedin.com/sharing/share-offsite/?url=" +
+      encodeURIComponent(pageUrl);
+  }
+
+  if(x){
+    x.href =
+      "https://twitter.com/intent/tweet?url=" +
+      encodeURIComponent(pageUrl) +
+      "&text=" +
+      encodeURIComponent(title);
+  }
+
+  if(facebook){
+    facebook.href =
+      "https://www.facebook.com/sharer/sharer.php?u=" +
+      encodeURIComponent(pageUrl);
+  }
+
+  if(copy){
+    copy.addEventListener("click", async function(){
+      try{
+        await navigator.clipboard.writeText(pageUrl);
+        copy.textContent = "✓";
+        copy.classList.add("copied");
+        copy.title = "Link copied";
+
+        setTimeout(function(){
+          copy.textContent = "🔗";
+          copy.classList.remove("copied");
+          copy.title = "Copy article link";
+        }, 1600);
+      }catch(err){
+        window.prompt("Copy this article link:", pageUrl);
+      }
+    });
+  }
 })();
 </script>
 
