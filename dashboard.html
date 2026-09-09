@@ -6,6 +6,7 @@
   <title>CyberBench KPI Dashboard</title>
 
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
     * {
@@ -894,7 +895,7 @@
     <nav class="nav">
       <a href="dashboard.html">🏠 Dashboard</a>
         <a href="/tickets">🎫 Tickets</a>
-        <a href="/alerts">⚠️ Alerts <span class="badge">23</span></a>
+        <a href="/alerts">⚠️ Alerts <span class="badge" id="alertBadge">—</span></a>
         <a href="/assets">💻 Assets</a>
         <a href="/remediation">🛠️ Remediation</a>
         <a href="/playbooks">📘 Playbooks</a>
@@ -925,38 +926,38 @@
 
       <section class="cards">
         <div class="card">
-          <h3>Open Tickets</h3>
-          <div class="value">48</div>
-          <div class="sub">↓ 12% vs last 7 days</div>
-          <div class="icon-circle">🎫</div>
+          <h3>Monitored Assets</h3>
+          <div class="value" id="monitoredAssetCount">—</div>
+          <div class="sub" id="monitoredAssetSub">Loading Wazuh data…</div>
+          <div class="icon-circle">💻</div>
         </div>
 
         <div class="card red">
           <h3>Critical Alerts</h3>
-          <div class="value">7</div>
-          <div class="sub" style="color:#ff6b6b;">↓ 22% vs last 7 days</div>
+          <div class="value" id="criticalAlertCount">—</div>
+          <div class="sub" id="criticalAlertSub" style="color:#ff6b6b;">Loading Wazuh data…</div>
           <div class="icon-circle">🛡️</div>
         </div>
 
         <div class="card purple">
-          <h3>MTTR (Mean Time To Remediate)</h3>
-          <div class="value">4.2h</div>
-          <div class="sub">↓ 18% vs last 7 days</div>
-          <div class="icon-circle">🕒</div>
+          <h3>Open Alerts</h3>
+          <div class="value" id="openAlertCount">—</div>
+          <div class="sub" id="openAlertSub">Loading Wazuh data…</div>
+          <div class="icon-circle">⚠️</div>
         </div>
 
         <div class="card orange">
           <h3>Risk Score</h3>
-          <div class="value">68</div>
-          <div class="sub" style="color:#ffb84d;">Medium Risk</div>
+          <div class="value" id="liveRiskScore">—</div>
+          <div class="sub" id="liveRiskLabel" style="color:#ffb84d;">Loading Wazuh data…</div>
           <div class="icon-circle">📈</div>
         </div>
 
         <div class="card green">
-          <h3>Compliance Score</h3>
-          <div class="value">87%</div>
-          <div class="sub">↑ 5% vs last 7 days</div>
-          <div class="icon-circle">✅</div>
+          <h3>Integration Health</h3>
+          <div class="value" id="integrationHealth">—</div>
+          <div class="sub" id="integrationHealthSub">Checking last sync…</div>
+          <div class="icon-circle">🔌</div>
         </div>
       </section>
 
@@ -967,12 +968,12 @@
         </div>
 
         <div class="panel">
-          <h3>Tickets by Status</h3>
+          <h3>Alerts by Status</h3>
           <canvas id="statusChart"></canvas>
         </div>
 
         <div class="panel">
-          <h3>Tickets by Priority</h3>
+          <h3>Alerts by Severity</h3>
           <canvas id="priorityChart"></canvas>
         </div>
       </section>
@@ -985,66 +986,33 @@
 
         <div class="panel">
           <h3>Recent Critical Alerts</h3>
-          <ul class="alert-list">
-            <li>
-              <div><strong>Ransomware Activity Detected</strong><span>Endpoint: WS-CA-1432</span></div>
-              <span class="pill">Critical</span>
-            </li>
-            <li>
-              <div><strong>Privilege Escalation Attempt</strong><span>User: administrator</span></div>
-              <span class="pill">Critical</span>
-            </li>
-            <li>
-              <div><strong>Multiple Failed Logins</strong><span>Source: 45.77.32.18</span></div>
-              <span class="pill">Critical</span>
-            </li>
-            <li>
-              <div><strong>Malicious File Detected</strong><span>Endpoint: FILE-SRV-02</span></div>
-              <span class="pill">Critical</span>
-            </li>
+          <ul class="alert-list" id="recentCriticalAlerts">
+            <li><div><strong>Loading alerts…</strong><span>Connecting to CyberBench data</span></div></li>
           </ul>
         </div>
 
         <div class="panel">
-          <h3>Remediation Progress</h3>
+          <h3>Alert Volume — Last 7 Days</h3>
           <canvas id="remediationChart"></canvas>
         </div>
       </section>
 
       <section class="bottom-grid">
         <div class="panel">
-          <h3>Recent Ticket Activity</h3>
+          <h3>Latest Wazuh Alerts</h3>
           <table>
             <thead>
               <tr>
-                <th>Ticket ID</th>
-                <th>Title</th>
-                <th>Customer</th>
-                <th>Priority</th>
+                <th>Time</th>
+                <th>Agent</th>
+                <th>Rule</th>
+                <th>Severity</th>
                 <th>Status</th>
-                <th>Assigned To</th>
-                <th>Updated</th>
+                <th>Alert</th>
               </tr>
             </thead>
-            <tbody>
-              <tr>
-                <td>TKT-000124</td>
-                <td>Disable SMBv1 on File Server</td>
-                <td>Acme Manufacturing</td>
-                <td><span class="status high">High</span></td>
-                <td><span class="status progress">In Progress</span></td>
-                <td>Alex Johnson</td>
-                <td>15m ago</td>
-              </tr>
-              <tr>
-                <td>TKT-000123</td>
-                <td>Patch Critical OpenSSL CVE</td>
-                <td>Orlando Law Group</td>
-                <td><span class="status high">High</span></td>
-                <td><span class="status progress">In Progress</span></td>
-                <td>CyberBench SOC</td>
-                <td>42m ago</td>
-              </tr>
+            <tbody id="liveAlertTableBody">
+              <tr><td colspan="6">Loading live Wazuh alerts…</td></tr>
             </tbody>
           </table>
         </div>
@@ -1053,15 +1021,7 @@
           <h3>Integrations Status</h3>
           <div class="integration">
             <strong>Wazuh</strong>
-            <span class="connected">● Connected</span>
-          </div>
-          <div class="integration">
-            <strong>Suricata</strong>
-            <span class="connected">● Connected</span>
-          </div>
-          <div class="integration">
-            <strong>Microsoft 365</strong>
-            <span class="connected">● Connected</span>
+            <span class="connected" id="wazuhIntegrationStatus">● Checking…</span>
           </div>
         </div>
       </section>
@@ -1177,13 +1137,13 @@
     Chart.defaults.color = "#9fafc4";
     Chart.defaults.borderColor = "rgba(255,255,255,0.08)";
 
-    new Chart(document.getElementById("riskChart"), {
+    const riskChart = new Chart(document.getElementById("riskChart"), {
       type: "line",
       data: {
-        labels: ["May 12", "May 13", "May 14", "May 15", "May 16", "May 17", "May 18"],
+        labels: [],
         datasets: [{
           label: "Risk Score",
-          data: [52, 61, 42, 57, 50, 63, 54],
+          data: [],
           borderColor: "#ff8f1f",
           backgroundColor: "rgba(255,143,31,0.22)",
           fill: true,
@@ -1201,12 +1161,12 @@
       }
     });
 
-    new Chart(document.getElementById("statusChart"), {
+    const statusChart = new Chart(document.getElementById("statusChart"), {
       type: "doughnut",
       data: {
-        labels: ["Open", "In Progress", "Pending Customer", "Resolved"],
+        labels: [],
         datasets: [{
-          data: [28, 10, 6, 4],
+          data: [],
           backgroundColor: ["#1e9bff", "#ffbf2f", "#9b5cff", "#37d27f"],
           borderWidth: 0
         }]
@@ -1222,12 +1182,12 @@
       }
     });
 
-    new Chart(document.getElementById("priorityChart"), {
+    const priorityChart = new Chart(document.getElementById("priorityChart"), {
       type: "doughnut",
       data: {
-        labels: ["Critical", "High", "Medium", "Low"],
+        labels: [],
         datasets: [{
-          data: [7, 18, 16, 7],
+          data: [],
           backgroundColor: ["#ff4055", "#ff8f1f", "#ffbf2f", "#37d27f"],
           borderWidth: 0
         }]
@@ -1243,12 +1203,12 @@
       }
     });
 
-    new Chart(document.getElementById("alertCategoryChart"), {
+    const alertCategoryChart = new Chart(document.getElementById("alertCategoryChart"), {
       type: "bar",
       data: {
-        labels: ["Malware / Ransomware", "Vulnerability", "Brute Force / Auth", "Policy Violation", "Lateral Movement"],
+        labels: [],
         datasets: [{
-          data: [23, 19, 14, 8, 6],
+          data: [],
           backgroundColor: ["#ff4055", "#ff8f1f", "#ffbf2f", "#37d27f", "#1e9bff"],
           borderRadius: 4
         }]
@@ -1263,13 +1223,13 @@
       }
     });
 
-    new Chart(document.getElementById("remediationChart"), {
+    const remediationChart = new Chart(document.getElementById("remediationChart"), {
       type: "bar",
       data: {
-        labels: ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+        labels: [],
         datasets: [{
-          label: "Resolved",
-          data: [15, 13, 28, 35, 26, 8, 3],
+          label: "Alerts",
+          data: [],
           backgroundColor: "#37d27f",
           borderRadius: 4
         }]
@@ -1281,6 +1241,224 @@
           x: { grid: { display: false } }
         }
       }
+    });
+  </script>
+
+  <script>
+    // Browser-safe Supabase configuration. Use the publishable key only.
+    const CYBERBENCH_SUPABASE_URL = "https://zrcglelaiumuysuannwt.supabase.co";
+    const CYBERBENCH_SUPABASE_PUBLISHABLE_KEY = "sb_publishable_liTRmLDG57hTPCMjnasmEQ_n-477YSt";
+
+    function escapeDashboardText(value) {
+      return String(value ?? "")
+        .replaceAll("&", "&amp;")
+        .replaceAll("<", "&lt;")
+        .replaceAll(">", "&gt;")
+        .replaceAll('"', "&quot;")
+        .replaceAll("'", "&#039;");
+    }
+
+    function alertCategory(title) {
+      const text = String(title || "").toLowerCase();
+      if (/login|authentication|password|user|sudo|privilege/.test(text)) return "Authentication";
+      if (/malware|virus|trojan|ransom|rootkit|file/.test(text)) return "Malware / File";
+      if (/network|firewall|port|connection|ssh|dns/.test(text)) return "Network";
+      if (/policy|configuration|compliance|audit/.test(text)) return "Policy / Compliance";
+      if (/system|service|process|package|kernel/.test(text)) return "System";
+      return "Other";
+    }
+
+    function formatAlertTime(value) {
+      if (!value) return "Time unavailable";
+      const date = new Date(value);
+      return Number.isNaN(date.getTime()) ? "Time unavailable" : date.toLocaleString();
+    }
+
+    function setDashboardError(message, integrationMessage = "● Connection error", color = "#ff5d6d") {
+      document.getElementById("criticalAlertSub").textContent = message;
+      document.getElementById("liveRiskLabel").textContent = "Data unavailable";
+      document.getElementById("monitoredAssetSub").textContent = message;
+      document.getElementById("openAlertSub").textContent = message;
+      document.getElementById("integrationHealthSub").textContent = message;
+      document.getElementById("liveAlertTableBody").innerHTML =
+        `<tr><td colspan="6">${escapeDashboardText(message)}</td></tr>`;
+      const status = document.getElementById("wazuhIntegrationStatus");
+      status.textContent = integrationMessage;
+      status.style.color = color;
+    }
+
+    async function loadCyberBenchWazuhData() {
+      if (CYBERBENCH_SUPABASE_PUBLISHABLE_KEY.includes("PASTE_")) {
+        setDashboardError("Add the Supabase publishable key");
+        return;
+      }
+
+      const client = window.supabase.createClient(
+        CYBERBENCH_SUPABASE_URL,
+        CYBERBENCH_SUPABASE_PUBLISHABLE_KEY,
+        { auth: { persistSession: true, autoRefreshToken: true } }
+      );
+
+      const { data: sessionData } = await client.auth.getSession();
+      if (!sessionData.session) {
+        setDashboardError("Sign in to view live data", "● Sign-in required", "#ffb84d");
+        return;
+      }
+
+      const [alertsResult, assetCountResult, integrationResult] = await Promise.all([
+        client
+          .from("alerts")
+          .select("title,rule_level,agent_name,source_ip,occurred_at,status")
+          .order("occurred_at", { ascending: false })
+          .limit(500),
+        client.from("assets").select("id", { count: "exact", head: true }),
+        client
+          .from("integrations")
+          .select("name,status,last_sync_at,last_error")
+          .eq("provider", "wazuh")
+          .limit(1)
+          .maybeSingle()
+      ]);
+
+      const firstError = alertsResult.error || assetCountResult.error || integrationResult.error;
+      if (firstError) throw firstError;
+
+      const alerts = alertsResult.data || [];
+      const openAlerts = alerts.filter((alert) => alert.status === "open");
+      const criticalAlerts = openAlerts.filter((alert) => Number(alert.rule_level) >= 12);
+      const highAlerts = openAlerts.filter((alert) => {
+        const level = Number(alert.rule_level);
+        return level >= 8 && level < 12;
+      });
+
+      document.getElementById("alertBadge").textContent = String(openAlerts.length);
+      document.getElementById("monitoredAssetCount").textContent = String(assetCountResult.count || 0);
+      document.getElementById("monitoredAssetSub").textContent = "Live assets reported by Wazuh";
+      document.getElementById("openAlertCount").textContent = String(openAlerts.length);
+      document.getElementById("openAlertSub").textContent = `${alerts.length} recent alerts loaded`;
+      document.getElementById("criticalAlertCount").textContent = String(criticalAlerts.length);
+      document.getElementById("criticalAlertSub").textContent =
+        `${openAlerts.length} open alerts • ${assetCountResult.count || 0} monitored asset(s)`;
+
+      const riskScore = Math.min(100, criticalAlerts.length * 8 + highAlerts.length * 3);
+      const riskLabel = riskScore >= 75 ? "High Risk" : riskScore >= 40 ? "Medium Risk" : "Low Risk";
+      document.getElementById("liveRiskScore").textContent = String(riskScore);
+      document.getElementById("liveRiskLabel").textContent = riskLabel;
+
+      const recentList = document.getElementById("recentCriticalAlerts");
+      const recent = criticalAlerts.slice(0, 4);
+      recentList.innerHTML = recent.length
+        ? recent.map((alert) => {
+            const source = alert.agent_name
+              ? `Agent: ${alert.agent_name}`
+              : alert.source_ip
+                ? `Source: ${alert.source_ip}`
+                : formatAlertTime(alert.occurred_at);
+            return `<li><div><strong>${escapeDashboardText(alert.title)}</strong>` +
+              `<span>${escapeDashboardText(source)}</span></div>` +
+              `<span class="pill">Level ${escapeDashboardText(alert.rule_level)}</span></li>`;
+          }).join("")
+        : "<li><div><strong>No critical alerts</strong><span>No open Wazuh alerts at level 12 or above</span></div></li>";
+
+      const categoryCounts = {};
+      alerts.forEach((alert) => {
+        const category = alertCategory(alert.title);
+        categoryCounts[category] = (categoryCounts[category] || 0) + 1;
+      });
+      const categories = Object.entries(categoryCounts).sort((a, b) => b[1] - a[1]).slice(0, 5);
+      alertCategoryChart.data.labels = categories.map(([label]) => label);
+      alertCategoryChart.data.datasets[0].data = categories.map(([, count]) => count);
+      alertCategoryChart.update();
+
+      const statusCounts = {};
+      alerts.forEach((alert) => {
+        const label = alert.status || "unknown";
+        statusCounts[label] = (statusCounts[label] || 0) + 1;
+      });
+      statusChart.data.labels = Object.keys(statusCounts).map((value) =>
+        value.charAt(0).toUpperCase() + value.slice(1)
+      );
+      statusChart.data.datasets[0].data = Object.values(statusCounts);
+      statusChart.update();
+
+      const severityCounts = { Critical: 0, High: 0, Medium: 0, Low: 0 };
+      alerts.forEach((alert) => {
+        const level = Number(alert.rule_level || 0);
+        if (level >= 12) severityCounts.Critical += 1;
+        else if (level >= 8) severityCounts.High += 1;
+        else if (level >= 4) severityCounts.Medium += 1;
+        else severityCounts.Low += 1;
+      });
+      priorityChart.data.labels = Object.keys(severityCounts);
+      priorityChart.data.datasets[0].data = Object.values(severityCounts);
+      priorityChart.update();
+
+      const dayBuckets = [];
+      for (let offset = 6; offset >= 0; offset -= 1) {
+        const day = new Date();
+        day.setHours(0, 0, 0, 0);
+        day.setDate(day.getDate() - offset);
+        dayBuckets.push({
+          key: day.toISOString().slice(0, 10),
+          label: day.toLocaleDateString(undefined, { weekday: "short" }),
+          alerts: [],
+        });
+      }
+      alerts.forEach((alert) => {
+        const date = new Date(alert.occurred_at);
+        if (Number.isNaN(date.getTime())) return;
+        const bucket = dayBuckets.find((day) => day.key === date.toISOString().slice(0, 10));
+        if (bucket) bucket.alerts.push(alert);
+      });
+      const dailyRisk = dayBuckets.map((bucket) => {
+        const critical = bucket.alerts.filter((alert) => Number(alert.rule_level) >= 12).length;
+        const high = bucket.alerts.filter((alert) => {
+          const level = Number(alert.rule_level);
+          return level >= 8 && level < 12;
+        }).length;
+        return Math.min(100, critical * 8 + high * 3);
+      });
+      riskChart.data.labels = dayBuckets.map((bucket) => bucket.label);
+      riskChart.data.datasets[0].data = dailyRisk;
+      riskChart.update();
+      remediationChart.data.labels = dayBuckets.map((bucket) => bucket.label);
+      remediationChart.data.datasets[0].data = dayBuckets.map((bucket) => bucket.alerts.length);
+      remediationChart.update();
+
+      const latestRows = alerts.slice(0, 10);
+      document.getElementById("liveAlertTableBody").innerHTML = latestRows.length
+        ? latestRows.map((alert) => {
+            const level = Number(alert.rule_level || 0);
+            const severity = level >= 12 ? "Critical" : level >= 8 ? "High" : level >= 4 ? "Medium" : "Low";
+            return `<tr><td>${escapeDashboardText(formatAlertTime(alert.occurred_at))}</td>` +
+              `<td>${escapeDashboardText(alert.agent_name || "Unknown")}</td>` +
+              `<td>${escapeDashboardText(alert.rule_level ?? "—")}</td>` +
+              `<td><span class="status high">${escapeDashboardText(severity)}</span></td>` +
+              `<td><span class="status progress">${escapeDashboardText(alert.status || "unknown")}</span></td>` +
+              `<td>${escapeDashboardText(alert.title || "Wazuh alert")}</td></tr>`;
+          }).join("")
+        : '<tr><td colspan="6">No Wazuh alerts available.</td></tr>';
+
+      const integration = integrationResult.data;
+      const status = document.getElementById("wazuhIntegrationStatus");
+      if (integration?.status === "active") {
+        status.textContent = `● Connected • ${formatAlertTime(integration.last_sync_at)}`;
+        status.style.color = "#37d27f";
+        document.getElementById("integrationHealth").textContent = "Healthy";
+        document.getElementById("integrationHealthSub").textContent =
+          `Last sync: ${formatAlertTime(integration.last_sync_at)}`;
+      } else {
+        status.textContent = `● ${integration?.status || "Not configured"}`;
+        status.style.color = "#ffb84d";
+        document.getElementById("integrationHealth").textContent = integration?.status || "Unavailable";
+        document.getElementById("integrationHealthSub").textContent =
+          integration?.last_error || "No successful Wazuh sync reported";
+      }
+    }
+
+    loadCyberBenchWazuhData().catch((error) => {
+      console.error("CyberBench dashboard data error:", error);
+      setDashboardError("Unable to load Wazuh data");
     });
   </script>
 
@@ -1323,21 +1501,24 @@
 
       function demoReply(text) {
         const lower = text.toLowerCase();
+        const critical = document.getElementById("criticalAlertCount")?.textContent || "unavailable";
+        const open = document.getElementById("openAlertCount")?.textContent || "unavailable";
+        const risk = document.getElementById("liveRiskScore")?.textContent || "unavailable";
 
         if (lower.includes("critical") || lower.includes("alert")) {
-          return "There are 7 critical alerts on the dashboard. Start with ransomware activity, privilege escalation, repeated failed logins, and the malicious file detection shown in Recent Critical Alerts.";
+          return `The live dashboard currently shows ${critical} critical and ${open} open Wazuh alerts. Review Recent Critical Alerts for the highest-level events.`;
         }
 
         if (lower.includes("risk")) {
-          return "The current risk score is 68, which is categorized as Medium Risk. I would prioritize critical alerts and any unresolved high-priority tickets first.";
+          return `The current Wazuh-derived risk score is ${risk}. Prioritize open alerts with the highest Wazuh rule levels.`;
         }
 
         if (lower.includes("ticket")) {
-          return "There are 48 open tickets. The dashboard shows recent high-priority remediation work including disabling SMBv1 and patching a critical OpenSSL CVE.";
+          return "Live ticket data is not connected to this dashboard yet.";
         }
 
         if (lower.includes("attention") || lower.includes("priority")) {
-          return "Highest priority: review the 7 critical alerts, verify ransomware and privilege-escalation findings, then work the oldest high-priority remediation tickets.";
+          return `Start with the ${critical} live critical Wazuh alerts, followed by other high-level open alerts.`;
         }
 
         return "I can help analyze alerts, tickets, assets, remediation activity, integrations, and dashboard risk. Connect this widget to your backend AI endpoint when you're ready for live responses.";
