@@ -1556,6 +1556,28 @@ function showToast(title, msg, type = 'success') {
   setTimeout(() => { if (t.parentNode) t.remove(); }, 5000);
 }
 
+/* ── Supabase Password Recovery ── */
+cbSupabase.auth.onAuthStateChange(async (event) => {
+  if (event !== 'PASSWORD_RECOVERY') return;
+
+  const newPassword = window.prompt('Enter a new password (minimum 8 characters):');
+  if (!newPassword) return;
+
+  if (newPassword.length < 8) {
+    showToast('Password Not Updated', 'Use at least 8 characters.', 'error');
+    return;
+  }
+
+  const { error } = await cbSupabase.auth.updateUser({ password: newPassword });
+  if (error) {
+    showToast('Password Reset Failed', error.message, 'error');
+    return;
+  }
+
+  showToast('Password Updated', 'You can now open your dashboard.', 'success');
+  window.setTimeout(() => window.location.assign('/dashboard.html'), 900);
+});
+
 /* ── Password Toggle ── */
 const pwToggle = document.getElementById('pwToggle');
 const pwInput  = document.getElementById('password');
@@ -1588,6 +1610,26 @@ function clearError(fieldId, errId) {
 /* Live clear on input */
 document.getElementById('email').addEventListener('input', () => clearError('email', 'email-error'));
 document.getElementById('password').addEventListener('input', () => clearError('password', 'password-error'));
+
+document.querySelector('.forgot-link')?.addEventListener('click', async (event) => {
+  event.preventDefault();
+  const email = document.getElementById('email').value.trim();
+
+  if (!email) {
+    setError('email', 'email-error', 'Enter your email address first.');
+    return;
+  }
+
+  const redirectTo = `${window.location.origin}/client-portal.html`;
+  const { error } = await cbSupabase.auth.resetPasswordForEmail(email, { redirectTo });
+
+  if (error) {
+    showToast('Reset Request Failed', error.message, 'error');
+    return;
+  }
+
+  showToast('Check Your Email', 'A CyberBench password-reset link has been sent.', 'success');
+});
 
 loginForm.addEventListener('submit', async (e) => {
   e.preventDefault();
