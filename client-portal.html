@@ -7,6 +7,7 @@
   <title>Client Portal | CyberBench</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" />
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
   <style>
     /* ── Reset & Base ── */
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -1508,6 +1509,14 @@ body{
 
 <!-- ══════════════ SCRIPTS ══════════════ -->
 <script>
+const CYBERBENCH_SUPABASE_URL = 'https://zrcglelaiumuysuannwt.supabase.co';
+const CYBERBENCH_SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_liTRmLDG57hTPCMjnasmEQ_n-477YSt';
+const cbSupabase = window.supabase.createClient(
+  CYBERBENCH_SUPABASE_URL,
+  CYBERBENCH_SUPABASE_PUBLISHABLE_KEY,
+  { auth: { persistSession: true, autoRefreshToken: true, detectSessionInUrl: true } }
+);
+
 /* ── Year ── */
 document.getElementById('year').textContent = new Date().getFullYear();
 
@@ -1612,20 +1621,43 @@ loginForm.addEventListener('submit', async (e) => {
 
   if (!valid) return;
 
-  /* Simulate async login */
+  /* Authenticate with Supabase and establish the browser session used by the dashboard. */
   loginBtn.classList.add('loading');
   loginBtn.disabled = true;
 
-  await new Promise(r => setTimeout(r, 1600));
+  try {
+    const { data, error } = await cbSupabase.auth.signInWithPassword({
+      email,
+      password: pass
+    });
 
-  loginBtn.classList.remove('loading');
-  loginBtn.disabled = false;
+    if (error) throw error;
+    if (!data.session) throw new Error('Supabase did not establish a login session.');
 
-  /* Demo: redirect to dashboard */
-  showToast('Login Successful', 'Redirecting to your dashboard…', 'success');
-  setTimeout(() => {
-    window.location.href = '/dashboard.html';
-  }, 1400);
+    const { data: memberships, error: membershipError } = await cbSupabase
+      .from('client_memberships')
+      .select('client_id,role')
+      .eq('user_id', data.user.id)
+      .limit(1);
+
+    if (membershipError) throw membershipError;
+    if (!memberships || memberships.length === 0) {
+      await cbSupabase.auth.signOut();
+      throw new Error('Your account is not assigned to a CyberBench client workspace.');
+    }
+
+    showToast('Login Successful', 'Redirecting to your live dashboard…', 'success');
+    window.setTimeout(() => {
+      window.location.assign('/dashboard.html');
+    }, 700);
+  } catch (error) {
+    errorMsg.textContent = error?.message || 'Unable to sign in. Please try again.';
+    errorBanner.classList.add('visible');
+    showToast('Login Failed', errorMsg.textContent, 'error');
+  } finally {
+    loginBtn.classList.remove('loading');
+    loginBtn.disabled = false;
+  }
 });
 
 /* ══════════════════════════════════════
