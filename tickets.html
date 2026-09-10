@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CyberBench Tickets</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: Inter, Arial, sans-serif; }
@@ -1172,8 +1173,7 @@
       <div class="userbar">
         <span>🔔</span>
         <span>❔</span>
-        <span>Admin User</span>
-        <button class="new-btn" onclick="openTicketModal()">＋ New Ticket</button>
+        <span id="signedInUser">Signed in</span>
       </div>
     </div>
 
@@ -1185,11 +1185,11 @@
     <div class="layout-grid">
       <section>
         <div class="cards">
-          <div class="card"><h3>Open Tickets</h3><div class="value" id="openCount">48</div><div class="sub">↓ 12% vs last 7 days</div></div>
-          <div class="card orange"><h3>In Progress</h3><div class="value" id="progressCount">18</div><div class="sub" style="color:#ff8f1f;">↑ 8% vs last 7 days</div></div>
-          <div class="card red"><h3>Overdue</h3><div class="value" id="overdueCount">6</div><div class="sub" style="color:#ff4055;">↓ 14% vs last 7 days</div></div>
-          <div class="card green"><h3>Closed This Week</h3><div class="value">35</div><div class="sub">↑ 25% vs last 7 days</div></div>
-          <div class="card purple"><h3>Avg Closure Time</h3><div class="value">4.2h</div><div class="sub">↓ 18% vs last 7 days</div></div>
+          <div class="card"><h3>Open Tickets</h3><div class="value" id="openCount">—</div><div class="sub">Live CyberBench data</div></div>
+          <div class="card orange"><h3>Investigating</h3><div class="value" id="progressCount">—</div><div class="sub" style="color:#ff8f1f;">Active investigations</div></div>
+          <div class="card red"><h3>Overdue</h3><div class="value" id="overdueCount">—</div><div class="sub" style="color:#ff4055;">Past SLA deadline</div></div>
+          <div class="card green"><h3>Closed This Week</h3><div class="value" id="closedCount">—</div><div class="sub">Resolved or closed</div></div>
+          <div class="card purple"><h3>Critical Priority</h3><div class="value" id="criticalCount">—</div><div class="sub">Requires immediate action</div></div>
         </div>
 
         <div class="panel tickets-panel">
@@ -1197,8 +1197,6 @@
             <input id="ticketSearch" placeholder="Search tickets..." />
             <select id="statusFilter"><option value="">Status</option></select>
             <select id="priorityFilter"><option value="">Priority</option></select>
-            <select id="customerFilter"><option value="">Customer</option></select>
-            <select id="assignedFilter"><option value="">Assigned To</option></select>
             <button onclick="resetFilters()">More Filters</button>
             <button onclick="exportTickets()">Export</button>
           </div>
@@ -1206,14 +1204,14 @@
           <table>
             <thead>
               <tr>
-                <th></th><th>Ticket ID</th><th>Title</th><th>Customer</th><th>Priority</th><th>Status</th><th>Assigned To</th><th>SLA</th><th>Updated</th><th>Actions</th>
+                <th></th><th>Ticket ID</th><th>Title</th><th>Category</th><th>Priority</th><th>Status</th><th>SLA</th><th>Updated</th>
               </tr>
             </thead>
             <tbody id="ticketTable"></tbody>
           </table>
 
           <div class="pagination">
-            <span id="paginationText">Showing 1 to 10 of 48 tickets</span>
+            <span id="paginationText">Loading live tickets…</span>
             <div class="pages" id="paginationButtons"></div>
             <span>Rows per page: 10</span>
           </div>
@@ -1226,21 +1224,17 @@
 
         <div class="panel">
           <h3>Recent Activity</h3>
-          <ul class="activity" id="activityList">
-            <li><div><strong>TKT-000124 updated</strong>Status changed to In Progress</div><span class="time">15m ago</span></li>
-            <li><div><strong>TKT-000123 created</strong>New critical vulnerability detected</div><span class="time">42m ago</span></li>
-            <li><div><strong>TKT-000122 updated</strong>Waiting for customer response</div><span class="time">1h ago</span></li>
-          </ul>
+          <ul class="activity" id="activityList"><li><div><strong>Loading activity…</strong>Connecting to CyberBench</div></li></ul>
         </div>
 
         <div class="panel">
           <h3>My Workload</h3>
           <div class="workload-row">
-            <strong>Alex Johnson</strong>
-            <div><strong style="font-size:24px;" id="workloadCount">12</strong><br><span style="color:#9fafc4;">Assigned</span></div>
+            <strong>Open queue</strong>
+            <div><strong style="font-size:24px;" id="workloadCount">—</strong><br><span style="color:#9fafc4;">Active</span></div>
           </div>
           <div class="bar"><span></span><span></span><span></span><span></span></div>
-          <p style="margin-top:14px; color:#9fafc4; font-size:13px;">Open 5 • In Progress 4 • Pending 2 • Overdue 1</p>
+          <p id="workloadSummary" style="margin-top:14px; color:#9fafc4; font-size:13px;">Loading live workload…</p>
         </div>
       </aside>
     </div>
@@ -1300,41 +1294,6 @@
   </div>
 
 
-<div id="ticketModal" class="ticket-modal">
-  <div class="ticket-modal-content">
-    <div class="ticket-modal-header">
-      <h2>Create New Ticket</h2>
-      <button class="close-modal" onclick="closeTicketModal()">✕</button>
-    </div>
-
-    <div class="ticket-form">
-      <input id="ticketTitle" placeholder="Ticket Title">
-      <input id="ticketCustomer" placeholder="Customer Name">
-
-      <select id="ticketPriority">
-        <option>Critical</option>
-        <option>High</option>
-        <option selected>Medium</option>
-        <option>Low</option>
-      </select>
-
-      <select id="ticketAssigned">
-        <option>Alex Johnson</option>
-        <option>Maria Garcia</option>
-        <option>Sarah Kim</option>
-        <option>James Lee</option>
-        <option>David Chen</option>
-        <option selected>Unassigned</option>
-      </select>
-
-      <textarea id="ticketDescription" placeholder="Describe the issue..."></textarea>
-
-      <button class="create-ticket-submit" onclick="createTicket()">Create Ticket</button>
-    </div>
-  </div>
-</div>
-
-
 <script>
 document.addEventListener("DOMContentLoaded", function () {
   const sidebar = document.getElementById("ticketsSidebar");
@@ -1388,122 +1347,197 @@ document.addEventListener("DOMContentLoaded", function () {
 </script>
 
 <script>
-let tickets = [
-  { id:"TKT-000124", title:"Disable SMBv1 on File Server", tag:"Remediation", customer:"Acme Manufacturing", priority:"High", status:"In Progress", assigned:"Alex Johnson", sla:"2h left", updated:"15m ago" },
-  { id:"TKT-000123", title:"Patch OpenSSL CVE-2024-3094", tag:"Vulnerability", customer:"Orlando Law Group", priority:"Critical", status:"Open", assigned:"Maria Garcia", sla:"Overdue", updated:"42m ago" },
-  { id:"TKT-000122", title:"Backup Validation Failure", tag:"Backup", customer:"Stellar IT", priority:"Medium", status:"Pending Customer", assigned:"James Lee", sla:"1d left", updated:"1h ago" },
-  { id:"TKT-000121", title:"Brute Force Attack Detected", tag:"Security Alert", customer:"Acme Manufacturing", priority:"High", status:"In Progress", assigned:"Sarah Kim", sla:"3h left", updated:"2h ago" },
-  { id:"TKT-000120", title:"Malicious File Detected", tag:"Security Alert", customer:"Orlando Law Group", priority:"Critical", status:"In Progress", assigned:"David Chen", sla:"30m left", updated:"2h ago" },
-  { id:"TKT-000119", title:"MFA Not Enforced on O365", tag:"Configuration", customer:"Acme Manufacturing", priority:"Medium", status:"Open", assigned:"Alex Johnson", sla:"2d left", updated:"3h ago" },
-  { id:"TKT-000118", title:"Unapproved Software Found", tag:"Compliance", customer:"Stellar IT", priority:"Low", status:"In Progress", assigned:"Maria Garcia", sla:"3d left", updated:"5h ago" },
-  { id:"TKT-000117", title:"Firewall Rule Review", tag:"Review", customer:"Orlando Law Group", priority:"Medium", status:"Pending Customer", assigned:"James Lee", sla:"4d left", updated:"6h ago" },
-  { id:"TKT-000116", title:"Critical Windows Updates", tag:"Patch Management", customer:"Acme Manufacturing", priority:"High", status:"Open", assigned:"Sarah Kim", sla:"1d left", updated:"8h ago" },
-  { id:"TKT-000115", title:"Phishing Email Reported", tag:"Phishing", customer:"Stellar IT", priority:"Low", status:"Resolved", assigned:"David Chen", sla:"-", updated:"1d ago" }
-];
+const SUPABASE_URL = "https://zrcglelaiumuysuannwt.supabase.co";
+const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_liTRmLDG57hTPCMjnasmEQ_n-477YSt";
+const cbSupabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 
+let tickets = [];
 let currentPage = 1;
 const rowsPerPage = 10;
+let priorityChart;
+let slaChart;
+
+function escapeHtml(value) {
+  return String(value ?? "")
+    .replaceAll("&", "&amp;")
+    .replaceAll("<", "&lt;")
+    .replaceAll(">", "&gt;")
+    .replaceAll('"', "&quot;")
+    .replaceAll("'", "&#039;");
+}
+
+function titleCase(value) {
+  return String(value || "unknown")
+    .replaceAll("_", " ")
+    .replace(/\b\w/g, character => character.toUpperCase());
+}
+
+function relativeTime(value) {
+  if (!value) return "—";
+  const seconds = Math.max(0, Math.floor((Date.now() - new Date(value).getTime()) / 1000));
+  if (seconds < 60) return "Just now";
+  if (seconds < 3600) return `${Math.floor(seconds / 60)}m ago`;
+  if (seconds < 86400) return `${Math.floor(seconds / 3600)}h ago`;
+  return `${Math.floor(seconds / 86400)}d ago`;
+}
+
+function slaDetails(ticket) {
+  if (["resolved", "closed"].includes(ticket.status)) return { label: "Met", state: "met" };
+  if (!ticket.sla_due_at) return { label: "—", state: "none" };
+  const milliseconds = new Date(ticket.sla_due_at).getTime() - Date.now();
+  if (milliseconds <= 0) return { label: "Overdue", state: "breached" };
+  const minutes = Math.ceil(milliseconds / 60000);
+  if (minutes < 60) return { label: `${minutes}m left`, state: "risk" };
+  const hours = Math.ceil(minutes / 60);
+  if (hours < 24) return { label: `${hours}h left`, state: hours <= 1 ? "risk" : "healthy" };
+  return { label: `${Math.ceil(hours / 24)}d left`, state: "healthy" };
+}
+
+function normalizeTicket(row) {
+  const sla = slaDetails(row);
+  const statusLabels = { open: "Open", acknowledged: "Acknowledged", investigating: "In Progress", resolved: "Resolved", closed: "Closed" };
+  return {
+    id: row.ticket_number,
+    dbId: row.id,
+    title: row.title,
+    tag: row.category || "Security Alert",
+    priority: titleCase(row.priority),
+    status: statusLabels[row.status] || titleCase(row.status),
+    statusRaw: row.status,
+    sla: sla.label,
+    slaState: sla.state,
+    updated: relativeTime(row.updated_at),
+    createdAt: row.created_at
+  };
+}
 
 function priorityClass(priority) {
-  return priority.toLowerCase();
+  return String(priority).toLowerCase();
 }
 
 function statusClass(status) {
-  if (status === "In Progress") return "progress";
-  if (status === "Pending Customer") return "pending";
-  if (status === "Resolved") return "resolved";
+  if (status === "In Progress" || status === "Acknowledged") return "progress";
+  if (status === "Resolved" || status === "Closed") return "resolved";
   return "open";
 }
 
-function slaClass(sla) {
-  if (sla === "Overdue" || sla.includes("30m")) return "sla-bad";
-  if (sla === "-") return "";
-  return "sla-warn";
+function slaClass(ticket) {
+  if (ticket.slaState === "breached") return "sla-bad";
+  if (ticket.slaState === "risk") return "sla-warn";
+  return "";
 }
 
 function populateFilters() {
   const statusFilter = document.getElementById("statusFilter");
   const priorityFilter = document.getElementById("priorityFilter");
-  const customerFilter = document.getElementById("customerFilter");
-  const assignedFilter = document.getElementById("assignedFilter");
-
-  statusFilter.innerHTML = `<option value="">Status</option>` + [...new Set(tickets.map(t => t.status))].map(v => `<option value="${v}">${v}</option>`).join("");
-  priorityFilter.innerHTML = `<option value="">Priority</option>` + [...new Set(tickets.map(t => t.priority))].map(v => `<option value="${v}">${v}</option>`).join("");
-  customerFilter.innerHTML = `<option value="">Customer</option>` + [...new Set(tickets.map(t => t.customer))].map(v => `<option value="${v}">${v}</option>`).join("");
-  assignedFilter.innerHTML = `<option value="">Assigned To</option>` + [...new Set(tickets.map(t => t.assigned))].map(v => `<option value="${v}">${v}</option>`).join("");
+  const selectedStatus = statusFilter.value;
+  const selectedPriority = priorityFilter.value;
+  statusFilter.innerHTML = `<option value="">Status</option>` + [...new Set(tickets.map(ticket => ticket.status))].map(value => `<option value="${escapeHtml(value)}">${escapeHtml(value)}</option>`).join("");
+  priorityFilter.innerHTML = `<option value="">Priority</option>` + [...new Set(tickets.map(ticket => ticket.priority))].map(value => `<option value="${escapeHtml(value)}">${escapeHtml(value)}</option>`).join("");
+  statusFilter.value = selectedStatus;
+  priorityFilter.value = selectedPriority;
 }
 
 function getFilteredTickets() {
-  const searchValue = document.getElementById("ticketSearch").value.toLowerCase();
-  const topSearchValue = document.querySelector(".search-top").value.toLowerCase();
-  const query = searchValue || topSearchValue;
-
+  const localSearch = document.getElementById("ticketSearch").value.toLowerCase();
+  const topSearch = document.querySelector(".search-top").value.toLowerCase();
+  const query = localSearch || topSearch;
   const status = document.getElementById("statusFilter").value;
   const priority = document.getElementById("priorityFilter").value;
-  const customer = document.getElementById("customerFilter").value;
-  const assigned = document.getElementById("assignedFilter").value;
-
-  return tickets.filter(t => {
-    const matchesSearch =
-      t.id.toLowerCase().includes(query) ||
-      t.title.toLowerCase().includes(query) ||
-      t.customer.toLowerCase().includes(query) ||
-      t.priority.toLowerCase().includes(query) ||
-      t.status.toLowerCase().includes(query) ||
-      t.assigned.toLowerCase().includes(query);
-
-    return matchesSearch &&
-      (!status || t.status === status) &&
-      (!priority || t.priority === priority) &&
-      (!customer || t.customer === customer) &&
-      (!assigned || t.assigned === assigned);
+  return tickets.filter(ticket => {
+    const searchable = `${ticket.id} ${ticket.title} ${ticket.tag} ${ticket.priority} ${ticket.status}`.toLowerCase();
+    return searchable.includes(query) && (!status || ticket.status === status) && (!priority || ticket.priority === priority);
   });
 }
 
 function renderTickets() {
   const filtered = getFilteredTickets();
+  const totalPages = Math.max(1, Math.ceil(filtered.length / rowsPerPage));
+  currentPage = Math.min(currentPage, totalPages);
   const start = (currentPage - 1) * rowsPerPage;
   const paged = filtered.slice(start, start + rowsPerPage);
+  const table = document.getElementById("ticketTable");
 
-  document.getElementById("ticketTable").innerHTML = paged.map(t => `
-    <tr>
-      <td><input type="checkbox"></td>
-      <td>${t.id}</td>
-      <td>${t.title}<br><span class="tag">${t.tag}</span></td>
-      <td>${t.customer}</td>
-      <td><span class="pill ${priorityClass(t.priority)}">${t.priority}</span></td>
-      <td><span class="pill ${statusClass(t.status)}">${t.status}</span></td>
-      <td>${t.assigned}</td>
-      <td class="${slaClass(t.sla)}">${t.sla}</td>
-      <td>${t.updated}</td>
-      <td><button onclick="openTicket('${t.id}')" style="background:none;border:none;color:white;cursor:pointer;">•••</button></td>
-    </tr>
-  `).join("");
+  if (!paged.length) {
+    table.innerHTML = `<tr><td colspan="8" style="padding:32px;text-align:center;color:#9fafc4;">No live tickets match the current filters.</td></tr>`;
+  } else {
+    table.innerHTML = paged.map(ticket => `
+      <tr>
+        <td><input type="checkbox" aria-label="Select ${escapeHtml(ticket.id)}"></td>
+        <td>${escapeHtml(ticket.id)}</td>
+        <td>${escapeHtml(ticket.title)}</td>
+        <td><span class="tag">${escapeHtml(ticket.tag)}</span></td>
+        <td><span class="pill ${priorityClass(ticket.priority)}">${escapeHtml(ticket.priority)}</span></td>
+        <td><span class="pill ${statusClass(ticket.status)}">${escapeHtml(ticket.status)}</span></td>
+        <td class="${slaClass(ticket)}">${escapeHtml(ticket.sla)}</td>
+        <td>${escapeHtml(ticket.updated)}</td>
+      </tr>`).join("");
+  }
 
   updatePagination(filtered.length);
-  updateCards();
+  updateSummaryPanels();
 }
 
 function updatePagination(total) {
   const totalPages = Math.max(1, Math.ceil(total / rowsPerPage));
   let html = `<button onclick="changePage(${Math.max(1, currentPage - 1)})">‹</button>`;
-
-  for (let i = 1; i <= totalPages; i++) {
-    html += `<button class="${i === currentPage ? "active-page" : ""}" onclick="changePage(${i})">${i}</button>`;
+  for (let page = 1; page <= totalPages; page += 1) {
+    html += `<button class="${page === currentPage ? "active-page" : ""}" onclick="changePage(${page})">${page}</button>`;
   }
-
   html += `<button onclick="changePage(${Math.min(totalPages, currentPage + 1)})">›</button>`;
-
   document.getElementById("paginationButtons").innerHTML = html;
-  document.getElementById("paginationText").innerText =
-    `Showing ${total === 0 ? 0 : 1} to ${Math.min(rowsPerPage, total)} of ${total} tickets`;
+  const first = total ? (currentPage - 1) * rowsPerPage + 1 : 0;
+  const last = Math.min(currentPage * rowsPerPage, total);
+  document.getElementById("paginationText").innerText = `Showing ${first} to ${last} of ${total} tickets`;
 }
 
-function updateCards() {
-  document.getElementById("openCount").innerText = tickets.filter(t => t.status !== "Resolved").length;
-  document.getElementById("progressCount").innerText = tickets.filter(t => t.status === "In Progress").length;
-  document.getElementById("overdueCount").innerText = tickets.filter(t => t.sla === "Overdue" || t.sla.includes("30m")).length;
-  document.getElementById("workloadCount").innerText = tickets.filter(t => t.assigned === "Alex Johnson").length;
+function updateSummaryPanels() {
+  const active = tickets.filter(ticket => !["resolved", "closed"].includes(ticket.statusRaw));
+  const investigating = tickets.filter(ticket => ticket.statusRaw === "investigating");
+  const overdue = active.filter(ticket => ticket.slaState === "breached");
+  const weekAgo = Date.now() - 7 * 86400000;
+  const closed = tickets.filter(ticket => ["resolved", "closed"].includes(ticket.statusRaw) && new Date(ticket.createdAt).getTime() >= weekAgo);
+  const critical = active.filter(ticket => ticket.priority === "Critical");
+
+  document.getElementById("openCount").innerText = active.length;
+  document.getElementById("progressCount").innerText = investigating.length;
+  document.getElementById("overdueCount").innerText = overdue.length;
+  document.getElementById("closedCount").innerText = closed.length;
+  document.getElementById("criticalCount").innerText = critical.length;
+  document.getElementById("workloadCount").innerText = active.length;
+  document.getElementById("workloadSummary").innerText = `Open ${active.length} • Investigating ${investigating.length} • Overdue ${overdue.length}`;
+
+  const recent = tickets.slice(0, 4);
+  document.getElementById("activityList").innerHTML = recent.length
+    ? recent.map(ticket => `<li><div><strong>${escapeHtml(ticket.id)} created</strong>${escapeHtml(ticket.title)}</div><span class="time">${escapeHtml(ticket.updated)}</span></li>`).join("")
+    : `<li><div><strong>No ticket activity</strong>No high or critical alerts have generated tickets.</div></li>`;
+
+  updateCharts();
+}
+
+function updateCharts() {
+  const priorityLabels = ["Critical", "High", "Medium", "Low"];
+  const priorityData = priorityLabels.map(label => tickets.filter(ticket => ticket.priority === label).length);
+  const slaData = [
+    tickets.filter(ticket => ticket.slaState === "met" || ticket.slaState === "healthy").length,
+    tickets.filter(ticket => ticket.slaState === "risk").length,
+    tickets.filter(ticket => ticket.slaState === "breached").length
+  ];
+
+  if (priorityChart) priorityChart.destroy();
+  if (slaChart) slaChart.destroy();
+  Chart.defaults.color = "#9fafc4";
+  Chart.defaults.borderColor = "rgba(255,255,255,.08)";
+  priorityChart = new Chart(document.getElementById("priorityChart"), {
+    type: "doughnut",
+    data: { labels: priorityLabels, datasets: [{ data: priorityData, backgroundColor: ["#ff4055", "#ff8f1f", "#ffbf2f", "#37d27f"], borderWidth: 0 }] },
+    options: { cutout: "65%", plugins: { legend: { position: "right", labels: { usePointStyle: true, boxWidth: 10 } } } }
+  });
+  slaChart = new Chart(document.getElementById("slaChart"), {
+    type: "doughnut",
+    data: { labels: ["Healthy/Met", "At Risk", "Breached"], datasets: [{ data: slaData, backgroundColor: ["#37d27f", "#ffbf2f", "#ff4055"], borderWidth: 0 }] },
+    options: { cutout: "70%", plugins: { legend: { position: "right", labels: { usePointStyle: true, boxWidth: 10 } } } }
+  });
 }
 
 function changePage(page) {
@@ -1511,25 +1545,17 @@ function changePage(page) {
   renderTickets();
 }
 
-function openTicket(id) {
-  window.location.href = `/ticket-detail.html?id=${id}`;
-}
-
 function exportTickets() {
   const rows = [
-    ["Ticket ID","Title","Customer","Priority","Status","Assigned To","SLA","Updated"],
-    ...getFilteredTickets().map(t => [t.id,t.title,t.customer,t.priority,t.status,t.assigned,t.sla,t.updated])
+    ["Ticket ID", "Title", "Category", "Priority", "Status", "SLA", "Updated"],
+    ...getFilteredTickets().map(ticket => [ticket.id, ticket.title, ticket.tag, ticket.priority, ticket.status, ticket.sla, ticket.updated])
   ];
-
-  const csv = rows.map(row => row.map(v => `"${String(v).replaceAll('"','""')}"`).join(",")).join("\n");
-  const blob = new Blob([csv], { type:"text/csv" });
-  const url = URL.createObjectURL(blob);
-  const a = document.createElement("a");
-
-  a.href = url;
-  a.download = "cyberbench-tickets.csv";
-  a.click();
-
+  const csv = rows.map(row => row.map(value => `"${String(value).replaceAll('"', '""')}"`).join(",")).join("\n");
+  const url = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
+  const link = document.createElement("a");
+  link.href = url;
+  link.download = "cyberbench-live-tickets.csv";
+  link.click();
   URL.revokeObjectURL(url);
 }
 
@@ -1538,116 +1564,51 @@ function resetFilters() {
   document.getElementById("ticketSearch").value = "";
   document.getElementById("statusFilter").value = "";
   document.getElementById("priorityFilter").value = "";
-  document.getElementById("customerFilter").value = "";
-  document.getElementById("assignedFilter").value = "";
   currentPage = 1;
   renderTickets();
 }
 
-function openTicketModal() {
-  document.getElementById("ticketModal").style.display = "flex";
+function showLoadError(message) {
+  document.getElementById("ticketTable").innerHTML = `<tr><td colspan="8" style="padding:32px;text-align:center;color:#ff6577;">${escapeHtml(message)}</td></tr>`;
+  document.getElementById("paginationText").innerText = "Live data unavailable";
 }
 
-function closeTicketModal() {
-  document.getElementById("ticketModal").style.display = "none";
-}
-
-function createTicket() {
-  const title = document.getElementById("ticketTitle").value.trim();
-  const customer = document.getElementById("ticketCustomer").value.trim();
-  const priority = document.getElementById("ticketPriority").value;
-  const assigned = document.getElementById("ticketAssigned").value;
-
-  if (!title || !customer) {
-    alert("Please enter a ticket title and customer.");
+async function loadLiveTickets() {
+  const { data: sessionData, error: sessionError } = await cbSupabase.auth.getSession();
+  const session = sessionData?.session;
+  if (sessionError || !session) {
+    window.location.replace("/client-portal.html");
     return;
   }
 
-  const newTicket = {
-    id: `TKT-${String(Math.floor(Math.random() * 900000 + 100000))}`,
-    title,
-    tag: "Manual",
-    customer,
-    priority,
-    status: "Open",
-    assigned,
-    sla: "2d left",
-    updated: "Just now"
-  };
+  document.getElementById("signedInUser").innerText = session.user.email || "Signed in";
+  const { data, error } = await cbSupabase
+    .from("tickets")
+    .select("id,ticket_number,title,category,priority,status,sla_due_at,created_at,updated_at")
+    .order("created_at", { ascending: false });
 
-  tickets.unshift(newTicket);
-  currentPage = 1;
+  if (error) {
+    console.error("Ticket load failed:", error);
+    showLoadError("Unable to load live tickets. Check the Supabase ticket policy and membership.");
+    return;
+  }
 
-  document.getElementById("activityList").insertAdjacentHTML("afterbegin", `
-    <li><div><strong>${newTicket.id} created</strong>${newTicket.title}</div><span class="time">Just now</span></li>
-  `);
-
-  closeTicketModal();
-
-  document.getElementById("ticketTitle").value = "";
-  document.getElementById("ticketCustomer").value = "";
-  document.getElementById("ticketDescription").value = "";
-
+  tickets = (data || []).map(normalizeTicket);
+  window.tickets = tickets;
   populateFilters();
   renderTickets();
-  showToast("Ticket created successfully");
 }
 
-function showToast(message) {
-  const toast = document.createElement("div");
-  toast.className = "toast";
-  toast.innerText = message;
-  document.body.appendChild(toast);
-
-  setTimeout(() => toast.remove(), 2500);
-}
-
-document.querySelector(".search-top").addEventListener("input", () => {
-  document.getElementById("ticketSearch").value = document.querySelector(".search-top").value;
+document.querySelector(".search-top").addEventListener("input", event => {
+  document.getElementById("ticketSearch").value = event.target.value;
   currentPage = 1;
   renderTickets();
 });
+document.getElementById("ticketSearch").addEventListener("input", () => { currentPage = 1; renderTickets(); });
+["statusFilter", "priorityFilter"].forEach(id => document.getElementById(id).addEventListener("change", () => { currentPage = 1; renderTickets(); }));
 
-document.getElementById("ticketSearch").addEventListener("input", () => {
-  currentPage = 1;
-  renderTickets();
-});
-
-["statusFilter","priorityFilter","customerFilter","assignedFilter"].forEach(id => {
-  document.getElementById(id).addEventListener("change", () => {
-    currentPage = 1;
-    renderTickets();
-  });
-});
-
-window.onclick = function(event) {
-  const modal = document.getElementById("ticketModal");
-  if (event.target === modal) closeTicketModal();
-};
-
-Chart.defaults.color = "#9fafc4";
-Chart.defaults.borderColor = "rgba(255,255,255,.08)";
-
-new Chart(document.getElementById("priorityChart"), {
-  type: "doughnut",
-  data: {
-    labels: ["Critical", "High", "Medium", "Low"],
-    datasets: [{ data: [7,18,16,7], backgroundColor: ["#ff4055","#ff8f1f","#ffbf2f","#37d27f"], borderWidth: 0 }]
-  },
-  options: { cutout: "65%", plugins: { legend: { position: "right", labels: { usePointStyle: true, boxWidth: 10 }}}}
-});
-
-new Chart(document.getElementById("slaChart"), {
-  type: "doughnut",
-  data: {
-    labels: ["Met", "At Risk", "Breached"],
-    datasets: [{ data: [44,3,1], backgroundColor: ["#37d27f","#ffbf2f","#ff4055"], borderWidth: 0 }]
-  },
-  options: { cutout: "70%", plugins: { legend: { position: "right", labels: { usePointStyle: true, boxWidth: 10 }}}}
-});
-
-populateFilters();
-renderTickets();
+loadLiveTickets();
+setInterval(loadLiveTickets, 60000);
 </script>
 
 <script>
