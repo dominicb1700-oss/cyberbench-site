@@ -5,6 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>CyberBench Alerts</title>
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
 
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; font-family: Inter, Arial, sans-serif; }
@@ -2263,6 +2264,218 @@ window.onclick = function(event) {
 
 populateFilters();
 renderAlerts();
+</script>
+
+<script>
+/* CyberBench live Wazuh alerts — Supabase/RLS supplies the signed-in client's data. */
+(function () {
+  const SUPABASE_URL = "https://zrcglelaiumuysuannwt.supabase.co";
+  const SUPABASE_KEY = "sb_publishable_liTRmLDG57hTPCMjnasmEQ_n-477YSt";
+  const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
+  let liveRefreshTimer = null;
+
+  const esc = (value) => String(value ?? "").replace(/[&<>'"]/g, char => ({
+    "&":"&amp;", "<":"&lt;", ">":"&gt;", "'":"&#39;", '"':"&quot;"
+  })[char]);
+
+  function severityFromLevel(level) {
+    const n = Number(level || 0);
+    if (n >= 12) return "Critical";
+    if (n >= 10) return "High";
+    if (n >= 7) return "Medium";
+    return "Low";
+  }
+
+  function displayStatus(value) {
+    const normalized = String(value || "open").replaceAll("_", " ");
+    return normalized.replace(/\b\w/g, letter => letter.toUpperCase());
+  }
+
+  function formatAlert(row, ticket) {
+    const occurred = new Date(row.occurred_at || row.created_at || Date.now());
+    const raw = row.raw_data && typeof row.raw_data === "object" ? row.raw_data : {};
+    const agent = row.agent_name || raw.agent?.name || "Unknown asset";
+    return {
+      id: String(row.id),
+      externalId: row.external_id || row.id,
+      time: occurred.toLocaleDateString(undefined, { year:"numeric", month:"short", day:"numeric" }),
+      hour: occurred.toLocaleTimeString(),
+      occurredAt: occurred.toISOString(),
+      severity: severityFromLevel(row.rule_level),
+      level: Number(row.rule_level || 0),
+      ruleId: row.rule_id || raw.rule?.id || "—",
+      name: row.title || raw.rule?.description || "Wazuh security alert",
+      detail: row.description || raw.full_log || "No additional description was supplied.",
+      source: "Wazuh",
+      icon: "🛡️",
+      category: row.category || "Other Security Alert",
+      asset: agent,
+      assetType: row.agent_external_id ? `Agent ${row.agent_external_id}` : "Wazuh agent",
+      status: displayStatus(row.status),
+      assigned: ticket ? `Ticket ${ticket.ticket_number}` : "Unassigned",
+      sourceIp: row.source_ip || raw.data?.srcip || raw.srcip || "—",
+      location: row.location || raw.location || "—",
+      rawData: raw,
+      ticket: ticket || null
+    };
+  }
+
+  function ensureLiveModalFields() {
+    if (document.getElementById("alertRuleId")) return;
+    const info = document.querySelector("#alertModal .info-card");
+    if (info) {
+      info.insertAdjacentHTML("beforeend", `
+        <div class="info-row"><span>Rule ID / Level</span><strong id="alertRuleId"></strong></div>
+        <div class="info-row"><span>Source IP</span><strong id="alertSourceIp"></strong></div>
+        <div class="info-row"><span>Location</span><strong id="alertLocation"></strong></div>
+        <div class="info-row"><span>Linked Ticket</span><strong id="alertTicket"></strong></div>`);
+    }
+    const main = document.querySelector("#alertModal .alert-main");
+    if (main) {
+      main.insertAdjacentHTML("beforeend", `
+        <details class="info-card"><summary style="cursor:pointer;font-weight:800">Raw Wazuh Evidence</summary>
+          <pre id="alertRawJson" style="margin-top:14px;white-space:pre-wrap;overflow-wrap:anywhere;color:#a9c7e8;font-size:12px;max-height:300px;overflow:auto"></pre>
+        </details>`);
+    }
+    const actionButtons = document.querySelectorAll("#alertModal .side-card .action-btn");
+    if (actionButtons[0]) { actionButtons[0].textContent = "Open linked ticket"; actionButtons[0].onclick = openLinkedTicket; }
+    if (actionButtons[1]) { actionButtons[1].textContent = "Copy alert details"; actionButtons[1].onclick = copySelectedAlert; }
+    if (actionButtons[2]) actionButtons[2].style.display = "none";
+  }
+
+  window.renderAlerts = function () {
+    const filtered = getFilteredAlerts();
+    const totalPages = Math.max(1, Math.ceil(filtered.length / rowsPerPage));
+    if (currentPage > totalPages) currentPage = totalPages;
+    const start = (currentPage - 1) * rowsPerPage;
+    const paged = filtered.slice(start, start + rowsPerPage);
+    const body = document.getElementById("alertsTable");
+    body.innerHTML = paged.length ? paged.map(a => `
+      <tr data-alert-id="${esc(a.id)}" style="cursor:pointer" title="Open alert details">
+        <td>${esc(a.time)}<br><span class="small">${esc(a.hour)}</span></td>
+        <td><span class="pill ${severityClass(a.severity)}">${esc(a.severity)}</span><span class="small">Level ${esc(a.level)}</span></td>
+        <td><strong>${esc(a.name)}</strong><span class="small">${esc(a.detail)}</span></td>
+        <td>${a.icon} ${esc(a.source)}</td>
+        <td>${esc(a.category)}</td>
+        <td><strong>${esc(a.asset)}</strong><span class="small">${esc(a.assetType)}</span></td>
+        <td><span class="pill ${statusClass(a.status)}">${esc(a.status)}</span></td>
+        <td>${a.ticket ? `<a href="/tickets.html" style="color:#36a7ff">${esc(a.ticket.ticket_number)}</a>` : "Unassigned"}</td>
+        <td><button data-open-alert="${esc(a.id)}" style="background:none;border:none;color:white;cursor:pointer;font-size:17px">•••</button></td>
+      </tr>`).join("") : `<tr><td colspan="9" style="text-align:center;padding:42px;color:#8fa1b8">No alerts match the current filters.</td></tr>`;
+    body.querySelectorAll("tr[data-alert-id]").forEach(row => row.addEventListener("click", event => {
+      if (event.target.closest("a")) return;
+      openAlertModal(row.dataset.alertId);
+    }));
+    updatePagination(filtered.length);
+    updateCards();
+    updateActivity();
+    updateCharts();
+  };
+
+  window.openAlertModal = function (id) {
+    ensureLiveModalFields();
+    selectedAlertId = id;
+    const a = alerts.find(item => item.id === id);
+    if (!a) return;
+    document.getElementById("alertTitle").textContent = a.name;
+    document.getElementById("alertSubtitle").textContent = `Wazuh rule ${a.ruleId} · level ${a.level}`;
+    document.getElementById("alertId").textContent = a.externalId;
+    document.getElementById("alertSource").textContent = a.source;
+    document.getElementById("alertCategory").textContent = a.category;
+    document.getElementById("alertAsset").textContent = a.asset;
+    document.getElementById("alertAssigned").textContent = a.assigned;
+    document.getElementById("alertDescription").textContent = a.detail;
+    document.getElementById("alertTime").textContent = `${a.time} ${a.hour}`;
+    document.getElementById("alertRuleId").textContent = `${a.ruleId} / ${a.level}`;
+    document.getElementById("alertSourceIp").textContent = a.sourceIp;
+    document.getElementById("alertLocation").textContent = a.location;
+    document.getElementById("alertTicket").textContent = a.ticket ? a.ticket.ticket_number : "Not generated";
+    document.getElementById("alertRawJson").textContent = JSON.stringify(a.rawData, null, 2);
+    const confidence = Math.min(99, 58 + (a.ruleId !== "—" ? 12 : 0) + (a.sourceIp !== "—" ? 10 : 0) + (a.detail.length > 30 ? 9 : 0) + (a.level >= 10 ? 8 : 3));
+    const score = document.querySelector("#alertModal .score");
+    if (score) score.textContent = `${confidence}%`;
+    const analysis = document.querySelector("#alertModal .side-card p");
+    if (analysis) analysis.textContent = `${confidence}% evidence confidence. Validate the source IP, affected agent, rule context, and surrounding Wazuh events before containment.`;
+    const severityBadge = document.getElementById("alertSeverityBadge");
+    severityBadge.className = "pill " + severityClass(a.severity);
+    severityBadge.textContent = a.severity;
+    const statusBadge = document.getElementById("alertStatusBadge");
+    statusBadge.className = "pill " + statusClass(a.status);
+    statusBadge.textContent = a.status;
+    document.getElementById("alertModal").style.display = "flex";
+  };
+
+  window.openLinkedTicket = function () {
+    const alert = alerts.find(item => item.id === selectedAlertId);
+    if (!alert?.ticket) return showToast("No ticket has been generated for this alert");
+    window.location.href = `/tickets.html?ticket=${encodeURIComponent(alert.ticket.id)}`;
+  };
+
+  window.copySelectedAlert = async function () {
+    const alert = alerts.find(item => item.id === selectedAlertId);
+    if (!alert) return;
+    const summary = `${alert.severity} Wazuh alert: ${alert.name}\nRule: ${alert.ruleId} (level ${alert.level})\nAgent: ${alert.asset}\nSource IP: ${alert.sourceIp}\nTime: ${alert.occurredAt}\n${alert.detail}`;
+    try { await navigator.clipboard.writeText(summary); showToast("Alert details copied"); }
+    catch { showToast("Clipboard access was blocked"); }
+  };
+
+  window.createTicketFromAlert = window.openLinkedTicket;
+  window.assignSelectedAlert = window.openLinkedTicket;
+
+  function updateLiveCharts() {
+    if (typeof Chart === "undefined") return;
+    const days = Array.from({ length: 7 }, (_, index) => {
+      const date = new Date(); date.setDate(date.getDate() - (6 - index)); date.setHours(0,0,0,0); return date;
+    });
+    const totals = days.map(day => alerts.filter(a => {
+      const d = new Date(a.occurredAt); return d.toDateString() === day.toDateString();
+    }).length);
+    if (alertsOverTimeChart) alertsOverTimeChart.destroy();
+    alertsOverTimeChart = new Chart(document.getElementById("alertsOverTime"), {
+      type:"line", data:{ labels:days.map(d => d.toLocaleDateString(undefined,{month:"short",day:"numeric"})), datasets:[{data:totals,borderColor:"#ff4055",backgroundColor:"rgba(255,64,85,.22)",fill:true,tension:.35,pointRadius:3}]},
+      options:{plugins:{legend:{display:false}},scales:{y:{beginAtZero:true,ticks:{precision:0}},x:{grid:{display:false}}}}
+    });
+  }
+
+  const originalUpdateCharts = window.updateCharts;
+  window.updateCharts = function () {
+    originalUpdateCharts();
+    const labels = [...new Set(alerts.map(a => a.source))];
+    if (sourcesChart) sourcesChart.destroy();
+    sourcesChart = new Chart(document.getElementById("sourcesChart"), {type:"bar",data:{labels,datasets:[{data:labels.map(label => alerts.filter(a => a.source === label).length),backgroundColor:["#1e9bff","#ff4055","#ff8f1f","#37d27f"],borderRadius:4}]},options:{indexAxis:"y",plugins:{legend:{display:false}},scales:{x:{beginAtZero:true,ticks:{precision:0}},y:{grid:{display:false}}}}});
+    updateLiveCharts();
+  };
+
+  async function loadLiveAlerts(showMessage) {
+    if (showMessage) showToast("Refreshing live Wazuh alerts…");
+    const { data: { session } } = await db.auth.getSession();
+    if (!session) {
+      alerts = [];
+      renderAlerts();
+      showToast("Sign in to view client alerts");
+      if (location.protocol !== "file:") setTimeout(() => location.href = "/client-portal.html", 1200);
+      return;
+    }
+    const [{ data: alertRows, error: alertError }, { data: ticketRows, error: ticketError }] = await Promise.all([
+      db.from("alerts").select("*").order("occurred_at", { ascending:false }).limit(500),
+      db.from("tickets").select("id,ticket_number,alert_id,status,assigned_consultant_id").order("created_at", { ascending:false }).limit(500)
+    ]);
+    if (alertError) { console.error(alertError); showToast("Could not load live alerts"); return; }
+    if (ticketError) console.warn("Tickets could not be linked", ticketError);
+    const ticketsByAlert = new Map((ticketRows || []).map(ticket => [String(ticket.alert_id), ticket]));
+    alerts = (alertRows || []).map(row => formatAlert(row, ticketsByAlert.get(String(row.id))));
+    currentPage = 1;
+    populateFilters();
+    renderAlerts();
+  }
+
+  ensureLiveModalFields();
+  loadLiveAlerts(false);
+  liveRefreshTimer = setInterval(() => loadLiveAlerts(false), 60000);
+  document.addEventListener("visibilitychange", () => { if (!document.hidden) loadLiveAlerts(false); });
+  const refreshButton = document.querySelector(".page-title");
+  if (refreshButton && !document.getElementById("liveStatus")) refreshButton.insertAdjacentHTML("beforeend", '<span id="liveStatus" style="display:inline-flex;margin-top:10px;padding:6px 10px;border-radius:999px;background:rgba(55,210,127,.12);color:#37d27f;font-size:12px">● Live · refreshes every 60 seconds</span>');
+})();
 </script>
 
 <script>
