@@ -1295,8 +1295,36 @@
   </div>
 
 
+<style>
+  #ticketDetailModal { padding:24px; backdrop-filter:blur(7px); background:rgba(1,8,17,.82); }
+  #ticketDetailModal .ticket-modal-content { width:min(1080px,96vw); max-width:none; max-height:92vh; overflow:auto; border:1px solid #284866; border-radius:18px; background:linear-gradient(145deg,#0b1c30,#071421 72%); box-shadow:0 28px 90px rgba(0,0,0,.62); scrollbar-color:#355a7b #071421; }
+  #ticketDetailModal .ticket-modal-header { position:sticky; top:0; z-index:3; padding:22px 26px; background:rgba(9,27,46,.96); border-bottom:1px solid #25425f; backdrop-filter:blur(12px); }
+  #ticketDetailBody { padding:26px!important; }
+  .ticket-detail-grid { display:grid; grid-template-columns:repeat(3,minmax(0,1fr)); gap:12px; margin-bottom:22px; }
+  .ticket-detail-field { background:linear-gradient(145deg,#0d2238,#091a2c); border:1px solid #254866; border-radius:11px; padding:14px 15px; min-width:0; }
+  .ticket-detail-label { color:#85bce8; font-size:10px; font-weight:800; text-transform:uppercase; letter-spacing:.12em; margin-bottom:7px; }
+  .ticket-detail-value { color:#f4f8fc; font-weight:750; overflow-wrap:anywhere; }
+  .ticket-detail-section { background:rgba(10,29,48,.78); border:1px solid #254866; border-radius:12px; padding:18px; margin-bottom:22px; }
+  .ticket-detail-section-title { margin:0 0 13px; font-size:15px; color:#f4f8fc; }
+  .ai-confidence-card { display:grid; grid-template-columns:auto 1fr; gap:18px; align-items:center; background:linear-gradient(135deg,rgba(20,140,240,.17),rgba(49,210,127,.09)); border:1px solid rgba(58,168,255,.46); border-radius:14px; padding:18px; margin-bottom:22px; }
+  .ai-confidence-score { width:82px; height:82px; border-radius:50%; display:grid; place-items:center; color:#fff; font-size:23px; font-weight:900; background:conic-gradient(#37d27f var(--confidence),#19344e 0); position:relative; }
+  .ai-confidence-score::after { content:""; position:absolute; inset:7px; border-radius:50%; background:#0a1b2d; }
+  .ai-confidence-score span { position:relative; z-index:1; }
+  .ai-confidence-bar { height:7px; border-radius:20px; overflow:hidden; background:#17324a; margin-top:10px; }
+  .ai-confidence-bar span { display:block; height:100%; border-radius:inherit; background:linear-gradient(90deg,#1594f6,#37d27f); }
+  .ticket-analysis-button { width:100%; margin-top:4px; background:linear-gradient(90deg,#0c82df,#16a2f5); border:0; color:#fff; border-radius:10px; padding:13px 18px; font-weight:850; cursor:pointer; box-shadow:0 10px 28px rgba(19,140,240,.22); }
+  @media (max-width:760px) {
+    #ticketDetailModal { padding:8px; }
+    #ticketDetailModal .ticket-modal-content { width:100%; max-height:96vh; border-radius:13px; }
+    #ticketDetailBody { padding:18px!important; }
+    .ticket-detail-grid { grid-template-columns:repeat(2,minmax(0,1fr)); }
+    .ai-confidence-card { grid-template-columns:1fr; }
+  }
+  @media (max-width:480px) { .ticket-detail-grid { grid-template-columns:1fr; } }
+</style>
+
 <div id="ticketDetailModal" class="ticket-modal" role="dialog" aria-modal="true" aria-labelledby="ticketDetailTitle">
-  <div class="ticket-modal-content" style="max-width:900px;max-height:90vh;overflow:auto;">
+  <div class="ticket-modal-content">
     <div class="ticket-modal-header">
       <div>
         <div id="ticketDetailNumber" style="color:#3aa8ff;font-size:13px;font-weight:800;margin-bottom:6px;"></div>
@@ -1575,7 +1603,23 @@ function changePage(page) {
 }
 
 function detailField(label, value) {
-  return `<div style="background:#0b1a2c;border:1px solid #203a55;border-radius:9px;padding:13px;min-width:0;"><div style="color:#8fa5bd;font-size:11px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;">${escapeHtml(label)}</div><div style="font-weight:700;overflow-wrap:anywhere;">${escapeHtml(value || '—')}</div></div>`;
+  return `<div class="ticket-detail-field"><div class="ticket-detail-label">${escapeHtml(label)}</div><div class="ticket-detail-value">${escapeHtml(value || '—')}</div></div>`;
+}
+
+function calculateAiConfidence(ticket, evidence) {
+  let score = 48;
+  const signals = [];
+  const level = Number(evidence.rule_level || 0);
+  if (level >= 12) { score += 15; signals.push("critical Wazuh rule"); }
+  else if (level >= 10) { score += 12; signals.push("correlated high-severity rule"); }
+  else if (level >= 7) { score += 7; signals.push("actionable rule level"); }
+  if (evidence.rule_id) { score += 7; signals.push("rule identified"); }
+  if (evidence.agent_name) { score += 8; signals.push("agent identified"); }
+  if (evidence.source_ip) { score += 10; signals.push("source IP captured"); }
+  if (ticket.description || evidence.description) { score += 7; signals.push("event description available"); }
+  if (evidence.occurred_at) { score += 5; signals.push("event time captured"); }
+  score = Math.min(96, score);
+  return { score, label: score >= 85 ? "High" : score >= 70 ? "Moderate" : "Limited", signals };
 }
 
 async function openTicketDetails(ticketId) {
@@ -1602,9 +1646,20 @@ async function openTicketDetails(ticketId) {
 
   const evidence = alertData || {};
   window.activeTicketContext = { ticket, evidence };
+  const confidence = calculateAiConfidence(ticket, evidence);
   const rawJson = evidence.raw_data ? JSON.stringify(evidence.raw_data, null, 2) : "No raw Wazuh event is available.";
   body.innerHTML = `
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:20px;">
+    <div class="ai-confidence-card">
+      <div class="ai-confidence-score" style="--confidence:${confidence.score}%"><span>${confidence.score}%</span></div>
+      <div>
+        <div class="ticket-detail-label">AI confidence</div>
+        <div style="font-size:20px;font-weight:900;color:#fff;">${confidence.label} confidence</div>
+        <div style="color:#9fb4c9;line-height:1.5;margin-top:5px;">Evidence completeness and Wazuh rule strength support this assessment.</div>
+        <div class="ai-confidence-bar"><span style="width:${confidence.score}%"></span></div>
+        <div style="color:#7892aa;font-size:11px;margin-top:8px;">Signals: ${escapeHtml(confidence.signals.join(" • ") || "limited evidence")}</div>
+      </div>
+    </div>
+    <div class="ticket-detail-grid">
       ${detailField("Priority", ticket.priority)}
       ${detailField("Status", ticket.status)}
       ${detailField("Category", ticket.tag)}
@@ -1613,12 +1668,12 @@ async function openTicketDetails(ticketId) {
       ${detailField("Assigned consultant", ticket.assigned)}
       ${detailField("Created", ticket.createdAt ? new Date(ticket.createdAt).toLocaleString() : "—")}
     </div>
-    <div style="background:#0b1a2c;border:1px solid #203a55;border-radius:9px;padding:16px;margin-bottom:20px;">
-      <div style="color:#8fa5bd;font-size:11px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">Description</div>
+    <div class="ticket-detail-section">
+      <div class="ticket-detail-label">Description</div>
       <div style="line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere;">${escapeHtml(ticket.description || evidence.description || "No description provided.")}</div>
     </div>
-    <div style="background:#0b1a2c;border:1px solid #203a55;border-radius:9px;padding:16px;margin-bottom:20px;">
-      <div style="color:#8fa5bd;font-size:11px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">Assign consultant</div>
+    <div class="ticket-detail-section">
+      <div class="ticket-detail-label">Assign consultant</div>
       <div style="display:flex;gap:10px;flex-wrap:wrap;">
         <select id="ticketConsultantSelect" style="flex:1;min-width:220px;background:#071321;border:1px solid #284866;color:#fff;border-radius:8px;padding:10px;">
           <option value="">Unassigned</option>
@@ -1628,9 +1683,9 @@ async function openTicketDetails(ticketId) {
       </div>
       <div id="assignmentMessage" style="margin-top:9px;color:#9fafc4;font-size:13px;"></div>
     </div>
-    <h3 style="margin:0 0 12px;">Linked Wazuh evidence</h3>
+    <h3 class="ticket-detail-section-title">Linked Wazuh evidence</h3>
     ${alertError ? `<div style="color:#ff6577;margin-bottom:12px;">The linked alert could not be loaded.</div>` : ""}
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:20px;">
+    <div class="ticket-detail-grid">
       ${detailField("Rule ID", evidence.rule_id)}
       ${detailField("Rule level", evidence.rule_level)}
       ${detailField("Agent", evidence.agent_name)}
@@ -1639,11 +1694,11 @@ async function openTicketDetails(ticketId) {
       ${detailField("Location", evidence.location)}
       ${detailField("Event time", evidence.occurred_at ? new Date(evidence.occurred_at).toLocaleString() : "—")}
     </div>
-    <details style="background:#071321;border:1px solid #203a55;border-radius:9px;padding:14px;">
+    <details class="ticket-detail-section" style="background:#071321;">
       <summary style="cursor:pointer;font-weight:800;">Raw Wazuh event JSON</summary>
       <pre style="white-space:pre-wrap;overflow-wrap:anywhere;color:#a9bdd1;font-size:12px;line-height:1.5;margin:14px 0 0;">${escapeHtml(rawJson)}</pre>
     </details>
-    <button type="button" onclick="analyzeCurrentTicket()" style="margin-top:18px;background:#138cf0;border:0;color:white;border-radius:8px;padding:11px 16px;font-weight:800;cursor:pointer;">Ask CyberBench AI to break down this ticket</button>`;
+    <button type="button" class="ticket-analysis-button" onclick="analyzeCurrentTicket()">✦ Ask CyberBench AI to break down this ticket</button>`;
 }
 
 function closeTicketDetails() {
@@ -1848,6 +1903,7 @@ setInterval(loadLiveTickets, 60000);
     if (!context) return "Open a ticket with the View button first, then ask me to break it down.";
     const ticket = context.ticket;
     const evidence = context.evidence || {};
+    const confidence = calculateAiConfidence(ticket, evidence);
     const category = ticket.tag || "Security Alert";
     const responseSteps = {
       "Brute Force": "Validate the source IP, confirm whether any login succeeded, review the targeted account, block the source when appropriate, and reset credentials if compromise is suspected.",
@@ -1858,7 +1914,7 @@ setInterval(loadLiveTickets, 60000);
       "Security Control": "Confirm the control or agent state, determine whether the change was authorized, restore protection, and review the host for activity during the coverage gap."
     };
     const steps = responseSteps[category] || "Validate the event against the affected host, determine whether it was authorized, collect supporting evidence, contain confirmed threats, and document the resolution.";
-    return `Ticket ${ticket.id} is a ${ticket.priority.toLowerCase()}-priority ${category.toLowerCase()} incident. ` +
+    return `AI confidence: ${confidence.score}% (${confidence.label.toLowerCase()}). Ticket ${ticket.id} is a ${ticket.priority.toLowerCase()}-priority ${category.toLowerCase()} incident. ` +
       `What happened: ${ticket.title}. ` +
       `Affected system: ${evidence.agent_name || "not identified"}. ` +
       `Wazuh rule: ${evidence.rule_id || "unknown"}, level ${evidence.rule_level ?? "unknown"}. ` +
