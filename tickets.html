@@ -1197,6 +1197,7 @@
             <input id="ticketSearch" placeholder="Search tickets..." />
             <select id="statusFilter"><option value="">Status</option></select>
             <select id="priorityFilter"><option value="">Priority</option></select>
+            <select id="assignedFilter"><option value="">Consultant</option></select>
             <button onclick="resetFilters()">More Filters</button>
             <button onclick="exportTickets()">Export</button>
           </div>
@@ -1204,7 +1205,7 @@
           <table>
             <thead>
               <tr>
-                <th></th><th>Ticket ID</th><th>Title</th><th>Category</th><th>Priority</th><th>Status</th><th>SLA</th><th>Updated</th>
+                <th></th><th>Ticket ID</th><th>Title</th><th>Category</th><th>Priority</th><th>Status</th><th>Consultant</th><th>SLA</th><th>Updated</th><th>Details</th>
               </tr>
             </thead>
             <tbody id="ticketTable"></tbody>
@@ -1294,6 +1295,20 @@
   </div>
 
 
+<div id="ticketDetailModal" class="ticket-modal" role="dialog" aria-modal="true" aria-labelledby="ticketDetailTitle">
+  <div class="ticket-modal-content" style="max-width:900px;max-height:90vh;overflow:auto;">
+    <div class="ticket-modal-header">
+      <div>
+        <div id="ticketDetailNumber" style="color:#3aa8ff;font-size:13px;font-weight:800;margin-bottom:6px;"></div>
+        <h2 id="ticketDetailTitle" style="margin:0;">Ticket details</h2>
+      </div>
+      <button class="close-modal" type="button" onclick="closeTicketDetails()" aria-label="Close ticket details">✕</button>
+    </div>
+    <div id="ticketDetailBody" style="padding:22px;color:#dce8f6;">Loading ticket details…</div>
+  </div>
+</div>
+
+
 <script>
 document.addEventListener("DOMContentLoaded", function () {
   const sidebar = document.getElementById("ticketsSidebar");
@@ -1352,6 +1367,7 @@ const SUPABASE_PUBLISHABLE_KEY = "sb_publishable_liTRmLDG57hTPCMjnasmEQ_n-477YSt
 const cbSupabase = window.supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 
 let tickets = [];
+let consultants = [];
 let currentPage = 1;
 const rowsPerPage = 10;
 let priorityChart;
@@ -1407,7 +1423,13 @@ function normalizeTicket(row) {
     sla: sla.label,
     slaState: sla.state,
     updated: relativeTime(row.updated_at),
-    createdAt: row.created_at
+    createdAt: row.created_at,
+    updatedAt: row.updated_at,
+    alertId: row.alert_id,
+    description: row.description,
+    source: row.source,
+    assignedConsultantId: row.assigned_consultant_id,
+    assigned: consultants.find(consultant => consultant.id === row.assigned_consultant_id)?.display_name || "Unassigned"
   };
 }
 
@@ -1430,12 +1452,16 @@ function slaClass(ticket) {
 function populateFilters() {
   const statusFilter = document.getElementById("statusFilter");
   const priorityFilter = document.getElementById("priorityFilter");
+  const assignedFilter = document.getElementById("assignedFilter");
   const selectedStatus = statusFilter.value;
   const selectedPriority = priorityFilter.value;
+  const selectedAssigned = assignedFilter.value;
   statusFilter.innerHTML = `<option value="">Status</option>` + [...new Set(tickets.map(ticket => ticket.status))].map(value => `<option value="${escapeHtml(value)}">${escapeHtml(value)}</option>`).join("");
   priorityFilter.innerHTML = `<option value="">Priority</option>` + [...new Set(tickets.map(ticket => ticket.priority))].map(value => `<option value="${escapeHtml(value)}">${escapeHtml(value)}</option>`).join("");
+  assignedFilter.innerHTML = `<option value="">Consultant</option>` + ["Unassigned", ...consultants.map(consultant => consultant.display_name)].map(value => `<option value="${escapeHtml(value)}">${escapeHtml(value)}</option>`).join("");
   statusFilter.value = selectedStatus;
   priorityFilter.value = selectedPriority;
+  assignedFilter.value = selectedAssigned;
 }
 
 function getFilteredTickets() {
@@ -1444,9 +1470,10 @@ function getFilteredTickets() {
   const query = localSearch || topSearch;
   const status = document.getElementById("statusFilter").value;
   const priority = document.getElementById("priorityFilter").value;
+  const assigned = document.getElementById("assignedFilter").value;
   return tickets.filter(ticket => {
-    const searchable = `${ticket.id} ${ticket.title} ${ticket.tag} ${ticket.priority} ${ticket.status}`.toLowerCase();
-    return searchable.includes(query) && (!status || ticket.status === status) && (!priority || ticket.priority === priority);
+    const searchable = `${ticket.id} ${ticket.title} ${ticket.tag} ${ticket.priority} ${ticket.status} ${ticket.assigned}`.toLowerCase();
+    return searchable.includes(query) && (!status || ticket.status === status) && (!priority || ticket.priority === priority) && (!assigned || ticket.assigned === assigned);
   });
 }
 
@@ -1459,7 +1486,7 @@ function renderTickets() {
   const table = document.getElementById("ticketTable");
 
   if (!paged.length) {
-    table.innerHTML = `<tr><td colspan="8" style="padding:32px;text-align:center;color:#9fafc4;">No live tickets match the current filters.</td></tr>`;
+    table.innerHTML = `<tr><td colspan="10" style="padding:32px;text-align:center;color:#9fafc4;">No live tickets match the current filters.</td></tr>`;
   } else {
     table.innerHTML = paged.map(ticket => `
       <tr>
@@ -1469,8 +1496,10 @@ function renderTickets() {
         <td><span class="tag">${escapeHtml(ticket.tag)}</span></td>
         <td><span class="pill ${priorityClass(ticket.priority)}">${escapeHtml(ticket.priority)}</span></td>
         <td><span class="pill ${statusClass(ticket.status)}">${escapeHtml(ticket.status)}</span></td>
+        <td>${escapeHtml(ticket.assigned)}</td>
         <td class="${slaClass(ticket)}">${escapeHtml(ticket.sla)}</td>
         <td>${escapeHtml(ticket.updated)}</td>
+        <td><button type="button" onclick="openTicketDetails('${escapeHtml(ticket.dbId)}')" style="background:#0f6fbd;border:1px solid #2789da;color:white;border-radius:7px;padding:7px 12px;cursor:pointer;font-weight:700;">View</button></td>
       </tr>`).join("");
   }
 
@@ -1545,10 +1574,118 @@ function changePage(page) {
   renderTickets();
 }
 
+function detailField(label, value) {
+  return `<div style="background:#0b1a2c;border:1px solid #203a55;border-radius:9px;padding:13px;min-width:0;"><div style="color:#8fa5bd;font-size:11px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px;">${escapeHtml(label)}</div><div style="font-weight:700;overflow-wrap:anywhere;">${escapeHtml(value || '—')}</div></div>`;
+}
+
+async function openTicketDetails(ticketId) {
+  const ticket = tickets.find(item => item.dbId === ticketId);
+  if (!ticket) return;
+  const modal = document.getElementById("ticketDetailModal");
+  const body = document.getElementById("ticketDetailBody");
+  document.getElementById("ticketDetailNumber").textContent = ticket.id;
+  document.getElementById("ticketDetailTitle").textContent = ticket.title;
+  body.innerHTML = `<div style="color:#9fafc4;">Loading linked Wazuh evidence…</div>`;
+  modal.style.display = "flex";
+
+  let alertData = null;
+  let alertError = null;
+  if (ticket.alertId) {
+    const response = await cbSupabase
+      .from("alerts")
+      .select("rule_id,rule_level,agent_name,agent_external_id,source_ip,location,occurred_at,description,raw_data")
+      .eq("id", ticket.alertId)
+      .maybeSingle();
+    alertData = response.data;
+    alertError = response.error;
+  }
+
+  const evidence = alertData || {};
+  window.activeTicketContext = { ticket, evidence };
+  const rawJson = evidence.raw_data ? JSON.stringify(evidence.raw_data, null, 2) : "No raw Wazuh event is available.";
+  body.innerHTML = `
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:20px;">
+      ${detailField("Priority", ticket.priority)}
+      ${detailField("Status", ticket.status)}
+      ${detailField("Category", ticket.tag)}
+      ${detailField("SLA", ticket.sla)}
+      ${detailField("Source", ticket.source)}
+      ${detailField("Assigned consultant", ticket.assigned)}
+      ${detailField("Created", ticket.createdAt ? new Date(ticket.createdAt).toLocaleString() : "—")}
+    </div>
+    <div style="background:#0b1a2c;border:1px solid #203a55;border-radius:9px;padding:16px;margin-bottom:20px;">
+      <div style="color:#8fa5bd;font-size:11px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">Description</div>
+      <div style="line-height:1.6;white-space:pre-wrap;overflow-wrap:anywhere;">${escapeHtml(ticket.description || evidence.description || "No description provided.")}</div>
+    </div>
+    <div style="background:#0b1a2c;border:1px solid #203a55;border-radius:9px;padding:16px;margin-bottom:20px;">
+      <div style="color:#8fa5bd;font-size:11px;text-transform:uppercase;letter-spacing:.08em;margin-bottom:8px;">Assign consultant</div>
+      <div style="display:flex;gap:10px;flex-wrap:wrap;">
+        <select id="ticketConsultantSelect" style="flex:1;min-width:220px;background:#071321;border:1px solid #284866;color:#fff;border-radius:8px;padding:10px;">
+          <option value="">Unassigned</option>
+          ${consultants.map(consultant => `<option value="${escapeHtml(consultant.id)}" ${consultant.id === ticket.assignedConsultantId ? "selected" : ""}>${escapeHtml(consultant.display_name)}</option>`).join("")}
+        </select>
+        <button type="button" onclick="assignTicketConsultant('${escapeHtml(ticket.dbId)}')" style="background:#138cf0;border:0;color:white;border-radius:8px;padding:10px 16px;font-weight:800;cursor:pointer;">Save assignment</button>
+      </div>
+      <div id="assignmentMessage" style="margin-top:9px;color:#9fafc4;font-size:13px;"></div>
+    </div>
+    <h3 style="margin:0 0 12px;">Linked Wazuh evidence</h3>
+    ${alertError ? `<div style="color:#ff6577;margin-bottom:12px;">The linked alert could not be loaded.</div>` : ""}
+    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:12px;margin-bottom:20px;">
+      ${detailField("Rule ID", evidence.rule_id)}
+      ${detailField("Rule level", evidence.rule_level)}
+      ${detailField("Agent", evidence.agent_name)}
+      ${detailField("Agent ID", evidence.agent_external_id)}
+      ${detailField("Source IP", evidence.source_ip)}
+      ${detailField("Location", evidence.location)}
+      ${detailField("Event time", evidence.occurred_at ? new Date(evidence.occurred_at).toLocaleString() : "—")}
+    </div>
+    <details style="background:#071321;border:1px solid #203a55;border-radius:9px;padding:14px;">
+      <summary style="cursor:pointer;font-weight:800;">Raw Wazuh event JSON</summary>
+      <pre style="white-space:pre-wrap;overflow-wrap:anywhere;color:#a9bdd1;font-size:12px;line-height:1.5;margin:14px 0 0;">${escapeHtml(rawJson)}</pre>
+    </details>
+    <button type="button" onclick="analyzeCurrentTicket()" style="margin-top:18px;background:#138cf0;border:0;color:white;border-radius:8px;padding:11px 16px;font-weight:800;cursor:pointer;">Ask CyberBench AI to break down this ticket</button>`;
+}
+
+function closeTicketDetails() {
+  document.getElementById("ticketDetailModal").style.display = "none";
+}
+
+async function assignTicketConsultant(ticketId) {
+  const select = document.getElementById("ticketConsultantSelect");
+  const message = document.getElementById("assignmentMessage");
+  const consultantId = select.value || null;
+  message.textContent = "Saving assignment…";
+  const { error } = await cbSupabase.rpc("assign_ticket_consultant", {
+    p_ticket_id: ticketId,
+    p_consultant_id: consultantId
+  });
+  if (error) {
+    console.error("Assignment failed:", error);
+    message.style.color = "#ff6577";
+    message.textContent = "Assignment failed. Check the assignment function and permissions.";
+    return;
+  }
+  message.style.color = "#37d27f";
+  message.textContent = "Consultant assigned successfully.";
+  await loadLiveTickets();
+  await openTicketDetails(ticketId);
+}
+
+function analyzeCurrentTicket() {
+  closeTicketDetails();
+  const launcher = document.getElementById("cbAiLauncher");
+  const input = document.getElementById("cbAiInput");
+  const form = document.getElementById("cbAiForm");
+  if (!window.activeTicketContext || !launcher || !input || !form) return;
+  if (!document.getElementById("cbAiPanel").classList.contains("open")) launcher.click();
+  input.value = `Break down ticket ${window.activeTicketContext.ticket.id}`;
+  form.dispatchEvent(new Event("submit", { bubbles: true, cancelable: true }));
+}
+
 function exportTickets() {
   const rows = [
-    ["Ticket ID", "Title", "Category", "Priority", "Status", "SLA", "Updated"],
-    ...getFilteredTickets().map(ticket => [ticket.id, ticket.title, ticket.tag, ticket.priority, ticket.status, ticket.sla, ticket.updated])
+    ["Ticket ID", "Title", "Category", "Priority", "Status", "Consultant", "SLA", "Updated"],
+    ...getFilteredTickets().map(ticket => [ticket.id, ticket.title, ticket.tag, ticket.priority, ticket.status, ticket.assigned, ticket.sla, ticket.updated])
   ];
   const csv = rows.map(row => row.map(value => `"${String(value).replaceAll('"', '""')}"`).join(",")).join("\n");
   const url = URL.createObjectURL(new Blob([csv], { type: "text/csv" }));
@@ -1564,12 +1701,13 @@ function resetFilters() {
   document.getElementById("ticketSearch").value = "";
   document.getElementById("statusFilter").value = "";
   document.getElementById("priorityFilter").value = "";
+  document.getElementById("assignedFilter").value = "";
   currentPage = 1;
   renderTickets();
 }
 
 function showLoadError(message) {
-  document.getElementById("ticketTable").innerHTML = `<tr><td colspan="8" style="padding:32px;text-align:center;color:#ff6577;">${escapeHtml(message)}</td></tr>`;
+  document.getElementById("ticketTable").innerHTML = `<tr><td colspan="10" style="padding:32px;text-align:center;color:#ff6577;">${escapeHtml(message)}</td></tr>`;
   document.getElementById("paginationText").innerText = "Live data unavailable";
 }
 
@@ -1582,9 +1720,19 @@ async function loadLiveTickets() {
   }
 
   document.getElementById("signedInUser").innerText = session.user.email || "Signed in";
+  const consultantResponse = await cbSupabase
+    .from("consultant_profiles")
+    .select("id,display_name")
+    .eq("active", true)
+    .order("display_name", { ascending: true });
+  if (consultantResponse.error) {
+    console.error("Consultant load failed:", consultantResponse.error);
+  }
+  consultants = consultantResponse.data || [];
+
   const { data, error } = await cbSupabase
     .from("tickets")
-    .select("id,ticket_number,title,category,priority,status,sla_due_at,created_at,updated_at")
+    .select("id,ticket_number,alert_id,assigned_consultant_id,title,description,category,priority,status,source,sla_due_at,created_at,updated_at")
     .order("created_at", { ascending: false });
 
   if (error) {
@@ -1605,7 +1753,13 @@ document.querySelector(".search-top").addEventListener("input", event => {
   renderTickets();
 });
 document.getElementById("ticketSearch").addEventListener("input", () => { currentPage = 1; renderTickets(); });
-["statusFilter", "priorityFilter"].forEach(id => document.getElementById(id).addEventListener("change", () => { currentPage = 1; renderTickets(); }));
+["statusFilter", "priorityFilter", "assignedFilter"].forEach(id => document.getElementById(id).addEventListener("change", () => { currentPage = 1; renderTickets(); }));
+document.getElementById("ticketDetailModal").addEventListener("click", event => {
+  if (event.target.id === "ticketDetailModal") closeTicketDetails();
+});
+document.addEventListener("keydown", event => {
+  if (event.key === "Escape") closeTicketDetails();
+});
 
 loadLiveTickets();
 setInterval(loadLiveTickets, 60000);
@@ -1689,9 +1843,35 @@ setInterval(loadLiveTickets, 60000);
     return "Prioritize tickets by SLA risk first, then priority, then age.";
   }
 
+  function getActiveTicketBreakdown() {
+    const context = window.activeTicketContext;
+    if (!context) return "Open a ticket with the View button first, then ask me to break it down.";
+    const ticket = context.ticket;
+    const evidence = context.evidence || {};
+    const category = ticket.tag || "Security Alert";
+    const responseSteps = {
+      "Brute Force": "Validate the source IP, confirm whether any login succeeded, review the targeted account, block the source when appropriate, and reset credentials if compromise is suspected.",
+      "File Integrity": "Confirm the changed file, identify the responsible process or user, compare it with the approved baseline, and restore or isolate the host if the change was unauthorized.",
+      "Malware": "Isolate the affected endpoint, preserve evidence, identify the file and process, run an endpoint scan, and remove persistence before restoring access.",
+      "Web Attack": "Review the source IP and request path, validate whether exploitation succeeded, block malicious traffic, and inspect the application and host for follow-on activity.",
+      "Vulnerability": "Confirm the affected software and CVE, assess exposure, prioritize remediation, apply the approved patch or mitigation, and verify the finding is cleared.",
+      "Security Control": "Confirm the control or agent state, determine whether the change was authorized, restore protection, and review the host for activity during the coverage gap."
+    };
+    const steps = responseSteps[category] || "Validate the event against the affected host, determine whether it was authorized, collect supporting evidence, contain confirmed threats, and document the resolution.";
+    return `Ticket ${ticket.id} is a ${ticket.priority.toLowerCase()}-priority ${category.toLowerCase()} incident. ` +
+      `What happened: ${ticket.title}. ` +
+      `Affected system: ${evidence.agent_name || "not identified"}. ` +
+      `Wazuh rule: ${evidence.rule_id || "unknown"}, level ${evidence.rule_level ?? "unknown"}. ` +
+      `Source IP: ${evidence.source_ip || "not reported"}. ` +
+      `Current status: ${ticket.status}; SLA: ${ticket.sla}. ` +
+      `Assigned consultant: ${ticket.assigned}. ` +
+      `Recommended investigation: ${steps}`;
+  }
+
   function demoReply(text) {
     const lower = text.toLowerCase();
 
+    if (lower.includes("break down") || lower.includes("breakdown") || lower.includes("explain this ticket") || lower.includes("analyze this ticket")) return getActiveTicketBreakdown();
     if (lower.includes("overdue") || lower.includes("sla")) return getOverdueSummary();
     if (lower.includes("prioritize") || lower.includes("priority") || lower.includes("attention")) return getPrioritySummary();
     if (lower.includes("open") || lower.includes("ticket") || lower.includes("summar")) return getTicketSummary();
