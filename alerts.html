@@ -2457,7 +2457,7 @@ renderAlerts();
       return;
     }
     const [{ data: alertRows, error: alertError }, { data: ticketRows, error: ticketError }] = await Promise.all([
-      db.from("alerts").select("*").order("occurred_at", { ascending:false }).limit(500),
+      db.from("alerts").select("*").not("incident_key", "is", null).order("last_seen", { ascending: false }).limit(500)
       db.from("tickets").select("id,ticket_number,alert_id,status,assigned_consultant_id").order("created_at", { ascending:false }).limit(500)
     ]);
     if (alertError) { console.error(alertError); showToast("Could not load live alerts"); return; }
