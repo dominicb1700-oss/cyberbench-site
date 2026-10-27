@@ -1917,15 +1917,7 @@ document.addEventListener("DOMContentLoaded", function () {
 </script>
 
 <script>
-let alerts = [
-  { id:"ALERT-001", time:"May 18, 2025", hour:"10:24:53 AM", severity:"Critical", name:"Ransomware Activity Detected", detail:"Multiple files encrypted", source:"Wazuh", icon:"🛡️", category:"Malware", asset:"WS-CA-1432", assetType:"Windows Server", status:"New", assigned:"Unassigned" },
-  { id:"ALERT-002", time:"May 18, 2025", hour:"09:47:12 AM", severity:"Critical", name:"Privilege Escalation Attempt", detail:"Suspicious process execution", source:"Suricata", icon:"🕸️", category:"Privilege Escalation", asset:"DC-01", assetType:"Domain Controller", status:"In Progress", assigned:"Alex Johnson" },
-  { id:"ALERT-003", time:"May 18, 2025", hour:"09:15:33 AM", severity:"High", name:"Multiple Failed Logins", detail:"Brute force attack detected", source:"Wazuh", icon:"🛡️", category:"Authentication", asset:"VPN-GW-01", assetType:"VPN Gateway", status:"New", assigned:"Sarah Kim" },
-  { id:"ALERT-004", time:"May 18, 2025", hour:"08:52:11 AM", severity:"High", name:"Malicious File Detected", detail:"Trojan.Malware.Gen2", source:"Wazuh", icon:"🛡️", category:"Malware", asset:"FILE-SRV-02", assetType:"File Server", status:"In Progress", assigned:"David Chen" },
-  { id:"ALERT-005", time:"May 18, 2025", hour:"08:33:44 AM", severity:"Medium", name:"Outbound Connection to C2", detail:"Potential command and control", source:"Suricata", icon:"🕸️", category:"Command & Control", asset:"WS-CA-1021", assetType:"Workstation", status:"New", assigned:"Unassigned" },
-  { id:"ALERT-006", time:"May 18, 2025", hour:"07:58:21 AM", severity:"Medium", name:"Suspicious PowerShell Activity", detail:"Encoded command detected", source:"Wazuh", icon:"🛡️", category:"Defense Evasion", asset:"WS-NY-2045", assetType:"Workstation", status:"In Progress", assigned:"Maria Garcia" },
-  { id:"ALERT-007", time:"May 18, 2025", hour:"07:12:09 AM", severity:"Low", name:"Policy Violation", detail:"USB storage device connected", source:"Wazuh", icon:"🛡️", category:"Policy Violation", asset:"WS-LA-3099", assetType:"Workstation", status:"Closed", assigned:"James Lee" }
-];
+let alerts = [];
 
 let currentPage = 1;
 const rowsPerPage = 10;
@@ -1953,8 +1945,7 @@ function populateFilters() {
 
 function fillSelect(id, label, values) {
   const select = document.getElementById(id);
-  select.innerHTML = `<option value="">${label}</option>` +
-    [...new Set(values)].map(v => `<option value="${v}">${v}</option>`).join("");
+  select.replaceChildren(new Option(label, ""), ...[...new Set(values)].map(v => new Option(v, v)));
 }
 
 function getFilteredAlerts() {
@@ -2170,6 +2161,7 @@ function showToast(message) {
 }
 
 function updateCharts() {
+  if (typeof Chart === "undefined") return;
   const critical = alerts.filter(a => a.severity === "Critical").length;
   const high = alerts.filter(a => a.severity === "High").length;
   const medium = alerts.filter(a => a.severity === "Medium").length;
@@ -2214,6 +2206,7 @@ function updateCharts() {
   });
 }
 
+if (typeof Chart !== "undefined") {
 Chart.defaults.color = "#9fafc4";
 Chart.defaults.borderColor = "rgba(255,255,255,.08)";
 
@@ -2236,6 +2229,8 @@ alertsOverTimeChart = new Chart(document.getElementById("alertsOverTime"), {
     scales: { y: { beginAtZero: true, max: 100 }, x: { grid: { display: false }}}
   }
 });
+
+}
 
 document.querySelector(".search-top").addEventListener("input", () => {
   document.getElementById("alertSearch").value = document.querySelector(".search-top").value;
@@ -2271,6 +2266,17 @@ renderAlerts();
 (function () {
   const SUPABASE_URL = "https://zrcglelaiumuysuannwt.supabase.co";
   const SUPABASE_KEY = "sb_publishable_liTRmLDG57hTPCMjnasmEQ_n-477YSt";
+  const statusHost = document.querySelector(".page-title");
+  statusHost.insertAdjacentHTML("beforeend", '<p id="liveStatus" role="status" aria-live="polite" style="margin-top:10px;color:#9fafc4;font-size:13px">Connecting to alerts…</p><button id="refreshLiveAlerts" type="button" style="margin-top:8px;padding:8px 12px;background:#0b1828;border:1px solid #1b3048;border-radius:8px;color:white;cursor:pointer">Refresh alerts</button>');
+  function setLiveStatus(message, failed = false) {
+    const status = document.getElementById("liveStatus");
+    status.textContent = message;
+    status.style.color = failed ? "#ff596b" : "#9fafc4";
+  }
+  if (!window.supabase) {
+    setLiveStatus("Alerts could not connect. Reload the page to retry.", true);
+    return;
+  }
   const db = window.supabase.createClient(SUPABASE_URL, SUPABASE_KEY);
   let liveRefreshTimer = null;
 
@@ -2439,6 +2445,7 @@ renderAlerts();
 
   const originalUpdateCharts = window.updateCharts;
   window.updateCharts = function () {
+    if (typeof Chart === "undefined") return;
     originalUpdateCharts();
     const labels = [...new Set(alerts.map(a => a.source))];
     if (sourcesChart) sourcesChart.destroy();
@@ -2446,35 +2453,64 @@ renderAlerts();
     updateLiveCharts();
   };
 
+  let loading = false;
+  let loadedOnce = false;
   async function loadLiveAlerts(showMessage) {
-    if (showMessage) showToast("Refreshing live Wazuh alerts…");
-    const { data: { session } } = await db.auth.getSession();
-    if (!session) {
-      alerts = [];
+    if (loading) return;
+    loading = true;
+    try {
+      if (showMessage || !loadedOnce) setLiveStatus("Loading alerts…");
+      const { data: { session }, error: sessionError } = await db.auth.getSession();
+      if (sessionError) throw sessionError;
+      if (!session) {
+        alerts = [];
+        renderAlerts();
+        setLiveStatus("Sign in to view your alerts.", true);
+        return;
+      }
+      const [alertResult, ticketResult] = await Promise.allSettled([
+        db.from("alerts").select("*").order("created_at", { ascending: false }).limit(500),
+        db.from("tickets").select("id,ticket_number,alert_id,status,assigned_consultant_id").order("created_at", { ascending: false }).limit(500)
+      ]);
+      if (alertResult.status === "rejected") throw alertResult.reason;
+      const { data: alertRows, error: alertError } = alertResult.value;
+      if (alertError) throw alertError;
+      const ticketError = ticketResult.status === "rejected" ? ticketResult.reason : ticketResult.value.error;
+      const ticketRows = ticketResult.status === "fulfilled" ? ticketResult.value.data : [];
+      if (ticketError) console.warn("Tickets could not be linked", ticketError);
+      const ticketsByAlert = new Map((ticketRows || []).filter(t => t.alert_id != null).map(t => [String(t.alert_id), t]));
+      const selections = ["severityFilter", "statusFilter", "sourceFilter", "categoryFilter"].map(id => [id, document.getElementById(id).value]);
+      alerts = (alertRows || []).map(row => formatAlert(row, ticketsByAlert.get(String(row.id))));
+      if (!loadedOnce || showMessage) currentPage = 1;
+      populateFilters();
+      selections.forEach(([id, value]) => {
+        const select = document.getElementById(id);
+        if ([...select.options].some(option => option.value === value)) select.value = value;
+      });
       renderAlerts();
-      showToast("Sign in to view client alerts");
-      if (location.protocol !== "file:") setTimeout(() => location.href = "/client-portal.html", 1200);
-      return;
+      loadedOnce = true;
+      const summary = alerts.length ? `Updated ${new Date().toLocaleTimeString()} · ${alerts.length}${alerts.length === 500 ? " most recent" : ""} alerts` : "No alerts are available for your signed-in account.";
+      setLiveStatus(summary + (ticketError ? " · Linked tickets unavailable" : " · Refreshes every 60 seconds"));
+    } catch (error) {
+      console.error("Alerts load failed", error);
+      setLiveStatus(loadedOnce ? "Refresh failed. Showing previously loaded alerts; select Refresh alerts to retry." : "Could not load alerts. Select Refresh alerts to retry.", true);
+    } finally {
+      loading = false;
     }
-    const [{ data: alertRows, error: alertError }, { data: ticketRows, error: ticketError }] = await Promise.all([
-      db.from("alerts").select("*").not("incident_key", "is", null).order("last_seen", { ascending: false }).limit(500)
-      db.from("tickets").select("id,ticket_number,alert_id,status,assigned_consultant_id").order("created_at", { ascending:false }).limit(500)
-    ]);
-    if (alertError) { console.error(alertError); showToast("Could not load live alerts"); return; }
-    if (ticketError) console.warn("Tickets could not be linked", ticketError);
-    const ticketsByAlert = new Map((ticketRows || []).map(ticket => [String(ticket.alert_id), ticket]));
-    alerts = (alertRows || []).map(row => formatAlert(row, ticketsByAlert.get(String(row.id))));
-    currentPage = 1;
-    populateFilters();
-    renderAlerts();
   }
 
   ensureLiveModalFields();
+  document.getElementById("refreshLiveAlerts").addEventListener("click", () => loadLiveAlerts(true));
   loadLiveAlerts(false);
   liveRefreshTimer = setInterval(() => loadLiveAlerts(false), 60000);
   document.addEventListener("visibilitychange", () => { if (!document.hidden) loadLiveAlerts(false); });
-  const refreshButton = document.querySelector(".page-title");
-  if (refreshButton && !document.getElementById("liveStatus")) refreshButton.insertAdjacentHTML("beforeend", '<span id="liveStatus" style="display:inline-flex;margin-top:10px;padding:6px 10px;border-radius:999px;background:rgba(55,210,127,.12);color:#37d27f;font-size:12px">● Live · refreshes every 60 seconds</span>');
+  db.auth.onAuthStateChange(() => {
+    // Always discard the previous account's rows before loading a new session.
+    alerts = [];
+    loadedOnce = false;
+    renderAlerts();
+    setTimeout(() => loadLiveAlerts(false), 0);
+  });
 })();
 </script>
 
