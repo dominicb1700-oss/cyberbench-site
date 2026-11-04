@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <meta name="description" content="Submit a security ticket to CyberBench. Describe your need, set urgency, and get matched to the right specialist within minutes." />
+  <meta name="description" maxlength="10000" content="Submit a security ticket to CyberBench. Describe your need, set urgency, and get matched to the right specialist within minutes." />
   <title>Submit Ticket | CyberBench</title>
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -954,10 +954,10 @@ body{
           <!-- Success State (hidden until submit) -->
           <div class="form-success" id="formSuccess" aria-live="polite">
             <div class="form-success__icon">✅</div>
-            <h2 class="form-success__title">Ticket Submitted!</h2>
+            <h2 class="form-success__title" tabindex="-1">Request Sent!</h2>
             <p class="form-success__desc">
-              Your request has been received. A specialist will be assigned within minutes
-              and you'll receive an email confirmation shortly.
+              Your request has been sent to CyberBench support for review.
+              Our team will contact you using the details you provided.
             </p>
             <a href="index.html" class="btn btn--primary" style="display:inline-flex;">
               ← Back to Home
@@ -966,6 +966,10 @@ body{
 
           <!-- Form -->
           <form id="ticketForm" novalidate>
+            <div aria-hidden="true" style="position:absolute;left:-10000px;width:1px;height:1px;overflow:hidden;">
+              <label for="website">Leave this field empty</label>
+              <input type="text" id="website" name="website" tabindex="-1" autocomplete="off" />
+            </div>
             <div class="form-card__title">
               <div class="form-card__title-icon" aria-hidden="true">🎫</div>
               Ticket Details
@@ -981,7 +985,7 @@ body{
                   class="form-input"
                   type="text"
                   id="company"
-                  name="company"
+                  name="company" maxlength="200"
                   placeholder="Acme Corp"
                   required
                   aria-required="true"
@@ -996,7 +1000,7 @@ body{
                   class="form-input"
                   type="text"
                   id="fullname"
-                  name="fullname"
+                  name="fullname" maxlength="150"
                   placeholder="Jane Smith"
                   required
                   aria-required="true"
@@ -1015,7 +1019,7 @@ body{
                   class="form-input"
                   type="email"
                   id="email"
-                  name="email"
+                  name="email" maxlength="254"
                   placeholder="jane@acme.com"
                   required
                   aria-required="true"
@@ -1028,7 +1032,7 @@ body{
                   class="form-input"
                   type="tel"
                   id="phone"
-                  name="phone"
+                  name="phone" maxlength="60"
                   placeholder="+1 (555) 000-0000"
                   autocomplete="tel"
                 />
@@ -1084,7 +1088,7 @@ body{
               <textarea
                 class="form-textarea"
                 id="description"
-                name="description"
+                name="description" maxlength="10000"
                 placeholder="Describe the security issue, affected systems, when it started, and any recent changes…"
                 required
                 aria-required="true"
@@ -1095,6 +1099,9 @@ body{
               </p>
             </div>
 
+            <p id="formError" role="alert" tabindex="-1" hidden
+               style="color:var(--danger);margin-bottom:16px;line-height:1.6;"></p>
+            <noscript><p>Please enable JavaScript, or email support@cyberbench.io.</p></noscript>
             <!-- Actions -->
             <div class="form-actions">
               <button type="submit" class="btn btn--primary">
@@ -1131,7 +1138,7 @@ body{
               <div class="info-card__item-icon" aria-hidden="true">📥</div>
               <div class="info-card__item-body">
                 <div class="info-card__item-title">Ticket Received</div>
-                <div class="info-card__item-desc">Your request is logged instantly and queued for triage.</div>
+                <div class="info-card__item-desc">Your request is emailed to CyberBench support for review and triage.</div>
               </div>
             </div>
             <div class="info-card__item">
@@ -1284,30 +1291,78 @@ body{
       navToggle.setAttribute('aria-expanded', open);
     });
 
-    /* ── Form Submit ── */
-    const ticketForm  = document.getElementById('ticketForm');
+    /* ── Form Submit: server-side email, no credentials in this page ── */
+    const ticketForm = document.getElementById('ticketForm');
     const formSuccess = document.getElementById('formSuccess');
+    const formError = document.getElementById('formError');
+    const submitButton = ticketForm.querySelector('button[type="submit"]');
+    let submitting = false;
+    let lastAttempt = null;
 
-    ticketForm.addEventListener('submit', (e) => {
+    ticketForm.addEventListener('submit', async (e) => {
       e.preventDefault();
-      const company  = document.getElementById('company').value.trim();
-      const fullname = document.getElementById('fullname').value.trim();
-      const email    = document.getElementById('email').value.trim();
-      const desc     = document.getElementById('description').value.trim();
-
-      if (!company || !fullname || !email || !desc) {
-        alert('Please fill in all required fields.');
+      if (submitting) return;
+      formError.hidden = true;
+      const showError = (message) => {
+        formError.textContent = message;
+        formError.hidden = false;
+        formError.focus();
+      };
+      if (!ticketForm.reportValidity()) return;
+      const data = new FormData(ticketForm);
+      const details = {
+        company: String(data.get('company') || '').trim(),
+        fullname: String(data.get('fullname') || '').trim(),
+        email: String(data.get('email') || '').trim(),
+        phone: String(data.get('phone') || '').trim(),
+        urgency: String(data.get('urgency') || ''),
+        description: String(data.get('description') || '').trim(),
+        website: String(data.get('website') || ''),
+      };
+      if (!details.company || !details.fullname || !details.email || !details.description) {
+        showError('Please fill in all required fields.');
         return;
       }
-      const emailRx = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRx.test(email)) {
-        alert('Please enter a valid email address.');
-        return;
+      const fingerprint = JSON.stringify(details);
+      if (!lastAttempt || lastAttempt.fingerprint !== fingerprint ||
+          Date.now() - lastAttempt.created > 23 * 3600 * 1000) {
+        lastAttempt = { fingerprint, requestId: crypto.randomUUID(), created: Date.now() };
       }
-
-      ticketForm.style.display  = 'none';
-      formSuccess.style.display = 'block';
-      formSuccess.querySelector('h2').focus();
+      submitting = true;
+      submitButton.disabled = true;
+      const originalText = submitButton.textContent;
+      submitButton.textContent = 'Sending request…';
+      ticketForm.setAttribute('aria-busy', 'true');
+      try {
+        const response = await fetch('/api/send-ticket', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ ...details, requestId: lastAttempt.requestId }),
+          signal: AbortSignal.timeout(20000),
+        });
+        const result = await response.json().catch(() => null);
+        if (!response.ok || result?.ok !== true || typeof result.reference !== 'string') {
+          throw new Error(result?.error || 'Unable to confirm sending. Try again, or email support@cyberbench.io.');
+        }
+        ticketForm.style.display = 'none';
+        formSuccess.style.display = 'block';
+        const reference = document.createElement('p');
+        reference.textContent = 'Reference: ' + result.reference;
+        reference.style.cssText = 'margin:16px 0;overflow-wrap:anywhere;color:var(--text-dim);font-size:13px;';
+        formSuccess.querySelector('h2').after(reference);
+        formSuccess.querySelector('h2').focus();
+      } catch (error) {
+        showError(error.name === 'TimeoutError' || error.name === 'AbortError'
+          ? 'Sending took too long to confirm. Try again, or email support@cyberbench.io.'
+          : error.message === 'Failed to fetch'
+            ? 'Connection failed. Try again, or email support@cyberbench.io.'
+            : error.message);
+      } finally {
+        submitting = false;
+        submitButton.disabled = false;
+        submitButton.textContent = originalText;
+        ticketForm.removeAttribute('aria-busy');
+      }
     });
 
     /* ── AI Chat ── */
